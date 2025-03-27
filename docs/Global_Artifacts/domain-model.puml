@@ -1,0 +1,149 @@
+@startuml
+
+
+
+package "**«Aggregate» User**" #DDDDDD {
+
+        entity "User" as entity_user <<entity root>> {
+        }
+
+
+        class "UserStatus" as vObject_userStatus <<(V, #7E84F7)>> {
+                            Enable
+                            Disable
+                }
+
+        entity_user *--down vObject_userStatus
+
+        entity "Admin" as entity_admin {
+        }
+        entity "CRM Collaborator" as entity_crmcollaborator {
+        }
+        entity "CRM Manager" as entity_crmManager {
+        }
+        entity "Show Designer" as entity_showDesigner {
+        }
+
+        entity "Drone Tech" as entity_droneTech {
+                }
+
+        entity_user <|--up entity_admin
+        entity_user <|--up entity_crmcollaborator
+        entity_user <|--up entity_crmManager
+        entity_user <|--up entity_showDesigner
+        entity_user <|--up entity_droneTech
+}
+
+class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
+        }
+
+class "Name" as vObject_name <<(V, #7E84F7)>> {
+        }
+
+class "Password" as vObject_password <<(V, #7E84F7)>> {
+        }
+
+class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
+                }
+
+package "**«Aggregate» Employee**" #DDDDDD {
+
+        entity "Employee" as entity_employee <<entity root>> {
+        }
+
+        class "Position" as vObject_position <<(V, #7E84F7)>> {
+        }
+
+
+        entity_employee *--down vObject_position
+}
+
+
+package "**«Aggregate» Client**" #DDDDDD {
+
+        entity "Client" as entity_client <<entity root>> {
+        }
+        class "VatNumber" as vObject_vatNumber <<(V, #7E84F7)>> {
+        }
+        class "Address" as vObject_customerAddress <<(V, #7E84F7)>> {
+        }
+
+        class "ClientStatus" as vObject_clientStatus <<(V, #7E84F7)>> {
+                    Deleted
+                    Infringement
+                    Created
+                    Regular
+                    VIP
+        }
+
+        entity_client *--down vObject_clientStatus
+        entity_client *--down vObject_customerAddress
+        entity_client *--down vObject_vatNumber
+
+
+}
+
+package "**«Aggregate» Candidate**" #DDDDDD {
+
+        entity "Candidate" as entity_candidate <<entity root>> {
+        }
+        class "PhoneNumber" as vObject_candidatePhoneNumber <<(V, #7E84F7)>> {
+        }
+        class "CandidateStatus" as vObject_candidateStatus <<(V, #7E84F7)>> {
+            enable
+            disable
+        }
+
+        entity_candidate *--down vObject_candidatePhoneNumber
+        entity_candidate *--down vObject_candidateStatus
+}
+
+
+
+package "**«Aggregate» File**" #DDDDDD {
+
+        entity "File" as entity_file <<entity root>> {
+        }
+        class "FileName" as vObject_fileName <<(V, #7E84F7)>> {
+        }
+        class "FileType" as vObject_fileType <<(V, #7E84F7)>> {
+            interview
+            requirements
+            application
+        }
+        class "Plugin" as vObject_filePlugin <<(V, #7E84F7)>> {
+        }
+
+        entity_file *--up vObject_filePlugin
+        entity_file *--up vObject_fileName
+        entity_file *--up vObject_fileType
+}
+entity_client *--down vObject_email
+entity_client *--down vObject_name
+entity_client *--down vObject_password
+
+
+entity_user *--down vObject_email
+entity_user *--down vObject_password
+entity_user *--down vObject_name
+entity_user *--down vObject_phoneNumber
+
+
+
+
+
+
+entity_employee *--up vObject_email
+entity_employee *--left vObject_name
+entity_employee *--up vObject_password
+entity_employee *--down vObject_phoneNumber
+
+
+
+entity_client --> entity_employee: "is represented by"
+entity_file "1" <- "1" entity_jobRequirements: "< has"
+entity_file "1 "<- "1 "entity_interview: "< has"
+entity_file "1" <- "1" entity_jobApplication: "< has"
+
+
+@enduml

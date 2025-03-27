@@ -1,0 +1,188 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+hide circle
+hide methods
+
+title Domain Model
+
+class "«value object»\nEuropeanVATNumber" {
+
+}
+
+class "«value object»\nName" {
+
+}
+
+class "«value object»\nEmail" {
+
+}
+
+class "«value object»\nPhoneNumber" {
+
+}
+
+class "«value object»\nAddress" {
+
+}
+
+class "«value object»\nDuration" {
+
+}
+
+class "«value object»\nDate" {
+
+}
+
+class "«value object»\nPlace" {
+
+}
+
+package UserAggregate {
+
+    class "«entity»\n«root»\nUser" {
+
+    }
+
+    class "«value object»\nPassword" {
+
+    }
+
+    class "«value object»\nUserStatus" {
+        isActive
+    }
+
+}
+
+package ClientAggregate {
+
+    class "«entity»\n«root»\nClient" {
+
+    }
+
+    class "«value object»\nClientStatus" {
+        isActive
+        status
+    }
+
+}
+
+package FigureAggregate {
+
+    class "«entity»\n«root»\nFigure" {
+
+    }
+
+    class "«value object»\nCode" {
+
+    }
+
+    class "«value object»\nVersionCode" {
+
+    }
+
+    class "«value object»\nDSLCode" {
+
+    }
+
+}
+
+package RoleAggregate {
+
+    class "«entity»\n«root»\nRole" {
+
+    }
+
+}
+
+package ShowAggregate {
+
+    class "«entity»\n«root»\nShow" {
+
+    }
+
+    class "«value object»\nShowStatus" {
+        status
+    }
+
+    class "«value object»\nShowRequestDescription" {
+
+    }
+
+    class "«value object»\nNumberOfDrones" {
+
+    }
+
+}
+
+package DroneAggregate {
+
+    class "«entity»\n«root»\nDrone" {
+
+    }
+
+}
+
+package DroneModelAggregate {
+
+    class "«entity»\n«root»\nDroneModel" {
+
+    }
+
+}
+
+package EmployeeAggregate {
+
+    class "«entity»\n«root»\nEmployee" {
+
+    }
+
+    class "«value object»\nPosition" {
+
+    }
+
+}
+
+package RoutineAggregate {
+
+    class "«entity»\n«root»\nRoutine" {
+
+    }
+
+}
+
+"«entity»\n«root»\nFigure" "1" ---> "0..1" "«entity»\n«root»\nClient" : was made for
+"«entity»\n«root»\nShow" "1" --> "1" "«value object»\nShowRequestDescription" : is described by
+"«entity»\n«root»\nShow" "1" --> "1" "«value object»\nDuration" : lasts
+"«entity»\n«root»\nShow" "1" --> "1" "«value object»\nPlace" : takes place at
+"«entity»\n«root»\nShow" "1" --> "1" "«value object»\nDate" : will happen at
+"«entity»\n«root»\nClient" "1" <-- "1..*" "«entity»\n«root»\nShow" : is submitted by
+"«entity»\n«root»\nShow" "1" --> "1..*" "«value object»\nNumberOfDrones" : requests
+"«entity»\n«root»\nUser" "1" --> "1" "«value object»\nUserStatus" : is characterized by
+"«entity»\n«root»\nShow" "1" --> "1" "«value object»\nShowStatus" : is characterized by
+"«entity»\n«root»\nUser" "1" --> "1" "«entity»\n«root»\nRole" : plays
+"«entity»\n«root»\nUser" "1" -> "1" "«value object»\nName" : is called by
+"«entity»\n«root»\nUser" "1" --> "1" "«value object»\nEmail" : is identified by
+"«entity»\n«root»\nUser" "1" --> "1" "«value object»\nPassword" : authenticates through
+"«entity»\n«root»\nUser" "1" --> "1" "«value object»\nPhoneNumber" : can be contacted through
+"«entity»\n«root»\nClient" "1" --> "1" "«value object»\nName" : is called by
+"«entity»\n«root»\nDrone" "1" --> "1" "«entity»\n«root»\nDroneModel" : derives from
+"«entity»\n«root»\nDrone" "1" --> "*" "«entity»\n«root»\nRoutine" : runs
+"«entity»\n«root»\nRoutine" "1" --> "1" "«value object»\nDuration" : lasts
+"«entity»\n«root»\nDrone" "1..*" <-- "1" "«entity»\n«root»\nFigure" : generates code for
+"«entity»\n«root»\nShow" "1" --> "*" "«entity»\n«root»\nFigure" : is composed by
+"«entity»\n«root»\nFigure" "1" --> "1" "«value object»\nDSLCode" : is described by
+"«entity»\n«root»\nFigure" "1" --> "1" "«value object»\nCode" : is identified by
+"«entity»\n«root»\nFigure" "1" --> "1..*" "«value object»\nVersionCode" : is dated by
+"«entity»\n«root»\nEmployee" "1" --> "1" "«value object»\nName" : is called by
+"«entity»\n«root»\nEmployee" "1" -> "1" "«value object»\nPosition" : works as
+"«entity»\n«root»\nEmployee" "1" --> "1" "«value object»\nEmail" : can be contacted through
+"«entity»\n«root»\nClient" "1" ---> "1" "«value object»\nPhoneNumber" : can be contacted through
+"«entity»\n«root»\nClient" "1" -> "1" "«value object»\nAddress" : is located on
+"«entity»\n«root»\nClient" "1" -> "1" "«value object»\nClientStatus" : is characterized by
+"«entity»\n«root»\nClient" "1" --> "1..*" "«entity»\n«root»\nEmployee" : is represented by
+"«entity»\n«root»\nClient" "1" -> "1" "«value object»\nEuropeanVATNumber" : is identified by
+
+@enduml
