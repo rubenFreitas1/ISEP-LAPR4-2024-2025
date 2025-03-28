@@ -13,7 +13,7 @@
     <artifactId>shodrone.app2</artifactId>
     <packaging>jar</packaging>
 
-    <name>jobs4u.app2</name>
+    <name>shodrone.app2</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
