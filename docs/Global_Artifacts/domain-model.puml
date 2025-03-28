@@ -91,11 +91,52 @@ package "**«Aggregate» Drone**" #DDDDDD {
         }
         class "SerialNumber" as vObject_serialNumber <<id>> <<(V, #7E84F7)>> {
         }
+        class "Code" as vObject_code <<(V, #7E84F7)>> {
+        }
+        class "Model" as vObject_model <<(V, #7E84F7)>> {
+        }
+        class "MovementType" as vObject_movementType <<(V, #7E84F7)>> {
+        }
 
+        entity_drone *--down vObject_model
+        entity_drone *--down vObject_code
         entity_drone *--down vObject_routine
         entity_drone *--down vObject_serialNumber
+        entity_drone *--down vObject_movementType
+}
+package "**«Aggregate» DroneInventory**" #DDDDDD {
+
+    entity "DroneInventory" as entity_droneInventory  <<entity root>> {
+    }
+
 }
 
+package "**«Aggregate» Show**" #DDDDDD {
+
+    entity "Show" as entity_show  <<entity root>> {
+    }
+    class "ShowProposal" as vObject_showProposal <<(V, #7E84F7)>> {
+    }
+    class "ShowRequest" as vObject_showRequest <<(V, #7E84F7)>> {
+    }
+
+    entity_show *--down vObject_showProposal
+    vObject_showRequest -->vObject_showProposal: "turns into"
+
+}
+
+package "**«Aggregate» Simulation**" #DDDDDD {
+
+    entity "Simulation" as entity_simulation  <<entity root>> {
+    }
+    class "Orchestrator" as vObject_orchestrator <<(V, #7E84F7)>> {
+    }
+    class "Subarea" as vObject_subarea <<(V, #7E84F7)>> {
+    }
+
+    entity_simulation*--down vObject_orchestrator
+    entity_simulation*--down vObject_subarea
+}
 
 
 package "**«Aggregate» Figure**" #DDDDDD {
@@ -107,18 +148,28 @@ package "**«Aggregate» Figure**" #DDDDDD {
         class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
         }
 
-        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
-        }
-
         class "Code" as vObject_code <<(V, #7E84F7)>> {
                 }
 
         entity_figure *--down vObject_description
         entity_figure *--down vObject_figureVersion
-        entity_figure *--down vObject_dslCode
         entity_figure *--down vObject_code
 
+}
+package "**«Aggregate» DslCode**" #DDDDDD {
 
+    entity "DslCode" as entity_dslCode  <<entity root>> {
+    }
+    class "Version" as vObject_version <<(V, #7E84F7)>> {
+    }
+    class "Id" as vObject_id <<id>> <<(V, #7E84F7)>> {
+    }
+    class "FigureType" as vObject_figureType <<(V, #7E84F7)>> {
+    }
+
+    entity_dslCode *--down vObject_version
+    entity_dslCode *--down vObject_id
+    entity_dslCode *--down vObject_figureType
 }
 
 package "**«Aggregate» Catalogue**" #DDDDDD {
@@ -152,11 +203,20 @@ entity_employee *--left vObject_name
 entity_employee *--up vObject_password
 entity_employee *--down vObject_phoneNumber
 
-
-
+entity_drone --> entity_figure: "is used in"
+entity_drone *--down entity_droneInventory
 
 entity_client --> entity_employee: "is represented by"
+entity_client --> entity_show: "requests"
 
+entity_dslCode --> entity_drone: "generates code for"
+
+entity_figure *--down entity_dslCode
 entity_figure --> entity_catalogue: "is in"
+
+entity_catalogue --> entity_show
+
+entity_simulation *--down entity_show
+
 
 @enduml

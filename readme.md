@@ -26,8 +26,9 @@
 
 ## 7. How to Generate PlantUML Diagrams
 
-To generate plantuml diagrams for documentation execute the script (for the moment, only for linux/unix/macos):
+To generate plantuml diagrams for documentation execute the script (only for linux/unix/macos):
 
     ./generate-plantuml-diagrams.sh
+To generate plantuml diagrams for documentation execute the script (only for windows):
 
-
+    ./generate-plantuml-diagrams.bat
