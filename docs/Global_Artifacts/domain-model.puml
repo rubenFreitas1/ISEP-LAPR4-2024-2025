@@ -83,41 +83,55 @@ package "**«Aggregate» Client**" #DDDDDD {
 
 }
 
-package "**«Aggregate» Candidate**" #DDDDDD {
+package "**«Aggregate» Drone**" #DDDDDD {
 
-        entity "Candidate" as entity_candidate <<entity root>> {
+        entity "Drone" as entity_drone <<entity root>> {
         }
-        class "PhoneNumber" as vObject_candidatePhoneNumber <<(V, #7E84F7)>> {
+        class "Routine" as vObject_routine <<(V, #7E84F7)>> {
         }
-        class "CandidateStatus" as vObject_candidateStatus <<(V, #7E84F7)>> {
-            enable
-            disable
+        class "SerialNumber" as vObject_serialNumber <<id>> <<(V, #7E84F7)>> {
         }
 
-        entity_candidate *--down vObject_candidatePhoneNumber
-        entity_candidate *--down vObject_candidateStatus
+        entity_drone *--down vObject_routine
+        entity_drone *--down vObject_serialNumber
 }
 
 
 
-package "**«Aggregate» File**" #DDDDDD {
+package "**«Aggregate» Figure**" #DDDDDD {
 
-        entity "File" as entity_file <<entity root>> {
+        entity "Figure" as entity_figure <<entity root>> {
         }
-        class "FileName" as vObject_fileName <<(V, #7E84F7)>> {
+        class "Description" as vObject_description <<(V, #7E84F7)>> {
         }
-        class "FileType" as vObject_fileType <<(V, #7E84F7)>> {
-            interview
-            requirements
-            application
-        }
-        class "Plugin" as vObject_filePlugin <<(V, #7E84F7)>> {
+        class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
         }
 
-        entity_file *--up vObject_filePlugin
-        entity_file *--up vObject_fileName
-        entity_file *--up vObject_fileType
+        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
+        }
+
+        class "Code" as vObject_code <<(V, #7E84F7)>> {
+                }
+
+        entity_figure *--down vObject_description
+        entity_figure *--down vObject_figureVersion
+        entity_figure *--down vObject_dslCode
+        entity_figure *--down vObject_code
+
+
 }
+
+package "**«Aggregate» Catalogue**" #DDDDDD {
+
+    entity "Catalogue" as entity_catalogue <<entity root>> {
+    }
+
+
+}
+
+
+
+
 entity_client *--down vObject_email
 entity_client *--down vObject_name
 entity_client *--down vObject_password
@@ -140,10 +154,9 @@ entity_employee *--down vObject_phoneNumber
 
 
 
-entity_client --> entity_employee: "is represented by"
-entity_file "1" <- "1" entity_jobRequirements: "< has"
-entity_file "1 "<- "1 "entity_interview: "< has"
-entity_file "1" <- "1" entity_jobApplication: "< has"
 
+entity_client --> entity_employee: "is represented by"
+
+entity_figure --> entity_catalogue: "is in"
 
 @enduml
