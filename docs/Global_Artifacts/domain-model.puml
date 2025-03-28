@@ -1,50 +1,50 @@
 @startuml
 
-
-
 package "**«Aggregate» User**" #DDDDDD {
 
         entity "User" as entity_user <<entity root>> {
         }
 
-
-        class "UserStatus" as vObject_userStatus <<(V, #7E84F7)>> {
-                            Enable
-                            Disable
-                }
-
-        entity_user *--down vObject_userStatus
-
+        entity "Show Designer" as entity_showDesigner {
+        }
         entity "Admin" as entity_admin {
         }
         entity "CRM Collaborator" as entity_crmcollaborator {
         }
         entity "CRM Manager" as entity_crmManager {
         }
-        entity "Show Designer" as entity_showDesigner {
+        entity "Drone Tech" as entity_droneTech {
+        }
+        class "UserStatus" as vObject_userStatus <<(V, #7E84F7)>> {
+            Enable
+            Disable
         }
 
-        entity "Drone Tech" as entity_droneTech {
-                }
 
+        class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
+        }
+
+        class "Name" as vObject_name <<(V, #7E84F7)>> {
+        }
+
+        class "Password" as vObject_password <<(V, #7E84F7)>> {
+        }
+
+        class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
+        }
+        entity_user *--down vObject_userStatus
+
+        entity_user <|--up entity_showDesigner
+        entity_user <|--up entity_crmManager
         entity_user <|--up entity_admin
         entity_user <|--up entity_crmcollaborator
-        entity_user <|--up entity_crmManager
-        entity_user <|--up entity_showDesigner
         entity_user <|--up entity_droneTech
+        entity_user *--down vObject_email
+        entity_user *--down vObject_password
+        entity_user *--down vObject_name
+        entity_user *--down vObject_phoneNumber
 }
 
-class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
-        }
-
-class "Name" as vObject_name <<(V, #7E84F7)>> {
-        }
-
-class "Password" as vObject_password <<(V, #7E84F7)>> {
-        }
-
-class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
-                }
 
 package "**«Aggregate» Employee**" #DDDDDD {
 
@@ -67,6 +67,17 @@ package "**«Aggregate» Client**" #DDDDDD {
         }
         class "Address" as vObject_customerAddress <<(V, #7E84F7)>> {
         }
+        class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
+        }
+
+        class "Name" as vObject_name <<(V, #7E84F7)>> {
+        }
+
+        class "Password" as vObject_password <<(V, #7E84F7)>> {
+        }
+
+        class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
+        }
 
         class "ClientStatus" as vObject_clientStatus <<(V, #7E84F7)>> {
                     Deleted
@@ -79,6 +90,10 @@ package "**«Aggregate» Client**" #DDDDDD {
         entity_client *--down vObject_clientStatus
         entity_client *--down vObject_customerAddress
         entity_client *--down vObject_vatNumber
+        entity_client *--down vObject_email
+        entity_client *--down vObject_name
+        entity_client *--down vObject_password
+        entity_client *--down vObject_phoneNumber
 
 
 }
@@ -115,14 +130,25 @@ package "**«Aggregate» Show**" #DDDDDD {
 
     entity "Show" as entity_show  <<entity root>> {
     }
-    class "ShowProposal" as vObject_showProposal <<(V, #7E84F7)>> {
+    class "Place" as vObject_showPlace <<(V, #7E84F7)>> {
     }
-    class "ShowRequest" as vObject_showRequest <<(V, #7E84F7)>> {
+    class "Time" as vObject_showTime <<(V, #7E84F7)>> {
+    }
+    class "NumberDrones" as vObject_showNumberDrones <<(V, #7E84F7)>> {
+    }
+    class "Duration" as vObject_showDuration <<(V, #7E84F7)>> {
+    }
+    class "Status" as vObject_showStatus <<(V, #7E84F7)>> {
+        Request
+        Proposal
+        Production
     }
 
-    entity_show *--down vObject_showProposal
-    vObject_showRequest -->vObject_showProposal: "turns into"
-
+    entity_show *--down vObject_showPlace
+    entity_show *--down vObject_showTime
+    entity_show *--down vObject_showNumberDrones
+    entity_show *--down vObject_showDuration
+    entity_show *--down vObject_showStatus
 }
 
 package "**«Aggregate» Simulation**" #DDDDDD {
@@ -183,40 +209,22 @@ package "**«Aggregate» Catalogue**" #DDDDDD {
 
 
 
-entity_client *--down vObject_email
-entity_client *--down vObject_name
-entity_client *--down vObject_password
 
-
-entity_user *--down vObject_email
-entity_user *--down vObject_password
-entity_user *--down vObject_name
-entity_user *--down vObject_phoneNumber
-
-
-
-
-
-
-entity_employee *--up vObject_email
-entity_employee *--left vObject_name
-entity_employee *--up vObject_password
-entity_employee *--down vObject_phoneNumber
 
 entity_drone --> entity_figure: "is used in"
 entity_drone *--down entity_droneInventory
 
 entity_client --> entity_employee: "is represented by"
-entity_client --> entity_show: "requests"
+entity_client ---up> entity_show: "requests"
 
 entity_dslCode --> entity_drone: "generates code for"
 
-entity_figure *--down entity_dslCode
+entity_figure *-- entity_dslCode
 entity_figure --> entity_catalogue: "is in"
 
 entity_catalogue --> entity_show
 
 entity_simulation *--down entity_show
-
+entity_user <|-- entity_employee
 
 @enduml

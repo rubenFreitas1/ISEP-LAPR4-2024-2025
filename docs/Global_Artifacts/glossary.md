@@ -30,7 +30,7 @@
 | **Registration**                   | The process of adding new users or clients to the system, ensuring they meet Shodrone's eligibility criteria.     |
 | **Regular Client**                 | A standard client whose show requests are handled normally.                                                       |
 | **Scalability**                    | The system's ability to handle an increasing number of drones and shows efficiently.                              |
-| **Show**                           | A composition of multiple figures/sequences executed in a coordinated manner.                                     |
+| **Show**                           | Refers to a drone light performance that is planned and executed based on a customer's request.                   |
 | **Show Designer**                  | A role responsible for designing new figures and sequences for drone shows.                                       |
 | **Show Proposal**                  | A document generated based on a client’s request, detailing the selected figures and sequences for approval.      |
 | **Show Request**                   | A formal request submitted by a client to Shodrone, specifying the details of a desired drone show.               |
