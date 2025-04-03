@@ -5,23 +5,16 @@ package "**«Aggregate» User**" #DDDDDD {
         entity "User" as entity_user <<entity root>> {
         }
 
-        entity "Show Designer" as entity_showDesigner {
-        }
-        entity "Admin" as entity_admin {
-        }
-        entity "CRM Collaborator" as entity_crmcollaborator {
-        }
-        entity "CRM Manager" as entity_crmManager {
-        }
-        entity "Drone Tech" as entity_droneTech {
-        }
+
+
+
         class "UserStatus" as vObject_userStatus <<(V, #7E84F7)>> {
             Enable
             Disable
         }
 
 
-        class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
+        class "Email" as vObject_email <<(V, #7E84F7)>> {
         }
 
         class "Name" as vObject_name <<(V, #7E84F7)>> {
@@ -30,22 +23,39 @@ package "**«Aggregate» User**" #DDDDDD {
         class "Password" as vObject_password <<(V, #7E84F7)>> {
         }
 
+        class "Role" as vObject_role <<(V, #7E84F7)>> {
+            ShowDesigner
+            CRMCollaborator
+            CRMManager
+            Admin
+            DroneTech
+        }
+
         class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
         }
         entity_user *--down vObject_userStatus
 
-        entity_user <|--up entity_showDesigner
-        entity_user <|--up entity_crmManager
-        entity_user <|--up entity_admin
-        entity_user <|--up entity_crmcollaborator
-        entity_user <|--up entity_droneTech
+
         entity_user *--down vObject_email
         entity_user *--down vObject_password
         entity_user *--down vObject_name
         entity_user *--down vObject_phoneNumber
+        entity_user *--down vObject_role
 }
 
 
+package "**«Aggregate» Representative**" #DDDDDD {
+
+    entity "Representative" as entity_repesentative <<entity root>> {
+    }
+
+    class "Position" as vObject_position <<(V, #7E84F7)>> {
+    }
+
+    entity_repesentative *--down vObject_position
+
+
+}
 
 
 package "**«Aggregate» Client**" #DDDDDD {
@@ -56,7 +66,7 @@ package "**«Aggregate» Client**" #DDDDDD {
         }
         class "Address" as vObject_customerAddress <<(V, #7E84F7)>> {
         }
-        class "Email" as vObject_email <<id>> <<(V, #7E84F7)>> {
+        class "Email" as vObject_email <<(V, #7E84F7)>> {
         }
 
         class "Name" as vObject_name <<(V, #7E84F7)>> {
@@ -68,14 +78,9 @@ package "**«Aggregate» Client**" #DDDDDD {
         class "Phone Number" as vObject_phoneNumber <<(V, #7E84F7)>> {
         }
 
-        entity "Representative" as entity_repesentative {
-        }
 
 
-        class "Position" as vObject_position <<(V, #7E84F7)>> {
-        }
 
-        entity_repesentative *--down vObject_position
 
         class "ClientStatus" as vObject_clientStatus <<(V, #7E84F7)>> {
                     Deleted
@@ -128,10 +133,8 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
 
     entity "ShowRequest" as entity_showRequest  <<entity root>> {
     }
-    entity "ShowProposal" as entity_showProposal  {
-    }
-    class "AcceptanceDate" as vObject_acceptanceDate <<(V, #7E84F7)>> {
-    }
+
+
     class "RequestDate" as vObject_requestDate <<(V, #7E84F7)>> {
     }
     class "Place" as vObject_showPlace <<(V, #7E84F7)>> {
@@ -143,21 +146,39 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
     class "Duration" as vObject_showDuration <<(V, #7E84F7)>> {
     }
 
+    class "Status" as vObject_status <<(V, #7E84F7)>> {
+        Accepted
+        Declined
+        Pending
+    }
+
     entity_showRequest *--down vObject_showPlace
     entity_showRequest *--down vObject_showTime
     entity_showRequest *--down vObject_showNumberDrones
     entity_showRequest *--down vObject_showDuration
-
+    entity_showRequest *--down vObject_status
     entity_showRequest *--down vObject_requestDate
-    entity_showProposal *--down vObject_acceptanceDate
 
 }
 
-package "**«Aggregate» Show**" #DDDDDD {
+package "**«Aggregate» ShowProposal**" #DDDDDD {
 
 
-    entity "Show" as entity_show    {
+    entity "ShowProposal" as entity_showProposal    {
     }
+
+    class "AcceptanceDate" as vObject_acceptanceDate <<(V, #7E84F7)>> {
+    }
+
+    class "Status" as vObject_status <<(V, #7E84F7)>> {
+        Accepted
+        Declined
+        Pending
+    }
+
+    entity_showProposal *--down vObject_acceptanceDate
+    entity_showProposal *--down vObject_status
+
 
 }
 
@@ -230,15 +251,13 @@ entity_client ---up> entity_showRequest: "requests"
 entity_dslCode --> entity_drone: "generates code for"
 
 entity_figure *-- entity_dslCode
-entity_figure --> entity_catalogue: "is in"
+entity_figure <-- entity_catalogue: "has"
 
 entity_catalogue <-- entity_showRequest
 
-entity_simulation *--down entity_show
+entity_simulation *--down entity_showProposal
 entity_user <|-- entity_repesentative
 
-entity_client --> entity_showProposal : "accepts"
 entity_showRequest <|-- entity_showProposal
-entity_show <-- entity_showProposal
 
 @enduml
