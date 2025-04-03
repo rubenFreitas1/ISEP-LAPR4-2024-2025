@@ -14,6 +14,18 @@ To build the project execute the script (only for windows):
 
     ./build-all.bat
 
+To build the project execute the script (only for linux/unix/macos):
+
+    ./build-all.sh
+
+To quick build the project execute the script (only for windows):
+
+    ./quickbuild.bat
+
+To quick build the project execute the script (only for linux/unix/macos):
+
+    ./quickbuild.sh
+
 ## 4. How to Execute Tests
 
 To run all the tests execute the script (only for windows):
