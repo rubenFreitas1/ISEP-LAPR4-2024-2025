@@ -10,15 +10,25 @@
 
 ## 3. How to Build
 
-*To Do*
+To build the project execute the script (only for windows):
+
+    ./build-all.bat
 
 ## 4. How to Execute Tests
 
-*To Do*
+To run all the tests execute the script (only for windows):
+
+    ./run-tests.bat
 
 ## 5. How to Run
 
-*To Do*
+To run all drones execute the script (only for windows):
+
+    ./run-all-shodrone.bat
+
+To run one drones execute the script (only for windows and N bein the drone number):
+
+    ./shodrone-appN.bat
 
 ## 6. How to Install/Deploy into Another Machine (or Virtual Machine)
 
