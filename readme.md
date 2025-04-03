@@ -2,7 +2,7 @@
 
 ## 1. Description of the Project
 
-*To Do*
+Project Shodrone is an autonomous drone control and operation system designed for various applications, including security, industrial inspection, and environmental monitoring. The project aims to develop a reliable and efficient platform for managing multiple drones simultaneously with minimal human intervention.
 
 ## 2. Planning and Technical Documentation
 
