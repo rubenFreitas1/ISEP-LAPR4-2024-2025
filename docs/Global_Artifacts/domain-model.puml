@@ -124,9 +124,15 @@ package "**«Aggregate» DroneInventory**" #DDDDDD {
 
 }
 
-package "**«Aggregate» Show**" #DDDDDD {
+package "**«Aggregate» ShowRequest**" #DDDDDD {
 
-    entity "ShowRequest" as entity_show  {
+    entity "ShowRequest" as entity_showRequest  <<entity root>> {
+    }
+    entity "ShowProposal" as entity_showProposal  {
+    }
+    class "AcceptanceDate" as vObject_acceptanceDate <<(V, #7E84F7)>> {
+    }
+    class "RequestDate" as vObject_requestDate <<(V, #7E84F7)>> {
     }
     class "Place" as vObject_showPlace <<(V, #7E84F7)>> {
     }
@@ -136,17 +142,23 @@ package "**«Aggregate» Show**" #DDDDDD {
     }
     class "Duration" as vObject_showDuration <<(V, #7E84F7)>> {
     }
-    class "Status" as vObject_showStatus <<(V, #7E84F7)>> {
-        Request
-        Proposal
-        Production
+
+    entity_showRequest *--down vObject_showPlace
+    entity_showRequest *--down vObject_showTime
+    entity_showRequest *--down vObject_showNumberDrones
+    entity_showRequest *--down vObject_showDuration
+
+    entity_showRequest *--down vObject_requestDate
+    entity_showProposal *--down vObject_acceptanceDate
+
+}
+
+package "**«Aggregate» Show**" #DDDDDD {
+
+
+    entity "Show" as entity_show    {
     }
 
-    entity_show *--down vObject_showPlace
-    entity_show *--down vObject_showTime
-    entity_show *--down vObject_showNumberDrones
-    entity_show *--down vObject_showDuration
-    entity_show *--down vObject_showStatus
 }
 
 package "**«Aggregate» Simulation**" #DDDDDD {
@@ -213,16 +225,20 @@ entity_drone --> entity_figure: "is used in"
 entity_drone *--down entity_droneInventory
 
 entity_client --> entity_repesentative: "is represented by"
-entity_client ---up> entity_show: "requests"
+entity_client ---up> entity_showRequest: "requests"
 
 entity_dslCode --> entity_drone: "generates code for"
 
 entity_figure *-- entity_dslCode
 entity_figure --> entity_catalogue: "is in"
 
-entity_catalogue --> entity_show
+entity_catalogue <-- entity_showRequest
 
 entity_simulation *--down entity_show
 entity_user <|-- entity_repesentative
+
+entity_client --> entity_showProposal : "accepts"
+entity_showRequest <|-- entity_showProposal
+entity_show <-- entity_showProposal
 
 @enduml
