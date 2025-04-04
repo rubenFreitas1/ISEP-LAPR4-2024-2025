@@ -212,10 +212,18 @@ package "**«Aggregate» Figure**" #DDDDDD {
         }
         class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
         }
+        class "CreatedBy" as vObject_createdBy <<(V, #7E84F7)>> {
+        }
+        class "FigureType" as vObject_figureType <<(V, #7E84F7)>> {
+        }
+        class "Status" as vObject_status <<(V, #7E84F7)>> {
+            Public
+            Exclusive
+        }
 
-        class "Code" as vObject_code <<(V, #7E84F7)>> {
-                }
-
+        entity_figure *--down vObject_figureType
+        entity_figure *--down vObject_status
+        entity_figure *--down vObject_createdBy
         entity_figure *--down vObject_description
         entity_figure *--down vObject_figureVersion
         entity_figure *--down vObject_code
@@ -229,20 +237,20 @@ package "**«Aggregate» DslCode**" #DDDDDD {
     }
     class "Id" as vObject_id <<id>> <<(V, #7E84F7)>> {
     }
-    class "FigureType" as vObject_figureType <<(V, #7E84F7)>> {
-    }
+
 
     entity_dslCode *--down vObject_version
     entity_dslCode *--down vObject_id
-    entity_dslCode *--down vObject_figureType
 }
 
 package "**«Aggregate» Catalogue**" #DDDDDD {
 
     entity "Catalogue" as entity_catalogue <<entity root>> {
     }
+    class "Filter" as vObject_filter <<(V, #7E84F7)>> {
+    }
 
-
+    entity_catalogue *--down vObject_filter
 }
 
 
