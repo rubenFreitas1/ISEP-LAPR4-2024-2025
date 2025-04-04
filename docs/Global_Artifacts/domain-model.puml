@@ -113,14 +113,22 @@ package "**«Aggregate» Drone**" #DDDDDD {
         }
         class "Model" as vObject_model <<(V, #7E84F7)>> {
         }
-        class "MovementType" as vObject_movementType <<(V, #7E84F7)>> {
+        class "RotationType" as vObject_rotationType <<(V, #7E84F7)>> {
         }
+        class "DroneStatus" as vObject_droneStatus <<(V, #7E84F7)>> {
+            Active
+            Inactive
+            Maintenance
+            Faulty
+        }
+
+        entity_drone *--down vObject_droneStatus
 
         entity_drone *--down vObject_model
         entity_drone *--down vObject_code
         entity_drone *--down vObject_routine
         entity_drone *--down vObject_serialNumber
-        entity_drone *--down vObject_movementType
+        entity_drone *--down vObject_rotationType
 }
 package "**«Aggregate» DroneInventory**" #DDDDDD {
 

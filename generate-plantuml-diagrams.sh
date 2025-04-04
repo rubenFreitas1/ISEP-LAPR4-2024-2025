@@ -1,6 +1,6 @@
 #! /bin/sh
 echo "LOG: Generate Plantuml Diagrams"
-exportFormat="svg"
+exportFormat="png"
 #monochrome="true"
 extra="-SdefaultFontSize=20"
 #extra="-SdefaultFontName=Times New Roman -SdefaultFontSize=10"
