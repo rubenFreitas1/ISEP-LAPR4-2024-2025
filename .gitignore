@@ -25,6 +25,11 @@ replay_pid*
 
 #ignores ~.idea folder
 .idea
+.idea/modules.xml
+.idea/*.iml
+.idea/modules
+*.iml
+*.ipr
 
 /db.properties
 .properties

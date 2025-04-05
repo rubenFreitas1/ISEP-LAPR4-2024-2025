@@ -10,8 +10,8 @@
       <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:./db/shodrone"/>
       <property name="jakarta.persistence.jdbc.user" value="user"/>
       <property name="jakarta.persistence.jdbc.password" value="password"/>
-      <property name="jakarta.persistence.schema-generation.database.action"
-                value="create"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
     </properties>
   </persistence-unit>
 </persistence>
