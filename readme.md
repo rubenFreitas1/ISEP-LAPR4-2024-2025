@@ -8,7 +8,17 @@ Project Shodrone is an autonomous drone control and operation system designed fo
 
 [Planning and Technical Documentation](docs/readme.md)
 
-## 3. How to Build
+## 3. How to Clean
+
+To clean the project execute the script (only for windows):
+
+    ./mvn-clean.bat
+
+To clean the project execute the script (only for linux/unix/macos):
+
+    ./mvn-clean.sh
+
+## 4. How to Build
 
 To build the project execute the script (only for windows):
 
@@ -26,27 +36,42 @@ To quick build the project execute the script (only for linux/unix/macos):
 
     ./quickbuild.sh
 
-## 4. How to Execute Tests
+## 5. How to Execute Tests
 
 To run all the tests execute the script (only for windows):
 
     ./run-tests.bat
 
-## 5. How to Run
+To run all the tests execute the script (only for linux/unix/macos):
+
+    ./run-tests.sh
+
+
+## 6. How to Run
 
 To run all drones execute the script (only for windows):
 
     ./run-all-shodrone.bat
 
+
+To run all drones execute the script (only for linux/unix/macos):
+
+    ./run-all-shodrone.sh
+
+
 To run one drones execute the script (only for windows and N bein the drone number):
 
     ./shodrone-appN.bat
 
-## 6. How to Install/Deploy into Another Machine (or Virtual Machine)
+To run one drones execute the script (only for linux/unix/macos and N bein the drone number):
+
+    ./shodrone-appN.sh
+
+## 7. How to Install/Deploy into Another Machine (or Virtual Machine)
 
 *To Do*
 
-## 7. How to Generate PlantUML Diagrams
+## 8. How to Generate PlantUML Diagrams
 
 To generate plantuml diagrams for documentation execute the script (only for linux/unix/macos):
 
