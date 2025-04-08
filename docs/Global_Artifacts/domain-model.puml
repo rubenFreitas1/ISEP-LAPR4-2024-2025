@@ -36,8 +36,8 @@ package "**«Aggregate» Client**" #DDDDDD {
             class "Position" as vObject_position <<(V, #7E84F7)>> {
             }
 
-        entity_representative *--down vObject_position
-        entity_client "1"<--"1..*"  entity_representative: "represents"
+        entity_representative *-- vObject_position
+        entity_client "1"<--right"1..*"  entity_representative: "represents"
         entity_client *--down vObject_clientStatus
         entity_client *--down vObject_customerAddress
         entity_client *--down vObject_vatNumber
@@ -214,7 +214,7 @@ entity_requestedFigures "*" -->"1..*" entity_figure:"contains"
 
 entity_drone "1..*"-->"*" entity_figure: "used in"
 
-entity_representative "1"---up>"1..*" entity_showRequest: "requests"
+entity_representative "1"-down>"1..*" entity_showRequest: "requests"
 
 
 entity_droneModel "*"-->"1" entity_programmingLanguage: "uses"
