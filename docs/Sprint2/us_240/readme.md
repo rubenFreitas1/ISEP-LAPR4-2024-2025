@@ -1,40 +1,48 @@
-```
-# US 101
-
-*This is an example template*
+# US 240 - Drone model Creation
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
+* The goal is to allow Drone Techs to create new drone models in the system, 
+either manually through the user interface or automatically through a bootstrap process.
 
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US240** - As a Drone Tech, I want to create a drone model in the system.
+This must also be achieved by a bootstrap process.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US240.1 The system must guarantee that all the information to register a drone model is given.
 
-- US101.2. Blá Blá Blá ...
+- US240.2 The system must guarantee that the drone model is registered.
+
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story doesn't depend on others user stories.
+
+
+**Forum Insight:**
+
+>> Gostava de esclarecer os conceitos de "drone's model" (secção 3.1.3) e "drone brand/type" (secção 3.1.5)?
+>
+> "Drone model" e "drone type" serão a mesma coisa.
+
+>> Peço desculpa pelo incómodo, mas no enunciado (pág. 9) está escrito o seguinte:
+"To generate the drone's code for a figure, one has to supply the actual drone model for each element.
+The same model can be supplied for all drone types, i.e., use a single drone model in the show."
+Então só para confirmar "drone type" e "drone model" são mesma coisa?
+> 
+> Os termos usados pela empresa podem ter diferentes significados em contextos distintos. No caso das figuras, a cada drone type da figura temos de fazer corresponder um drone model. 
+É assim que vai poder gerar o código para os drones utilizados.
+
+>> Bom dia, como é que os modelos de drones são identificados no sistema, ou seja, quando
+se pesquisa por um modelo por exemplo, pesquisa-se pelo nome ou outra coisa?
+>
+> A pesquisa pode ser por designação do modelo (mesmo aprcial), fabricante, etc.
+
 
 ## 3. Analysis
 
@@ -85,4 +93,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
