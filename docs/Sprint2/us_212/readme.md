@@ -1,40 +1,33 @@
-```
-# US 101
-
-*This is an example template*
+# US 212 - Disable/enable users
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* Administrators must be able to manage user access without deleting user accounts permanently. 
+This includes the ability to temporarily disable a user (preventing them from logging in or accessing the system) 
+and re-enable them when needed.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US212** - As Administrator, I want to be able to disable/enable users of the backoffice.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US212.1  When a user is disabled, they must be prevented from logging in or accessing any part of the system.
 
-- US101.2. Blá Blá Blá ...
+- US212.2  Disabled accounts must be clearly marked in the user list for easy identification.
+
+- US212.3  Only authenticated administrators should have access to the enable/disable functionality.
+
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on US210 (Authentication and Authorization) and US211 (Register Users),
+as it builds on the mechanisms for managing user access and identity.
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
@@ -85,4 +78,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```

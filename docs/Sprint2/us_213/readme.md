@@ -1,40 +1,30 @@
-```
-# US 101
-
-*This is an example template*
+# US 213 - List users
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
+* In order to manage user access effectively, administrators must be able to view a complete list of all users registered in the backoffice.
+This list should include key information such as usernames, email addresses, assigned roles, and account status (enabled or disabled).
 
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US213** - As Administrator, I want to be able to list the users of the backoffice, including their status.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US213.1  The list must include key user information: name, email, role, and account status (enabled/disabled).
 
-- US101.2. Blá Blá Blá ...
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on US210 (Authentication and Authorization), US211 (Register Users),
+as it requires access to user data.
+
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
@@ -85,4 +75,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
