@@ -1,40 +1,31 @@
-```
-# US 101
-
-*This is an example template*
+# US 252 - Show generation
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* This functionality is essential for streamlining the process of show creation, allowing Drone Techs to assemble shows using reusable elements while keeping the description independent of specific drone models.
+* It aligns with the broader goal of maintaining a neutral and scalable show definition format, as outlined in the DSL specifications.
+* This step is a prerequisite for generating the actual drone-specific code needed for execution.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US252** - As a Drone Tech, I want the system to generate the show high-level description from its set of figures, so that I can later generate the actual code for each drone.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US251.1 - The system should generate a high-level description of the show based on the set of figures provided.
+- US251.2 - The generated description should be in a format that is independent of specific drone models, allowing for flexibility in show execution.
 
-- US101.2. Blá Blá Blá ...
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There is a dependency on the user stories 251 Specification of the language for figure description.
+
+**Forum Insight:**
+
+>> É relevante para o domínio o colaborador que criou a figura?
+>
+> Acho que a ideia de dar o devido crédito ao autor da figura é boa. É como no Ikea.
+
 
 ## 3. Analysis
 
@@ -85,4 +76,4 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
+
