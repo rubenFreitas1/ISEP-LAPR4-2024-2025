@@ -1,40 +1,34 @@
-```
-# US 101
-
-*This is an example template*
+# US 262 - Capture and process drone movements
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* The purpose is to enable the simulation process to receive movement commands sent by drone scripts, allowing it to track the real-time or simulated positions of drones. 
+This functionality is essential for accurately representing drone behavior during simulations,
+supporting features such as path tracking, collision detection, and performance evaluation.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US262** - As a simulation process, I want to receive movement commands from drone scripts so that I can track
+drone positions over time.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US262.1  Each drone process must send position updates to the main process via a pipe.
 
-- US101.2. Blá Blá Blá ...
+- US262.2  The main process should maintain a time-indexed 3D matrix to track drone positions.
+
+- US262.3 The system must store past positions to anticipate and detect potential collisions.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on US261 because to capture and process drone movements you have to start a simulation.
+
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
+
 
 ## 3. Analysis
 
@@ -85,4 +79,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
