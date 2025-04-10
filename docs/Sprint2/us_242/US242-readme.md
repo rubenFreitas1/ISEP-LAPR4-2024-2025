@@ -1,40 +1,33 @@
-```
-# US 101
+# US 242 - Remove a drone from the inventory
 
-*This is an example template*
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* This user story is part of improving inventory management functionalities for the Drone Tech role.
+* Implementing this feature will help ensure the inventory reflects only active and operational drones. 
+* The removal process must include storing both the reason for removal and the date to maintain accurate records and support
+audit and reporting needs.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US242** - As a Drone Tech, I want to remove a specific drone from the inventory. The reason for removal and the date must be stored.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US242.1 The system must guarantee that the drone is removed correctly to the inventory.
 
-- US101.2. Blá Blá Blá ...
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There is a dependency on the US240 Drone model creation and US241 Add drone to the inventory, as the drone to be removed must exist in the system before it can be removed.
+
+**Forum Insight:**
+
+>> É relevante para o domínio o colaborador que criou a figura?
+>
+> Acho que a ideia de dar o devido crédito ao autor da figura é boa. É como no Ikea.
+
 
 ## 3. Analysis
 
@@ -85,4 +78,4 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
+
