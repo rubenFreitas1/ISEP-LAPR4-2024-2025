@@ -1,40 +1,41 @@
-```
-# US 101
-
-*This is an example template*
+# US 241 - Add drone to the inventory 
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
+* The aim is to allow Drone Techs to add new drones of an existing model to the system’s inventory. 
+Each drone must be registered with a unique serial number to ensure traceability and proper management.
 
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US241** - As a Drone Tech, I want to add drones of an existing type to inventory. For each drone the serial number has to be stored.
+This must also be achieved by a bootstrap process.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US241.1 The system must guarantee that all the information to register a drone is given.
 
-- US101.2. Blá Blá Blá ...
+- US241.2 The system must guarantee that the drone is added to the inventory.
+
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on US240 because to add a drone of an existing type/model, the drone model must be already created.
+
+
+**Forum Insight:**
+
+>> Que conceito/atributo identifica um Drone? Ou seja, o que deverá diferenciar uma drone de todos as outros?
+>
+> O que têm normalmente todos os dispositvos de diferente?
+
+>> E relativamente apenas ao drone, que informações devem estar associadas além do estado?
+>
+> Um drone deve ter naturalmente um número de série e um modelo. 
+Normalmente, guarda-se também a data de aquisição. 
+Quando for desativado, a data em que isso acontece também é importante.
+
 
 ## 3. Analysis
 
@@ -85,4 +86,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```

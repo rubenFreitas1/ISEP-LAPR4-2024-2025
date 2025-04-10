@@ -43,6 +43,15 @@ se pesquisa por um modelo por exemplo, pesquisa-se pelo nome ou outra coisa?
 >
 > A pesquisa pode ser por designação do modelo (mesmo aprcial), fabricante, etc.
 
+>> Esta "linguagem de programação" será sempre uma já estabelecida (como C ou Java) ou uma criada pela Shodrone (como a DSL)? 
+É importante á Shodrone saber informação relacionada á linguagem para além do nome/identificação, e se sim, que informação?
+>
+> Os drones têm linguagens de programação próprias. Acontece que os fabricantes tendem a tentar usar a mesma linguagem em todos os seus modelos. É suposto haver um plugin que é usado para gerar o código do drone a partir da DSL.
+
+>> Existe mais qualquer informação sobre drone models, como um nome ou um número ID?
+>
+> O fabricante do modelo de drone parece-me importante. O nome do modelo também.
+
 
 ## 3. Analysis
 
