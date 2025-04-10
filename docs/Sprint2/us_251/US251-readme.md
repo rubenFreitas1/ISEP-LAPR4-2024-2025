@@ -1,40 +1,34 @@
-```
-# US 101
+# US 251 - Specification of the language for figures description
 
-*This is an example template*
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* This user story aims to define a high-level, neutral DSL for describing drone figures and shows, based on the requirements outlined in section 3.1.3.
+* The language should support scalability and hardware independence, allowing descriptions to be reused across different drone models and show configurations.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US251** - As a PO, I want a high-level neutral language to describe figures to be specified.
+This language will have to support the requirements in section 3.1.3.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US251.1 - The language must be able to describe the drone figures and shows in a high-level, neutral way.
+- US251.2 - The language must be scalable and hardware independent.
+- US251.3 - The language must support the requirements outlined in section 3.1.3.
 
-- US101.2. Blá Blá Blá ...
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There is a dependency on the US240 Drone model creation and US241 Add drone to the inventory, as the drone to be removed must exist in the system before it can be removed.
+
+**Forum Insight:**
+
+>> É relevante para o domínio o colaborador que criou a figura?
+>
+> Acho que a ideia de dar o devido crédito ao autor da figura é boa. É como no Ikea.
+
 
 ## 3. Analysis
 
@@ -85,4 +79,4 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
+
