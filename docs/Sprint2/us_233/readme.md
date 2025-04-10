@@ -17,11 +17,11 @@ If a figure is custom-made to a customer’s request it is not public and can on
 
 **Acceptance Criteria:**
 
-- US203.1 The system must guarantee that all the information to add a figure is given.
+- US233.1 The system must guarantee that all the information to add a figure is given.
 
-- US203.2 The system must guarantee that the figure is added correctly to the catalogue.
+- US233.2 The system must guarantee that the figure is added correctly to the catalogue.
 
-- US203.2 The system must guarantee that the figure code/id is different from the ones already added.
+- US233.3 The system must guarantee that the figure code/id is different from the ones already added.
 
 **Dependencies/References:**
 

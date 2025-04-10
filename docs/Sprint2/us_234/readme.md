@@ -1,40 +1,29 @@
-```
-# US 101
-
-*This is an example template*
+# US 234 - Decommission figure
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
+*  The goal is to implement a feature that allows the CRM Manager to decommission a figure from the catalogue, 
+ensuring it is no longer available for future use.
 
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
+**US234** - As CRM Manager, I want to decommission a figure from the catalogue so that it will not be used anymore.
 
-*Example*
-
-**US G101** As {Ator} I Want...
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US234.1 The system should make sure that the figure can not be used after being decommissioned.
 
-- US101.2. Blá Blá Blá ...
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on user story US233 because to decommission a figure from the catalogue, the figure must be added first to the catalogue.
+
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
@@ -85,4 +74,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
