@@ -1,4 +1,4 @@
-# US 212 - Disable/enable users
+# US 212 - _Disable/enable users_
 
 ## 1. Context
 
@@ -31,7 +31,8 @@ as it builds on the mechanisms for managing user access and identity.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram](images/system-sequence-diagram-US212.svg)
+
 
 ## 4. Design
 

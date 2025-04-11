@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Administrator" as admin
+participant "System" as system
+
+title System Sequence Diagram - US212
+
+== Disable/enable users ==
+activate admin
+
+admin -> system : Disable/Enable User
+activate system
+
+system -> admin : Show list of Active/Inactive Users in the Backoffice
+deactivate system
+admin -> system : Choose User to disable/enable
+
+activate system
+
+system -> admin : Confirm User Status Changed
+deactivate system
+
+
+
+@enduml
