@@ -1,0 +1,22 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Administrator" as admin
+participant "System" as system
+
+title System Sequence Diagram - US213
+
+== List users ==
+activate admin
+
+admin -> system : Wants to List Users
+activate system
+
+system -> admin : Shows list of Users \nincluding their Status
+deactivate system
+
+
+
+@enduml
