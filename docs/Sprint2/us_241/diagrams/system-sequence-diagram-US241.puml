@@ -1,0 +1,35 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US241
+
+== Add drone to the inventory  ==
+activate droneTech
+
+droneTech -> system : Add drone to the inventory
+activate system
+
+system -> droneTech : Request Drone Information ("Serial Number, Acquisition date")
+deactivate system
+droneTech -> system : Provide Drone Information
+
+activate system
+
+system -> droneTech : Shows list of Drone Models
+
+deactivate system
+droneTech -> system : Choose the Drone Model
+
+activate system
+
+system -> droneTech : Confirms Drone is added to the inventory
+deactivate system
+
+
+
+@enduml
