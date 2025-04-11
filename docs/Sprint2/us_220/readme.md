@@ -1,4 +1,4 @@
-```
+
 # US 220
 
 ## 1. Context
@@ -26,8 +26,13 @@ Test:
 
 **Dependencies/References:**
 
-*There is a dependecy with US210, since the costumer app must have a authentication system for each customer.*
+*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
 
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
+* 
 ## 3. Analysis
 
 *In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*

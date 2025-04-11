@@ -1,11 +1,9 @@
-```
-# US 101
 
-*This is an example template*
+# US 221
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
+*As a CRM Collaborator, I want to register a new representaƟve of a customer.*
 
 ### 1.1 List of issues
 
@@ -24,17 +22,21 @@ Test:
 
 *Example*
 
-**US G101** As {Ator} I Want...
+**US G221** As a CRM Collaborator, I want to register a new representaƟve of a customer.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US221.1 The customer representative will also be a user of the system (Costumer App).
 
-- US101.2. Blá Blá Blá ...
+- US221.2. There is no need to verify that customer representative’s email in the customer’s domain.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+*There is a dependency with US220, since the costumer must exist to be possible to assign a new representative.*
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
