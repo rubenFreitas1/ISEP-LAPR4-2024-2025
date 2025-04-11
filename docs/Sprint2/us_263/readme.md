@@ -1,11 +1,9 @@
-```
-# US 101
 
-*This is an example template*
+# US 263
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
+*As a simulation system, I want to continuously monitor drone positions for overlaps so that I can identify and report collisions.*
 
 ### 1.1 List of issues
 
@@ -20,21 +18,28 @@ Test:
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US G263** As a simulation system, I want to continuously monitor drone positions for overlaps so that I can identify and report collisions.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
+- US263.1 The system must detect when two or more drones occupy the same position at the same time.
 
-- US101.2. Blá Blá Blá ...
+- US263.2 Upon detecting a collision, the system should log the event and notify the involved drones via signals.
+
+- US263.3 Each drone must handle the received signal and notify the system user with a message.
+
+- US263.4 When a drone receives a SIGUSR1 (collision detected), it should block other signals while handling it.
+
+- US263.5 The system should allow early termination if collisions exceed a predefined threshold by sending termination signals to drones.
+
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+*There is a dependency with US220, since the costumer must exist so it's information can be edited.*
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
