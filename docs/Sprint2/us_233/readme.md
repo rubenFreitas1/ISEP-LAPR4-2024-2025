@@ -1,4 +1,4 @@
-# US 233 - Add figure to the catalogue
+    # US 233 - Add figure to the catalogue
 
 
 ## 1. Context

@@ -3,26 +3,30 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "Show Designer" as showDesigner
+actor "CRM Manager" as crmManager
 participant "System" as system
 
 title System Sequence Diagram - US233
 
-== Add figure to the catalogue ==
-activate showDesigner
+== Disable a costumer representative ==
+activate crmManager
 
-showDesigner -> system : Add figure to the catalogue
-activate system
+    crmManager -> system : Ask to disable a costumer representative
+    activate system
 
-system -> showDesigner : Request Figure Information ("Name, Description, \nVersion")
-deactivate system
-showDesigner -> system : Provide Figure Information
+        system -> crmManager : Shows list of clients
+    deactivate system
 
-activate system
+    crmManager -> system : Selects a client
+    activate system
 
-system -> showDesigner : Confirm Figure Added
-deactivate system
+        system -> crmManager : Shows the list of the clients representatives
+    deactivate system
 
+    crmManager -> system : selects a representative
+    activate system
 
+        system -> crmManager : disables the costumer representative and displays operation success
+    deactivate system
 
 @enduml
