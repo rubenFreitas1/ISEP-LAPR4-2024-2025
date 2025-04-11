@@ -3,24 +3,24 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "CRM Manager" as showDesigner
+actor "CRM Manager" as crmManager
 participant "System" as system
 
 title System Sequence Diagram - US234
 
 == Decommission figure ==
-activate showDesigner
+activate crmManager
 
-showDesigner -> system : Wants to decommission a figure
+crmManager -> system : Wants to decommission a figure
 activate system
 
-system -> showDesigner : Shows list of active figures in the catalogue
+system -> crmManager : Shows list of active figures in the catalogue
 deactivate system
-showDesigner -> system : Choose the figure to decommission
+crmManager -> system : Choose the figure to decommission
 
 activate system
 
-system -> showDesigner : Confirms Figure has been decommissioned
+system -> crmManager : Confirms Figure has been decommissioned
 deactivate system
 
 

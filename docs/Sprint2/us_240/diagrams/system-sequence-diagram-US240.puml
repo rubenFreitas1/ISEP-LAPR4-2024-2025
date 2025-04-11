@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US240
+
+== Drone model creation ==
+activate droneTech
+
+droneTech -> system : Create a drone model
+activate system
+
+system -> droneTech : Request Drone Model Information ("Model Name, Manufacturer, \nProgramming Language")
+deactivate system
+droneTech -> system : Provide Drone Model Information
+
+activate system
+
+system -> droneTech : Confirm Drone Model Added
+deactivate system
+
+
+
+@enduml

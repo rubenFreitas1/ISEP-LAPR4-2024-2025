@@ -55,7 +55,7 @@ se pesquisa por um modelo por exemplo, pesquisa-se pelo nome ou outra coisa?
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram](images/system-sequence-diagram-US240.svg)
 
 ## 4. Design
 
@@ -63,7 +63,7 @@ se pesquisa por um modelo por exemplo, pesquisa-se pelo nome ou outra coisa?
 
 ### 4.1. Realization
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
