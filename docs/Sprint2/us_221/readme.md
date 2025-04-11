@@ -18,11 +18,7 @@ Test:
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G221** As a CRM Collaborator, I want to register a new representaƟve of a customer.
+**US G221** As a CRM Collaborator, I want to register a new representative of a customer.
 
 **Acceptance Criteria:**
 
