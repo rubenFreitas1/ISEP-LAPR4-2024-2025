@@ -1,11 +1,9 @@
-```
-# US 101
 
-*This is an example template*
+# US 223
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
+*As a CRM Collaborator, I want to edit the information (email and phone number) of a customer representative.*
 
 ### 1.1 List of issues
 
@@ -20,21 +18,19 @@ Test:
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US G223** As a CRM Collaborator, I want to edit the information (email and phone number) of a customer representative.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+- There are no acceptance criteria defined for this user story.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+*There is a dependency with US220, since the costumer must exist so it's information can be edited.*
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
