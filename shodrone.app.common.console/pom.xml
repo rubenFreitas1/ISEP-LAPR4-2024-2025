@@ -6,30 +6,42 @@
     <parent>
         <groupId>lapr4</groupId>
         <artifactId>shodrone</artifactId>
-        <relativePath>../</relativePath>
         <version>0.1.0</version>
     </parent>
 
-    <artifactId>shodrone.backoffice</artifactId>
+    <groupId>lapr4</groupId>
+    <artifactId>shodrone.app.common.console</artifactId>
     <packaging>jar</packaging>
 
-    <name>shodrone.backoffice</name>
+    <name>shodrone.app.common.console</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-
-
     <dependencies>
-
         <dependency>
             <groupId>lapr4</groupId>
-            <artifactId>shodrone.persistence.impl</artifactId>
+            <artifactId>shodrone.core</artifactId>
             <version>${project.parent.version}</version>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
-</project>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>hello.HelloWorld</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
+</project>

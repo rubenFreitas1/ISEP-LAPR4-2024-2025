@@ -10,7 +10,9 @@
 	<modules>
 		<module>shodrone.app1</module>
 		<module>shodrone.app2</module>
-		<module>shodrone.backoffice</module>
+		<module>shodrone.app.backoffice</module>
+		<module>shodrone.app.common.console</module>
+		<module>shodrone.app.bootstrap</module>
 		<module>shodrone.persistence.impl</module>
 		<module>shodrone.core</module>
 		<module>shodrone.infrastructure.application</module>
