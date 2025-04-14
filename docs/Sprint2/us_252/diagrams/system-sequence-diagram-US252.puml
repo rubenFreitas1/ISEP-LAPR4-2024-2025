@@ -1,0 +1,24 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US252
+
+== Show generation  ==
+activate droneTech
+
+droneTech -> system : Asks to generate the show high-level description from its set of figures
+activate system
+
+activate system
+system -> droneTech : Shows sucess/insucess message
+
+
+
+
+
+@enduml
