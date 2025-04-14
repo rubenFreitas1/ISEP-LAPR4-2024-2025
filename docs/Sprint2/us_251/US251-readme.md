@@ -32,7 +32,7 @@ This language will have to support the requirements in section 3.1.3.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![SSD251](images/system-sequence-diagram-US251.svg "SSD251")
 
 ## 4. Design
 
@@ -40,7 +40,7 @@ This language will have to support the requirements in section 3.1.3.
 
 ### 4.1. Realization
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 

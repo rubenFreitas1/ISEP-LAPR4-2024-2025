@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US251
+
+== Specification of the language for figures description  ==
+activate droneTech
+
+droneTech -> system : Asks to list active drones from inventory
+activate system
+
+system -> droneTech : Shows list of active drones models in inventory
+deactivate system
+droneTech -> system : Selects drone model to list
+
+activate system
+system -> droneTech : Shows sucess/insucess message
+
+
+
+
+
+@enduml
