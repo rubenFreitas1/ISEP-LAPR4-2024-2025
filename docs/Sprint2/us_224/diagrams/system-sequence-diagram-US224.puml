@@ -6,7 +6,7 @@ skinparam shadowing false
 actor "CRM Manager" as crmManager
 participant "System" as system
 
-title System Sequence Diagram - US233
+title System Sequence Diagram - US224
 
 == Disable a costumer representative ==
 activate crmManager
