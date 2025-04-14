@@ -18,32 +18,18 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.infrastructure.persistence.impl.jpa;
+package eapli.base.app.backoffice.presentation.authz;
 
-import eapli.base.Application;
-import eapli.base.utentemanagement.domain.SignupRequest;
-import eapli.base.utentemanagement.repositories.SignupRequestRepository;
-import eapli.framework.domain.repositories.TransactionalContext;
-import eapli.framework.infrastructure.authz.domain.model.Username;
-import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
+import eapli.framework.actions.Action;
 
 /**
  *
- * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
+ * @author Fernando
  */
-class JpaSignupRequestRepository extends JpaAutoTxRepository<SignupRequest, Username, Username>
-		implements SignupRequestRepository {
+public class DeactivateUserAction implements Action {
 
-	public JpaSignupRequestRepository(final TransactionalContext autoTx) {
-		super(autoTx, "username");
-	}
-
-	public JpaSignupRequestRepository(final String puname) {
-		super(puname, Application.settings().getExtendedPersistenceProperties(), "username");
-	}
-
-	@Override
-	public Iterable<SignupRequest> pendingSignupRequests() {
-		return match("e.approvalStatus=eapli.exemplo.utentemanagement.domain.ApprovalStatus.PENDING");
-	}
+    @Override
+    public boolean execute() {
+        return new DeactivateUserUI().show();
+    }
 }

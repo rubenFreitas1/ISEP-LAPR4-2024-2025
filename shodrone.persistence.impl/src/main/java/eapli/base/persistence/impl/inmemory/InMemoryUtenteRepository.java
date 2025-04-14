@@ -18,26 +18,39 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.infrastructure.persistence.impl.inmemory;
+package eapli.base.persistence.impl.inmemory;
 
-import eapli.base.utentemanagement.domain.SignupRequest;
-import eapli.base.utentemanagement.repositories.SignupRequestRepository;
+import eapli.base.utentemanagement.domain.MecanographicNumber;
+import eapli.base.utentemanagement.domain.Utente;
+import eapli.base.utentemanagement.repositories.UtenteRepository;
 import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
+
+import java.util.Optional;
 
 /**
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-public class InMemorySignupRequestRepository extends InMemoryDomainRepository<SignupRequest, Username>
-		implements SignupRequestRepository {
+public class InMemoryUtenteRepository extends InMemoryDomainRepository<Utente, MecanographicNumber>
+		implements UtenteRepository {
 
 	static {
 		InMemoryInitializer.init();
 	}
 
 	@Override
-	public Iterable<SignupRequest> pendingSignupRequests() {
-		throw new UnsupportedOperationException("Not supported yet.");
+	public Optional<Utente> findByUsername(final Username name) {
+		return matchOne(e -> e.user().username().equals(name));
+	}
+
+	@Override
+	public Optional<Utente> findByMecanographicNumber(final MecanographicNumber number) {
+		return Optional.of(data().get(number));
+	}
+
+	@Override
+	public Iterable<Utente> findAllActive() {
+		return match(e -> e.user().isActive());
 	}
 }

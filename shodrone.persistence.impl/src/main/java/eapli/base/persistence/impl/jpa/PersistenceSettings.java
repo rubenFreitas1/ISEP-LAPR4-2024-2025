@@ -18,28 +18,16 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.infrastructure.persistence.impl.jpa;
-
-import eapli.base.Application;
-import eapli.framework.infrastructure.repositories.impl.jpa.JpaTransactionalRepository;
+package eapli.base.persistence.impl.jpa;
 
 /**
- * a base class for all transactional repositories to use the same persistence
- * unit
  *
- * @param <T>
- * @param <K>
- *
- * @author Paulo Gandra de Sousa
+ * Created by nuno on 21/03/16.
  */
-/* package */ class BaseJpaRepositoryBase<T, K, I> extends JpaTransactionalRepository<T, K, I> {
+class PersistenceSettings {
 
-	BaseJpaRepositoryBase(final String persistenceUnitName, final String identityFieldName) {
-		super(persistenceUnitName, Application.settings().getExtendedPersistenceProperties(), identityFieldName);
-	}
+	public static final String PERSISTENCE_UNIT_NAME = "eapli.exemplo";
 
-	BaseJpaRepositoryBase(final String identityFieldName) {
-		super(Application.settings().getPersistenceUnitName(),
-				Application.settings().getExtendedPersistenceProperties(), identityFieldName);
+	private PersistenceSettings() {
 	}
 }

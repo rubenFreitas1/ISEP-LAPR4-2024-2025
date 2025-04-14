@@ -18,16 +18,26 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.infrastructure.persistence.impl.jpa;
+package eapli.base.persistence.impl.inmemory;
+
+import eapli.base.utentemanagement.domain.SignupRequest;
+import eapli.base.utentemanagement.repositories.SignupRequestRepository;
+import eapli.framework.infrastructure.authz.domain.model.Username;
+import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
 
 /**
  *
- * Created by nuno on 21/03/16.
+ * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-class PersistenceSettings {
+public class InMemorySignupRequestRepository extends InMemoryDomainRepository<SignupRequest, Username>
+		implements SignupRequestRepository {
 
-	public static final String PERSISTENCE_UNIT_NAME = "eapli.exemplo";
+	static {
+		InMemoryInitializer.init();
+	}
 
-	private PersistenceSettings() {
+	@Override
+	public Iterable<SignupRequest> pendingSignupRequests() {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

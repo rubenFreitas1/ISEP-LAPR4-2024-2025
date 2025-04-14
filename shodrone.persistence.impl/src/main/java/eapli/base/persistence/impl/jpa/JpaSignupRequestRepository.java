@@ -18,39 +18,32 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.infrastructure.persistence.impl.inmemory;
+package eapli.base.persistence.impl.jpa;
 
-import eapli.base.utentemanagement.domain.MecanographicNumber;
-import eapli.base.utentemanagement.domain.Utente;
-import eapli.base.utentemanagement.repositories.UtenteRepository;
+import eapli.base.Application;
+import eapli.base.utentemanagement.domain.SignupRequest;
+import eapli.base.utentemanagement.repositories.SignupRequestRepository;
+import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.model.Username;
-import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
-
-import java.util.Optional;
+import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 /**
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-public class InMemoryUtenteRepository extends InMemoryDomainRepository<Utente, MecanographicNumber>
-		implements UtenteRepository {
+class JpaSignupRequestRepository extends JpaAutoTxRepository<SignupRequest, Username, Username>
+		implements SignupRequestRepository {
 
-	static {
-		InMemoryInitializer.init();
+	public JpaSignupRequestRepository(final TransactionalContext autoTx) {
+		super(autoTx, "username");
+	}
+
+	public JpaSignupRequestRepository(final String puname) {
+		super(puname, Application.settings().getExtendedPersistenceProperties(), "username");
 	}
 
 	@Override
-	public Optional<Utente> findByUsername(final Username name) {
-		return matchOne(e -> e.user().username().equals(name));
-	}
-
-	@Override
-	public Optional<Utente> findByMecanographicNumber(final MecanographicNumber number) {
-		return Optional.of(data().get(number));
-	}
-
-	@Override
-	public Iterable<Utente> findAllActive() {
-		return match(e -> e.user().isActive());
+	public Iterable<SignupRequest> pendingSignupRequests() {
+		return match("e.approvalStatus=eapli.exemplo.utentemanagement.domain.ApprovalStatus.PENDING");
 	}
 }
