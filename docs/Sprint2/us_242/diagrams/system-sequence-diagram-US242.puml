@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US242
+
+== Remove a drone from the inventory  ==
+activate droneTech
+
+droneTech -> system : Remove drone from inventory
+activate system
+
+system -> droneTech : Shows list of drones in inventory
+deactivate system
+droneTech -> system : Selects drone to remove
+
+activate system
+system -> droneTech : Shows sucess/insucess message
+
+
+
+
+
+@enduml
