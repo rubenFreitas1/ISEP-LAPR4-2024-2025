@@ -3,30 +3,30 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "CRM Manager" as crmManager
+actor "CRM Collaborator" as crmCollaborator
 participant "System" as system
 
 title System Sequence Diagram - US224
 
 == Disable a costumer representative ==
-activate crmManager
+activate crmCollaborator
 
-    crmManager -> system : Ask to disable a costumer representative
+    crmCollaborator -> system : Ask to disable a costumer representative
     activate system
 
-        system -> crmManager : Shows list of clients
+        system -> crmCollaborator : Shows list of clients
     deactivate system
 
-    crmManager -> system : Selects a client
+    crmCollaborator -> system : Selects a client
     activate system
 
-        system -> crmManager : Shows the list of the clients representatives
+        system -> crmCollaborator : Shows the list of the clients representatives
     deactivate system
 
-    crmManager -> system : selects a representative
+    crmCollaborator -> system : selects a representative
     activate system
 
-        system -> crmManager : disables the costumer representative and displays operation success
+        system -> crmCollaborator : disables the costumer representative and displays operation success
     deactivate system
 
 @enduml

@@ -3,26 +3,30 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "Show Designer" as showDesigner
+actor "CRM Collaborator" as crmCollaborator
 participant "System" as system
 
-title System Sequence Diagram - US233
+title System Sequence Diagram - US230
 
-== Add figure to the catalogue ==
-activate showDesigner
+ == Register a show request ==
+ activate crmCollaborator
 
-showDesigner -> system : Add figure to the catalogue
-activate system
+     crmCollaborator -> system : Ask to register a show request
+     activate system
 
-system -> showDesigner : Request Figure Information ("Name, Description, \nVersion")
-deactivate system
-showDesigner -> system : Provide Figure Information
+         system -> crmCollaborator : request data(location, date, duration, number of drones of the show)
+     deactivate system
 
-activate system
+     crmCollaborator -> system : types requested date
+     activate system
 
-system -> showDesigner : Confirm Figure Added
-deactivate system
+         system -> crmCollaborator : Shows the list of the clients representatives
+     deactivate system
 
+     crmCollaborator -> system : selects a representative
+     activate system
 
+         system -> crmCollaborator : disables the costumer representative and displays operation success
+     deactivate system
 
-@enduml
+ @enduml

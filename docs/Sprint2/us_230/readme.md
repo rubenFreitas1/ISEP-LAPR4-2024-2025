@@ -1,40 +1,26 @@
-```
-# US 101
-
-*This is an example template*
+# US 230 - Register show request
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* US230 introduces the functionality for registering a show request into the system by a CRM Collaborator.
+* The show request includes key information such as the customer’s details, location, date and time of the show, tentative number of drones required, duration, and a detailed show description. This description may include a sequence of figures from Shodrone’s catalogue, requests for new figures, and any exclusivity requirements from the customer.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US230** - As a CRM Collaborator, I want to register a show request.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+- US230.1 The system must guarantee the show date is a valid one
+- US230.2 The system must guarantee there are drones in the inventory
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on user story US241 because the show in composed of drones, so we need to make sure there are drones in the inventory 
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
@@ -85,4 +71,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
