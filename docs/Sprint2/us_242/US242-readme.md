@@ -31,15 +31,14 @@ audit and reporting needs.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![a class diagram](images/system-sequence-diagram-US242.svg "A Class Diagram")
 
 ## 4. Design
 
 *In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
-
 ### 4.1. Realization
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
