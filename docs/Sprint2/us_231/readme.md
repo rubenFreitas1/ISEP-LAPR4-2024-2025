@@ -1,44 +1,28 @@
-```
-# US 101
-
-*This is an example template*
+# US 231 - Figure catalogue
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* This user story aims to enhance the functionality of the show request process by allowing CRM Collaborators to access and view all public figures available in the system’s catalogue.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US231** - As CRM Collaborator, I want to list al public figures in the catalogue so that I can select them during a show request proposal.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+- US101.1 The system must guarantee there are public figures in the catalogue
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There are no dependencies related to this user story
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram](images/system-sequence-diagram-US231.svg)
 
 ## 4. Design
 
@@ -85,4 +69,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
