@@ -19,7 +19,7 @@ deactivate system
 droneTech -> system : Selects drone model to list
 
 activate system
-system -> droneTech : Shows sucess/insucess message
+system -> droneTech : Shows list of drone model selected
 
 
 
