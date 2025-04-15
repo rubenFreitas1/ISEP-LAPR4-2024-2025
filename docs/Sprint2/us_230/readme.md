@@ -16,6 +16,7 @@
 
 **Dependencies/References:**
 
+* This user story depends on user story US231 because this user story allows the public figures in the catalogue to be displayed during the show request proposal 
 * This user story depends on user story US233 because this user story needs to be capable of adding a figure to the catalogue in case the customer asks for a new figure
 * This user story depends on user story US241 because the show in composed of drones, so we need to make sure there are drones in the inventory
 
@@ -25,7 +26,7 @@
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram](images/system-sequence-diagram-US230.svg)
 
 ## 4. Design
 

@@ -3,26 +3,19 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "Show Designer" as showDesigner
+actor "CRM Collaborator" as crmCollaborator
 participant "System" as system
 
-title System Sequence Diagram - US233
+title System Sequence Diagram - US231
 
-== Add figure to the catalogue ==
-activate showDesigner
+== Figure catalogue ==
+    activate crmCollaborator
 
-showDesigner -> system : Add figure to the catalogue
-activate system
+        crmCollaborator -> system : Asks to display all public figures in the catalogue
+        activate system
 
-system -> showDesigner : Request Figure Information ("Name, Description, \nVersion")
-deactivate system
-showDesigner -> system : Provide Figure Information
-
-activate system
-
-system -> showDesigner : Confirm Figure Added
-deactivate system
-
+            system -> crmCollaborator : Displays the public figures in the catalogue
+        deactivate system
 
 
 @enduml

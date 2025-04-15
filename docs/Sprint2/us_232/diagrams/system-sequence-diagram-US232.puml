@@ -3,25 +3,25 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "Show Designer" as showDesigner
+actor "CRM Collaborator" as crmCollaborator
 participant "System" as system
 
-title System Sequence Diagram - US233
+title System Sequence Diagram - US232
 
-== Add figure to the catalogue ==
-activate showDesigner
+== Search figure catalogue ==
+activate crmCollaborator
 
-showDesigner -> system : Add figure to the catalogue
-activate system
+    crmCollaborator -> system : Asks to search a figure by category and/or keyword
+    activate system
 
-system -> showDesigner : Request Figure Information ("Name, Description, \nVersion")
-deactivate system
-showDesigner -> system : Provide Figure Information
+        system -> crmCollaborator : Request data(category and/or keyword)
+    deactivate system
+    crmCollaborator -> system : Types category and/or keyword
 
-activate system
+    activate system
 
-system -> showDesigner : Confirm Figure Added
-deactivate system
+        system -> crmCollaborator : Displays the search results of the figure \nand displays operation success
+    deactivate system
 
 
 

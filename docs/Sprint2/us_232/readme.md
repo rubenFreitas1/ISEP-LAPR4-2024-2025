@@ -1,44 +1,30 @@
-```
-# US 101
-
-*This is an example template*
+# US 101 - Search figure catalogue
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* This user story introduces a search functionality to the figure catalogue, allowing CRM Collaborators to filter figures by category and/or keyword.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US232** - As CRM Collaborator, I want to search the figure catalogue by category and/or keyword.
+The search should ignore accents and shouldn’t be case sensitive.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+- US232.2 The system should guarantee there are figures available in the catalogue before the search
+- US232.2 The search should ignore accents and shouldn’t be case sensitive.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There are no dependencies related to this user story
+
+**Forum Insight:**
+
+* Still no questions related to this user story on forum.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram](images/system-sequence-diagram-US232.svg)
 
 ## 4. Design
 
@@ -85,4 +71,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
