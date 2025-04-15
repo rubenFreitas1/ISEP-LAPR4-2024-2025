@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Manager" as crmManager
+participant "System" as system
+
+title System Sequence Diagram - US235
+
+== List show requests of client ==
+activate crmManager
+
+crmManager -> system : Wants to list show request of client
+activate system
+
+system -> crmManager : Request Client Information ("Id")
+deactivate system
+crmManager -> system : Provide Client Information
+
+activate system
+
+system -> crmManager : Show list of show requests \nrelated to the client
+deactivate system
+
+
+
+@enduml

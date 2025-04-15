@@ -29,6 +29,7 @@ The show request status information should be provided.
 
 ## 3. Analysis
 
+![System Sequence Diagram](images/system-sequence-diagram-US235.svg )
 
 
 ## 4. Design
