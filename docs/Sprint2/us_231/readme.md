@@ -10,7 +10,7 @@
 
 **Acceptance Criteria:**
 
-- US101.1 The system must guarantee there are public figures in the catalogue
+- US231.1 The system must guarantee there are public figures in the catalogue
 
 **Dependencies/References:**
 
