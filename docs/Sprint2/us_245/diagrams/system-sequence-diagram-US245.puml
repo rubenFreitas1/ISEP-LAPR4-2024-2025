@@ -3,23 +3,25 @@ skinparam monochrome true
 skinparam packageStyle rectangle
 skinparam shadowing false
 
-actor "Drone Tech" as droneTech
+actor "Show Designer" as showDesigner
 participant "System" as system
 
 title System Sequence Diagram - US245
 
 == Add figure category  ==
-activate droneTech
+activate showDesigner
 
-droneTech -> system : Wants to add figure category to catalogue
+showDesigner -> system : Wants to add figure category to catalogue
 activate system
 
-system -> droneTech : Asks for figure category information(name, description)
+system -> showDesigner : Asks for figure category information(name, description)
 deactivate system
-droneTech -> system : Types in figure category information
 
+showDesigner -> system : Types in figure category information
 activate system
-system -> droneTech : Returns success message
+
+system -> showDesigner : Returns success message
+deactivate system
 
 
 

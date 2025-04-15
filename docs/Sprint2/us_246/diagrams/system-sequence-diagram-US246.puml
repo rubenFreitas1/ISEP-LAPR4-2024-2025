@@ -1,0 +1,33 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Show Designer" as showDesigner
+participant "System" as system
+
+title System Sequence Diagram - US246
+
+== Edit figure category  ==
+activate showDesigner
+
+showDesigner -> system : Wants to edit existing figure category in the catalogue
+activate system
+
+system -> showDesigner : Returns list of figure categories
+deactivate system
+
+showDesigner -> system : Selects figure category to edit
+activate system
+
+system -> showDesigner : Returns figure category details
+deactivate system
+
+showDesigner -> system : Edits figure category(name, description)
+activate system
+
+system -> showDesigner : Returns success message
+deactivate system
+
+
+@enduml

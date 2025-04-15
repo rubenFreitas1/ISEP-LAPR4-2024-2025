@@ -1,61 +1,33 @@
-# US 245 - Add figure category
+# US 246 - Edit figure category
 
 
 ## 1. Context
 
-Adding categories will help Drone Techs and other users organize and filter figures more efficiently, especially as the number of available figures grows. 
-The system must ensure that each category has a unique name, includes timestamps for creation and updates, and supports activation or deactivation to control visibility and usage within the platform.
+This user story extends the figure category management functionality by allowing Show Designers to edit existing categories in the catalogue. 
+This capability is important for maintaining consistency and accuracy as the naming, organization, or status of categories evolve over time. 
+Ensuring unique category names and tracking the last update date supports data integrity and improves usability for those managing a growing set of figures.
 
 ## 2. Requirements
 
-**US245** - As a Drone Tech, I want to list active drones of a given model in the inventory.
+**US246** - As a Show Designer, I want to edit an existing figure category in the figure category catalogue.
 
 
 **Acceptance Criteria:**
 
-- US245.1 The system must guarantee that category name is unique.
-- US245.2 The system must store both creation date and last update date.
-- US245.3 The system must have a status to activate and deactivate category.
-
+- US246.1 The system must guarantee that category name is unique.
+- US246.2 The system must store last update date.
 
 **Dependencies/References:**
 
-* There is a dependency on the US231 Figure Catalogue 
-
-
+* There is a dependency on the US245 Add figure category and US231 Figure Catalogue. 
 
 **Forum Insight:**
->> As US's 245 a 248 referem uma 'figure category' que classifica um conjunto de figuras e que poderá ser adicionada ou removida. Esta 'category' consiste em quê por exemplo?
->
-> Bom dia,
-> 
->Consiste no que o cliente quiser. Tem de ter total liberdade para adicionar novas categorias, como é referido na US245.
-> 
->Cumprimentos, Angelo Martins
 
-> >Boa tarde,
->Em relação às categorias no sistema, gostava de confirmar que tipo de informação considera importante guardar no momento da sua criação. Um nome, uma descrição e um status são suficientes? Se não, então que dados considera importantes guardar?
-> 
->Boa tarde, 
-> 
-> "Um nome, uma descrição e um status são suficientes?" - São necessários.
->Quando se activa/desactiva qualquer coisa convém guardar a data da alteração. Isso permite fazer pesquisas no passado com os estados válidos à data. Claro que andar a ativar e desativar várias vezes obrigaria a manter uma lista de estados e complica um bocado. Mas guardar pelo menos a data de criação e a última alteração de estado parece-me essencial.
-> 
->Cumprimentos, Angelo Martins
-
-> >Boa noite, a categoria ou as keywords de uma figura podem mudar quando uma versão nova da mesma é lançada?
->
-> Bom dia, 
-> 
->Claro.
-> 
->Cumprimentos, Angelo Martins
-
-
+* No questions were raised in the forum regarding this requirement.
 
 ## 3. Analysis
 
-![SSD245](images/system-sequence-diagram-US245.svg "SSD245")
+![SSD246](images/system-sequence-diagram-US246.svg "SSD246")
 ## 4. Design
 
 *In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
