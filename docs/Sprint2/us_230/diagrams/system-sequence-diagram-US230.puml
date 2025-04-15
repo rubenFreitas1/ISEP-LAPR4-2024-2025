@@ -20,13 +20,33 @@ title System Sequence Diagram - US230
      crmCollaborator -> system : types requested date
      activate system
 
-         system -> crmCollaborator : Shows the list of the clients representatives
+         loop While user wants to create figures
+         system -> crmCollaborator : displays the list of the current figures in the catalogue \nand asks if the user wants to create a new figure
      deactivate system
 
-     crmCollaborator -> system : selects a representative
+     crmCollaborator -> system : answers with yes or no
      activate system
 
-         system -> crmCollaborator : disables the costumer representative and displays operation success
-     deactivate system
+         alt User wants to create a new figure
+            system -> crmCollaborator : request figure data
+            crmCollaborator -> system : types figure data
+         else User does not want to create a figure
 
+         end
+         end
+
+         loop While user wants to add figures to the show
+         system -> crmCollaborator : displays the list of figures and asks the user to select \nthe figures according with the desired order
+     deactivate system
+     alt User selects a figure for the show
+     crmCollaborator -> system : selects desired figure
+     activate system
+
+        system -> crmCollaborator : displays the sequence figures in the show
+        else User does not want to select more figures to the show
+        end
+        end
+
+        system -> crmCollaborator : displays operation success
+     deactivate system
  @enduml

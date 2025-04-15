@@ -16,7 +16,8 @@
 
 **Dependencies/References:**
 
-* This user story depends on user story US241 because the show in composed of drones, so we need to make sure there are drones in the inventory 
+* This user story depends on user story US233 because this user story needs to be capable of adding a figure to the catalogue in case the customer asks for a new figure
+* This user story depends on user story US241 because the show in composed of drones, so we need to make sure there are drones in the inventory
 
 **Forum Insight:**
 
