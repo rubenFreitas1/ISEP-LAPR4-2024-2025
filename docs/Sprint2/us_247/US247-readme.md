@@ -1,52 +1,36 @@
-```
-# US 101
+# US 247 - Edit figure category
 
-*This is an example template*
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+This task introduces the ability to list all figure categories in the catalogue, supporting both Show Designers and CRM Collaborators in managing and reviewing available content. Including the status of each category (active or inactive).
+This feature enhances visibility and organization as the number of categories grows.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US247** - As a Show Designer or as a CRM Collaborator, I want to list all figure categories in the catalogue. The category status information should be provided.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+* There is no acceptance criteria for this requirement at the current moment.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* There is a dependency on the US245 Add figure category and US231 Figure Catalogue. 
+
+**Forum Insight:**
+
+* No questions were raised in the forum regarding this requirement.
 
 ## 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
-
+![SSD247](images/system-sequence-diagram-US247.svg "SSD247")
 ## 4. Design
 
 *In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
-
 ### 4.1. Realization
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
@@ -85,4 +69,4 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
+
