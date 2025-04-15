@@ -1,41 +1,35 @@
-# US 233 - Add figure to the catalogue
+# US 235 - List show requests of client
 
 ## 1. Context
 
-* This user story is part of the functionality that manages the figure catalogue used in show creation. 
-The catalogue acts as a central repository for all figures that can be included in shows
-* Additionally, the system must distinguish between public figures (available for use in any show) and custom-made figures (created specifically at a customer’s request). 
-Custom figures are not publicly visible and can only be used in shows for that particular customer.
+* This functionality helps CRM users track client engagement, follow up on ongoing or past requests, and ensure a high level of customer service.
+Therefore, a feature to list all show requests associated with a client, including their current status, is essential for efficient and informed client management.
 
 ## 2. Requirements
 
-**US233** - As Show designer I want to add a figure to the public catalogue.
-Figures are classified with a category and a set of keywords.
-If a figure is custom-made to a customer’s request it is not public and can only be used in shows for that customer.
+**US235** - As CRM Manager or CRM Collaborator, I want to list all show requests of a client.
+The show request status information should be provided.
 
 
 **Acceptance Criteria:**
 
-- US233.1 The system must guarantee that all the information to add a figure is given.
+- US235.1 When the list is displayed, each request must include its current status.
 
-- US233.2 The system must guarantee that the figure is added correctly to the catalogue.
+- US235.2 Given a client with no show requests, a message should be displayed indicating that no requests were related to that client.
 
-- US233.3 The system must guarantee that the figure code/id is different from the ones already added.
 
 **Dependencies/References:**
 
-* This user story doesn't depend on others user stories.
+* This user story depends on US230 because to list the show requests, the CRM Collaborator must register them in the system before.
 
 **Forum Insight:**
 
->> É relevante para o domínio o colaborador que criou a figura?
->
-> Acho que a ideia de dar o devido crédito ao autor da figura é boa. É como no Ikea.
+* Still no questions related to this user story on forum.
 
 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US233.svg)
+
 
 ## 4. Design
 
@@ -43,7 +37,7 @@ If a figure is custom-made to a customer’s request it is not public and can on
 
 ### 4.1. Realization
 
-![a class diagram](images/class-diagram-01.svg "A Class Diagram")
+![a class diagram](../us_234/images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
