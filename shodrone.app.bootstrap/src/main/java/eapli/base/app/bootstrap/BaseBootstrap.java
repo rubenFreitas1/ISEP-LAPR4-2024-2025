@@ -21,7 +21,7 @@
 package eapli.base.app.bootstrap;
 
 import eapli.base.app.common.console.BaseApp;
-import eapli.base.infrastructure.bootstrapers.ExemploBootstrapper;
+import eapli.base.infrastructure.bootstrapers.BaseBootstrapper;
 import eapli.base.infrastructure.bootstrapers.demo.DemoBootstrapper;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.infrastructure.smoketests.DemoSmokeTester;
@@ -62,7 +62,7 @@ public final class BaseBootstrap extends BaseApp {
 		handleArgs(args);
 
 		System.out.println("\n\n------- MASTER DATA -------");
-		new ExemploBootstrapper().execute();
+		new BaseBootstrapper().execute();
 
 		if (isToBootstrapDemoData) {
 			System.out.println("\n\n------- DEMO DATA -------");

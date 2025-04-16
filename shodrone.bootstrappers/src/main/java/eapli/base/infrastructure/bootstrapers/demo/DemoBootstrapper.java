@@ -23,7 +23,7 @@
  */
 package eapli.base.infrastructure.bootstrapers.demo;
 
-import eapli.base.infrastructure.bootstrapers.ExemploBootstrapper;
+import eapli.base.infrastructure.bootstrapers.BaseBootstrapper;
 import eapli.framework.actions.Action;
 import eapli.framework.infrastructure.authz.application.AuthenticationService;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -34,7 +34,7 @@ import eapli.framework.validations.Invariants;
 /**
  * Bootstrapping data app
  *
- * @todo avoid duplication with {@link ExemploBootstrapper}
+ * @todo avoid duplication with {@link BaseBootstrapper}
  * @author Paulo Gandra de Sousa
  */
 @SuppressWarnings("squid:S106")

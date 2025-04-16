@@ -21,7 +21,7 @@
 package eapli.base.infrastructure.bootstrapers.demo;
 
 import eapli.base.infrastructure.bootstrapers.AbstractUserBootstrapper;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.actions.Action;
 import eapli.framework.infrastructure.authz.domain.model.Role;
 
@@ -38,32 +38,40 @@ public class BackofficeUsersBootstrapper extends AbstractUserBootstrapper implem
 
     @Override
     public boolean execute() {
-        registerOtherExample("cashier", PASSWORD1, "Johny", "Cash", "johny.doe@emai.l.com");
-        registerSample1Manager("kitchen", PASSWORD1, "Oven", "Stove", "Oven.and.stove@emai.l.com");
-        registerAnotherExampleManager("chef", PASSWORD1, "Master", "Chef", "master.chef@emai.l.com");
+        registerShowDesigner("showDesigner1", PASSWORD1, "Johny", "Legend", "showdesigner.legend@showdrone.com");
+        registerCRM_Manager("crmManager1", PASSWORD1, "Oven", "Legend", "crmmanager.legend@showdrone.com");
+        registerCRM_Collaborator("crmCollaborator1", PASSWORD1, "Master", "Legend", "crmcollaborator.legend@showdrone.com");
+        registerDroneTech("droneTech1", PASSWORD1, "Rob", "Legend", "dronetech.legend@showdrone.com");
         return true;
     }
 
-    private void registerOtherExample(final String username, final String password,
-            final String firstName, final String lastName, final String email) {
+    private void registerShowDesigner(final String username, final String password,
+                                      final String firstName, final String lastName, final String email) {
         final Set<Role> roles = new HashSet<>();
-        roles.add(ExemploRoles.OTHER_EXAMPLE);
+        roles.add(Roles.SHOW_DESIGNER);
 
         registerUser(username, password, firstName, lastName, email, roles);
     }
 
-    private void registerSample1Manager(final String username, final String password,
-            final String firstName, final String lastName, final String email) {
+    private void registerDroneTech(final String username, final String password,
+                                   final String firstName, final String lastName, final String email){
         final Set<Role> roles = new HashSet<>();
-        roles.add(ExemploRoles.SAMPLE_1_MANAGER);
+        roles.add(Roles.DRONE_TECH);
+        registerUser(username, password, firstName, lastName, email, roles);
+    }
+
+    private void registerCRM_Manager(final String username, final String password,
+                                     final String firstName, final String lastName, final String email) {
+        final Set<Role> roles = new HashSet<>();
+        roles.add(Roles.CRM_MANAGER);
 
         registerUser(username, password, firstName, lastName, email, roles);
     }
 
-    private void registerAnotherExampleManager(final String username, final String password,
-            final String firstName, final String lastName, final String email) {
+    private void registerCRM_Collaborator(final String username, final String password,
+                                          final String firstName, final String lastName, final String email) {
         final Set<Role> roles = new HashSet<>();
-        roles.add(ExemploRoles.ANOTHER_EXAMPLE_MANAGER);
+        roles.add(Roles.CRM_COLLABORATOR);
 
         registerUser(username, password, firstName, lastName, email, roles);
     }

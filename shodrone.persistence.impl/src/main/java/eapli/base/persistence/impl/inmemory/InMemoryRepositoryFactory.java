@@ -21,7 +21,7 @@
 package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.infrastructure.persistence.RepositoryFactory;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
 import eapli.base.utentemanagement.repositories.UtenteRepository;
@@ -41,7 +41,7 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 		// ensure we have at least a power user to be able to use the application
 		final var userBuilder = UserBuilderHelper.builder();
 		userBuilder.withUsername("poweruser").withPassword("Password1").withName("joe", "power")
-				.withEmail("joe@email.org").withRoles(ExemploRoles.POWER_USER);
+				.withEmail("joe@email.org").withRoles(Roles.POWER_USER);
 		final var newUser = userBuilder.build();
 		repo.save(newUser);
 		return repo;

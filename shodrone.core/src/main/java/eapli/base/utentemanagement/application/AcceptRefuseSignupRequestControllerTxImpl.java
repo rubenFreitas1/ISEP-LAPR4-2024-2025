@@ -24,7 +24,7 @@
 package eapli.base.utentemanagement.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.utentemanagement.domain.SignupRequest;
 import eapli.base.utentemanagement.domain.UtenteBuilder;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
@@ -74,7 +74,7 @@ public class AcceptRefuseSignupRequestControllerTxImpl implements AcceptRefuseSi
 	 */
 	@Override
 	public SignupRequest acceptSignupRequest(SignupRequest theSignupRequest) {
-		authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN);
+		authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
 
 		if (theSignupRequest == null) {
 			throw new IllegalArgumentException();
@@ -109,7 +109,7 @@ public class AcceptRefuseSignupRequestControllerTxImpl implements AcceptRefuseSi
 	//
 	private SystemUser createSystemUserForClientUser(final SignupRequest theSignupRequest) {
 		final Set<Role> roles = new HashSet<>();
-		roles.add(ExemploRoles.UTENTE);
+		roles.add(Roles.CUSTOMER_REPRESENTATIVE);
 		return userService.registerUser(theSignupRequest.username(), theSignupRequest.password(),
 				theSignupRequest.name(), theSignupRequest.email(), roles);
 	}
@@ -123,7 +123,7 @@ public class AcceptRefuseSignupRequestControllerTxImpl implements AcceptRefuseSi
 	 */
 	@Override
 	public SignupRequest refuseSignupRequest(SignupRequest theSignupRequest) {
-		authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN);
+		authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
 
 		if (theSignupRequest == null) {
 			throw new IllegalArgumentException();

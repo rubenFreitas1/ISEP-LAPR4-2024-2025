@@ -28,7 +28,7 @@ import eapli.base.app.backoffice.presentation.authz.AddUserUI;
 import eapli.base.app.backoffice.presentation.authz.DeactivateUserAction;
 import eapli.base.app.backoffice.presentation.authz.ListUsersAction;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 import eapli.framework.actions.menu.MenuItem;
@@ -57,7 +57,6 @@ public class MainMenu extends AbstractUI {
 	private static final int ADD_USER_OPTION = 1;
 	private static final int LIST_USERS_OPTION = 2;
 	private static final int DEACTIVATE_USER_OPTION = 3;
-	private static final int ACCEPT_REFUSE_SIGNUP_REQUEST_OPTION = 4;
 
 	// SETTINGS
 	private static final int SET_KITCHEN_ALERT_LIMIT_OPTION = 1;
@@ -109,7 +108,7 @@ public class MainMenu extends AbstractUI {
 			mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));
 		}
 
-		if (authz.isAuthenticatedUserAuthorizedTo(ExemploRoles.POWER_USER, ExemploRoles.ADMIN)) {
+		if (authz.isAuthenticatedUserAuthorizedTo(Roles.POWER_USER, Roles.ADMIN)) {
 			final var usersMenu = buildUsersMenu();
 			mainMenu.addSubMenu(USERS_OPTION, usersMenu);
 			final var settingsMenu = buildAdminSettingsMenu();

@@ -20,7 +20,7 @@
  */
 package eapli.base.usermanagement.application;
 
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
@@ -48,13 +48,13 @@ public class AddUserController {
      * @return a list of RoleTypes
      */
     public Role[] getRoleTypes() {
-        return ExemploRoles.nonUserValues();
+        return Roles.nonUserValues();
     }
 
     public SystemUser addUser(final String username, final String password, final String firstName,
             final String lastName,
             final String email, final Set<Role> roles, final Calendar createdOn) {
-        authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
 
         return userSvc.registerNewUser(username, password, firstName, lastName, email, roles,
                 createdOn);

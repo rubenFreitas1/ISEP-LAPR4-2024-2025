@@ -24,7 +24,7 @@
 package eapli.base.utentemanagement.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.utentemanagement.domain.Utente;
 import eapli.base.utentemanagement.repositories.UtenteRepository;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -40,7 +40,7 @@ public class ListExemploUtenteController {
     private final UtenteRepository repo = PersistenceContext.repositories().utentes();
 
     public Iterable<Utente> activeExemploUtente() {
-        authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
 
         return this.repo.findAllActive();
     }

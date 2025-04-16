@@ -24,7 +24,7 @@
 package eapli.base.utentemanagement.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.utentemanagement.domain.MecanographicNumber;
 import eapli.base.utentemanagement.domain.Utente;
 import eapli.base.utentemanagement.repositories.UtenteRepository;
@@ -43,12 +43,12 @@ public class UtenteService {
 	private final UtenteRepository repo = PersistenceContext.repositories().utentes();
 
 	public Optional<Utente> findExemploUtenteByMecNumber(final String mecNumber) {
-		authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN, ExemploRoles.OTHER_EXAMPLE);
+		authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN, Roles.SHOW_DESIGNER);
 		return repo.ofIdentity(MecanographicNumber.valueOf(mecNumber));
 	}
 
 	public Optional<Utente> findExemploUtenteByUsername(final Username user) {
-		authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER, ExemploRoles.ADMIN);
+		authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
 		return repo.findByUsername(user);
 	}
 }

@@ -23,8 +23,9 @@
  */
 package eapli.base.infrastructure.bootstrapers;
 
+import eapli.base.infrastructure.bootstrapers.demo.BackofficeUsersBootstrapper;
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
 import eapli.framework.actions.Action;
 import eapli.framework.domain.repositories.ConcurrencyException;
@@ -45,8 +46,8 @@ import org.slf4j.LoggerFactory;
  * @author Paulo Gandra de Sousa
  */
 @SuppressWarnings("squid:S106")
-public class ExemploBootstrapper implements Action {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExemploBootstrapper.class);
+public class BaseBootstrapper implements Action {
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseBootstrapper.class);
 
 	private static final String POWERUSER_PWD = "poweruserA1";
 	private static final String POWERUSER = "poweruser";
@@ -58,7 +59,7 @@ public class ExemploBootstrapper implements Action {
 	@Override
 	public boolean execute() {
 		// declare bootstrap actions
-		final Action[] actions = { new MasterUsersBootstrapper(), };
+		final Action[] actions = { new MasterUsersBootstrapper(), new BackofficeUsersBootstrapper()};
 
 		registerPowerUser();
 		authenticateForBootstrapping();
@@ -79,7 +80,7 @@ public class ExemploBootstrapper implements Action {
 	private boolean registerPowerUser() {
 		final var userBuilder = UserBuilderHelper.builder();
 		userBuilder.withUsername(POWERUSER).withPassword(POWERUSER_PWD).withName("joe", "power")
-				.withEmail("joe@email.org").withRoles(ExemploRoles.POWER_USER);
+				.withEmail("joe@email.org").withRoles(Roles.POWER_USER);
 		final var newUser = userBuilder.build();
 
 		SystemUser poweruser;

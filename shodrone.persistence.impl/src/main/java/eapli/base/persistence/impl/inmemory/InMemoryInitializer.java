@@ -20,7 +20,7 @@
  */
 package eapli.base.persistence.impl.inmemory;
 
-import eapli.base.infrastructure.bootstrapers.ExemploBootstrapper;
+import eapli.base.infrastructure.bootstrapers.BaseBootstrapper;
 
 /**
  * A static initialiser to make sure there is the default bootstrapping data,
@@ -72,7 +72,7 @@ final class InMemoryInitializer {
 		if (!initialized) {
 			// to ensure some default test data is available, specially when using
 			// in memory persistence
-			new ExemploBootstrapper().execute();
+			new BaseBootstrapper().execute();
 			initialized = true;
 		}
 	}

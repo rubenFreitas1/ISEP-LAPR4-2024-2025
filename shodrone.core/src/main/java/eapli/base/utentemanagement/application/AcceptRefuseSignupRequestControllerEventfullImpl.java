@@ -24,7 +24,7 @@
 package eapli.base.utentemanagement.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.utentemanagement.domain.SignupRequest;
 import eapli.base.utentemanagement.domain.events.SignupAcceptedEvent;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
@@ -61,8 +61,8 @@ public class AcceptRefuseSignupRequestControllerEventfullImpl
     @Override
     @SuppressWarnings("squid:S1226")
     public SignupRequest acceptSignupRequest(SignupRequest theSignupRequest) {
-        authorizationService.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER,
-                ExemploRoles.ADMIN);
+        authorizationService.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER,
+                Roles.ADMIN);
 
         Preconditions.nonNull(theSignupRequest);
 
@@ -94,8 +94,8 @@ public class AcceptRefuseSignupRequestControllerEventfullImpl
     @Override
     @Transactional
     public SignupRequest refuseSignupRequest(final SignupRequest theSignupRequest) {
-        authorizationService.ensureAuthenticatedUserHasAnyOf(ExemploRoles.POWER_USER,
-                ExemploRoles.ADMIN);
+        authorizationService.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER,
+                Roles.ADMIN);
 
         Preconditions.nonNull(theSignupRequest);
 

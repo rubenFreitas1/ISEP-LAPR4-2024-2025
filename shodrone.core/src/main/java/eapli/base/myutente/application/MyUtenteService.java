@@ -21,7 +21,7 @@
 package eapli.base.myutente.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploRoles;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.base.utentemanagement.domain.Utente;
 import eapli.base.utentemanagement.repositories.UtenteRepository;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -49,7 +49,7 @@ public class MyUtenteService {
     }
 
     public Utente myUser() {
-        authz.ensureAuthenticatedUserHasAnyOf(ExemploRoles.UTENTE);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CUSTOMER_REPRESENTATIVE);
         final UserSession s = authz.session().orElseThrow(IllegalStateException::new);
         final SystemUser me = s.authenticatedUser();
         return repo.findByUsername(me.identity()).orElseThrow(IllegalStateException::new);
