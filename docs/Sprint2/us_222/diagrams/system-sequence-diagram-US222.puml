@@ -1,0 +1,33 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US222
+
+== List representatives ==
+activate crmCollaborator
+
+crmCollaborator -> system : List representatives
+activate system
+
+system -> system : Get all customers
+
+system -> crmCollaborator : Choose a Customer
+
+deactivate system
+crmCollaborator -> system : Provide Customer
+
+activate system
+
+system -> system : Get all representatives from customer
+
+system -> crmCollaborator : List of representatives
+deactivate system
+
+
+
+@enduml
