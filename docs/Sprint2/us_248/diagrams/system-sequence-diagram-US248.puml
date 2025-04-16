@@ -1,0 +1,23 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Show Designer" as showDesigner
+participant "System" as system
+
+title System Sequence Diagram - US247
+
+== List figures categories  ==
+activate showDesigner
+
+showDesigner -> system : Wants to list existing figure category in the catalogue
+activate system
+
+system -> showDesigner : Returns list of figure categories and their status
+deactivate system
+
+
+
+
+@enduml
