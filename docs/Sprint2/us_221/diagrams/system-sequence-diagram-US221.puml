@@ -14,7 +14,7 @@ activate crmCollaborator
 crmCollaborator -> system : Register a representative
 activate system
 
-system -> crmCollaborator : Request Representative Information ("Name, Email and Position")
+system -> crmCollaborator : Request Representative Information ("Name, Email, PhoneNumber and Position")
 deactivate system
 crmCollaborator -> system : Provide Representative Information
 

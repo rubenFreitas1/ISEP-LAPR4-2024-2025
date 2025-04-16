@@ -1,0 +1,39 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US223
+
+== Edit representative ==
+activate crmCollaborator
+
+crmCollaborator -> system : Edit representative
+activate system
+
+system -> system : Get all representatives
+
+system -> crmCollaborator : Choose a Representative
+
+deactivate system
+crmCollaborator -> system : Provide Representative
+
+activate system
+
+system -> crmCollaborator : Request new Representative information ("Email and Phone Number")
+deactivate system
+
+crmCollaborator -> system : Provide new Representative information ("Email and Phone Number")
+activate system
+
+system -> system : Update new Representative information
+system -> crmCollaborator : Confirmation of update
+deactivate system
+
+
+
+
+@enduml

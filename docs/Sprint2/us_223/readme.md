@@ -32,9 +32,9 @@ Test:
 
 * Still no questions related to this user story on forum.
 
-## 3. Analysis
+# 3. Analysis
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+![System Sequence Diagram ](images/system-sequence-diagram-US223.svg)
 
 ## 4. Design
 
@@ -42,7 +42,7 @@ Test:
 
 ### 4.1. Realization
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/class-diagram-01.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
@@ -81,4 +81,3 @@ public void ensureXxxxYyyy() {
 *The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
 
 *The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
