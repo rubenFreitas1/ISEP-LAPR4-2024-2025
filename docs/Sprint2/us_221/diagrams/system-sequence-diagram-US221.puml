@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US221
+
+== Register a representative ==
+activate crmCollaborator
+
+crmCollaborator -> system : Register a representative
+activate system
+
+system -> crmCollaborator : Request Representative Information ("Name, Email and Position")
+deactivate system
+crmCollaborator -> system : Provide Representative Information
+
+activate system
+
+system -> crmCollaborator : Confirm Representative Added
+deactivate system
+
+
+
+@enduml
