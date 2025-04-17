@@ -1,0 +1,71 @@
+package eapli.base.app.backoffice.presentation.menu;
+
+import eapli.framework.actions.Actions;
+import eapli.framework.actions.menu.Menu;
+
+public class CRM_CollaboratorMenu {
+
+    private static final int EXIT_OPTION = 0;
+
+    private static final String RETURN_LABEL = "Return ";
+
+
+    // CUSTOMER MENU
+    private static final int REGISTER_CUSTOMER_OPTION = 1;
+    private static final int REGISTER_CUSTOMER_REPRESENTATIVE_OPTION = 2;
+    private static final int LIST_CUSTOMER_REPRESENTATIVES_OPTION = 3;
+    private static final int EDIT_CUSTOMER_REPRESENTATIVE_OPTION = 4;
+    private static final int DISABLE_CUSTOMER_REPRESENTATIVE_OPTION = 5;
+
+
+    // SHOW REQUEST MENU
+
+    private static final int REGISTER_SHOW_REQUEST_OPTION = 1;
+
+    private static final int LIST_SHOW_REQUESTS_OPTION = 2;
+
+    private static final int EDIT_SHOW_REQUEST_OPTION = 3;
+
+
+    // FIGURE MENU
+
+    private static final int LIST_PUBLIC_FIGURE_OPTION = 1;
+
+    private static final int SEARCH_FIGURE_CATALOGUE_OPTION = 2;
+
+    private static final int LIST_FIGURE_CATEGORIES_OPTION = 3;
+
+
+
+    public Menu buildCustomerMenu() {
+        final Menu menu = new Menu("Customer >");
+        //menu.addItem(REGISTER_CUSTOMER_OPTION, "Register Customer",);
+        //menu.addItem(REGISTER_CUSTOMER_REPRESENTATIVE_OPTION, "Register Customer Representative", );
+        //menu.addItem(LIST_CUSTOMER_REPRESENTATIVES_OPTION, "List Customer Representatives", );
+        //menu.addItem(EDIT_CUSTOMER_REPRESENTATIVE_OPTION, "Edit Customer Representative",);
+        //menu.addItem(DISABLE_CUSTOMER_REPRESENTATIVE_OPTION, "Disable Customer Representative",);
+        menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
+
+        return menu;
+    }
+
+    public Menu buildShowRequestMenu() {
+        final Menu menu = new Menu("Show Request >");
+        //menu.addItem(REGISTER_SHOW_REQUEST_OPTION, "Register Show Request",);
+        //menu.addItem(LIST_SHOW_REQUESTS_OPTION, "List Show Requests", );
+        //menu.addItem(EDIT_SHOW_REQUEST_OPTION, "Edit Show Request", );
+        menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
+        return menu;
+    }
+
+    public Menu buildFigureMenu() {
+        final Menu menu = new Menu("Figure >");
+        //menu.addItem(LIST_PUBLIC_FIGURE_OPTION, "List all Public Figures",);
+        //menu.addItem(SEARCH_FIGURE_CATALOGUE_OPTION, "Search Figure Catalogue", );
+        //menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories", );
+        menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
+        return menu;
+    }
+
+
+}
