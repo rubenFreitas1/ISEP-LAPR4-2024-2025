@@ -38,46 +38,681 @@ with the authentication and authorization mechanisms defined in that us.
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
 
-### 4.1. Realization
+### 4.1. Sequence Diagram
 
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![Sequence Diagram](images/sequence-diagram-US211.svg )
+
 
 ### 4.3. Applied Patterns
 
-### 4.4. Acceptance Tests
+- Domain-Driven Design
+- Builder
+- Factory
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
-````
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**Actions**
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+```java
+package eapli.base.app.backoffice.presentation.authz;
+
+import eapli.framework.actions.Action;
+
+/**
+ * Menu action for adding a new user to the application. Created by nuno on
+ * 22/03/16.
+ */
+public class AddUserAction implements Action {
+
+    @Override
+    public boolean execute() {
+        return new AddUserUI().show();
+    }
+}
+```
+
+
+**UI**
+
+```java
+package eapli.base.app.backoffice.presentation.authz;
+
+import eapli.base.usermanagement.application.AddUserController;
+import eapli.framework.actions.Actions;
+import eapli.framework.actions.menu.Menu;
+import eapli.framework.actions.menu.MenuItem;
+import eapli.framework.domain.repositories.ConcurrencyException;
+import eapli.framework.domain.repositories.IntegrityViolationException;
+import eapli.framework.infrastructure.authz.domain.model.Role;
+import eapli.framework.io.util.Console;
+import eapli.framework.presentation.console.AbstractUI;
+import eapli.framework.presentation.console.menu.MenuItemRenderer;
+import eapli.framework.presentation.console.menu.MenuRenderer;
+import eapli.framework.presentation.console.menu.VerticalMenuRenderer;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * UI for adding a user to the application.
+ *
+ * Created by nuno on 22/03/16.
+ */
+public class AddUserUI extends AbstractUI {
+
+    private final AddUserController theController = new AddUserController();
+
+    @Override
+    protected boolean doShow() {
+        // FIXME avoid duplication with SignUpUI. reuse UserDataWidget from
+        // UtenteApp
+        final String username = Console.readLine("Username");
+        final String password = Console.readLine("Password");
+        final String firstName = Console.readLine("First Name");
+        final String lastName = Console.readLine("Last Name");
+        final String email = Console.readLine("E-Mail");
+
+        final Set<Role> roleTypes = new HashSet<>();
+        boolean show;
+        do {
+            show = showRoles(roleTypes);
+        } while (!show);
+
+        try {
+            this.theController.addUser(username, password, firstName, lastName, email, roleTypes);
+        } catch (final IntegrityViolationException | ConcurrencyException e) {
+            System.out.println("That username is already in use.");
+        }
+
+        return false;
+    }
+
+    private boolean showRoles(final Set<Role> roleTypes) {
+        // TODO we could also use the "widget" classes from the framework...
+        final Menu rolesMenu = buildRolesMenu(roleTypes);
+        final MenuRenderer renderer = new VerticalMenuRenderer(rolesMenu, MenuItemRenderer.DEFAULT);
+        return renderer.render();
+    }
+
+    private Menu buildRolesMenu(final Set<Role> roleTypes) {
+        final Menu rolesMenu = new Menu();
+        int counter = 0;
+        rolesMenu.addItem(MenuItem.of(counter++, "No Role", Actions.SUCCESS));
+        for (final Role roleType : theController.getRoleTypes()) {
+            rolesMenu.addItem(MenuItem.of(counter++, roleType.toString(), () -> roleTypes.add(roleType)));
+        }
+        return rolesMenu;
+    }
+
+    @Override
+    public String headline() {
+        return "Add User";
+    }
+}
+```
+
+**Controller**
+
+```java
+package eapli.base.usermanagement.application;
+
+import eapli.base.usermanagement.domain.Roles;
+import eapli.framework.application.UseCaseController;
+import eapli.framework.infrastructure.authz.application.AuthorizationService;
+import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+import eapli.framework.infrastructure.authz.application.UserManagementService;
+import eapli.framework.infrastructure.authz.domain.model.Role;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.time.util.CurrentTimeCalendars;
+
+import java.util.Calendar;
+import java.util.Set;
+
+
+@UseCaseController
+public class AddUserController {
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final UserManagementService userSvc = AuthzRegistry.userService();
+
+    /**
+     * Get existing RoleTypes available to the user.
+     *
+     * @return a list of RoleTypes
+     */
+    public Role[] getRoleTypes() {
+        return Roles.nonUserValues();
+    }
+
+    public SystemUser addUser(final String username, final String password, final String firstName,
+            final String lastName,
+            final String email, final Set<Role> roles, final Calendar createdOn) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
+
+        return userSvc.registerNewUser(username, password, firstName, lastName, email, roles,
+                createdOn);
+    }
+
+    public SystemUser addUser(final String username, final String password, final String firstName,
+            final String lastName,
+            final String email, final Set<Role> roles) {
+        return addUser(username, password, firstName, lastName, email, roles, CurrentTimeCalendars.now());
+    }
+}
+
+```
+
+
+**UserManagementService**
+
+```java
+package eapli.framework.infrastructure.authz.application;
+
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.Name;
+import eapli.framework.infrastructure.authz.domain.model.Password;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.Role;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.infrastructure.authz.domain.model.Username;
+import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
+import eapli.framework.time.util.CurrentTimeCalendars;
+import java.util.Calendar;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+public class UserManagementService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final PasswordPolicy policy;
+
+    @Autowired
+    public UserManagementService(final UserRepository userRepo, final PasswordPolicy policy, final PasswordEncoder encoder) {
+        this.userRepository = userRepo;
+        this.policy = policy;
+        this.encoder = encoder;
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String email, final String rawPassword, final String firstName, final String lastName, final Set<Role> roles, final Calendar createdOn) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.withEmailAsUsername(email).withPassword(rawPassword).withName(firstName, lastName).createdOn(createdOn).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String username, final String rawPassword, final String firstName, final String lastName, final String email, final Set<Role> roles, final Calendar createdOn) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.with(username, rawPassword, firstName, lastName, email).createdOn(createdOn).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String username, final String rawPassword, final String firstName, final String lastName, final String email, final Set<Role> roles) {
+        return this.registerNewUser(username, rawPassword, firstName, lastName, email, roles, CurrentTimeCalendars.now());
+    }
+
+    @Transactional
+    public SystemUser registerUser(final Username username, final Password password, final Name name, final EmailAddress email, final Set<Role> roles) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.with(username, password, name, email).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerUser(final EmailAddress email, final Password password, final Name name, final Set<Role> roles) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.withEmailAsUsername(email).withPassword(password).withName(name).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    public Iterable<SystemUser> activeUsers() {
+        return this.userRepository.findByActive(true);
+    }
+
+    public Iterable<SystemUser> deactivatedUsers() {
+        return this.userRepository.findByActive(false);
+    }
+
+    public Iterable<SystemUser> allUsers() {
+        return this.userRepository.findAll();
+    }
+
+    public Optional<SystemUser> userOfIdentity(final Username id) {
+        return this.userRepository.ofIdentity(id);
+    }
+
+    @Transactional
+    public SystemUser deactivateUser(final SystemUser user) {
+        user.deactivate(CurrentTimeCalendars.now());
+        return (SystemUser)this.userRepository.save(user);
+    }
+
+    @Transactional
+    public SystemUser activateUser(final SystemUser user) {
+        user.activate();
+        return (SystemUser)this.userRepository.save(user);
+    }
+}
+
+```
+
+**SystemUserBuilder**
+
+```java
+package eapli.framework.infrastructure.authz.domain.model;
+
+import eapli.framework.domain.model.DomainFactory;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.validations.Preconditions;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+public class SystemUserBuilder implements DomainFactory<SystemUser> {
+    private static final Logger LOGGER = LogManager.getLogger(SystemUserBuilder.class);
+    private Username username;
+    private Password password;
+    private Name name;
+    private EmailAddress email;
+    private Calendar createdOn;
+    private final RoleSet roles;
+    private final PasswordPolicy policy;
+    private final PasswordEncoder encoder;
+
+    public SystemUserBuilder(final PasswordPolicy policy, final PasswordEncoder encoder) {
+        Preconditions.noneNull(new Object[]{policy, encoder});
+        this.policy = policy;
+        this.encoder = encoder;
+        this.roles = new RoleSet();
+    }
+
+    public SystemUserBuilder with(final String userName, final String password, final String firstName, final String lastName, final String email) {
+        this.withUsername(userName);
+        this.withPassword(password);
+        this.withName(firstName, lastName);
+        this.withEmail(email);
+        return this;
+    }
+
+    public SystemUserBuilder with(final Username username, final Password password, final Name name, final EmailAddress email) {
+        this.withUsername(username);
+        this.withPassword(password);
+        this.withName(name);
+        this.withEmail(email);
+        return this;
+    }
+
+    public SystemUserBuilder with(final EmailAddress email, final Password password, final Name name) {
+        this.withEmailAsUsername(email);
+        this.withPassword(password);
+        this.withName(name);
+        return this;
+    }
+
+    public SystemUserBuilder withUsername(final String username) {
+        this.username = Username.valueOf(username);
+        return this;
+    }
+
+    public SystemUserBuilder withUsername(final Username username) {
+        this.username = username;
+        return this;
+    }
+
+    public SystemUserBuilder withEmailAsUsername(final String email) {
+        return this.withUsername(email).withEmail(email);
+    }
+
+    public SystemUserBuilder withEmailAsUsername(final EmailAddress email) {
+        return this.withUsername(email.toString()).withEmail(email);
+    }
+
+    public SystemUserBuilder withEmail(final String email) {
+        this.email = EmailAddress.valueOf(email);
+        return this;
+    }
+
+    public SystemUserBuilder withEmail(final EmailAddress email) {
+        this.email = email;
+        return this;
+    }
+
+    public SystemUserBuilder withPassword(final String rawPassword) {
+        this.password = (Password)Password.encodedAndValid(rawPassword, this.policy, this.encoder).orElseThrow(IllegalArgumentException::new);
+        return this;
+    }
+
+    public SystemUserBuilder withPassword(final Password password) {
+        Preconditions.nonNull(password);
+        this.password = password;
+        return this;
+    }
+
+    public SystemUserBuilder withName(final String firstName, final String lastName) {
+        this.name = new Name(firstName, lastName);
+        return this;
+    }
+
+    public SystemUserBuilder withName(final Name name) {
+        this.name = name;
+        return this;
+    }
+
+    public SystemUserBuilder withRoles(final Role... onlyWithThis) {
+        Role[] var2 = onlyWithThis;
+        int var3 = onlyWithThis.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            Role each = var2[var4];
+            this.roles.add(new RoleAssignment(each));
+        }
+
+        return this;
+    }
+
+    public SystemUserBuilder withRole(final RoleAssignment role) {
+        this.roles.add(role);
+        return this;
+    }
+
+    public SystemUserBuilder createdOn(final Calendar createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    public SystemUserBuilder withRoles(final Set<Role> someRoles) {
+        List theRoles;
+        if (this.createdOn == null) {
+            theRoles = (List)someRoles.stream().map(RoleAssignment::new).collect(Collectors.toList());
+        } else {
+            theRoles = (List)someRoles.stream().map((rt) -> {
+                return new RoleAssignment(rt, this.createdOn);
+            }).collect(Collectors.toList());
+        }
+
+        this.roles.addAll(theRoles);
+        return this;
+    }
+
+    public SystemUserBuilder withRoles(final RoleSet roles) {
+        this.roles.addAll(roles);
+        return this;
+    }
+
+    public SystemUser build() {
+        SystemUser user = new SystemUser(this.username, this.password, this.name, this.email, this.roles, this.createdOn);
+        if (LOGGER.isDebugEnabled()) {
+            String roleLog = this.roles.roleTypes().toString();
+            LOGGER.debug("Creating new user [{}] {} ({} {}) with roles {}", user, this.username, this.name, this.email, roleLog);
+        }
+
+        return user;
+    }
+}
+```
+
+**SystemUser**
+
+```java
+package eapli.framework.infrastructure.authz.domain.model;
+
+import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.domain.model.DomainEntities;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.identities.impl.UUIDGenerator;
+import eapli.framework.representations.dto.DTOable;
+import eapli.framework.representations.dto.GeneralDTO;
+import eapli.framework.time.util.CurrentTimeCalendars;
+import eapli.framework.validations.Invariants;
+import eapli.framework.validations.Preconditions;
+import eapli.framework.visitor.Visitable;
+import eapli.framework.visitor.Visitor;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Collection;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Entity
+@Table(
+    name = "T_SYSTEMUSER"
+)
+public class SystemUser implements AggregateRoot<Username>, DTOable<GeneralDTO>, Visitable<GeneralDTO>, Serializable {
+    private static final long serialVersionUID = 1L;
+    @Version
+    private Long version;
+    @EmbeddedId
+    private Username username;
+    private Password password;
+    private Name name;
+    @Column(
+        unique = true
+    )
+    private EmailAddress email;
+    @OneToOne(
+        cascade = {CascadeType.ALL},
+        optional = false,
+        fetch = FetchType.EAGER
+    )
+    private RoleSet roles;
+    @Temporal(TemporalType.DATE)
+    private Calendar createdOn;
+    private boolean active;
+    @Temporal(TemporalType.DATE)
+    private Calendar deactivatedOn;
+    private String resetToken;
+
+    SystemUser(final Username username, final Password password, final Name name, final EmailAddress email, final RoleSet roles, final Calendar createdOn) {
+        Preconditions.noneNull(new Object[]{roles, username, password, name, email});
+        this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.roles = roles;
+        this.active = true;
+        this.invalidateResetToken();
+    }
+
+    protected SystemUser() {
+    }
+
+    public boolean sameAs(final Object other) {
+        if (!(other instanceof SystemUser that)) {
+            return false;
+        } else if (this == that) {
+            return true;
+        } else if (this.username.equals(that.username) && this.password.equals(that.password) && this.name.equals(that.name) && this.email.equals(that.email) && !this.roles.equals(that.roles)) {
+            return this.resetToken == null ? that.resetToken == null : this.resetToken.equals(that.resetToken);
+        } else {
+            return false;
+        }
+    }
+
+    public Username identity() {
+        return this.username;
+    }
+
+    public EmailAddress email() {
+        return this.email;
+    }
+
+    public void assignToRole(final RoleAssignment role) {
+        this.roles.add(role);
+    }
+
+    public void assignToRole(final Role role) {
+        Preconditions.nonNull(role);
+        this.roles.add(new RoleAssignment(role));
+    }
+
+    public boolean unassignRole(final Role role) {
+        Preconditions.nonNull(role);
+        return (Boolean)this.roles.getAssignment(role).map(RoleAssignment::unassign).orElse(false);
+    }
+
+    public Collection<Role> roleTypes() {
+        return this.roles.roleTypes();
+    }
+
+    public GeneralDTO toDTO() {
+        GeneralDTO ret = new GeneralDTO("user");
+        ret.put("username", this.username.toString());
+        ret.put("name", this.name.toString());
+        ret.put("email", this.email.toString());
+        ret.put("roles", this.roles.roleTypes().toString());
+        return ret;
+    }
+
+    public boolean passwordMatches(final String rawPassword, final PasswordEncoder encoder) {
+        return encoder.matches(rawPassword, this.password.value());
+    }
+
+    String encodedPassword() {
+        return this.password.value();
+    }
+
+    public void accept(final Visitor<GeneralDTO> visitor) {
+        visitor.visit(this.toDTO());
+    }
+
+    public Username username() {
+        return this.username;
+    }
+
+    public Name name() {
+        return this.name;
+    }
+
+    public boolean isActive() {
+        return this.active;
+    }
+
+    public void deactivate(final Calendar deactivatedOn) {
+        if (deactivatedOn != null && !deactivatedOn.before(this.createdOn)) {
+            if (!this.active) {
+                throw new IllegalStateException("Cannot deactivate an inactive user");
+            } else {
+                this.active = false;
+                this.deactivatedOn = deactivatedOn;
+                this.invalidateResetToken();
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void activate() {
+        if (!this.isActive()) {
+            this.active = true;
+            this.deactivatedOn = null;
+            this.invalidateResetToken();
+        }
+    }
+
+    public int hashCode() {
+        return DomainEntities.hashCode(this);
+    }
+
+    public boolean equals(final Object other) {
+        return DomainEntities.areEqual(this, other);
+    }
+
+    public void changePassword(final Password newPassword) {
+        this.password = newPassword;
+        this.invalidateResetToken();
+    }
+
+    private void invalidateResetToken() {
+        this.resetToken = null;
+    }
+
+    public String resetPassword() {
+        this.resetToken = (new UUIDGenerator()).newId().toString();
+        return this.resetToken;
+    }
+
+    public boolean confirmResetPassword(final String token, final Password newPass) {
+        Invariants.nonNull(this.resetToken);
+        Preconditions.nonEmpty(token);
+        Preconditions.nonNull(newPass);
+        this.invalidateResetToken();
+        if (token.equals(this.resetToken)) {
+            this.password = newPass;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hasAny(final Role... roles) {
+        Role[] var2 = roles;
+        int var3 = roles.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            Role r = var2[var4];
+            if (this.roles.hasAssignment(r)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasAll(final Role... roles) {
+        Role[] var2 = roles;
+        int var3 = roles.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            Role r = var2[var4];
+            if (!this.roles.hasAssignment(r)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Calendar createdOn() {
+        return (Calendar)this.createdOn.clone();
+    }
+}
+```
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Registering process**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![Registering-process](images/demonstration/registering-process.png)
 
-## 7. Observations
 
-*This section should be used to include any content that does not fit any of the previous sections.*
+**User Database**
 
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
+![userSystem-database](images/demonstration/userSystem_database.png)
 
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*

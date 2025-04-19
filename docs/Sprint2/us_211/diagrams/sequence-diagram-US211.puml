@@ -1,0 +1,78 @@
+@startuml
+title Sequence Diagram
+
+actor Administrator
+participant "AddUserUI" as UI <<presentation>>
+participant "AddUserController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "UserManagementService" as UserManagementService <<application>>
+participant "SystemUserBuilder" as SystemUserBuilder <<domain>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "UserRepository" as UserRepository <<repository>>
+database "Database" as Database
+
+activate Administrator
+
+Administrator -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI --> Administrator: Request User data (Username, Password, First Name, Last Name\n , Email, Roles)
+deactivate UI
+
+Administrator -> UI: Insert User data
+
+
+    activate UI
+
+        UI -> Controller : addUser(username, password, firstName, lastName, email, roleTypes)
+            activate Controller
+
+                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+                deactivate AuthorizationService
+
+                Controller -> UserManagementService : registerNewUser(username, password, firstName,\n lastName, email, roles, createdOn);
+                activate UserManagementService
+
+                    UserManagementService -> SystemUserBuilder** : create()
+                    UserManagementService -> SystemUserBuilder : with(username, rawPassword, firstName, lastName, email).createdOn(createdOn).withRoles(roles)
+                    UserManagementService -> SystemUserBuilder : build()
+                    activate SystemUserBuilder
+
+                        SystemUserBuilder -> SystemUser**: new SystemUser(username,password,name, email, roles, createdOn);
+
+                         activate SystemUser
+
+                         SystemUser --> SystemUserBuilder : newUser
+                         deactivate SystemUser
+
+                          SystemUserBuilder --> UserManagementService : newUser
+
+                    deactivate SystemUserBuilder
+
+
+                    UserManagementService -> UserRepository : save(newUser)
+
+                    activate UserRepository
+
+                             UserRepository -> Database : save()
+                             activate Database
+
+                                Database --> UserRepository
+                             deactivate Database
+
+                             UserRepository --> UserManagementService
+                    deactivate UserRepository
+
+                    UserManagementService --> Controller
+                deactivate UserManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Administrator : Inform operation success
+        deactivate UI
+deactivate Administrator
+
+@enduml
