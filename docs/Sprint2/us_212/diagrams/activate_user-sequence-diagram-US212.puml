@@ -1,0 +1,86 @@
+@startuml
+title Sequence Diagram
+
+actor Administrator
+participant "ActivateUserUI" as UI <<presentation>>
+participant "ActivateUserController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "UserManagementService" as UserManagementService <<application>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "UserRepository" as UserRepository <<repository>>
+database "Database" as Database
+
+activate Administrator
+
+Administrator -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: deactiveUsers()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> UserManagementService: deactivatedUsers()
+            activate UserManagementService
+
+                UserManagementService -> UserRepository: findByActive(false)
+                    activate UserRepository
+
+                        UserRepository -> Database:  findByActive(false)
+                            activate Database
+
+                                Database --> UserRepository: List of Inactive Users
+                            deactivate Database
+                        UserRepository --> UserManagementService: List of Inactive Users
+                    deactivate UserRepository
+
+
+                UserManagementService --> Controller: List of Inactive Users
+            deactivate UserManagementService
+
+        Controller --> UI: List of Inactive Users
+    deactivate Controller
+
+UI --> Administrator: Show List of Inactive Users
+deactivate UI
+
+Administrator -> UI: Choose User to Activate
+
+
+    activate UI
+
+        UI -> Controller : activateUser(user)
+            activate Controller
+
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+
+                Controller -> UserManagementService : activateUser(user)
+                activate UserManagementService
+
+                    UserManagementService -> SystemUser: activate()
+
+                    UserManagementService -> UserRepository : save(user)
+
+                    activate UserRepository
+
+                             UserRepository -> Database : save()
+                             activate Database
+
+                                Database --> UserRepository
+                             deactivate Database
+
+                             UserRepository --> UserManagementService
+                    deactivate UserRepository
+
+                    UserManagementService --> Controller
+                deactivate UserManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Administrator : Inform operation success
+        deactivate UI
+deactivate Administrator
+
+@enduml

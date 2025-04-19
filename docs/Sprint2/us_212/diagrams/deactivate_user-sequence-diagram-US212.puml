@@ -1,0 +1,86 @@
+@startuml
+title Sequence Diagram
+
+actor Administrator
+participant "DeactivateUserUI" as UI <<presentation>>
+participant "DeactivateUserController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "UserManagementService" as UserManagementService <<application>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "UserRepository" as UserRepository <<repository>>
+database "Database" as Database
+
+activate Administrator
+
+Administrator -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: activeUsers()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> UserManagementService: activeUsers()
+            activate UserManagementService
+
+                UserManagementService -> UserRepository: findByActive(true)
+                    activate UserRepository
+
+                        UserRepository -> Database:  findByActive(true)
+                            activate Database
+
+                                Database --> UserRepository: List of Active Users
+                            deactivate Database
+                        UserRepository --> UserManagementService: List of Active Users
+                    deactivate UserRepository
+
+
+                UserManagementService --> Controller: List of Active Users
+            deactivate UserManagementService
+
+        Controller --> UI: List of Active Users
+    deactivate Controller
+
+UI --> Administrator: Show List of Active Users
+deactivate UI
+
+Administrator -> UI: Choose User to Deactivate
+
+
+    activate UI
+
+        UI -> Controller : deactivateUser(user)
+            activate Controller
+
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+
+                Controller -> UserManagementService : deactivateUser(user)
+                activate UserManagementService
+
+                    UserManagementService -> SystemUser: deactivate(CurrentTimeCalendars.now())
+
+                    UserManagementService -> UserRepository : save(user)
+
+                    activate UserRepository
+
+                             UserRepository -> Database : save()
+                             activate Database
+
+                                Database --> UserRepository
+                             deactivate Database
+
+                             UserRepository --> UserManagementService
+                    deactivate UserRepository
+
+                    UserManagementService --> Controller
+                deactivate UserManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Administrator : Inform operation success
+        deactivate UI
+deactivate Administrator
+
+@enduml

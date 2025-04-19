@@ -77,29 +77,6 @@ public class AddUserAction implements Action {
 **UI**
 
 ```java
-package eapli.base.app.backoffice.presentation.authz;
-
-import eapli.base.usermanagement.application.AddUserController;
-import eapli.framework.actions.Actions;
-import eapli.framework.actions.menu.Menu;
-import eapli.framework.actions.menu.MenuItem;
-import eapli.framework.domain.repositories.ConcurrencyException;
-import eapli.framework.domain.repositories.IntegrityViolationException;
-import eapli.framework.infrastructure.authz.domain.model.Role;
-import eapli.framework.io.util.Console;
-import eapli.framework.presentation.console.AbstractUI;
-import eapli.framework.presentation.console.menu.MenuItemRenderer;
-import eapli.framework.presentation.console.menu.MenuRenderer;
-import eapli.framework.presentation.console.menu.VerticalMenuRenderer;
-
-import java.util.HashSet;
-import java.util.Set;
-
-/**
- * UI for adding a user to the application.
- *
- * Created by nuno on 22/03/16.
- */
 public class AddUserUI extends AbstractUI {
 
     private final AddUserController theController = new AddUserController();
@@ -156,21 +133,6 @@ public class AddUserUI extends AbstractUI {
 **Controller**
 
 ```java
-package eapli.base.usermanagement.application;
-
-import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.application.UseCaseController;
-import eapli.framework.infrastructure.authz.application.AuthorizationService;
-import eapli.framework.infrastructure.authz.application.AuthzRegistry;
-import eapli.framework.infrastructure.authz.application.UserManagementService;
-import eapli.framework.infrastructure.authz.domain.model.Role;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.time.util.CurrentTimeCalendars;
-
-import java.util.Calendar;
-import java.util.Set;
-
-
 @UseCaseController
 public class AddUserController {
 
@@ -208,26 +170,6 @@ public class AddUserController {
 **UserManagementService**
 
 ```java
-package eapli.framework.infrastructure.authz.application;
-
-import eapli.framework.general.domain.model.EmailAddress;
-import eapli.framework.infrastructure.authz.domain.model.Name;
-import eapli.framework.infrastructure.authz.domain.model.Password;
-import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
-import eapli.framework.infrastructure.authz.domain.model.Role;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
-import eapli.framework.infrastructure.authz.domain.model.Username;
-import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
-import eapli.framework.time.util.CurrentTimeCalendars;
-import java.util.Calendar;
-import java.util.Optional;
-import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 @Component
 public class UserManagementService {
     private final UserRepository userRepository;
@@ -312,19 +254,6 @@ public class UserManagementService {
 **SystemUserBuilder**
 
 ```java
-package eapli.framework.infrastructure.authz.domain.model;
-
-import eapli.framework.domain.model.DomainFactory;
-import eapli.framework.general.domain.model.EmailAddress;
-import eapli.framework.validations.Preconditions;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 public class SystemUserBuilder implements DomainFactory<SystemUser> {
     private static final Logger LOGGER = LogManager.getLogger(SystemUserBuilder.class);
     private Username username;
@@ -471,34 +400,6 @@ public class SystemUserBuilder implements DomainFactory<SystemUser> {
 **SystemUser**
 
 ```java
-package eapli.framework.infrastructure.authz.domain.model;
-
-import eapli.framework.domain.model.AggregateRoot;
-import eapli.framework.domain.model.DomainEntities;
-import eapli.framework.general.domain.model.EmailAddress;
-import eapli.framework.identities.impl.UUIDGenerator;
-import eapli.framework.representations.dto.DTOable;
-import eapli.framework.representations.dto.GeneralDTO;
-import eapli.framework.time.util.CurrentTimeCalendars;
-import eapli.framework.validations.Invariants;
-import eapli.framework.validations.Preconditions;
-import eapli.framework.visitor.Visitable;
-import eapli.framework.visitor.Visitor;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.persistence.Version;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Collection;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 @Entity
 @Table(
     name = "T_SYSTEMUSER"

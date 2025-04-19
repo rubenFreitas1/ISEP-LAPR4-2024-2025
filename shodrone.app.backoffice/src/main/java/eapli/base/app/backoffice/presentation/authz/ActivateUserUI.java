@@ -1,6 +1,6 @@
 package eapli.base.app.backoffice.presentation.authz;
 
-import eapli.base.usermanagement.application.ActiveUserController;
+import eapli.base.usermanagement.application.ActivateUserController;
 import eapli.framework.domain.repositories.ConcurrencyException;
 import eapli.framework.domain.repositories.IntegrityViolationException;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
@@ -9,11 +9,11 @@ import eapli.framework.presentation.console.SelectWidget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ActiveUserUI extends AbstractUI {
+public class ActivateUserUI extends AbstractUI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActiveUserUI.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivateUserUI.class);
 
-    private final ActiveUserController theController = new ActiveUserController();
+    private final ActivateUserController theController = new ActivateUserController();
 
     @Override
     protected boolean doShow() {

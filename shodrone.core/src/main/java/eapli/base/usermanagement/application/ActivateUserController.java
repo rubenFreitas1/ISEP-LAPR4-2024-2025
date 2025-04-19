@@ -9,7 +9,7 @@ import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
 
 @UseCaseController
-public class ActiveUserController {
+public class ActivateUserController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
     private final UserManagementService userSvc = AuthzRegistry.userService();
 
