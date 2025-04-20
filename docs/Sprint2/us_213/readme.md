@@ -32,46 +32,178 @@ as it requires access to user data.
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+### 4.1. Sequence Diagram
 
-### 4.1. Realization
-
-![a class diagram](class-diagram-01.svg "A Class Diagram")
+![Sequence Diagram](images/sequence-diagram-US213.svg)
 
 ### 4.3. Applied Patterns
 
-### 4.4. Acceptance Tests
+- Domain-Driven Design
+- Factory
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
-````
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**ListUsersAction**
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+```java
+public class ListUsersAction implements Action {
+
+    @Override
+    public boolean execute() {
+        return new ListUsersUI().show();
+    }
+}
+```
+
+
+**ListUsersUI**
+
+```java
+public class ListUsersUI extends AbstractListUI<SystemUser> {
+    private ListUsersController theController = new ListUsersController();
+
+    @Override
+    public String headline() {
+        return "List Users";
+    }
+
+    @Override
+    protected String emptyMessage() {
+        return "No data.";
+    }
+
+    @Override
+    protected Iterable<SystemUser> elements() {
+        return theController.allUsers();
+    }
+
+    @Override
+    protected Visitor<SystemUser> elementPrinter() {
+        return new SystemUserPrinter();
+    }
+
+    @Override
+    protected String elementName() {
+        return "User";
+    }
+
+    @Override
+    protected String listHeader() {
+        return String.format("#  %-30s%-30s%-30s%-30s", "USERNAME", "F. NAME", "L. NAME", "STATUS");
+    }
+}
+```
+
+**ListUsersController**
+
+```java
+@UseCaseController
+public class ListUsersController{
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final UserManagementService userSvc = AuthzRegistry.userService();
+
+    public Iterable<SystemUser> allUsers() {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.ADMIN);
+
+        return userSvc.allUsers();
+    }
+
+    public Optional<SystemUser> find(final Username u) {
+        return userSvc.userOfIdentity(u);
+    }
+}
+
+```
+
+**UserManagementService**
+
+```java
+@Component
+public class UserManagementService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final PasswordPolicy policy;
+
+    @Autowired
+    public UserManagementService(final UserRepository userRepo, final PasswordPolicy policy, final PasswordEncoder encoder) {
+        this.userRepository = userRepo;
+        this.policy = policy;
+        this.encoder = encoder;
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String email, final String rawPassword, final String firstName, final String lastName, final Set<Role> roles, final Calendar createdOn) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.withEmailAsUsername(email).withPassword(rawPassword).withName(firstName, lastName).createdOn(createdOn).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String username, final String rawPassword, final String firstName, final String lastName, final String email, final Set<Role> roles, final Calendar createdOn) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.with(username, rawPassword, firstName, lastName, email).createdOn(createdOn).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerNewUser(final String username, final String rawPassword, final String firstName, final String lastName, final String email, final Set<Role> roles) {
+        return this.registerNewUser(username, rawPassword, firstName, lastName, email, roles, CurrentTimeCalendars.now());
+    }
+
+    @Transactional
+    public SystemUser registerUser(final Username username, final Password password, final Name name, final EmailAddress email, final Set<Role> roles) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.with(username, password, name, email).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    @Transactional
+    public SystemUser registerUser(final EmailAddress email, final Password password, final Name name, final Set<Role> roles) {
+        SystemUserBuilder userBuilder = new SystemUserBuilder(this.policy, this.encoder);
+        userBuilder.withEmailAsUsername(email).withPassword(password).withName(name).withRoles(roles);
+        SystemUser newUser = userBuilder.build();
+        return (SystemUser)this.userRepository.save(newUser);
+    }
+
+    public Iterable<SystemUser> activeUsers() {
+        return this.userRepository.findByActive(true);
+    }
+
+    public Iterable<SystemUser> deactivatedUsers() {
+        return this.userRepository.findByActive(false);
+    }
+
+    public Iterable<SystemUser> allUsers() {
+        return this.userRepository.findAll();
+    }
+
+    public Optional<SystemUser> userOfIdentity(final Username id) {
+        return this.userRepository.ofIdentity(id);
+    }
+
+    @Transactional
+    public SystemUser deactivateUser(final SystemUser user) {
+        user.deactivate(CurrentTimeCalendars.now());
+        return (SystemUser)this.userRepository.save(user);
+    }
+
+    @Transactional
+    public SystemUser activateUser(final SystemUser user) {
+        user.activate();
+        return (SystemUser)this.userRepository.save(user);
+    }
+}
+```
+
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**List Users process**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![List Users process](images/demonstration/listUsers-process.png)
 
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*

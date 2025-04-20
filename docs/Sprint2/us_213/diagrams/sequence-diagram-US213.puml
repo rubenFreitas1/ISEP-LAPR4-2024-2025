@@ -1,0 +1,49 @@
+@startuml
+title Sequence Diagram
+
+actor Administrator
+participant "ListUsersUI" as UI <<presentation>>
+participant "ListUsersController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "UserManagementService" as UserManagementService <<application>>
+participant "UserRepository" as UserRepository <<repository>>
+database "Database" as Database
+
+activate Administrator
+
+Administrator -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: allUsers()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> UserManagementService: allUsers()
+            activate UserManagementService
+
+                UserManagementService -> UserRepository: findAll()
+                    activate UserRepository
+
+                        UserRepository -> Database:  findAll()
+                            activate Database
+
+                                Database --> UserRepository: List of System Users
+                            deactivate Database
+                        UserRepository --> UserManagementService: List of System Users
+                    deactivate UserRepository
+
+
+                UserManagementService --> Controller: List of System Users
+            deactivate UserManagementService
+
+        Controller --> UI: List of System Users
+    deactivate Controller
+
+UI --> Administrator: Show List of System Users
+deactivate UI
+deactivate Administrator
+
+@enduml
