@@ -14,7 +14,7 @@ activate showDesigner
 showDesigner -> system : Add figure to the catalogue
 activate system
 
-system -> showDesigner : Request Figure Information ("Name, Description, \nVersion")
+system -> showDesigner : Request Figure Information ("Description, Keywords, Category")
 deactivate system
 showDesigner -> system : Provide Figure Information
 

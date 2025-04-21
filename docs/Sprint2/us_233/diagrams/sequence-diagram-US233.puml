@@ -1,0 +1,77 @@
+@startuml
+title Sequence Diagram
+
+actor "Show Designer" as Actor
+participant "AddFigureUI" as UI <<presentation>>
+participant "AddFigureController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureManagementService" as FigureManagementService <<application>>
+participant "FigureBuilder" as FigureBuilder <<domain>>
+participant "Figure" as Figure <<domain>>
+participant "FigureRepository" as FigureRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI --> Actor: Request Figure data (Description, Keywords, Category)
+deactivate UI
+
+Actor -> UI: Insert Figure data
+
+
+    activate UI
+
+        UI -> Controller : addFigure(description, keywords, category)
+            activate Controller
+
+                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+                deactivate AuthorizationService
+
+                Controller -> FigureManagementService : registerNewFigure(description, keywords, category, createdOn, createdBy);
+                activate FigureManagementService
+
+                    FigureManagementService -> FigureBuilder** : create()
+                    FigureManagementService -> FigureBuilder : build()
+                    activate FigureBuilder
+
+                        FigureBuilder -> Figure**: new Figure(description, keywords, category, createdOn, createdBy);
+
+                         activate Figure
+
+                         Figure --> FigureBuilder : newFigure
+                         deactivate Figure
+
+                          FigureBuilder --> FigureManagementService : newFigure
+
+                    deactivate FigureBuilder
+
+
+                    FigureManagementService -> FigureRepository : save(newFigure)
+
+                    activate FigureRepository
+
+                             FigureRepository -> Database : save()
+                             activate Database
+
+                                Database --> FigureRepository
+                             deactivate Database
+
+                             FigureRepository --> FigureManagementService
+                    deactivate FigureRepository
+
+                    FigureManagementService --> Controller
+                deactivate FigureManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml

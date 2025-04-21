@@ -39,13 +39,15 @@ If a figure is custom-made to a customer’s request it is not public and can on
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
+### 4.1. Sequence Diagram
 
-### 4.1. Realization
-
-![a class diagram](images/class-diagram-01.svg "A Class Diagram")
+![Sequence Diagram](images/sequence-diagram-US233.svg)
 
 ### 4.3. Applied Patterns
+
+- Domain-Driven Design
+- Builder
+- Factory
 
 ### 4.4. Acceptance Tests
 
