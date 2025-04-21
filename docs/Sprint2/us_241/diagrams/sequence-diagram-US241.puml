@@ -1,0 +1,106 @@
+@startuml
+title Sequence Diagram
+
+actor "Drone Tech" as Actor
+participant "AddDroneUI" as UI <<presentation>>
+participant "AddDroneController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "DroneManagementService" as DroneManagementService <<application>>
+participant "DroneModelManagementService" as DroneModelManagementService <<application>>
+participant "DroneBuilder" as DroneBuilder <<domain>>
+participant "Drone" as Drone <<domain>>
+participant "DroneRepository" as DroneRepository <<repository>>
+participant "DroneModelRepository" as DroneModelRepository <<repository>>
+
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+UI --> Actor: Request Drone data (Serial Number, Acquisition Date)
+    deactivate UI
+
+ Actor -> UI: Insert Drone data
+  activate UI
+
+UI -> Controller: listDroneModels()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> DroneModelManagementService: listDroneModels()
+            activate DroneModelManagementService
+
+                DroneModelManagementService -> DroneModelRepository: findAll()
+                    activate DroneModelRepository
+
+                        DroneModelRepository -> Database:  findAll()
+                            activate Database
+
+                                Database --> DroneModelRepository: List of Drone Models
+                            deactivate Database
+                        DroneModelRepository --> DroneModelManagementService: List of Drone Models
+                    deactivate DroneModelRepository
+
+
+                DroneModelManagementService --> Controller: List of Drone Models
+            deactivate DroneModelManagementService
+
+        Controller --> UI: List of Drone Models
+    deactivate Controller
+
+UI --> Actor: Show List of Drone Models
+deactivate UI
+
+Actor -> UI: Choose Drone Model
+
+
+    activate UI
+
+        UI -> Controller : addDrone(serialNumber, acquisitionDate, droneModel)
+            activate Controller
+
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+
+                Controller -> DroneManagementService : registerNewFigure(serialNumber, acquisitionDate, droneModel, createdBy);
+                activate DroneManagementService
+
+                    DroneManagementService -> DroneBuilder**: create()
+                    DroneManagementService -> DroneBuilder: build
+                        activate DroneBuilder
+                            DroneBuilder -> Drone** : new Drone(serialNumber, acquisitionDate, droneModel, createdBy);
+                                activate Drone
+
+                                   Drone --> DroneBuilder : newDrone
+                                deactivate Drone
+
+                            DroneBuilder --> DroneManagementService : newDrone
+
+                        deactivate DroneBuilder
+
+                    DroneManagementService -> DroneRepository : save(newDrone)
+
+                    activate DroneRepository
+
+                             DroneRepository -> Database : save()
+                             activate Database
+
+                                Database --> DroneRepository
+                             deactivate Database
+
+                             DroneRepository --> DroneManagementService
+                    deactivate DroneRepository
+
+                    DroneManagementService --> Controller
+                deactivate DroneManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml
