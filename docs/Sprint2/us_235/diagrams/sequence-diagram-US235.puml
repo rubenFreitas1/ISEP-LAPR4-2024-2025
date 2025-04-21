@@ -1,0 +1,54 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Manager / CRM Collaborator" as Actor
+participant "ListShowRequestsUI" as UI <<presentation>>
+participant "ListShowRequestsController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
+participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+UI --> Actor: Request Client data (ID)
+    deactivate UI
+Actor -> UI: Insert Client data
+
+    activate UI
+
+    UI -> Controller: listShowRequests(clientID)
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> ShowRequestManagementService: listShowRequests(clientID)
+            activate ShowRequestManagementService
+
+                ShowRequestManagementService -> ShowRequestRepository: findByClientID(clientID)
+                    activate ShowRequestRepository
+
+                        ShowRequestRepository -> Database:  findByClientID(clientID)
+                            activate Database
+
+                                Database --> ShowRequestRepository: List of Show Requests
+                            deactivate Database
+                        ShowRequestRepository --> ShowRequestManagementService: List of Show Requests
+                    deactivate ShowRequestRepository
+
+
+                ShowRequestManagementService --> Controller: List of Show Requests
+            deactivate ShowRequestManagementService
+
+        Controller --> UI: List of Show Requests
+    deactivate Controller
+
+UI --> Actor: Show List of Show Requests
+deactivate UI
+deactivate Actor
+
+@enduml

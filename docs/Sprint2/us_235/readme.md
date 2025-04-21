@@ -34,13 +34,15 @@ The show request status information should be provided.
 
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
 
-### 4.1. Realization
+### 4.1. Sequence Diagram
 
-![a class diagram](../us_234/images/class-diagram-01.svg "A Class Diagram")
+![Sequence Diagram](images/sequence-diagram-US235.svg)
 
 ### 4.3. Applied Patterns
+
+- Domain-Driven Design
+- Factory
 
 ### 4.4. Acceptance Tests
 
