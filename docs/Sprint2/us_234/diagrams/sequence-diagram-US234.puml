@@ -1,0 +1,86 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Manager" as Actor
+participant "DecommissionFigureUI" as UI <<presentation>>
+participant "DecommissionFigureController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureManagementService" as FigureManagementService <<application>>
+participant "Figure" as Figure <<domain>>
+participant "FigureRepository" as FigureRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: activeFigures()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> FigureManagementService: activeFigures()
+            activate FigureManagementService
+
+                FigureManagementService -> FigureRepository: findByActive(true)
+                    activate FigureRepository
+
+                        FigureRepository -> Database:  findByActive(true)
+                            activate Database
+
+                                Database --> FigureRepository: List of Active Figures
+                            deactivate Database
+                        FigureRepository --> FigureManagementService: List of Active Figures
+                    deactivate FigureRepository
+
+
+                FigureManagementService --> Controller: List of Active Figures
+            deactivate FigureManagementService
+
+        Controller --> UI: List of Active Figures
+    deactivate Controller
+
+UI --> Actor: Show List of Active Figures
+deactivate UI
+
+Actor -> UI: Choose Figure to Decommission
+
+
+    activate UI
+
+        UI -> Controller : decommissionFigure(figure)
+            activate Controller
+
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+
+                Controller -> FigureManagementService : decommissionFigure(figure)
+                activate FigureManagementService
+
+                    FigureManagementService -> Figure: deactivate(CurrentTimeCalendars.now())
+
+                    FigureManagementService -> FigureRepository : save(figure)
+
+                    activate FigureRepository
+
+                             FigureRepository -> Database : save()
+                             activate Database
+
+                                Database --> FigureRepository
+                             deactivate Database
+
+                             FigureRepository --> FigureManagementService
+                    deactivate FigureRepository
+
+                    FigureManagementService --> Controller
+                deactivate FigureManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml
