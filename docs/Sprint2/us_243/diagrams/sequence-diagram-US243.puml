@@ -1,0 +1,84 @@
+@startuml
+title Sequence Diagram
+
+actor "Drone Tech" as Actor
+participant "ListActiveDronesUI" as UI <<presentation>>
+participant "ListActiveDronesController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "DroneManagementService" as DroneManagementService <<application>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "DroneRepository" as DroneRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: listDroneModels()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> DroneManagementService: listDroneModels()
+            activate DroneManagementService
+
+                DroneManagementService -> DroneRepository: findByActive(true)
+                    activate DroneRepository
+
+                        DroneRepository -> Database:  findByActive(true)
+                            activate Database
+
+                                Database --> DroneRepository: List of Drone Models
+                            deactivate Database
+                        DroneRepository --> DroneManagementService: List of Drone Models
+                    deactivate DroneRepository
+
+
+                DroneManagementService --> Controller: List of Drone Models
+            deactivate DroneManagementService
+
+        Controller --> UI: List of Drone Models
+        deactivate Controller
+
+
+
+        UI --> Actor: Show List of Drone Models
+        deactivate UI
+
+        Actor -> UI: Choose Drone Model to List
+        activate UI
+
+UI -> Controller: listDrones(droneModel)
+    activate Controller
+
+
+        Controller -> DroneManagementService: listDrones(droneModel)
+            activate DroneManagementService
+
+                DroneManagementService -> DroneRepository: findByDroneModel(true)
+                    activate DroneRepository
+
+                        DroneRepository -> Database:  findByDroneModel(true)
+                            activate Database
+
+                                Database --> DroneRepository: List of Active Drones
+                            deactivate Database
+                        DroneRepository --> DroneManagementService: List of Active Drones
+                    deactivate DroneRepository
+
+
+                DroneManagementService --> Controller: List of Active Drones
+            deactivate DroneManagementService
+
+        Controller --> UI: List of Active Drones
+    deactivate Controller
+
+        UI -> Actor:  Show List of Active Drones
+        deactivate UI
+
+deactivate Actor
+
+@enduml

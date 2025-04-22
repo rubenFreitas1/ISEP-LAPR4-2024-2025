@@ -34,7 +34,7 @@ audit and reporting needs.
 ![System Sequence Diagram](images/system-sequence-diagram-US242.svg)
 
 ## 4. Design
-
+### 4.1. Sequence Diagram
 ![Sequence Diagram](images/sequence-diagram-US242.svg)
 
 ### 4.3. Applied Patterns
