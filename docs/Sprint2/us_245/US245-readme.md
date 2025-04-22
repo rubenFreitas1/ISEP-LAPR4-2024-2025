@@ -8,8 +8,7 @@ The system must ensure that each category has a unique name, includes timestamps
 
 ## 2. Requirements
 
-**US245** - As a Drone Tech, I want to list active drones of a given model in the inventory.
-
+**US245** - As a Show Designer, I want to add a figure category to the figure category catalogue. The category name must be unique (not case sensitive).
 
 **Acceptance Criteria:**
 
@@ -57,14 +56,15 @@ The system must ensure that each category has a unique name, includes timestamps
 
 ![SSD245](images/system-sequence-diagram-US245.svg "SSD245")
 ## 4. Design
+### 4.1. Sequence Diagram
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
-### 4.1. Realization
-
-![a class diagram](images/class-diagram-01.svg "A Class Diagram")
+![a class diagram](images/sequence-diagram-US245.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
 
+- Domain-Driven Design
+- Builder
+- Factory
 ### 4.4. Acceptance Tests
 
 Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
