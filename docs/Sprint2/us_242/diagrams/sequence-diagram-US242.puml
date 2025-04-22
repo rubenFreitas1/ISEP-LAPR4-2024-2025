@@ -1,0 +1,92 @@
+@startuml
+title Sequence Diagram
+
+actor "Drone Tech" as Actor
+participant "RemoveDroneUI" as UI <<presentation>>
+participant "RemoveDroneController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "DroneManagementService" as DroneManagementService <<application>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "DroneRepository" as DroneRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: activeDrones()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> DroneManagementService: activeDrones()
+            activate DroneManagementService
+
+                DroneManagementService -> DroneRepository: findByActive(true)
+                    activate DroneRepository
+
+                        DroneRepository -> Database:  findByActive(true)
+                            activate Database
+
+                                Database --> DroneRepository: List of Active Drones
+                            deactivate Database
+                        DroneRepository --> DroneManagementService: List of Active Drones
+                    deactivate DroneRepository
+
+
+                DroneManagementService --> Controller: List of Active Drones
+            deactivate DroneManagementService
+
+        Controller --> UI: List of Active Drones
+    deactivate Controller
+
+UI --> Actor: Show List of Active Drones
+deactivate UI
+
+Actor -> UI: Choose Drone to Remove
+
+
+    activate UI
+
+        UI -> Actor: Request Drone Removal Reason
+        deactivate UI
+        Actor -> UI: Insert Drone Removal Reason
+        activate UI
+
+        UI -> Controller : removeDrone(drone, reason)
+            activate Controller
+
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+
+                Controller -> DroneManagementService : removeDrone(drone, reason)
+                activate DroneManagementService
+
+                    DroneManagementService -> SystemUser: remove(CurrentTimeCalendars.now())
+                    DroneManagementService -> SystemUser: insertReason(reason)
+
+                    DroneManagementService -> DroneRepository : save(drone)
+
+                    activate DroneRepository
+
+                             DroneRepository -> Database : save()
+                             activate Database
+
+                                Database --> DroneRepository
+                             deactivate Database
+
+                             DroneRepository --> DroneManagementService
+                    deactivate DroneRepository
+
+                    DroneManagementService --> Controller
+                deactivate DroneManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml
