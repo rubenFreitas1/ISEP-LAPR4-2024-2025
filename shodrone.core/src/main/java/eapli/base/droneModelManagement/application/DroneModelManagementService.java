@@ -46,6 +46,9 @@ public class DroneModelManagementService {
         return this.droneModelRepository.findAll();
     }
 
+    public Iterable<DroneModel> listDroneModels(){return this.droneModelRepository.findByActive(true);}
+
+
     public DroneModel deactivateDroneModel(final DroneModel droneModel) {
         droneModel.deactivate(CurrentTimeCalendars.now());
         return (DroneModel) this.droneModelRepository.save(droneModel);

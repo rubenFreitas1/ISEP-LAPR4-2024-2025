@@ -29,6 +29,11 @@ public class JpaDroneModelRepository extends JpaAutoTxRepository<DroneModel, Lon
     }
 
     @Override
+    public Iterable<DroneModel> findByActive(boolean active) {
+        return this.match("e.active=:active", new Object[]{"active", active});
+    }
+
+    @Override
     public boolean isDroneModelNameUsed(String name) {
         final Map<String, Object> params = new HashMap<>();
         params.put("name", name);

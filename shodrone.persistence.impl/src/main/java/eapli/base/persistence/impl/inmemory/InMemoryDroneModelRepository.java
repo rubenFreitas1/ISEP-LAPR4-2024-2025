@@ -14,6 +14,14 @@ public class InMemoryDroneModelRepository extends InMemoryDomainRepository<Drone
     }
 
     @Override
+    public Iterable<DroneModel> findByActive(boolean active) {
+            return this.match((e) -> {
+                return e.isActive() == active;
+            });
+
+    }
+
+    @Override
     public boolean isDroneModelNameUsed(String name) {
         return matchOne(e -> e.modelName().equalsIgnoreCase(name)).isPresent();
     }
