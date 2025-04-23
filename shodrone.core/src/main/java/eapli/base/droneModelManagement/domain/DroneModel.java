@@ -49,7 +49,11 @@ public class DroneModel implements AggregateRoot<Long> {
 
     public SystemUser createdBy(){return this.createdBy;}
 
+    public Calendar createdOn(){return this.createdOn;}
+
     public boolean isActive() {return this.active;}
+
+    public Calendar deactivatedOn(){return this.deactivatedOn;}
 
     public void deactivate(final Calendar deactivatedOn) {
         if (deactivatedOn != null && !deactivatedOn.before(this.createdOn)) {
