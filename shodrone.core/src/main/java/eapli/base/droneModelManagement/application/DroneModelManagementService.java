@@ -46,7 +46,7 @@ public class DroneModelManagementService {
         return this.droneModelRepository.findAll();
     }
 
-    public Iterable<DroneModel> listDroneModels(){return this.droneModelRepository.findByActive(true);}
+    public Iterable<DroneModel> listActiveDroneModels(){return this.droneModelRepository.findByActive(true);}
 
 
     public DroneModel deactivateDroneModel(final DroneModel droneModel) {
