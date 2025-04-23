@@ -63,6 +63,26 @@ public class Drone implements AggregateRoot<Long> {
 
     public Calendar deactivatedOn(){return this.deactivatedOn;}
 
+    public void deactivate(final Calendar deactivatedOn) {
+        if (deactivatedOn != null && !deactivatedOn.before(this.acquisitionDate)) {
+            if (!this.active) {
+                throw new IllegalStateException("Cannot deactivate an inactive Drone!");
+            } else {
+                this.active = false;
+                this.deactivatedOn = deactivatedOn;
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void activate() {
+        if (!this.isActive()) {
+            this.active = true;
+            this.deactivatedOn = null;
+        }
+    }
+
     @Override
     public boolean sameAs(Object other) {
         if (this == other) return true;
