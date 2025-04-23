@@ -5,9 +5,7 @@ import eapli.base.droneModelManagement.domain.DroneModelBuilder;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -17,20 +15,21 @@ public class DroneModelManagementService {
 
     private final DroneModelRepository droneModelRepository;
 
-    @Autowired
     public DroneModelManagementService(final DroneModelRepository droneModelRepository){
         this.droneModelRepository = droneModelRepository;
     }
 
-    @Transactional
     public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final Calendar createdOn, final SystemUser createdBy){
+        if(isModelNameUsed(droneModelRepository, modelName)){
+            throw new IllegalArgumentException("This Model Name is already registered in the system!");
+        }
         DroneModelBuilder droneModelBuilder = new DroneModelBuilder();
         droneModelBuilder.withModelName(modelName).withManufacturer(manufacturer).createdOn(createdOn).createdBy(createdBy);
         DroneModel newDroneModel = droneModelBuilder.build();
         return (DroneModel) this.droneModelRepository.save(newDroneModel);
     }
 
-    @Transactional
+
     public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final SystemUser createdBy){
         return registerNewDroneModel(modelName, manufacturer, CurrentTimeCalendars.now(), createdBy);
     }
@@ -47,15 +46,18 @@ public class DroneModelManagementService {
         return this.droneModelRepository.findAll();
     }
 
-    @Transactional
     public DroneModel deactivateDroneModel(final DroneModel droneModel) {
         droneModel.deactivate(CurrentTimeCalendars.now());
         return (DroneModel) this.droneModelRepository.save(droneModel);
     }
 
-    @Transactional
     public DroneModel activateDroneModel(final DroneModel droneModel) {
         droneModel.activate();
         return (DroneModel) this.droneModelRepository.save(droneModel);
+    }
+
+
+    public boolean isModelNameUsed(DroneModelRepository repo, String modelName){
+        return repo.isDroneModelNameUsed(modelName);
     }
 }

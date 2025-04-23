@@ -11,4 +11,6 @@ public interface DroneModelRepository extends DomainRepository<Long, DroneModel>
 
     Iterable<DroneModel> findByManufacturer(String manufacturer);
 
+    boolean isDroneModelNameUsed(String name);
+
 }

@@ -14,6 +14,11 @@ public class InMemoryDroneModelRepository extends InMemoryDomainRepository<Drone
     }
 
     @Override
+    public boolean isDroneModelNameUsed(String name) {
+        return matchOne(e -> e.modelName().equalsIgnoreCase(name)).isPresent();
+    }
+
+    @Override
     public Optional<DroneModel> findById(Long id) {
         return matchOne(e -> e.identity().equals(id));
     }

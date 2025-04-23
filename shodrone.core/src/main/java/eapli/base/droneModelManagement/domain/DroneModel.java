@@ -83,13 +83,9 @@ public class DroneModel implements AggregateRoot<Long> {
     @Override
     public String toString() {
         return "DroneModel{" +
-                "droneModelId=" + droneModelId +
-                ", modelName='" + modelName + '\'' +
+                "modelName='" + modelName + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
-                ", createdOn=" + createdOn +
                 ", active=" + active +
-                ", deactivatedOn=" + deactivatedOn +
-                ", createdBy=" + createdBy +
                 '}';
     }
 

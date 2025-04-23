@@ -37,6 +37,18 @@ public class DroneModelBuilder implements DomainFactory<DroneModel> {
     }
     @Override
     public DroneModel build() {
+        if (modelName == null || modelName.trim().isEmpty())
+            throw new IllegalArgumentException("Model name must not be null or empty");
+
+        if (manufacturer == null || manufacturer.trim().isEmpty())
+            throw new IllegalArgumentException("Manufacturer must not be null or empty");
+
+        if (createdOn == null)
+            throw new IllegalArgumentException("Creation date must not be null");
+
+        if (createdBy == null)
+            throw new IllegalArgumentException("CreatedBy SystemUser must not be null");
+
         return new DroneModel(modelName, manufacturer, createdOn, createdBy);
     }
 }

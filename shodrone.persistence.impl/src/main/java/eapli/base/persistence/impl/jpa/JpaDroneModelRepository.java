@@ -27,6 +27,14 @@ public class JpaDroneModelRepository extends JpaAutoTxRepository<DroneModel, Lon
         params.put("manufacturer", manufacturer);
         return match("e.manufacturer=:manufacturer", params);
     }
+
+    @Override
+    public boolean isDroneModelNameUsed(String name) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        return matchOne("e.modelName = :name", params).isPresent();
+    }
+
     @Override
     public Optional<DroneModel> findById(final Long id) {
         final Map<String, Object> params = new HashMap<>();
