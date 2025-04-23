@@ -18,7 +18,7 @@ public class AddDroneModelUI extends AbstractUI {
         } catch(IllegalArgumentException e){
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }
-        return false;
+        return true;
     }
 
     @Override

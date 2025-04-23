@@ -46,8 +46,8 @@ public class DeactivateUserUI extends AbstractUI {
         if (!iterable.iterator().hasNext()) {
             System.out.println("There is no registered User");
         } else {
-            System.out.printf("%-6s%-30s%-30s%-30s%-30s%n", "Nº:", "Username", "Firstname", "Lastname", "Status");
             final SelectWidget<SystemUser> selector = new SelectWidget<>("Select User to Deactivate", iterable, new SystemUserPrinter());
+            System.out.printf("%-6s%-30s%-30s%-30s%-30s%n", "Nº:", "Username", "Firstname", "Lastname", "Status");
             selector.show();
             final SystemUser user = selector.selectedElement();
             if (user == null) {
