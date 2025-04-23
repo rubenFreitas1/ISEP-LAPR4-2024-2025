@@ -26,7 +26,7 @@ package eapli.base.persistence.impl.jpa;
  */
 class PersistenceSettings {
 
-	public static final String PERSISTENCE_UNIT_NAME = "eapli.exemplo";
+	public static final String PERSISTENCE_UNIT_NAME = "SHODRONE";
 
 	private PersistenceSettings() {
 	}
