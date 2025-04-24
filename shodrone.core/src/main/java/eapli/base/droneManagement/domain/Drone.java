@@ -41,7 +41,7 @@ public class Drone implements AggregateRoot<Long> {
     }
 
     public Drone(final String serialNumber, final DroneModel droneModel, final Calendar acquisitionDate, final SystemUser user){
-        Preconditions.noneNull(new Object[] {serialNumber, droneModel, user});
+        Preconditions.noneNull(new Object[] {serialNumber, droneModel, user, acquisitionDate});
 
         this.serialNumber = serialNumber;
         this.droneModel = droneModel;

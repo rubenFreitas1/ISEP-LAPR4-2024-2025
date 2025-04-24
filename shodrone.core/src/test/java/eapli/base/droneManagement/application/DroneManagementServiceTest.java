@@ -1,0 +1,142 @@
+package eapli.base.droneManagement.application;
+
+import eapli.base.droneManagement.domain.Drone;
+import eapli.base.droneManagement.repositories.DroneRepository;
+import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
+import eapli.base.usermanagement.domain.Roles;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.time.util.CurrentTimeCalendars;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Calendar;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class DroneManagementServiceTest {
+
+    @Mock
+    private DroneRepository repo;
+
+    @InjectMocks
+    private DroneManagementService service;
+
+    PasswordPolicy policy = new ExemploPasswordPolicy();
+    PasswordEncoder encoder = new PlainTextEncoder();
+
+    private final Calendar now = Calendar.getInstance();
+
+    private SystemUser user;
+
+    private DroneModel droneModel;
+    @BeforeEach
+    public void setup(){
+        user = new SystemUserBuilder(policy, encoder)
+                .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
+                .withRoles( Roles.ADMIN).build();
+
+        droneModel = new DroneModel("Falcon", "Amazon", now, user);
+    }
+
+
+    @Test
+    public void registerNewDrone_success() {
+        String serialNumber = "DRONE10001";
+
+        when(repo.isSerialNameUsed(serialNumber)).thenReturn(false);
+        when(repo.save(any(Drone.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Drone drone = service.registerNewDrone(serialNumber, droneModel, user);
+
+        Assertions.assertEquals(serialNumber, drone.serialNumber());
+        verify(repo).save(any(Drone.class));
+    }
+
+
+    @Test
+    void registerNewDrone_duplicateSerialNumber_throwsException() {
+        String serialNumber = "DRONE10001";
+        when(repo.isSerialNameUsed(serialNumber)).thenReturn(true);
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDrone(serialNumber, droneModel, user)
+        );
+    }
+
+
+    @Test
+    void deactivateDrone_savesDeactivatedDrone() {
+        Drone drone = new Drone("DRONE10001", droneModel, now, user);
+        when(repo.save(drone)).thenReturn(drone);
+
+        Drone result = service.deactivateDrone(drone);
+
+        Assertions.assertFalse(result.isActive());
+        verify(repo).save(drone);
+    }
+
+    @Test
+    void activateDrone_savesActivatedDrone() {
+        Drone drone = new Drone("DRONE10001", droneModel, now, user);
+        drone.deactivate(CurrentTimeCalendars.now());
+        when(repo.save(drone)).thenReturn(drone);
+        Drone result = service.activateDrone(drone);
+        Assertions.assertTrue(result.isActive());
+        verify(repo).save(drone);
+    }
+
+    @Test
+    void findById_existingDrone_returnsDrone() {
+        Drone drone = new Drone("DRONE20001", droneModel, now, user);
+        when(repo.findById(1L)).thenReturn(Optional.of(drone));
+
+        Optional<Drone> result = service.findById(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals(drone, result.get());
+    }
+
+    @Test
+    void isSerialNumberUsed_trueAndFalse() {
+        String usedSerial = "USED123";
+        String unusedSerial = "NEW123";
+
+        when(repo.isSerialNameUsed(usedSerial)).thenReturn(true);
+        when(repo.isSerialNameUsed(unusedSerial)).thenReturn(false);
+
+        assertTrue(service.isSerialNumberUsed(usedSerial));
+        assertFalse(service.isSerialNumberUsed(unusedSerial));
+    }
+
+    @Test
+    void deactivateDrone_setsCorrectDeactivationDate() {
+        Drone drone = new Drone("DRONE10003", droneModel, now, user);
+        service.deactivateDrone(drone);
+        assertNotNull(drone.deactivatedOn());
+    }
+
+    @Test
+    void activateDrone_ensureItsNull() {
+        Drone drone = new Drone("DRONE10003", droneModel, now, user);
+        assertNull(drone.deactivatedOn());
+        service.deactivateDrone(drone);
+        assertNotNull(drone.deactivatedOn());
+        service.activateDrone(drone);
+        assertNull(drone.deactivatedOn());
+    }
+
+}
