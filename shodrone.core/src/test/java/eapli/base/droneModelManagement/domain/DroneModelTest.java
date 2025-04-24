@@ -50,7 +50,7 @@ class DroneModelTest {
     }
 
     @Test
-    void deactivate_shouldChangeActiveStatusToFalse() {
+    void remove_shouldChangeActiveStatusToFalse() {
         DroneModel model = new DroneModel("Falcon", "DJI", now, user);
 
         assertTrue(model.isActive());
@@ -71,7 +71,7 @@ class DroneModelTest {
     }
 
     @Test
-    void deactivate_withDateBeforeCreatedOn_shouldThrowException() {
+    void remove_withDateBeforeCreatedOn_shouldThrowException() {
         Calendar past = Calendar.getInstance();
         past.setTimeInMillis(now.getTimeInMillis() - 10000);
         DroneModel model = new DroneModel("Falcon", "DJI", now, user);
@@ -80,7 +80,7 @@ class DroneModelTest {
     }
 
     @Test
-    void deactivate_whenAlreadyInactive_shouldThrowException() {
+    void remove_whenAlreadyInactive_shouldThrowException() {
         DroneModel model = new DroneModel("Falcon", "DJI", now, user);
         model.deactivate(Calendar.getInstance());
 

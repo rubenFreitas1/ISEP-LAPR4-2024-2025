@@ -69,35 +69,35 @@ class DroneTest {
     }
 
     @Test
-    void deactivate_shouldChangeActiveStatusToFalse() {
+    void remove_shouldChangeActiveStatusToFalse() {
         Drone drone = new Drone("DRONE1101", droneModel, now, user);
 
         assertTrue(drone.isActive());
-        drone.deactivate(Calendar.getInstance());
+        drone.remove(Calendar.getInstance(), "Test reason");
         assertFalse(drone.isActive());
         assertNotNull(drone.deactivatedOn());
     }
 
     @Test
-    void deactivate_withDateBeforeAcquisition_shouldThrowException() {
+    void remove_withDateBeforeAcquisition_shouldThrowException() {
         Drone drone = new Drone("DRONE1101", droneModel, now, user);
         Calendar before = (Calendar) now.clone();
         before.add(Calendar.DAY_OF_YEAR, -1);
-        assertThrows(IllegalArgumentException.class, () -> drone.deactivate(before));
+        assertThrows(IllegalArgumentException.class, () -> drone.remove(before, "Test reason"));
     }
 
     @Test
-    void deactivate_whenAlreadyInactive_shouldThrowException() {
+    void remove_whenAlreadyInactive_shouldThrowException() {
         Drone drone = new Drone("DRONE1101", droneModel, now, user);
-        drone.deactivate(Calendar.getInstance());
+        drone.remove(Calendar.getInstance(), "Test reason");
 
-        assertThrows(IllegalStateException.class, () -> drone.deactivate(Calendar.getInstance()));
+        assertThrows(IllegalStateException.class, () -> drone.remove(Calendar.getInstance(), "Test reason"));
     }
 
     @Test
     void activate_shouldChangeActiveStatusToTrue() {
         Drone drone = new Drone("DRONE1101", droneModel, now, user);
-        drone.deactivate(Calendar.getInstance());
+        drone.remove(Calendar.getInstance(), "Test reason");
         assertFalse(drone.isActive());
         drone.activate();
         assertTrue(drone.isActive());
