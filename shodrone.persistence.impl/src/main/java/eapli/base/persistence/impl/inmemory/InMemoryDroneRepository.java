@@ -19,6 +19,11 @@ public class InMemoryDroneRepository extends InMemoryDomainRepository<Drone, Lon
     }
 
     @Override
+    public Iterable<Drone> findByActive(boolean b) {
+        return match(e -> e.isActive() == b);
+    }
+
+    @Override
     public Optional<Drone> findById(Long id) {
         return matchOne(e -> e.identity().equals(id));
     }

@@ -79,11 +79,11 @@ class DroneManagementServiceTest {
 
 
     @Test
-    void deactivateDrone_savesDeactivatedDrone() {
+    void removeDrone_savesDeactivatedDrone() {
         Drone drone = new Drone("DRONE10001", droneModel, now, user);
         when(repo.save(drone)).thenReturn(drone);
 
-        Drone result = service.deactivateDrone(drone);
+        Drone result = service.removeDrone(drone, "Test reason");
 
         Assertions.assertFalse(result.isActive());
         verify(repo).save(drone);
@@ -92,7 +92,7 @@ class DroneManagementServiceTest {
     @Test
     void activateDrone_savesActivatedDrone() {
         Drone drone = new Drone("DRONE10001", droneModel, now, user);
-        drone.deactivate(CurrentTimeCalendars.now());
+        drone.remove(CurrentTimeCalendars.now(), "Test reason");
         when(repo.save(drone)).thenReturn(drone);
         Drone result = service.activateDrone(drone);
         Assertions.assertTrue(result.isActive());
@@ -123,9 +123,9 @@ class DroneManagementServiceTest {
     }
 
     @Test
-    void deactivateDrone_setsCorrectDeactivationDate() {
+    void removeDrone_setsCorrectDeactivationDate() {
         Drone drone = new Drone("DRONE10003", droneModel, now, user);
-        service.deactivateDrone(drone);
+        service.removeDrone(drone, "Test reason");
         assertNotNull(drone.deactivatedOn());
     }
 
@@ -133,7 +133,7 @@ class DroneManagementServiceTest {
     void activateDrone_ensureItsNull() {
         Drone drone = new Drone("DRONE10003", droneModel, now, user);
         assertNull(drone.deactivatedOn());
-        service.deactivateDrone(drone);
+        service.removeDrone(drone, "Test reason");
         assertNotNull(drone.deactivatedOn());
         service.activateDrone(drone);
         assertNull(drone.deactivatedOn());

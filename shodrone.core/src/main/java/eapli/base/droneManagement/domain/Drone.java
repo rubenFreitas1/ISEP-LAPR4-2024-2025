@@ -24,6 +24,7 @@ public class Drone implements AggregateRoot<Long> {
     @ManyToOne
     private DroneModel droneModel;
 
+    private String removeReason;
 
     @Temporal(TemporalType.DATE)
     private Calendar acquisitionDate;
@@ -63,13 +64,14 @@ public class Drone implements AggregateRoot<Long> {
 
     public Calendar deactivatedOn(){return this.deactivatedOn;}
 
-    public void deactivate(final Calendar deactivatedOn) {
+    public void remove(final Calendar deactivatedOn, final String reason) {
         if (deactivatedOn != null && !deactivatedOn.before(this.acquisitionDate)) {
             if (!this.active) {
                 throw new IllegalStateException("Cannot deactivate an inactive Drone!");
             } else {
                 this.active = false;
                 this.deactivatedOn = deactivatedOn;
+                this.removeReason = reason;
             }
         } else {
             throw new IllegalArgumentException();
@@ -80,6 +82,7 @@ public class Drone implements AggregateRoot<Long> {
         if (!this.isActive()) {
             this.active = true;
             this.deactivatedOn = null;
+            this.removeReason = null;
         }
     }
 
@@ -105,6 +108,7 @@ public class Drone implements AggregateRoot<Long> {
                 ", acquisitionDate=" + acquisitionDate +
                 ", active=" + active +
                 ", deactivatedOn=" + deactivatedOn +
+                ", removeReason='" + removeReason + '\'' +
                 ", createdBy=" + createdBy +
                 '}';
     }

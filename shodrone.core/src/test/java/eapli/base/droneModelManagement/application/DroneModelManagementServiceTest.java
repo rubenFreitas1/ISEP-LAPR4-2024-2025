@@ -113,7 +113,7 @@ public class DroneModelManagementServiceTest {
     }
 
     @Test
-    void deactivateDroneModel_savesDeactivatedModel() {
+    void removeDroneModel_savesDeactivatedModel() {
         DroneModel model = new DroneModelBuilder().withModelName("Falcon").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build();
         when(repo.save(model)).thenReturn(model);
 

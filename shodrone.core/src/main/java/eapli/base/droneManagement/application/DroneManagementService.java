@@ -33,14 +33,18 @@ public class DroneManagementService {
     }
 
 
-    public Drone deactivateDrone(final Drone drone) {
-        drone.deactivate(CurrentTimeCalendars.now());
+    public Drone removeDrone(final Drone drone, final String reason){
+        drone.remove(CurrentTimeCalendars.now(), reason);
         return (Drone) this.droneRepository.save(drone);
     }
 
     public Drone activateDrone(final Drone drone) {
         drone.activate();
         return (Drone) this.droneRepository.save(drone);
+    }
+
+    public Iterable<Drone> activeDrones(){
+        return this.droneRepository.findByActive(true);
     }
 
     public Optional<Drone> findById(Long id){return this.droneRepository.findById(id);}

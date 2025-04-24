@@ -6,7 +6,7 @@ participant "RemoveDroneUI" as UI <<presentation>>
 participant "RemoveDroneController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "DroneManagementService" as DroneManagementService <<application>>
-participant "SystemUser" as SystemUser <<domain>>
+participant "Drone" as Drone <<domain>>
 participant "DroneRepository" as DroneRepository <<repository>>
 database "Database" as Database
 
@@ -64,8 +64,8 @@ Actor -> UI: Choose Drone to Remove
                 Controller -> DroneManagementService : removeDrone(drone, reason)
                 activate DroneManagementService
 
-                    DroneManagementService -> SystemUser: remove(CurrentTimeCalendars.now())
-                    DroneManagementService -> SystemUser: insertReason(reason)
+                    DroneManagementService -> Drone: remove(CurrentTimeCalendars.now())
+                    DroneManagementService -> Drone: insertReason(reason)
 
                     DroneManagementService -> DroneRepository : save(drone)
 

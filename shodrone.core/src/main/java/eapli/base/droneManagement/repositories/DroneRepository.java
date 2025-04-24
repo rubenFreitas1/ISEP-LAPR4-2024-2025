@@ -14,4 +14,5 @@ public interface DroneRepository extends DomainRepository<Long, Drone> {
 
     boolean isSerialNameUsed(String serialNumber);
 
+    Iterable<Drone> findByActive(boolean b);
 }

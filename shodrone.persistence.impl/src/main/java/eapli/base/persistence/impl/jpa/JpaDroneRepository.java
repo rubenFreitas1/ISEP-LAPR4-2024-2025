@@ -35,6 +35,13 @@ public class JpaDroneRepository extends JpaAutoTxRepository<Drone, Long, Long> i
     }
 
     @Override
+    public Iterable<Drone> findByActive(boolean b) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("active", b);
+        return match("e.active = :active", params);
+    }
+
+    @Override
     public Optional<Drone> findById(final Long id) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
