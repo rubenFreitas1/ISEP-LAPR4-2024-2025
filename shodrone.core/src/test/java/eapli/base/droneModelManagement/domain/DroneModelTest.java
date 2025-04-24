@@ -70,4 +70,21 @@ class DroneModelTest {
         assertNull(model.deactivatedOn());
     }
 
+    @Test
+    void deactivate_withDateBeforeCreatedOn_shouldThrowException() {
+        Calendar past = Calendar.getInstance();
+        past.setTimeInMillis(now.getTimeInMillis() - 10000);
+        DroneModel model = new DroneModel("Falcon", "DJI", now, user);
+
+        assertThrows(IllegalArgumentException.class, () -> model.deactivate(past));
+    }
+
+    @Test
+    void deactivate_whenAlreadyInactive_shouldThrowException() {
+        DroneModel model = new DroneModel("Falcon", "DJI", now, user);
+        model.deactivate(Calendar.getInstance());
+
+        assertThrows(IllegalStateException.class, () -> model.deactivate(Calendar.getInstance()));
+    }
+
 }
