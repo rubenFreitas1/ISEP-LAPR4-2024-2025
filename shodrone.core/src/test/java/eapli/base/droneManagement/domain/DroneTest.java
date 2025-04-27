@@ -104,6 +104,15 @@ class DroneTest {
         assertNull(drone.deactivatedOn());
     }
 
+    @Test
+    void remove_shouldStoreRemoveReasonCorrectly() {
+        Drone drone = new Drone("DRONE1101", droneModel, now, user);
+        Calendar removalDate = Calendar.getInstance();
+        String reason = "Test removal reason";
+        drone.remove(removalDate, reason);
 
+        String toString = drone.toString();
+        assertTrue(toString.contains(reason));
+    }
 
 }

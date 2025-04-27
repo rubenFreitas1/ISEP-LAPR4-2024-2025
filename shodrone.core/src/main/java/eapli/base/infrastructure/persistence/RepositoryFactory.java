@@ -22,6 +22,7 @@ package eapli.base.infrastructure.persistence;
 
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
+import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
 import eapli.base.utentemanagement.repositories.UtenteRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
@@ -70,6 +71,20 @@ public interface RepositoryFactory {
      */
     DroneModelRepository droneModels(TransactionalContext autoTx);
 
+    /**
+     * repository will be created in auto transaction mode
+     *
+     * @return
+     */
+    FigureCategoryRepository figureCategories();
+
+    /**
+     *
+     * @param autoTx
+     *           the transactional context to enroll
+     * @return
+     */
+    FigureCategoryRepository figureCategories(TransactionalContext autoTx);
 
     /**
      * repository will be created in auto transaction mode
