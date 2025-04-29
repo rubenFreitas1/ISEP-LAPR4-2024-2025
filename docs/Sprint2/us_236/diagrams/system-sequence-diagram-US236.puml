@@ -1,0 +1,40 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US236
+
+ == Edit a show request ==
+ activate crmCollaborator
+
+     crmCollaborator -> system : Ask to edit a show request
+     activate system
+
+         system -> crmCollaborator : displays the list of clients
+     deactivate system
+
+     crmCollaborator -> system : Selects the client
+     activate system
+
+          loop While user wants to change show request attributes
+          system -> crmCollaborator : displays the current attributes of the show request and asks to select \nthe attributes the user wants to change
+     deactivate system
+
+     crmCollaborator -> system : selects the attribute of the show request
+     activate system
+
+        system -> crmCollaborator : request the data of the atribute
+     deactivate system
+
+     crmCollaborator -> system: types the requested data
+     activate system
+
+         end
+         system -> crmCollaborator : displays the list of figures and asks the user to select \nthe figures according with the desired order
+     deactivate system
+
+ @enduml
