@@ -1,0 +1,99 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Collaborator" as Actor
+participant "RegisterRepresentativeUI" as UI <<presentation>>
+participant "RegisterRepresentativeController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
+participant "Representative" as Representative <<domain>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+
+
+
+UI -> Controller: listCustomers()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> CustomerManagementService: listActiveCustomers()
+            activate CustomerManagementService
+
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
+
+                    CustomerRepository -> Database:  findByActive(true)
+                    activate Database
+
+                        Database --> CustomerRepository: List of Active Customers
+                    deactivate Database
+                    CustomerRepository -> CustomerManagementService: List of Active Customers
+                deactivate CustomerRepository
+                CustomerManagementService ->Controller
+            deactivate CustomerManagementService
+
+            deactivate RepresentativeManagementService
+
+        Controller --> UI: List of Active Customers
+    deactivate Controller
+
+UI --> Actor: Show List of Active Customers
+deactivate UI
+
+Actor -> UI: Choose Customer
+
+
+    activate UI
+
+        UI -> Controller : registerRepresentative(Customer, Name, Email, PhoneNumber, Position)
+            activate Controller
+
+                Controller -> CustomerManagementService : registerNewRepresentative(Customer, Name, Email, PhoneNumber, Position)
+                activate CustomerManagementService
+
+                    CustomerManagementService -> CustomerManagementService: registerNewRepresentative(Customer, Name, Email, PhoneNumber, Position)
+                    Activate CustomerManagementService
+
+                    CustomerManagementService -> Representative** : new Representative(Customer, Name, Email, PhoneNumber, Position)
+                                activate Representative
+
+                                   Representative --> CustomerManagementService : newRepresentative
+                                deactivate Representative
+
+                    CustomerManagementService -> CustomerRepository : save(newRepresentative)
+
+                    activate CustomerRepository
+
+                             CustomerRepository -> Database : save()
+                             activate Database
+
+                                Database --> CustomerRepository
+                             deactivate Database
+
+                             CustomerRepository --> CustomerManagementService
+                    deactivate CustomerRepository
+                    CustomerManagementService --> CustomerManagementService
+                    deactivate CustomerManagementService
+
+                    CustomerManagementService --> Controller
+                deactivate CustomerManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml
