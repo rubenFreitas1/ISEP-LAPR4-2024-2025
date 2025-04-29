@@ -17,7 +17,7 @@ title System Sequence Diagram - US230
          system -> crmCollaborator : request data(location, date, duration, number of drones of the show)
      deactivate system
 
-     crmCollaborator -> system : types requested date
+     crmCollaborator -> system : types requested data
      activate system
 
          loop While user wants to create figures
