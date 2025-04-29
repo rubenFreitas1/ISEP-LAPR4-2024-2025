@@ -22,6 +22,7 @@ package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
+import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
@@ -62,6 +63,16 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	@Override
 	public DroneModelRepository droneModels(TransactionalContext autoTx) {
 		return new InMemoryDroneModelRepository();
+	}
+
+	@Override
+	public FigureCategoryRepository figureCategories() {
+		return figureCategories(null);
+	}
+
+	@Override
+	public FigureCategoryRepository figureCategories(TransactionalContext autoTx) {
+		return new InMemoryFigureCategoryRepository();
 	}
 
 	@Override
