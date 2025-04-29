@@ -4,6 +4,7 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.framework.time.util.CurrentTimeCalendars;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 public class FigureCategoryManagementService {
@@ -44,7 +45,7 @@ public class FigureCategoryManagementService {
     }
 
     public FigureCategory activateFigureCategory(FigureCategory figureCategory) {
-        figureCategory.activate();
+        figureCategory.activate(CurrentTimeCalendars.now());
         return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
     }
 

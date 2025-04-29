@@ -66,10 +66,10 @@ public class FigureCategory implements AggregateRoot<Long> {
         }
     }
 
-    public void activate() {
+    public void activate(final Calendar changedOn) {
         if (!this.isActive()) {
             this.active = true;
-            this.changedOn = null;
+            this.changedOn = changedOn == null ? Calendar.getInstance() : changedOn;
         } else {
             throw new IllegalStateException("FigureCategory is already active");
         }
