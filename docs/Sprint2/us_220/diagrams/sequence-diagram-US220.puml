@@ -18,7 +18,7 @@ Actor -> UI: show()
 
 UI -> Controller** : create()
 
-UI --> Actor: Request Customer Information ("Name, Email, Phone Number,\n VatNumber and Address")
+UI --> Actor: Request Customer Information (Name, Email, Phone Number,\n VatNumber, Address)
 deactivate UI
 
 Actor -> UI: Insert Customer data
@@ -26,21 +26,21 @@ Actor -> UI: Insert Customer data
 
     activate UI
 
-        UI -> Controller : registerCustomer("Name, Email, Phone Number,\n VatNumber and Address")
+        UI -> Controller : registerCustomer(Name, Email, Phone Number,\n VatNumber, Address)
             activate Controller
 
                 Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
 
                 deactivate AuthorizationService
 
-                Controller -> CustomerManagementService : registerNewCustomer("Name, Email, Phone Number,\n VatNumber and Address")
+                Controller -> CustomerManagementService : registerNewCustomer(Name, Email, Phone Number,\n VatNumber, Address)
                 activate CustomerManagementService
 
                     CustomerManagementService -> CustomerBuilder** : create()
                     CustomerManagementService -> CustomerBuilder : build()
                     activate CustomerBuilder
 
-                        CustomerBuilder -> Customer**: new Customer("Name, Email, Phone Number,\n VatNumber and Address")
+                        CustomerBuilder -> Customer**: new Customer(Name, Email, Phone Number,\n VatNumber, Address)
 
                          activate Customer
 
