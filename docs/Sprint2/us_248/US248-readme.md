@@ -8,7 +8,7 @@ This feature enhances visibility and organization as the number of categories gr
 
 ## 2. Requirements
 
-**US248** - As a Show Designer, I want to inacƟvate/acƟvate an exisƟng figure category in the figure category catalogue.
+**US248** - As a Show Designer, I want to inactivate/activate an existing figure category in the figure category catalogue.
 
 **Acceptance Criteria:**
 

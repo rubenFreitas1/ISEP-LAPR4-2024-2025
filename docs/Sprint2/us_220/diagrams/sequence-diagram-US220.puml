@@ -1,0 +1,77 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Collaborator" as Actor
+participant "RegisterCustomerUI" as UI <<presentation>>
+participant "RegisterCustomerController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "CustomerBuilder" as CustomerBuilder <<domain>>
+participant "Customer" as Customer <<domain>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI --> Actor: Request Customer Information ("Name, Email, Phone Number,\n VatNumber and Address")
+deactivate UI
+
+Actor -> UI: Insert Customer data
+
+
+    activate UI
+
+        UI -> Controller : registerCustomer("Name, Email, Phone Number,\n VatNumber and Address")
+            activate Controller
+
+                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+                deactivate AuthorizationService
+
+                Controller -> CustomerManagementService : registerNewCustomer("Name, Email, Phone Number,\n VatNumber and Address")
+                activate CustomerManagementService
+
+                    CustomerManagementService -> CustomerBuilder** : create()
+                    CustomerManagementService -> CustomerBuilder : build()
+                    activate CustomerBuilder
+
+                        CustomerBuilder -> Customer**: new Customer("Name, Email, Phone Number,\n VatNumber and Address")
+
+                         activate Customer
+
+                         Customer --> CustomerBuilder : newCustomer
+                         deactivate Customer
+
+                          CustomerBuilder --> CustomerManagementService : newCustomer
+
+                    deactivate CustomerBuilder
+
+
+                    CustomerManagementService -> CustomerRepository : save(newCustomer)
+
+                    activate CustomerRepository
+
+                             CustomerRepository -> Database : save()
+                             activate Database
+
+                                Database --> CustomerRepository
+                             deactivate Database
+
+                             CustomerRepository --> CustomerManagementService
+                    deactivate CustomerRepository
+
+                    CustomerManagementService --> Controller
+                deactivate CustomerManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml
