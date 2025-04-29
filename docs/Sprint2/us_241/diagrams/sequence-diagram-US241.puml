@@ -2,6 +2,7 @@
 title Sequence Diagram
 
 actor "Drone Tech" as Actor
+participant "AddDroneAction" as Action <<presentation>>
 participant "AddDroneUI" as UI <<presentation>>
 participant "AddDroneController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
@@ -15,20 +16,26 @@ database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action: Add drone to the inventory
+
+activate Action
+
+Action -> UI** : create
+Action -> UI: show()
+
+deactivate Action
+
     activate UI
 
-UI -> Controller** : create()
-UI --> Actor: Request Drone data (Serial Number)
+UI -> Controller** : create
+UI --> Actor: Request Drone Information (Serial Number, Acquisition date)
     deactivate UI
 
- Actor -> UI: Insert Drone data
+ Actor -> UI: Provide Drone Information
   activate UI
 
 UI -> Controller: listDroneModels()
     activate Controller
-
-        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
 
         Controller -> DroneModelManagementService: listActiveDroneModels()
             activate DroneModelManagementService
@@ -62,7 +69,7 @@ Actor -> UI: Choose Drone Model
         UI -> Controller : addDrone(serialNumber, droneModel)
             activate Controller
 
-                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH)
 
                 Controller -> DroneManagementService : registerNewDrone(serialNumber, droneModel, createdBy);
                 activate DroneManagementService
@@ -96,7 +103,7 @@ Actor -> UI: Choose Drone Model
 
                 Controller --> UI
             deactivate Controller
-        UI --> Actor : Inform operation success
+        UI --> Actor : Confirms Drone is added to the inventory
         deactivate UI
 deactivate Actor
 

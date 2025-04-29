@@ -24,7 +24,7 @@ Action -> UI: show()
 deactivate Action
     activate UI
 
-UI -> Controller** : create()
+UI -> Controller** : create
 
 UI --> Actor: Request Drone Model Information (Model Name, Manufacturer)
 deactivate UI
@@ -37,14 +37,14 @@ Actor -> UI: Provide Drone Model Information
         UI -> Controller : addDroneModel(modelName, manufacturer, programmingLanguage)
             activate Controller
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH)
 
                 deactivate AuthorizationService
 
                 Controller -> DroneModelManagementService : registerNewDroneModel(modelName, manufacturer,programmingLanguage, createdOn, createdBy);
                 activate DroneModelManagementService
 
-                    DroneModelManagementService -> DroneModelBuilder** : create()
+                    DroneModelManagementService -> DroneModelBuilder** : create
                     DroneModelManagementService -> DroneModelBuilder : build()
                     activate DroneModelBuilder
 
