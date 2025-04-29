@@ -2,6 +2,7 @@
 title Sequence Diagram
 
 actor "Drone Tech" as Actor
+participant "AddDroneModelAction" as Action <<presentation>>
 participant "AddDroneModelUI" as UI <<presentation>>
 participant "AddDroneModelController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
@@ -13,15 +14,22 @@ database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action**: Create a drone model
+
+activate Action
+
+Action -> UI** : create
+Action -> UI: show()
+
+deactivate Action
     activate UI
 
 UI -> Controller** : create()
 
-UI --> Actor: Request DroneModel data (Model Name, Manufacturer, Programming Language)
+UI --> Actor: Request Drone Model Information (Model Name, Manufacturer)
 deactivate UI
 
-Actor -> UI: Insert DroneModel data
+Actor -> UI: Provide Drone Model Information
 
 
     activate UI
@@ -70,7 +78,7 @@ Actor -> UI: Insert DroneModel data
 
                 Controller --> UI
             deactivate Controller
-        UI --> Actor : Inform operation success
+        UI --> Actor : Confirm Drone Model Added
         deactivate UI
 deactivate Actor
 
