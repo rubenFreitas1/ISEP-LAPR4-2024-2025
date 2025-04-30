@@ -13,6 +13,7 @@
     <class>eapli.base.droneModelManagement.domain.DroneModel</class>
     <class>eapli.base.droneManagement.domain.Drone</class>
     <class>eapli.base.figureCategoryManagement.domain.FigureCategory</class>
+    <class>eapli.base.figureManagement.domain.Figure</class>
 
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
