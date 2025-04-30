@@ -1,5 +1,6 @@
 package eapli.base.app.backoffice.presentation.menu;
 
+import eapli.base.app.backoffice.presentation.figureManagement.DecommissionFigureAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 
@@ -18,7 +19,7 @@ public class CRM_ManagerMenu {
 
     public Menu buildCRM_ManagerMenu() {
         final Menu menu = new Menu("Features >");
-        //menu.addItem(DECOMMISSION_FIGURE_OPTION, "Decommission Figure",);
+        menu.addItem(DECOMMISSION_FIGURE_OPTION, "Decommission Figure", new DecommissionFigureAction());
         //menu.addItem(LIST_SHOW_REQUESTS_OPTION, "List Show Requests", );
         //menu.addItem(CONFIGURATION_PROPOSAL_TEMPLATES_OPTION, "Configure Proposal Templates", );
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
