@@ -1,0 +1,120 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "DisableCustomerAction" as ACTION <<presentation>>
+participant "DisableCustomerUI" as UI <<presentation>>
+participant "DisableCustomerController" as CTRL <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+database "Database" as Database
+
+
+title System Sequence - US224
+
+activate crmCollaborator
+
+    crmCollaborator -> ACTION : Ask to disable a costumer representative
+    activate ACTION
+
+        ACTION -> UI** : create
+        ACTION -> UI : show()
+    deactivate ACTION
+
+    activate UI
+
+        UI -> CTRL** : create
+        UI -> CTRL : listClients()
+        activate CTRL
+
+            CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
+            CTRL -> CustomerManagementService : listActiveClients()
+            activate CustomerManagementService
+
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
+
+                    CustomerRepository -> Database : findByActive(true)
+                    activate Database
+
+                        Database -> CustomerRepository : listOfActiveClients
+                    deactivate Database
+
+                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                deactivate CustomerRepository
+
+                CustomerManagementService -> CTRL : listOfActiveClients
+            deactivate CustomerManagementService
+
+            CTRL -> UI : listOfActiveClients
+        deactivate CTRL
+
+        UI -> crmCollaborator : Shows list of clients
+    deactivate UI
+
+    crmCollaborator -> UI : Selects a client
+    activate UI
+
+        UI -> CTRL : listCustomerRepresentative(customer)
+        activate CTRL
+
+            CTRL -> RepresentativeManagementService : listCustomerRepresentative(customer)
+            activate RepresentativeManagementService
+
+                RepresentativeManagementService -> RepresentativeRepository : findByActive(true)
+                activate RepresentativeRepository
+
+                    RepresentativeRepository -> Database : findByActive(true)
+                    activate Database
+
+                        Database -> RepresentativeRepository : listOfCustomerRepresentatives
+                    deactivate Database
+
+                    RepresentativeRepository -> RepresentativeManagementService : listOfCustomerRepresentatives
+                deactivate RepresentativeRepository
+
+                RepresentativeManagementService -> CTRL : listOfCustomerRepresentatives
+            deactivate RepresentativeManagementService
+
+            CTRL -> UI : listOfCustomerRepresentatives
+        deactivate CTRL
+
+        UI -> crmCollaborator : Shows the list of the clients representatives
+    deactivate UI
+
+    crmCollaborator -> UI : selects a representative
+    activate UI
+
+        UI -> CTRL : deactivateCustomerRepresentative(representative)
+        activate CTRL
+
+            CTRL -> RepresentativeManagementService : deactivateCustomerRepresentative(representative)
+            activate RepresentativeManagementService
+
+                RepresentativeManagementService -> RepresentativeRepository : save(representative)
+                activate RepresentativeRepository
+
+                    RepresentativeRepository -> Database : save()
+                    activate Database
+
+                        Database -> RepresentativeRepository :
+                    deactivate Database
+
+                    RepresentativeRepository -> RepresentativeManagementService :
+                deactivate RepresentativeRepository
+
+                RepresentativeManagementService -> CTRL :
+            deactivate RepresentativeManagementService
+
+            CTRL -> UI :
+        deactivate CTRL
+
+        UI -> crmCollaborator : disables the costumer representative and displays operation success
+    deactivate UI
+
+@enduml
