@@ -1,0 +1,57 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "ListFigureAction" as ACTION
+participant "ListFigureUI" as UI
+participant "ListFigureController" as CTRL <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureManagementService" as FigureManagementService <<application>>
+participant "FigureRepository" as FigureRepository <<repository>>
+database "Database" as Database
+
+title Sequence Diagram - US231
+
+
+    activate crmCollaborator
+
+        crmCollaborator -> ACTION : Asks to display all public figures in the catalogue
+        activate ACTION
+
+            ACTION -> UI** : create
+            ACTION -> UI : listPublicFigures()
+            deactivate ACTION
+            activate UI
+
+                UI -> CTRL : listPublicFigures()
+                activate CTRL
+
+                    CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+                    CTRL -> FigureManagementService : listPublicFigures()
+                    activate FigureManagementService
+
+                        FigureManagementService -> FigureRepository : findByNonExclusivity(true)
+                        activate FigureRepository
+
+                            FigureRepository -> Database : findByNonExclusivity(true)
+                            activate Database
+
+                                Database -> FigureRepository : publicFiguresList
+                            deactivate Database
+
+                            FigureRepository -> FigureManagementService : publicFiguresList
+                        deactivate FigureRepository
+
+                        FigureManagementService -> CTRL : publicFiguresList
+                    deactivate FigureManagementService
+
+                    CTRL -> UI : publicFiguresList
+                deactivate CTRL
+
+            UI -> crmCollaborator : Displays the public figures in the catalogue
+        deactivate ACTION
+
+
+@enduml
