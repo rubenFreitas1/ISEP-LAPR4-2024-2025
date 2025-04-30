@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 public class FigureManagementService {
@@ -18,7 +19,7 @@ public class FigureManagementService {
         this.figureRepository = figureRepository;
     }
 
-    public Figure registerNewFigure(String description, HashSet<String> keywords, FigureCategory figureCategory, boolean exclusive){
+    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive){
         Figure newFigure = new Figure(description, keywords, figureCategory, exclusive);
         return (Figure) this.figureRepository.save(newFigure);
     }

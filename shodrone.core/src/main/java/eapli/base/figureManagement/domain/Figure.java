@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Figure implements AggregateRoot<Long> {
@@ -15,7 +16,7 @@ public class Figure implements AggregateRoot<Long> {
     private Long figureId;
 
     @ElementCollection
-    private HashSet<String> keywords;
+    private Set<String> keywords;
 
     private String description;
 
@@ -34,14 +35,14 @@ public class Figure implements AggregateRoot<Long> {
     protected Figure(){
     }
 
-    public Figure(final String description, HashSet<String> keywords, FigureCategory figureCategory, boolean exclusive) {
-        this.keywords = keywords;
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive) {
+        this.keywords = new HashSet<>(keywords);
         this.description = description;
         this.figureCategory = figureCategory;
         this.active = true;
     }
 
-    public HashSet<String> keywords(){
+    public Set<String> keywords(){
         return this.keywords;
     }
 
