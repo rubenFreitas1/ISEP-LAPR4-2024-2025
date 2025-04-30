@@ -2,6 +2,7 @@ package eapli.base.figureManagement.domain;
 
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
@@ -36,6 +37,7 @@ public class Figure implements AggregateRoot<Long> {
     }
 
     public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive) {
+        Preconditions.noneNull(new Object[] {keywords, figureCategory});
         this.keywords = new HashSet<>(keywords);
         this.description = description;
         this.figureCategory = figureCategory;
@@ -52,6 +54,10 @@ public class Figure implements AggregateRoot<Long> {
 
     public FigureCategory figureCategory(){
         return this.figureCategory;
+    }
+
+    public Calendar deactivatedOn(){
+        return this.deactivatedOn;
     }
 
     public boolean isActive(){return this.active;}
