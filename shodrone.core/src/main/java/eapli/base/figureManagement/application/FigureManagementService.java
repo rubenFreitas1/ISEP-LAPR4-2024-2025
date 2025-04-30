@@ -6,7 +6,6 @@ import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class FigureManagementService {
         return (Figure) this.figureRepository.save(newFigure);
     }
 
-    public Figure deactivateFigure(Figure figure){
+    public Figure decommissionFigure(Figure figure){
         figure.deactivate(CurrentTimeCalendars.now());
         return (Figure) this.figureRepository.save(figure);
     }
