@@ -48,6 +48,7 @@ Test:
 
 - Domain-Driven Design
 - Factory
+
 ### 4.4. Acceptance Tests
 
 Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
