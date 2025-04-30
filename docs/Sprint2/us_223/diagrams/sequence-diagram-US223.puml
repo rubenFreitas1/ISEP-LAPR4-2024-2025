@@ -1,0 +1,118 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Collaborator" as Actor
+participant "EditCustomerUI" as UI <<presentation>>
+participant "EditCustomerController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
+participant "Representative" as Representative <<domain>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+
+
+
+UI -> Controller: listCustomers()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> CustomerManagementService: listActiveCustomers()
+            activate CustomerManagementService
+
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
+
+                    CustomerRepository -> Database:  findByActive(true)
+                    activate Database
+
+                        Database --> CustomerRepository: List of Active Customers
+                    deactivate Database
+                    CustomerRepository -> CustomerManagementService: List of Active Customers
+                deactivate CustomerRepository
+                CustomerManagementService ->Controller
+            deactivate CustomerManagementService
+
+        Controller --> UI: List of Active Customers
+    deactivate Controller
+
+UI --> Actor: Show List of Active Customers
+deactivate UI
+
+Actor -> UI: Choose Customer
+
+
+    activate UI
+
+        UI -> Controller : listRepresentatives(Customer)
+            activate Controller
+
+                Controller -> RepresentativeManagementService : listRepresentatives(Customer)
+                    activate RepresentativeManagementService
+
+                        RepresentativeManagementService -> RepresentativeRepository : findByCustomer(Customer)
+                        activate RepresentativeRepository
+
+                        RepresentativeRepository -> Database:  findByCustomer(Customer)
+                        activate Database
+
+                            Database --> RepresentativeRepository: List of Representatives
+                        deactivate Database
+                        RepresentativeRepository -> RepresentativeManagementService: List of Representatives
+                    deactivate RepresentativeRepository
+                    RepresentativeManagementService --> Controller
+                    deactivate RepresentativeManagementService
+
+                Controller --> UI : List of Representatives
+            deactivate Controller
+        UI --> Actor : Show List of Representatives
+        deactivate UI
+
+        Actor -> UI: Choose Representative
+        activate UI
+            UI-> Actor: Request new Representative Data
+        deactivate UI
+
+        Actor -> UI: Provide new Representative Data
+        activate UI
+            UI -> Controller : editRepresentative(Representative, email, phoneNumber)
+            activate Controller
+
+                Controller -> RepresentativeManagementService : editRepresentative(Representative, email, phoneNumber)
+                    activate RepresentativeManagementService
+                        RepresentativeManagementService -> Representative: edit(email, phoneNumber)
+                        RepresentativeManagementService -> RepresentativeRepository : save()
+                        activate RepresentativeRepository
+
+                            RepresentativeRepository -> Database:  save()
+                            activate Database
+
+                                Database --> RepresentativeRepository
+                            deactivate Database
+                            RepresentativeRepository -> RepresentativeManagementService
+                        deactivate RepresentativeRepository
+                        RepresentativeManagementService --> Controller
+                    deactivate RepresentativeManagementService
+
+                Controller --> UI
+            deactivate Controller
+
+        UI --> Actor: Inform operation success
+
+
+
+
+deactivate Actor
+
+@enduml
