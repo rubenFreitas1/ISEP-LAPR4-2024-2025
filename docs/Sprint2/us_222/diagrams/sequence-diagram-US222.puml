@@ -2,7 +2,7 @@
 title Sequence Diagram
 
 actor "CRM Collaborator" as Actor
-participant "RegisterRepresentativeUI" as UI <<presentation>>
+participant "ListRepresentativesUI" as UI <<presentation>>
 participant "ListRepresentativesController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
