@@ -1,0 +1,109 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "EditShowRequestAction" as ACTION
+participant "EditShowRequestUI" as UI
+participant "EditShowRequestController" as CTRL <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
+participant "ShowRequest" as ShowRequest <<domain>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
+database "Database" as Database
+
+title System Sequence Diagram - US236
+
+ activate crmCollaborator
+
+     crmCollaborator -> ACTION : Ask to edit a show request
+     activate ACTION
+
+        ACTION -> UI**: create
+        ACTION -> UI : show()
+        deactivate ACTION
+
+        activate UI
+
+            UI -> CTRL**: create
+            UI -> CTRL : listClients()
+            activate CTRL
+
+                CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
+                CTRL -> CustomerManagementService : listActiveClients()
+                activate CustomerManagementService
+
+                    CustomerManagementService -> CustomerRepository : findByActive(true)
+                    activate CustomerRepository
+
+                        CustomerRepository -> Database : findByActive(true)
+                        activate Database
+
+                            Database -> CustomerRepository : listOfActiveClients
+                        deactivate Database
+
+                        CustomerRepository -> CustomerManagementService : listOfActiveClients
+                    deactivate CustomerRepository
+
+                    CustomerManagementService -> CTRL : listOfActiveClients
+                deactivate CustomerManagementService
+
+                CTRL -> UI : listOfActiveClients
+            deactivate CTRL
+            UI -> crmCollaborator : displays the list of clients
+     deactivate UI
+
+     crmCollaborator -> UI : Selects the client
+     activate UI
+
+        UI -> CTRL : listShowRequest(customer)
+        activate CTRL
+
+            CTRL -> ShowRequestManagementService : listShowRequest(customer)
+            activate ShowRequestManagementService
+
+                ShowRequestManagementService -> ShowRequestRepository : findByCustomer(customer)
+                activate ShowRequestRepository
+
+                    ShowRequestRepository -> Database : findByCustomer(customer)
+                    activate Database
+
+                        Database -> ShowRequestRepository : showRequest
+                    deactivate Database
+
+                    ShowRequestRepository -> ShowRequestManagementService : showRequest
+                deactivate ShowRequestRepository
+
+                ShowRequestManagementService -> CTRL : showRequest
+            deactivate ShowRequestManagementService
+
+            CTRL -> UI : showRequest
+        deactivate CTRL
+
+        UI -> crmCollaborator : displays show request associated to the client
+     deactivate UI
+
+     crmCollaborator -> UI : Selects the show request
+     activate UI
+
+          loop While user wants to change show request attributes
+          UI -> crmCollaborator : displays the current attributes of the show request and asks to select \nthe attributes the user wants to change
+     deactivate UI
+
+     crmCollaborator -> UI : selects the attribute of the show request
+     activate UI
+
+        UI -> crmCollaborator : request the data of the atribute
+     deactivate UI
+
+     crmCollaborator -> UI: types the requested data
+     activate UI
+
+         end
+         UI -> crmCollaborator : displays operation success
+     deactivate UI
+
+ @enduml
