@@ -34,7 +34,7 @@ public class Figure implements AggregateRoot<Long> {
     protected Figure(){
     }
 
-    public Figure(final String description, HashSet<String> keywords, FigureCategory figureCategory){
+    public Figure(final String description, HashSet<String> keywords, FigureCategory figureCategory, boolean exclusive) {
         this.keywords = keywords;
         this.description = description;
         this.figureCategory = figureCategory;
