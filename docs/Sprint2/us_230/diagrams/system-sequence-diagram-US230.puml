@@ -14,7 +14,13 @@ title System Sequence Diagram - US230
      crmCollaborator -> system : Ask to register a show request
      activate system
 
-         system -> crmCollaborator : request data(location, date, duration, number of drones of the show)
+        system -> crmCollaborator : displays the list and asks which of the customers will be associated \nwith the show
+     deactivate system
+
+     crmCollaborator -> system : selects the client
+     activate system
+
+        system -> crmCollaborator : request data(location, date, duration, number of drones of the show)
      deactivate system
 
      crmCollaborator -> system : types requested data
@@ -28,7 +34,7 @@ title System Sequence Diagram - US230
      activate system
 
          alt User wants to create a new figure
-            system -> crmCollaborator : request figure data
+            system -> crmCollaborator : request figure data (Description, keywords, category)
             crmCollaborator -> system : types figure data
          else User does not want to create a figure
 

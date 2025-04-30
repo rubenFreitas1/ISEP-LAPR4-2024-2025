@@ -1,0 +1,175 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "RegisterShowRequestAction" as ACTION <<presentation>>
+participant "RegisterShowRequestUI" as UI <<presentation>>
+participant "RegisterShowRequestController" as CTRL <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
+participant "FigureManagementService" as FigureManagementService <<application>>
+participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
+participant "FigureBuilder" as FigureBuilder <<domain>>
+participant "ShowRequestBuilder" as ShowRequestBuilder <<domain>>
+participant "Figure" as Figure <<domain>>
+participant "ShowRequest" as ShowRequest <<domain>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "FigureRepository" as FigureRepository <<repository>>
+participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
+database "Database" as Database
+
+title Sequence Diagram - US230
+
+ activate crmCollaborator
+
+     crmCollaborator -> ACTION : Ask to register a show request
+     activate ACTION
+
+        ACTION -> UI** : create
+        ACTION -> UI : show()
+        deactivate ACTION
+
+        activate UI
+
+        UI -> CTRL**: create
+        UI -> CTRL : listClients()
+        activate CTRL
+
+            CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
+            CTRL -> CustomerManagementService : listActiveClients()
+            activate CustomerManagementService
+
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
+
+                    CustomerRepository -> Database : findByActive(true)
+                    activate Database
+
+                        Database -> CustomerRepository : listOfActiveClients
+                    deactivate Database
+
+                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                deactivate CustomerRepository
+
+                CustomerManagementService -> CTRL : listOfActiveClients
+            deactivate CustomerManagementService
+
+            CTRL -> UI : listOfActiveClients
+        deactivate CTRL
+        UI -> crmCollaborator : displays the list and asks which of the customers will be associated \nwith the show
+     deactivate UI
+
+     crmCollaborator -> UI : selects the client
+     activate UI
+
+        UI -> crmCollaborator : request data(location, date, duration, number of drones of the show)
+     deactivate UI
+
+     crmCollaborator -> UI : types requested data
+     activate UI
+
+         loop While user wants to create figures
+         UI -> crmCollaborator : displays the list of the current figures in the catalogue \nand asks if the user wants to create a new figure
+     deactivate UI
+
+     crmCollaborator -> UI : answers with yes or no
+     activate UI
+
+         alt User wants to create a new figure
+            UI -> crmCollaborator : request figure data (Description, keywords, category)
+            crmCollaborator -> UI : types figure data
+            UI -> CTRL : addFigure(description, keywords, category)
+            activate CTRL
+
+                CTRL -> FigureManagementService : registerNewFigure(description, keywords, category, createdOn, createdBy)
+                activate FigureManagementService
+
+                    FigureManagementService -> FigureBuilder**: create
+                    FigureManagementService -> FigureBuilder : build()
+                    activate FigureBuilder
+
+                        FigureBuilder -> Figure**: new Figure(description, keywords, category, createdOn, createdBy);
+                        activate Figure
+
+                            Figure -> FigureBuilder : newFigure
+                        deactivate Figure
+
+                        FigureBuilder -> FigureManagementService : newFigure
+                    deactivate FigureBuilder
+
+                    FigureManagementService -> FigureRepository : save(newFigure)
+                    activate FigureRepository
+
+                        FigureRepository -> Database : save()
+                        activate Database
+
+                            Database --> FigureRepository
+                        deactivate Database
+
+                        FigureRepository --> FigureManagementService :
+                    deactivate FigureRepository
+
+                    FigureManagementService --> CTRL :
+                deactivate FigureManagementService
+
+                CTRL --> UI :
+            deactivate CTRL
+         else User does not want to create a figure
+
+         end
+         end
+
+         loop While user wants to add figures to the show
+         UI -> crmCollaborator : displays the list of figures and asks the user to select \nthe figures according with the desired order
+     deactivate UI
+     alt User selects a figure for the show
+     crmCollaborator -> UI : selects desired figure
+     activate UI
+
+        UI -> crmCollaborator : displays the sequence figures in the show
+        else User does not want to select more figures to the show
+        end
+        end
+
+        UI -> CTRL : registerShowRequest(client, location, date, duration, numberDrones, figureSequence)
+        activate CTRL
+
+            CTRL -> ShowRequestManagementService : registerShowRequest(client, location, date, duration, numberDrones, figureSequence)
+            activate ShowRequestManagementService
+
+                ShowRequestManagementService -> ShowRequestBuilder** : create
+                ShowRequestManagementService -> ShowRequestBuilder : build()
+                activate ShowRequestBuilder
+
+                    ShowRequestBuilder -> ShowRequest : newShowRequest(client, location, date, duration, numberDrones, figureSequence)
+                    activate ShowRequest
+
+                        ShowRequest -> ShowRequestBuilder : newShowRequest
+                    deactivate ShowRequest
+
+                    ShowRequestBuilder -> ShowRequestManagementService : newShowRequest
+                deactivate ShowRequestBuilder
+
+                ShowRequestManagementService -> ShowRequestRepository : save(newShowRequest)
+                activate ShowRequestRepository
+
+                    ShowRequestRepository -> Database : save()
+                    activate Database
+
+                        Database --> ShowRequestRepository :
+                    deactivate Database
+
+                    ShowRequestRepository --> ShowRequestManagementService :
+                deactivate ShowRequestRepository
+
+                ShowRequestManagementService --> CTRL :
+            deactivate ShowRequestManagementService
+
+            CTRL --> UI :
+        deactivate CTRL
+
+        UI -> crmCollaborator : displays operation success
+     deactivate UI
+ @enduml
