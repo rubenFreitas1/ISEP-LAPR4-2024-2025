@@ -20,6 +20,12 @@ title System Sequence Diagram - US236
      crmCollaborator -> system : Selects the client
      activate system
 
+          system -> crmCollaborator : displays show request associated to the client
+     deactivate system
+
+     crmCollaborator -> system : Selects the show request
+     activate system
+
           loop While user wants to change show request attributes
           system -> crmCollaborator : displays the current attributes of the show request and asks to select \nthe attributes the user wants to change
      deactivate system
@@ -34,7 +40,7 @@ title System Sequence Diagram - US236
      activate system
 
          end
-         system -> crmCollaborator : displays the list of figures and asks the user to select \nthe figures according with the desired order
+         system -> crmCollaborator : displays operation success
      deactivate system
 
  @enduml
