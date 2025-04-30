@@ -1,0 +1,105 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "SearchFigureAction" as ACTION
+participant "SearchFigureUI" as UI
+participant "SearchFigureController" as CTRL <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureManagementService" as FigureManagementService <<application>>
+participant "FigureRepository" as FigureRepository <<repository>>
+database "Database" as Database
+
+title Sequence Diagram - US232
+
+activate crmCollaborator
+
+    crmCollaborator -> ACTION : Asks to search a figure by category and/or keyword
+    activate ACTION
+
+        ACTION -> UI** : create
+        deactivate ACTION
+        activate UI
+
+            UI -> crmCollaborator : Request data(category and/or keyword)
+    deactivate UI
+    crmCollaborator -> UI : Types category and/or keyword
+
+    activate UI
+
+        UI -> CTRL : findFigure(category and/or keyword)
+        activate CTRL
+
+            CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+            alt Search figure only with keyword
+
+                CTRL -> FigureManagementService : findFigure(keyword)
+                activate FigureManagementService
+
+                    FigureManagementService -> FigureRepository : findByKeyword(keyword)
+                    activate FigureRepository
+
+                        FigureRepository -> Database : findByKeyword(keyword)
+                        activate Database
+
+                            Database -> FigureRepository : figure
+                        deactivate Database
+
+                        FigureRepository -> FigureManagementService : figure
+                    deactivate FigureRepository
+
+                    FigureManagementService -> CTRL : figure
+                deactivate FigureManagementService
+
+            else Search figure only with category
+
+                CTRL -> FigureManagementService : findFigure(category)
+                activate FigureManagementService
+
+                    FigureManagementService -> FigureRepository : findByFigureCategory(category)
+                    activate FigureRepository
+
+                        FigureRepository -> Database : findByFigureCategory(category)
+                        activate Database
+
+                            Database -> FigureRepository : figure
+                        deactivate Database
+
+                        FigureRepository -> FigureManagementService : figure
+                    deactivate FigureRepository
+
+                    FigureManagementService -> CTRL : figure
+                deactivate FigureManagementService
+
+            else Search figure with keyword and category
+
+                CTRL -> FigureManagementService : findFigure(category)
+                activate FigureManagementService
+
+                    FigureManagementService -> FigureRepository : findByKeywordAndCategory(keyword, category)
+                    activate FigureRepository
+
+                        FigureRepository -> Database : findByKeywordAndCategory(keyword, category)
+                        activate Database
+
+                            Database -> FigureRepository : figure
+                        deactivate Database
+
+                        FigureRepository -> FigureManagementService : figure
+                    deactivate FigureRepository
+
+                    FigureManagementService -> CTRL : figure
+                deactivate FigureManagementService
+            end
+
+            CTRL -> UI : figure
+        deactivate CTRL
+
+        UI -> crmCollaborator : Displays the search results of the figure \nand displays operation success
+    deactivate UI
+
+
+
+@enduml
