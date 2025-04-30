@@ -6,15 +6,21 @@ skinparam shadowing false
 actor "Show Designer" as showDesigner
 participant "System" as system
 
-title System Sequence Diagram - US247
+title System Sequence Diagram - US248
 
-== List figures categories  ==
+== Inactive/Activate a Figure Category  ==
 activate showDesigner
 
-showDesigner -> system : Wants to list existing figure category in the catalogue
+showDesigner -> system : Request list of figure categories
 activate system
 
 system -> showDesigner : Returns list of figure categories and their status
+deactivate system
+
+showDesigner -> system : Request to activate/deactivate a figure category
+activate system
+system -> system : Update figure category status
+system -> showDesigner : Confirm figure category status updated
 deactivate system
 
 

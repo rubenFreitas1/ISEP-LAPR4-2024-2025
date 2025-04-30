@@ -18,7 +18,7 @@ Test:
 
 ## 2. Requirements
 
-**US G223** As a CRM Collaborator, I want to edit the information (email and phone number) of a customer representative.
+**US 223** As a CRM Collaborator, I want to edit the information (email and phone number) of a customer representative.
 
 **Acceptance Criteria:**
 
