@@ -6,10 +6,8 @@ participant "RegisterRepresentativeUI" as UI <<presentation>>
 participant "RegisterRepresentativeController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
 participant "Representative" as Representative <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
-participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
 
 database "Database" as Database
 
@@ -43,8 +41,6 @@ UI -> Controller: listCustomers()
                 deactivate CustomerRepository
                 CustomerManagementService ->Controller
             deactivate CustomerManagementService
-
-            deactivate RepresentativeManagementService
 
         Controller --> UI: List of Active Customers
     deactivate Controller
