@@ -121,11 +121,11 @@ class FigureManagementServiceTest {
     @Test
     public void findByNonExclusivity_returnsCorrectFigures() {
         List<Figure> expected = List.of(figure);
-        when(repo.findByNonExclusivity(false)).thenReturn(expected);
+        when(repo.findByExclusivity(false)).thenReturn(expected);
 
         Iterable<Figure> result = service.findByNonExclusivity(false);
 
         assertEquals(expected, result);
-        verify(repo).findByNonExclusivity(false);
+        verify(repo).findByExclusivity(false);
     }
 }

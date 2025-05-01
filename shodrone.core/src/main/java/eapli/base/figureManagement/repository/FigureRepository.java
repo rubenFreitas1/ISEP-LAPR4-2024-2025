@@ -14,5 +14,5 @@ public interface FigureRepository extends DomainRepository<Long, Figure> {
 
     Iterable<Figure> findByActive(boolean active);
 
-    Iterable<Figure> findByNonExclusivity(boolean exclusive);
+    Iterable<Figure> findByExclusivity(boolean exclusive);
 }

@@ -50,7 +50,7 @@ public class FigureManagementService {
     }
 
     public Iterable<Figure> findByNonExclusivity(boolean exclusive){
-        return this.figureRepository.findByNonExclusivity(exclusive);
+        return this.figureRepository.findByExclusivity(exclusive);
     }
 
 }

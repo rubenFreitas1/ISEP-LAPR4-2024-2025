@@ -32,10 +32,10 @@ title Sequence Diagram - US231
                     CTRL -> FigureManagementService : listPublicFigures()
                     activate FigureManagementService
 
-                        FigureManagementService -> FigureRepository : findByNonExclusivity(true)
+                        FigureManagementService -> FigureRepository : findByExclusivity(false)
                         activate FigureRepository
 
-                            FigureRepository -> Database : findByNonExclusivity(true)
+                            FigureRepository -> Database : findByExclusivity(false)
                             activate Database
 
                                 Database -> FigureRepository : publicFiguresList

@@ -43,7 +43,7 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
     }
 
     @Override
-    public Iterable<Figure> findByNonExclusivity(boolean exclusive) {
+    public Iterable<Figure> findByExclusivity(boolean exclusive) {
         final Map<String, Object> params = new HashMap<>();
         params.put("exclusive", exclusive);
         return match("e.exclusive = :exclusive", params);

@@ -31,7 +31,7 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
     }
 
     @Override
-    public Iterable<Figure> findByNonExclusivity(boolean exclusive) {
+    public Iterable<Figure> findByExclusivity(boolean exclusive) {
         return this.match((e) -> {
             return e.isExclusive() == exclusive;
         });
