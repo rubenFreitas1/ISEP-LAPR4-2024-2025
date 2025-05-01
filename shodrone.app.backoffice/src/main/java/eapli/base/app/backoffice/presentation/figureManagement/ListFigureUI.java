@@ -20,7 +20,7 @@ public class ListFigureUI extends AbstractListUI<Figure> {
 
     @Override
     protected String elementName() {
-        return "Figure";
+        return "";
     }
 
     @Override
