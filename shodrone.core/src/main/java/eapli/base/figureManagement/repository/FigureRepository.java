@@ -8,11 +8,13 @@ import java.util.Optional;
 
 public interface FigureRepository extends DomainRepository<Long, Figure> {
 
-    Optional<Figure> findByKeyword(String keyword);
+    Iterable<Figure> findByKeyword(String keyword);
 
     Iterable<Figure> findByFigureCategory(FigureCategory figureCategory);
 
     Iterable<Figure> findByActive(boolean active);
 
     Iterable<Figure> findByExclusivity(boolean exclusive);
+
+    Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category);
 }

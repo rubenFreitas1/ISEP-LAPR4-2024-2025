@@ -19,10 +19,13 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
     }
 
     @Override
-    public Optional<Figure> findByKeyword(String keyword) {
+    public Iterable<Figure> findByKeyword(String keyword) {
+        final String normalizedKeyword = normalize(keyword); // normalize keyword here
+
         final Map<String, Object> params = new HashMap<>();
-        params.put("keyword", keyword.toLowerCase());
-        return matchOne(
+        params.put("keyword", normalizedKeyword);
+
+        return match(
                 "EXISTS (SELECT k FROM e.keywords k WHERE LOWER(k) = :keyword)",
                 params
         );
@@ -47,5 +50,27 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
         final Map<String, Object> params = new HashMap<>();
         params.put("exclusive", exclusive);
         return match("e.exclusive = :exclusive", params);
+    }
+
+    @Override
+    public Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("keyword", normalize(keyword));
+        params.put("category", category);
+
+        return match(
+                "e.figureCategory = :category AND EXISTS (" +
+                        "SELECT k FROM e.keywords k " +
+                        "WHERE LOWER(k) = :keyword" +
+                        ")",
+                params
+        );
+    }
+
+    private String normalize(String input) {
+        if (input == null) return null;
+        return java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
     }
 }

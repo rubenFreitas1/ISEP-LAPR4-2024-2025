@@ -45,7 +45,7 @@ public class FigureManagementService {
         return this.figureRepository.findByFigureCategory(figureCategory);
     }
 
-    public Optional<Figure> findByKeyword(String keyword){
+    public Iterable<Figure> findByKeyword(String keyword){
         return this.figureRepository.findByKeyword(keyword);
     }
 
@@ -55,5 +55,7 @@ public class FigureManagementService {
     public Iterable<Figure> listPublicFigures(){
         return this.figureRepository.findByExclusivity(false);
     }
-
+    public Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category){
+        return this.figureRepository.findByKeywordAndCategory(keyword, category);
+    }
 }
