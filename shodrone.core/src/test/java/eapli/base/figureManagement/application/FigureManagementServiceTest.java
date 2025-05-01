@@ -107,15 +107,19 @@ class FigureManagementServiceTest {
         assertEquals(expected, result);
         verify(repo).findByFigureCategory(category);
     }
-
     @Test
-    public void findByKeyword_returnsCorrectFigure() {
-        when(repo.findByKeyword("triângulo")).thenReturn(Optional.of(figure));
+    public void findByKeyword_returnsCorrectFigures() {
+        when(repo.findByKeyword("triângulo")).thenReturn(List.of(figure));
 
-        Optional<Figure> result = service.findByKeyword("triângulo");
+        Iterable<Figure> result = service.findByKeyword("triângulo");
 
-        assertTrue(result.isPresent());
-        assertEquals(figure, result.get());
+        assertNotNull(result);
+
+        List<Figure> figures = new ArrayList<>();
+        result.forEach(figures::add);
+
+        assertEquals(1, figures.size());
+        assertEquals(figure, figures.get(0));
     }
 
     @Test
@@ -128,4 +132,20 @@ class FigureManagementServiceTest {
         assertEquals(expected, result);
         verify(repo).findByExclusivity(false);
     }
+    @Test
+    public void findByKeywordAndCategory_returnsCorrectFigures() {
+        List<Figure> expected = List.of(figure);
+        when(repo.findByKeywordAndCategory("triângulo", category)).thenReturn(expected);
+
+        Iterable<Figure> result = service.findByKeywordAndCategory("triângulo", category);
+
+        assertNotNull(result);
+        List<Figure> figures = new ArrayList<>();
+        result.forEach(figures::add);
+
+        assertEquals(1, figures.size());
+        assertEquals(figure, figures.get(0));
+        verify(repo).findByKeywordAndCategory("triângulo", category);
+    }
+
 }
