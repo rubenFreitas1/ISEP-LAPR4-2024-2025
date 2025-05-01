@@ -49,8 +49,11 @@ public class FigureManagementService {
         return this.figureRepository.findByKeyword(keyword);
     }
 
-    public Iterable<Figure> findByNonExclusivity(boolean exclusive){
+    public Iterable<Figure> findByExclusivity(boolean exclusive){
         return this.figureRepository.findByExclusivity(exclusive);
+    }
+    public Iterable<Figure> listPublicFigures(){
+        return this.figureRepository.findByExclusivity(false);
     }
 
 }

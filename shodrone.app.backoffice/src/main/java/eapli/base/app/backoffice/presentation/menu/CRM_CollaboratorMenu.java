@@ -1,5 +1,6 @@
 package eapli.base.app.backoffice.presentation.menu;
 
+import eapli.base.app.backoffice.presentation.figureManagement.ListFigureAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 
@@ -60,7 +61,7 @@ public class CRM_CollaboratorMenu {
 
     public Menu buildFigureMenu() {
         final Menu menu = new Menu("Figure >");
-        //menu.addItem(LIST_PUBLIC_FIGURE_OPTION, "List all Public Figures",);
+        menu.addItem(LIST_PUBLIC_FIGURE_OPTION, "List all Public Figures", new ListFigureAction());
         //menu.addItem(SEARCH_FIGURE_CATALOGUE_OPTION, "Search Figure Catalogue", );
         //menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories", );
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);

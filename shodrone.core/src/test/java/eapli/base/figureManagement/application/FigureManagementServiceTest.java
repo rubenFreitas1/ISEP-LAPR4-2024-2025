@@ -123,7 +123,7 @@ class FigureManagementServiceTest {
         List<Figure> expected = List.of(figure);
         when(repo.findByExclusivity(false)).thenReturn(expected);
 
-        Iterable<Figure> result = service.findByNonExclusivity(false);
+        Iterable<Figure> result = service.findByExclusivity(false);
 
         assertEquals(expected, result);
         verify(repo).findByExclusivity(false);
