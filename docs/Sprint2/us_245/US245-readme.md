@@ -63,7 +63,6 @@ The system must ensure that each category has a unique name, includes timestamps
 ### 4.3. Applied Patterns
 
 - Domain-Driven Design
-- Builder
 - Factory
 ### 4.4. Acceptance Tests
 
