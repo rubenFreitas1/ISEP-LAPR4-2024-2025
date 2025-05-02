@@ -32,14 +32,18 @@ public class ShowRequest implements AggregateRoot<Long> {
     @Column(nullable = false)
     private ShowRequestStatus status;
 
+    @Column(nullable = false)
+    private eapli.base.customerManagement.domain.Customer customer;
+
     protected ShowRequest() {}
 
-    public ShowRequest(String location, Calendar date, int droneNumber, int duration, RequestedFigures requestedFigures) {
+    public ShowRequest(String location, Calendar date, int droneNumber, int duration, RequestedFigures requestedFigures, eapli.base.customerManagement.domain.Customer customer) {
         this.location = location;
         this.date = date;
         this.droneNumber = droneNumber;
         this.duration = duration;
         this.requestedFigures = requestedFigures;
+        this.customer = customer;
         this.createdOn = Calendar.getInstance();
         this.status = ShowRequestStatus.PENDING;
     }
@@ -57,6 +61,8 @@ public class ShowRequest implements AggregateRoot<Long> {
     public RequestedFigures requestedFigures() { return this.requestedFigures; }
 
     public ShowRequestStatus status() { return this.status; }
+
+    public eapli.base.customerManagement.domain.Customer customer() { return this.customer; }
 
     @Override
     public String toString() {
