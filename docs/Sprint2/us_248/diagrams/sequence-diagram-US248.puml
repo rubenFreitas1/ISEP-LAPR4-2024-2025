@@ -1,0 +1,85 @@
+@startuml
+title Sequence Diagram
+
+actor "Show Designer" as Actor
+participant "ActivateDeactivateFigureCategoryUI" as UI <<presentation>>
+participant "ActivateDeactivateFigureCategoryController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureCategoryManagementService" as FigureCategoryManagementService <<application>>
+participant "FigureCategory" as FigureCategory <<domain>>
+participant "FigureCategoryRepository" as FigureCategoryRepository <<repository>>
+
+
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+
+
+
+UI -> Controller: listCategories()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> FigureCategoryManagementService: listCategories()
+            activate FigureCategoryManagementService
+
+                FigureCategoryManagementService -> FigureCategoryRepository : findAll()
+                activate FigureCategoryRepository
+
+                    FigureCategoryRepository -> Database:  findAll()
+                    activate Database
+
+                        Database --> FigureCategoryRepository: List of Categories
+                    deactivate Database
+                    FigureCategoryRepository -> FigureCategoryManagementService: List of Categories
+                deactivate FigureCategoryRepository
+                FigureCategoryManagementService ->Controller
+            deactivate FigureCategoryManagementService
+
+        Controller --> UI: List of Categories
+    deactivate Controller
+
+UI --> Actor: Show List of Categories
+deactivate UI
+
+Actor -> UI: Choose Category
+
+
+    activate UI
+
+        UI -> Controller : changeStatus(Category)
+            activate Controller
+
+                Controller -> FigureCategoryManagementService : changeStatus(Category)
+                    activate FigureCategoryManagementService
+
+                        FigureCategoryManagementService -> FigureCategory : changeStatus(Category)
+                        FigureCategoryManagementService -> FigureCategoryRepository : save()
+                        activate FigureCategoryRepository
+
+                        FigureCategoryRepository -> Database:  save()
+                        activate Database
+
+                            Database --> FigureCategoryRepository
+                        deactivate Database
+                        FigureCategoryRepository -> FigureCategoryManagementService
+                    deactivate FigureCategoryRepository
+                    FigureCategoryManagementService --> Controller
+                    deactivate FigureCategoryManagementService
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+
+
+deactivate Actor
+
+@enduml
