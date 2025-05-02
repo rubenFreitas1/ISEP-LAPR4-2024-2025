@@ -1,5 +1,6 @@
 package eapli.base.showRequestManagement.domain;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.framework.domain.model.AggregateRoot;
 import jakarta.persistence.*;
 
@@ -37,7 +38,7 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     protected ShowRequest() {}
 
-    public ShowRequest(String location, Calendar date, int droneNumber, int duration, RequestedFigures requestedFigures, eapli.base.customerManagement.domain.Customer customer) {
+    public ShowRequest(String location, Calendar date, int droneNumber, int duration, RequestedFigures requestedFigures, Customer customer) {
         this.location = location;
         this.date = date;
         this.droneNumber = droneNumber;

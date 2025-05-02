@@ -25,6 +25,7 @@ import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
+import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
@@ -64,6 +65,16 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	@Override
 	public DroneModelRepository droneModels(TransactionalContext autoTx) {
 		return new InMemoryDroneModelRepository();
+	}
+
+	@Override
+	public ShowRequestRepository showRequests(TransactionalContext autoTx) {
+		return new InMemoryShowRequestRepository();
+	}
+
+	@Override
+	public ShowRequestRepository showRequests() {
+		return showRequests(null);
 	}
 
 	@Override
