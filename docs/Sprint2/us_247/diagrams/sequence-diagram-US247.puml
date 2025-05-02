@@ -1,0 +1,54 @@
+@startuml
+title Sequence Diagram
+
+actor "Show Designer" as Actor
+participant "LisFigureCategoryUI" as UI <<presentation>>
+participant "ListFigureCategoryController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "FigureCategoryManagementService" as FigureCategoryManagementService <<application>>
+participant "SystemUser" as SystemUser <<domain>>
+participant "FigureCategoryRepository" as FigureCategoryRepository <<repository>>
+database "Database" as Database
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI -> Controller: allFigureCategory()
+    activate Controller
+
+        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+        Controller -> FigureCategoryManagementService: findAll()
+            activate FigureCategoryManagementService
+
+                FigureCategoryManagementService -> FigureCategoryRepository: findAll()
+                    activate FigureCategoryRepository
+
+                        FigureCategoryRepository -> Database:  findAll()
+                            activate Database
+
+                                Database --> FigureCategoryRepository: List of Figure Category
+                            deactivate Database
+                        FigureCategoryRepository --> FigureCategoryManagementService: List of Figure Category
+                    deactivate FigureCategoryRepository
+
+
+                FigureCategoryManagementService --> Controller: List of Figure Category
+            deactivate FigureCategoryManagementService
+
+        Controller --> UI: List of Figure Category
+        deactivate Controller
+
+
+
+        UI --> Actor: Show List of Figure Category
+        deactivate UI
+
+
+deactivate Actor
+
+@enduml

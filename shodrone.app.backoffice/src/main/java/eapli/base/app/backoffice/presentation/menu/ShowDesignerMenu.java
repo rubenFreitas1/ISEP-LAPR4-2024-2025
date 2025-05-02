@@ -1,6 +1,7 @@
 package eapli.base.app.backoffice.presentation.menu;
 
 import eapli.base.app.backoffice.presentation.figureCategoryManagement.AddFigureCategoryAction;
+import eapli.base.app.backoffice.presentation.figureCategoryManagement.ListFigureCategoriesAction;
 import eapli.base.app.backoffice.presentation.figureManagement.AddFigureAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
@@ -24,7 +25,7 @@ public class ShowDesignerMenu {
         menu.addItem(ADD_FIGURE_OPTION, "Add Figure", new AddFigureAction());
         menu.addItem(ADD_FIGURE_CATEGORY_OPTION, "Add Figure Category", new AddFigureCategoryAction());
         //menu.addItem(EDIT_FIGURE_CATEGORY_OPTION, "Edit Figure Category", );
-        //menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories",);
+        menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories", new ListFigureCategoriesAction());
         //menu.addItem(INACTIVE_FIGURE_CATEGORY_OPTION, "Inactive Figure Category",);
         //menu.addItem(ACTIVE_FIGURE_CATEGORY_OPTION, "Active Figure Category",);
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);

@@ -1,4 +1,10 @@
 package eapli.base.app.backoffice.presentation.figureCategoryManagement;
 
-public class ListFigureCategoriesAction {
+import eapli.framework.actions.Action;
+
+public class ListFigureCategoriesAction implements Action {
+    @Override
+    public boolean execute() {
+        return new ListFigureCategoriesUI().show();
+    }
 }

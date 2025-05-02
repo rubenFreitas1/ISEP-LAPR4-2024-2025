@@ -36,6 +36,7 @@ public class FigureCategory implements AggregateRoot<Long> {
         this.description = description;
         this.active = true;
         this.createdOn = createdOn == null ? Calendar.getInstance() : createdOn;
+        this.changedOn = createdOn == null ? Calendar.getInstance() : createdOn;
     }
 
     public String name() {
