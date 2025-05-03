@@ -43,6 +43,9 @@ public class DroneManagementService {
         return (Drone) this.droneRepository.save(drone);
     }
 
+    public Iterable<Drone> findByDroneModel(final DroneModel droneModel) {
+        return this.droneRepository.findByDroneModel(droneModel);
+    }
     public Iterable<Drone> activeDrones(){
         return this.droneRepository.findByActive(true);
     }

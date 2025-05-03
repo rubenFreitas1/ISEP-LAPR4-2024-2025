@@ -10,8 +10,9 @@ import java.util.Optional;
 public class InMemoryDroneRepository extends InMemoryDomainRepository<Drone, Long> implements DroneRepository {
     @Override
     public Iterable<Drone> findByDroneModel(DroneModel droneModel) {
-        return match(e -> e.droneModel().equals(droneModel));
+        return match(e -> e.droneModel().equals(droneModel) && e.isActive());
     }
+
 
     @Override
     public boolean isSerialNameUsed(String serialNumber) {

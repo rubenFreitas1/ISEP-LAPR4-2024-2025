@@ -1,6 +1,7 @@
 package eapli.base.app.backoffice.presentation.menu;
 
 import eapli.base.app.backoffice.presentation.droneManagement.AddDroneAction;
+import eapli.base.app.backoffice.presentation.droneManagement.ListActiveDronesAction;
 import eapli.base.app.backoffice.presentation.droneManagement.RemoveDroneAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.AddDroneModelAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.ListDroneModelsAction;
@@ -30,7 +31,7 @@ public class DroneTechMenu {
         menu.addItem(LIST_DRONE_MODELS_OPTION, "List Drone Models", new ListDroneModelsAction());
         menu.addItem(ADD_DRONE_OPTION, "Add Drone to Inventory", new AddDroneAction());
         menu.addItem(REMOVE_DRONE_OPTION, "Remove Drone from Inventory", new RemoveDroneAction());
-        //menu.addItem(LIST_DRONES_OPTION, "List Active Drones",);
+        menu.addItem(LIST_DRONES_OPTION, "List Active Drones", new ListActiveDronesAction());
         //menu.addItem(SHOW_GENERATION_OPTION, "Show Generation",);
         //menu.addItem(SPECIFY_PROGRAMMING_LANGUAGE_OPTION, "Specify Programming Language",);
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);

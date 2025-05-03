@@ -24,7 +24,8 @@ public class JpaDroneRepository extends JpaAutoTxRepository<Drone, Long, Long> i
     public Iterable<Drone> findByDroneModel(DroneModel droneModel) {
         final Map<String, Object> params = new HashMap<>();
         params.put("droneModel", droneModel);
-        return match("e.droneModel=:droneModel", params);
+        params.put("active", true);
+        return match("e.droneModel=:droneModel AND e.active=:active", params);
     }
 
     @Override
