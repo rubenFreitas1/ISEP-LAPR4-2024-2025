@@ -1,6 +1,7 @@
 package eapli.base.droneModelManagement.application;
 
 import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.Roles;
@@ -18,8 +19,8 @@ public class AddDroneModelController {
     private final DroneModelManagementService droneModelsvc = new DroneModelManagementService(repo);
 
 
-    public DroneModel addDroneModel(final String modelName, final String manufacturer){
+    public DroneModel addDroneModel(final String modelName, final String manufacturer, final DroneWindBehavior windBehavior) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
-        return droneModelsvc.registerNewDroneModel(modelName,manufacturer, authz.session().get().authenticatedUser());
+        return droneModelsvc.registerNewDroneModel(modelName,manufacturer, authz.session().get().authenticatedUser(), windBehavior);
     }
 }

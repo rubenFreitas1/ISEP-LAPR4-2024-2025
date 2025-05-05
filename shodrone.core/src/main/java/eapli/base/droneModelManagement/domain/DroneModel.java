@@ -29,19 +29,24 @@ public class DroneModel implements AggregateRoot<Long> {
     @ManyToOne
     private SystemUser createdBy;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private DroneWindBehavior windBehavior;
+
     protected DroneModel(){
     }
 
 
-    public DroneModel(final String modelName, final String manufacturer,  final Calendar createdOn, final SystemUser createdBy) {
-        Preconditions.noneNull(new Object[] {modelName, manufacturer});
+    public DroneModel(final String modelName, final String manufacturer,  final Calendar createdOn, final SystemUser createdBy, final DroneWindBehavior windBehavior) {
+        Preconditions.noneNull(new Object[] {modelName, manufacturer, windBehavior});
         this.modelName = modelName;
         this.manufacturer = manufacturer;
         this.createdBy = createdBy;
         this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
+        this.windBehavior = windBehavior;
         this.active = true;
     }
 
+    public DroneWindBehavior windBehavior() {return this.windBehavior;}
 
     public String modelName (){ return this.modelName;}
 

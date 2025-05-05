@@ -1,7 +1,7 @@
 package eapli.base.droneModelManagement.application;
 
 import eapli.base.droneModelManagement.domain.DroneModel;
-import eapli.base.droneModelManagement.domain.DroneModelBuilder;
+import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
@@ -19,19 +19,23 @@ public class DroneModelManagementService {
         this.droneModelRepository = droneModelRepository;
     }
 
-    public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final Calendar createdOn, final SystemUser createdBy){
+    public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final Calendar createdOn, final SystemUser createdBy, final DroneWindBehavior windBehavior){
         if(isModelNameUsed(droneModelRepository, modelName)){
             throw new IllegalArgumentException("This Model Name is already registered in the system!");
         }
-        DroneModelBuilder droneModelBuilder = new DroneModelBuilder();
-        droneModelBuilder.withModelName(modelName).withManufacturer(manufacturer).createdOn(createdOn).createdBy(createdBy);
-        DroneModel newDroneModel = droneModelBuilder.build();
+        if(windBehavior == null){
+            throw new IllegalArgumentException("Wind Behavior cannot be null!");
+        }
+        if (createdBy == null){
+            throw new IllegalArgumentException("Created By cannot be null!");
+        }
+        DroneModel newDroneModel = new DroneModel(modelName, manufacturer, createdOn, createdBy, windBehavior);
         return (DroneModel) this.droneModelRepository.save(newDroneModel);
     }
 
 
-    public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final SystemUser createdBy){
-        return registerNewDroneModel(modelName, manufacturer, CurrentTimeCalendars.now(), createdBy);
+    public DroneModel registerNewDroneModel(final String modelName, final String manufacturer, final SystemUser createdBy, final DroneWindBehavior windBehavior){
+        return registerNewDroneModel(modelName, manufacturer, CurrentTimeCalendars.now(), createdBy, windBehavior);
     }
 
     public Optional<DroneModel> findById(final Long id){
@@ -46,9 +50,7 @@ public class DroneModelManagementService {
         return this.droneModelRepository.findAll();
     }
 
-    public Iterable<DroneModel> listActiveDroneModels(){
-        return this.droneModelRepository.findByActive(true);
-    }
+    public Iterable<DroneModel> listActiveDroneModels(){return this.droneModelRepository.findByActive(true);}
 
 
     public DroneModel deactivateDroneModel(final DroneModel droneModel) {
