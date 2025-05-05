@@ -30,11 +30,11 @@ public class WindInterval {
     }
 
     public boolean contains(double windSpeed) {
-        return windSpeed > min && windSpeed <= max;
+        return windSpeed >= min && windSpeed <= max;
     }
 
     public boolean overlaps(WindInterval other) {
-        return this.min < other.max && other.min < this.max;
+        return this.min <= other.max && other.min <= this.max;
     }
 
     public double min() {

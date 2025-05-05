@@ -1,6 +1,8 @@
 package eapli.base.droneManagement.domain;
 
+import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
@@ -26,6 +28,9 @@ class DroneTest {
 
     private DroneModel droneModel;
 
+    private DroneWindBehavior behavior;
+
+
     @BeforeEach
     void setUp() {
         now = Calendar.getInstance();
@@ -34,7 +39,14 @@ class DroneTest {
         user = new SystemUserBuilder(policy, encoder)
                 .with("joe", "StrongPass123", "John", "Doe", "joe@email.com")
                 .withRoles(Roles.ADMIN).build();
-        droneModel = new DroneModel("Falcon", "Amazon", now, user);
+        behavior = new DroneWindBehavior();
+        behavior.addTolerance(Axis.X,0,10, 0.5);
+        behavior.addTolerance(Axis.X,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Y,0,10, 0.5);
+        behavior.addTolerance(Axis.Y,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Z,0,10, 0.5);
+        behavior.addTolerance(Axis.Z,10.0001,20, 0.8);
+        droneModel = new DroneModel("Falcon", "Amazon", now, user, behavior);
     }
 
     @Test

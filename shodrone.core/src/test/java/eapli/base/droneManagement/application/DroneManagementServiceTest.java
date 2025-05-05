@@ -2,7 +2,9 @@ package eapli.base.droneManagement.application;
 
 import eapli.base.droneManagement.domain.Drone;
 import eapli.base.droneManagement.repositories.DroneRepository;
+import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
@@ -44,13 +46,22 @@ class DroneManagementServiceTest {
     private SystemUser user;
 
     private DroneModel droneModel;
+
+    private DroneWindBehavior behavior;
+
     @BeforeEach
     public void setup(){
         user = new SystemUserBuilder(policy, encoder)
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles( Roles.ADMIN).build();
-
-        droneModel = new DroneModel("Falcon", "Amazon", now, user);
+        behavior = new DroneWindBehavior();
+        behavior.addTolerance(Axis.X,0,10, 0.5);
+        behavior.addTolerance(Axis.X,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Y,0,10, 0.5);
+        behavior.addTolerance(Axis.Y,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Z,0,10, 0.5);
+        behavior.addTolerance(Axis.Z,10.0001,20, 0.8);
+        droneModel = new DroneModel("Falcon", "Amazon", now, user, behavior);
     }
 
 

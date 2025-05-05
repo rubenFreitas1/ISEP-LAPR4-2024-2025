@@ -85,7 +85,7 @@ public class AddDroneModelUI extends AbstractUI {
                 min = max + 0.0001;
                 addedAtLeastOne = true;
             } else {
-                System.out.println("Tolerance not added. It might overlap with an existing interval!");
+                System.out.println("Tolerance not added!");
             }
         }
         System.out.println("Finished adding tolerances for axis " + axis + ".");

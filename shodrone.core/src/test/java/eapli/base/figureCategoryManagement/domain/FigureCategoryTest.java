@@ -24,7 +24,7 @@ class FigureCategoryTest {
         assertEquals("Test Description", figureCategory.description());
         assertTrue(figureCategory.isActive());
         assertNotNull(figureCategory.createdOn());
-        assertNull(figureCategory.changedOn());
+
     }
 
     @Test

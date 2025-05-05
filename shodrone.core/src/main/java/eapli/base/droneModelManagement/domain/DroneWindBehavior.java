@@ -40,6 +40,9 @@ public class DroneWindBehavior implements DomainEntity<Long> {
                     }
                     xWindTolerances.add(newInterval);
                     return true;
+                }else{
+                    System.out.println("Error: Wind interval overlaps with existing intervals.");
+                    return false;
                 }
             case Y:
                 if(!itOverlaps(yWindTolerances, newInterval)) {
@@ -49,6 +52,9 @@ public class DroneWindBehavior implements DomainEntity<Long> {
                     }
                     yWindTolerances.add(newInterval);
                     return true;
+                }else{
+                    System.out.println("Error: Wind interval overlaps with existing intervals.");
+                    return false;
                 }
             case Z:
                 if(!itOverlaps(zWindTolerances, newInterval)) {

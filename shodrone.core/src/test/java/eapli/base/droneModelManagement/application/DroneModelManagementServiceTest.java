@@ -1,7 +1,8 @@
 package eapli.base.droneModelManagement.application;
 
+import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
-import eapli.base.droneModelManagement.domain.DroneModelBuilder;
+import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
@@ -38,11 +39,21 @@ public class DroneModelManagementServiceTest {
 
     private SystemUser user;
 
+    private DroneWindBehavior behavior;
+
+
     @BeforeEach
     public void setup(){
         user = new SystemUserBuilder(policy, encoder)
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles( Roles.ADMIN).build();
+        behavior = new DroneWindBehavior();
+        behavior.addTolerance(Axis.X,0,10, 0.5);
+        behavior.addTolerance(Axis.X,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Y,0,10, 0.5);
+        behavior.addTolerance(Axis.Y,10.0001,20, 0.8);
+        behavior.addTolerance(Axis.Z,0,10, 0.5);
+        behavior.addTolerance(Axis.Z,10.0001,20, 0.8);
     }
 
     @Test
@@ -55,7 +66,7 @@ public class DroneModelManagementServiceTest {
         when(repo.isDroneModelNameUsed(name)).thenReturn(false);
         when(repo.save(any(DroneModel.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        DroneModel model = service.registerNewDroneModel(name, manufacturer, user);
+        DroneModel model = service.registerNewDroneModel(name, manufacturer, user, behavior);
 
         Assertions.assertEquals(name, model.modelName());
         verify(repo).save(any(DroneModel.class));
@@ -66,7 +77,7 @@ public class DroneModelManagementServiceTest {
         String name = "Falcon";
         when(repo.isDroneModelNameUsed(name)).thenReturn(true);
         assertThrows(IllegalArgumentException.class, () ->
-                service.registerNewDroneModel(name, "DJI", user)
+                service.registerNewDroneModel(name, "DJI", user, behavior)
         );
     }
 
@@ -75,7 +86,7 @@ public class DroneModelManagementServiceTest {
     void registerNewDroneModel_null_modelName_throwsException() {
 
         assertThrows(IllegalArgumentException.class, () ->
-                service.registerNewDroneModel(null, "DJI", user)
+                service.registerNewDroneModel(null, "DJI", user, behavior)
         );
     }
 
@@ -85,7 +96,7 @@ public class DroneModelManagementServiceTest {
         when(repo.isDroneModelNameUsed(name)).thenReturn(false);
 
         assertThrows(IllegalArgumentException.class, () ->
-                service.registerNewDroneModel(name, null, user)
+                service.registerNewDroneModel(name, null, user, behavior)
         );
     }
 
@@ -94,15 +105,15 @@ public class DroneModelManagementServiceTest {
         String name = "Falcon";
         when(repo.isDroneModelNameUsed(name)).thenReturn(false);
         assertThrows(IllegalArgumentException.class, () ->
-                service.registerNewDroneModel(name, "DJI", null)
+                service.registerNewDroneModel(name, "DJI", null, behavior)
         );
     }
 
     @Test
     void findAll_returnsAllDroneModels() {
         Iterable<DroneModel> expected = List.of(
-                new DroneModelBuilder().withModelName("Falcon").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build(),
-                new DroneModelBuilder().withModelName("Eagle").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build()
+                new DroneModel("Falcon", "DJI", CurrentTimeCalendars.now(), user, behavior),
+                new DroneModel("Eagle", "DJI", CurrentTimeCalendars.now(), user, behavior)
         );
         when(repo.findAll()).thenReturn(expected);
 
@@ -114,7 +125,7 @@ public class DroneModelManagementServiceTest {
 
     @Test
     void removeDroneModel_savesDeactivatedModel() {
-        DroneModel model = new DroneModelBuilder().withModelName("Falcon").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build();
+        DroneModel model = new DroneModel("Falcon", "DJI", CurrentTimeCalendars.now(), user, behavior);
         when(repo.save(model)).thenReturn(model);
 
         DroneModel result = service.deactivateDroneModel(model);
@@ -125,7 +136,7 @@ public class DroneModelManagementServiceTest {
 
     @Test
     void activateDroneModel_savesActivatedModel() {
-        DroneModel model = new DroneModelBuilder().withModelName("Falcon").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build();
+        DroneModel model = new DroneModel("Falcon", "DJI", CurrentTimeCalendars.now(), user, behavior);
         model.deactivate(CurrentTimeCalendars.now());
         when(repo.save(model)).thenReturn(model);
 
@@ -139,8 +150,8 @@ public class DroneModelManagementServiceTest {
     void findByManufacturer_returnsCorrectDroneModels() {
         String manufacturer = "DJI";
         Iterable<DroneModel> expected = List.of(
-                new DroneModelBuilder().withModelName("Falcon").withManufacturer(manufacturer).createdBy(user).createdOn(CurrentTimeCalendars.now()).build(),
-                new DroneModelBuilder().withModelName("Eagle").withManufacturer(manufacturer).createdBy(user).createdOn(CurrentTimeCalendars.now()).build()
+                new DroneModel("Falcon", "DJI", CurrentTimeCalendars.now(), user, behavior),
+                new DroneModel("Eagle", "DJI", CurrentTimeCalendars.now(), user, behavior)
         );
         when(repo.findByManufacturer(manufacturer)).thenReturn(expected);
 
@@ -152,8 +163,7 @@ public class DroneModelManagementServiceTest {
     @Test
     void findById_existingId_returnsDroneModel() {
         Long id = 150L;
-        DroneModel expectedModel = new DroneModelBuilder()
-                .withModelName("Falcon").withManufacturer("DJI").createdBy(user).createdOn(CurrentTimeCalendars.now()).build();
+        DroneModel expectedModel = new DroneModel("Falcon", "DJI", CurrentTimeCalendars.now(), user, behavior);
         when(repo.findById(id)).thenReturn(Optional.of(expectedModel));
 
         Optional<DroneModel> result = service.findById(id);
