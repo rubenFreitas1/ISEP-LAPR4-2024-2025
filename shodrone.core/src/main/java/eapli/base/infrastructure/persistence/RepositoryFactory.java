@@ -20,6 +20,7 @@
  */
 package eapli.base.infrastructure.persistence;
 
+import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
@@ -72,6 +73,10 @@ public interface RepositoryFactory {
      * @return
      */
     DroneModelRepository droneModels(TransactionalContext autoTx);
+
+    CustomerRepository customers();
+
+    CustomerRepository customers(TransactionalContext autoTx);
 
     ShowRequestRepository showRequests(TransactionalContext autoTx);
 

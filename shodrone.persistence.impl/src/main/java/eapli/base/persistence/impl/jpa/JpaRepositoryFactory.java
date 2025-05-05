@@ -21,6 +21,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
@@ -59,6 +60,14 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     public DroneModelRepository droneModels(TransactionalContext autoTx) {
         return new JpaDroneModelRepository(autoTx);
     }
+
+    @Override
+    public CustomerRepository customers() {
+        return new JpaCustomerRepository(Application.settings().getPersistenceUnitName());
+    }
+
+    @Override
+    public CustomerRepository customers(TransactionalContext autoTx) {return new JpaCustomerRepository(autoTx);}
 
     @Override
     public ShowRequestRepository showRequests(TransactionalContext autoTx) {
