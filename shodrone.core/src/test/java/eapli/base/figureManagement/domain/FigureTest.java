@@ -52,8 +52,15 @@ class FigureTest {
         Figure figure = new Figure("A dragon figure", keywords, category, true, customer);
         assertEquals("A dragon figure", figure.description());
         assertEquals(category, figure.figureCategory());
+        assertEquals(customer, figure.customer());
         assertTrue(figure.isActive());
         assertTrue(figure.keywords().contains("dragon"));
+    }
+
+    @Test
+    void constructor_allowsNullCustomer() {
+        Figure figure = new Figure("Figure without customer", keywords, category, false, null);
+        assertNull(figure.customer());
     }
 
     @Test

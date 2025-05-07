@@ -29,7 +29,6 @@ public class Figure implements AggregateRoot<Long> {
 
     private boolean active;
 
-    //ainda falta adicionar aqui o Customer que pediu esta figura
 
     @ManyToOne
     private Customer customer;

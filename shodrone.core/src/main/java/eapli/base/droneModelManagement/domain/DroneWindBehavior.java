@@ -27,7 +27,7 @@ public class DroneWindBehavior implements DomainEntity<Long> {
 
     public boolean addTolerance(Axis axis, double minWind, double maxWind, double tolerance) {
         if (minWind >= maxWind) {
-            System.out.println("Erro: o mínimo deve ser menor que o máximo.");
+            System.out.println("Error: min wind must be less than max wind.");
             return false;
         }
         WindInterval newInterval = new WindInterval(minWind, maxWind, tolerance);
