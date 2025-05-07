@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
@@ -37,7 +38,7 @@ public class JpaRepresentativeRepository extends JpaAutoTxRepository<Representat
         return matchOne("e.representativeId = :id", params);
     }
     @Override
-    public Iterable<Representative> findByAssociatedCustomer(eapli.base.customerManagement.domain.Customer associatedCustomer) {
+    public Iterable<Representative> findByAssociatedCustomer(Customer associatedCustomer) {
         final Map<String, Object> params = new HashMap<>();
         params.put("customer", associatedCustomer);
         return match("e.associatedCustomer = :customer", params);

@@ -18,7 +18,7 @@
     <class>eapli.base.showRequestManagement.domain.RequestedFigures</class>
     <class>eapli.base.droneModelManagement.domain.DroneWindBehavior</class>
     <class>eapli.base.customerManagement.domain.Customer</class>
-    <class>eapli.base.customerManagement.domain.Representative</class>
+    <class>eapli.base.representativeManagement.domain.Representative</class>
 
 
     <properties>
