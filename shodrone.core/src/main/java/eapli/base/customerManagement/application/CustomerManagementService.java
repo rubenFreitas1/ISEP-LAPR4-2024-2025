@@ -3,8 +3,10 @@ package eapli.base.customerManagement.application;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 @Component
@@ -16,7 +18,7 @@ public class CustomerManagementService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final Customer.CustomerStatus status) {
+    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final Customer.CustomerStatus status, final Calendar createdOn) {
         if (customerName == null || customerName.isEmpty()) {
             throw new IllegalArgumentException("Customer name cannot be null or empty");
         }
@@ -41,12 +43,12 @@ public class CustomerManagementService {
         if (status == null) {
             throw new IllegalArgumentException("Customer status cannot be null");
         }
-        Customer newCustomer = new Customer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, createdBy, status);
+        Customer newCustomer = new Customer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, createdBy, status, createdOn);
         return (Customer) this.customerRepository.save(newCustomer);
     }
 
-    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber) {
-        return registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, null, Customer.CustomerStatus.CREATED);
+    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy) {
+        return registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, createdBy, Customer.CustomerStatus.CREATED, CurrentTimeCalendars.now());
     }
 
     public Optional<Customer> findCustomerById(final Long id) {

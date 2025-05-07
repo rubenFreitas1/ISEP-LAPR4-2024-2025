@@ -55,7 +55,7 @@ public class Customer implements AggregateRoot<Long> {
     protected Customer() {
     }
 
-    public Customer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status) {
+    public Customer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status, final Calendar createdOn) {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerEmail = customerEmail;
