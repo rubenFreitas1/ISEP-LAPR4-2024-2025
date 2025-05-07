@@ -1,5 +1,6 @@
 package eapli.base.figureManagement.domain;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.validations.Preconditions;
@@ -30,18 +31,23 @@ public class Figure implements AggregateRoot<Long> {
 
     //ainda falta adicionar aqui o Customer que pediu esta figura
 
+    @ManyToOne
+    private Customer customer;
+
     @Temporal(TemporalType.DATE)
     private Calendar deactivatedOn;
 
     protected Figure(){
     }
 
-    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive) {
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
         Preconditions.noneNull(new Object[] {keywords, figureCategory});
         this.keywords = new HashSet<>(keywords);
         this.description = description;
         this.figureCategory = figureCategory;
         this.active = true;
+        this.exclusive = exclusive;
+        this.customer = customer;
     }
 
     public Set<String> keywords(){
@@ -58,6 +64,10 @@ public class Figure implements AggregateRoot<Long> {
 
     public Calendar deactivatedOn(){
         return this.deactivatedOn;
+    }
+
+    public Customer customer(){
+        return this.customer;
     }
 
     public boolean isActive(){return this.active;}

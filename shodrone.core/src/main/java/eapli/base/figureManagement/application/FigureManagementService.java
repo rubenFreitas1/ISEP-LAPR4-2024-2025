@@ -1,5 +1,6 @@
 package eapli.base.figureManagement.application;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
@@ -18,8 +19,8 @@ public class FigureManagementService {
         this.figureRepository = figureRepository;
     }
 
-    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive){
-        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive);
+    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer){
+        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer);
         return (Figure) this.figureRepository.save(newFigure);
     }
 

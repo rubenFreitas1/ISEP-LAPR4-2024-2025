@@ -1,5 +1,8 @@
 package eapli.base.figureManagement.application;
 
+import eapli.base.customerManagement.application.CustomerManagementService;
+import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.figureCategoryManagement.application.FigureCategoryManagementService;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
@@ -20,16 +23,24 @@ public class AddFigureController {
 
      private final FigureRepository repo = PersistenceContext.repositories().figures();
 
+     private final CustomerRepository repoCustomer = PersistenceContext.repositories().customers();
+
+     private final CustomerManagementService customerManagementService = new CustomerManagementService(repoCustomer);
+
     private final FigureManagementService figureManagementService = new FigureManagementService(repo);
 
     private final FigureCategoryManagementService figureCategoryManagementService = new FigureCategoryManagementService(PersistenceContext.repositories().figureCategories());
 
-    public Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory figureCategory, boolean exclusive) {
+    public Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory figureCategory, boolean exclusive, Customer customer) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
-        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive);
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
     }
 
     public Iterable<FigureCategory> listFigureCategories() {
         return figureCategoryManagementService.findByActive(true);
+    }
+
+    public Iterable<Customer> listCustomers(){
+        return customerManagementService.findAllActiveCustomers();
     }
 }
