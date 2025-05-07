@@ -27,6 +27,7 @@ import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
+import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
@@ -68,6 +69,15 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 
     @Override
     public CustomerRepository customers(TransactionalContext autoTx) {return new JpaCustomerRepository(autoTx);}
+
+    @Override
+    public RepresentativeRepository representatives() {
+        return new JpaRepresentativeRepository(Application.settings().getPersistenceUnitName());
+    }
+    @Override
+    public RepresentativeRepository representatives(TransactionalContext autoTx) {
+        return new JpaRepresentativeRepository(autoTx);
+    }
 
     @Override
     public ShowRequestRepository showRequests(TransactionalContext autoTx) {
