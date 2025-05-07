@@ -16,9 +16,16 @@ public class RegisterCustomerUI extends AbstractUI {
         final String password = Console.readLine("Password");
         final String customerPhoneNumber = Console.readLine("Customer Phone Number");
         final String customerVatNumber = Console.readLine("Customer VAT Number");
+        final String representativeName = Console.readLine("Representative Name");
+        final String representativeEmail = Console.readLine("Representative Email");
+        final String representativePassword = Console.readLine("Representative Password");
+        final String representativePhoneNumber = Console.readLine("Representative Phone Number");
+        final String representativePosition = Console.readLine("Representative Position");
+
 
         try {
-            this.theController.registerCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber);
+            this.theController.registerCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber,
+                    representativeName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }
