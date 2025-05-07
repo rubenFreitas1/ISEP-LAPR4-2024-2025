@@ -1,4 +1,11 @@
 package eapli.base.app.backoffice.presentation.customerManagement;
 
-public class RegisterCustomerAction {
+import eapli.framework.actions.Action;
+
+public class RegisterCustomerAction implements Action {
+
+    @Override
+    public boolean execute() {
+        return new RegisterCustomerUI().show();
+    }
 }

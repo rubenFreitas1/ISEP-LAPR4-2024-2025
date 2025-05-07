@@ -20,6 +20,8 @@
  */
 package eapli.base.persistence.impl.inmemory;
 
+import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
@@ -66,6 +68,11 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	public DroneModelRepository droneModels(TransactionalContext autoTx) {
 		return new InMemoryDroneModelRepository();
 	}
+
+	@Override
+	public CustomerRepository customers(TransactionalContext autoTx) {return new InMemoryCustomerRepository();}
+	@Override
+	public CustomerRepository customers() {return customers(null);}
 
 	@Override
 	public ShowRequestRepository showRequests(TransactionalContext autoTx) {
