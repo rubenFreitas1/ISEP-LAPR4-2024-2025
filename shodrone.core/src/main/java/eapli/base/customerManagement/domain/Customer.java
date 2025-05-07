@@ -1,10 +1,12 @@
 package eapli.base.customerManagement.domain;
 
+import eapli.base.representativeManagement.domain.Representative;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class Customer implements AggregateRoot<Long> {
     @Column
     private String customerVatNumber;
 
-    //@ManyToOne
-    //private List<Representative> representatives;
+    @OneToMany
+    private List<Representative> representatives;
 
     @ManyToOne
     private SystemUser createdBy;
@@ -63,6 +65,7 @@ public class Customer implements AggregateRoot<Long> {
         this.createdBy = createdBy;
         this.status = status;
         this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
+        this.representatives = new ArrayList<>();
     }
 
     public String customerName() {
@@ -96,6 +99,12 @@ public class Customer implements AggregateRoot<Long> {
     public void changeStatus(CustomerStatus newStatus) {
         this.status = newStatus;
     }
+    public List<Representative> representatives() {
+        return this.representatives;
+    }
+    public void addRepresentative(Representative representative) {
+        this.representatives.add(representative);
+    }
 
     @Override
     public String toString() {
@@ -106,9 +115,10 @@ public class Customer implements AggregateRoot<Long> {
                 ", CustomerPassword='" + customerPassword + '\'' +
                 ", customerPhoneNumber='" + customerPhoneNumber + '\'' +
                 ", customerVatNumber='" + customerVatNumber + '\'' +
-                ", status=" + status +
-                ", createdBy=" + createdBy +
-                ", createdOn=" + createdOn +
+                ", status=" + status + '\'' +
+                ", createdBy=" + createdBy + '\'' +
+                ", createdOn=" + createdOn + '\'' +
+                ", representatives=" + representatives +
                 '}';
     }
 

@@ -23,7 +23,7 @@ public class CustomerManagementService {
         if (customerAddress == null || customerAddress.isEmpty()) {
             throw new IllegalArgumentException("Customer address cannot be null or empty");
         }
-        if (customerEmail == null || customerEmail.isEmpty() || customerRepository.isEmailUsed(customerEmail)) {
+        if (customerEmail == null || customerEmail.isEmpty() || isEmailUsed(customerEmail)) {
             throw new IllegalArgumentException("Customer email cannot be null or empty");
         }
         if (password == null || password.isEmpty()) {
@@ -32,7 +32,7 @@ public class CustomerManagementService {
         if (customerPhoneNumber == null || customerPhoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Customer phone number cannot be null or empty");
         }
-        if (customerVatNumber == null || customerVatNumber.isEmpty() || customerRepository.isVatNumberUsed(customerVatNumber)) {
+        if (customerVatNumber == null || customerVatNumber.isEmpty() || isVatNumberUsed(customerVatNumber)) {
             throw new IllegalArgumentException("Customer VAT number cannot be null or empty");
         }
         if (createdBy == null) {
