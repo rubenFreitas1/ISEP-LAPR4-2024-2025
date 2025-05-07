@@ -63,6 +63,10 @@ public class RepresentativeManagementService {
     public Iterable<Representative> findAll(){
         return this.representativeRepository.findAll();
     }
+    public Iterable<Representative> findByAssociatedCustomer(final Customer associatedCustomer){
+        return this.representativeRepository.findByAssociatedCustomer(associatedCustomer);
+    }
+
     public Representative deactivateRepresentative(final Representative representative) {
         representative.deactivate(CurrentTimeCalendars.now());
         return (Representative) this.representativeRepository.save(representative);

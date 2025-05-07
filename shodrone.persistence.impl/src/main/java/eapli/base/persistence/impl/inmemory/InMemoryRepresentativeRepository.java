@@ -24,4 +24,11 @@ public class InMemoryRepresentativeRepository extends InMemoryDomainRepository<R
     public boolean isEmailUsed(String representativeEmail) {
         return matchOne(e -> e.representativeEmail().equalsIgnoreCase(representativeEmail)).isPresent();
     }
+
+    @Override
+    public Iterable<Representative> findByAssociatedCustomer(eapli.base.customerManagement.domain.Customer associatedCustomer) {
+        return this.match((e) -> {
+            return e.associatedCustomer().equals(associatedCustomer);
+        });
+    }
 }

@@ -36,4 +36,10 @@ public class JpaRepresentativeRepository extends JpaAutoTxRepository<Representat
         params.put("id", id);
         return matchOne("e.representativeId = :id", params);
     }
+    @Override
+    public Iterable<Representative> findByAssociatedCustomer(eapli.base.customerManagement.domain.Customer associatedCustomer) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("customer", associatedCustomer);
+        return match("e.associatedCustomer = :customer", params);
+    }
 }

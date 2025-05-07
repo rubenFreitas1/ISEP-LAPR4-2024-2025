@@ -1,5 +1,6 @@
 package eapli.base.representativeManagement.repositories;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.framework.domain.repositories.DomainRepository;
 
@@ -13,4 +14,5 @@ public interface RepresentativeRepository extends DomainRepository<Long, Represe
 
     boolean isEmailUsed(String representativeEmail);
 
+    Iterable<Representative> findByAssociatedCustomer(Customer associatedCustomer);
 }
