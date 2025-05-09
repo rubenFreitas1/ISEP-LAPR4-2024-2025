@@ -3,6 +3,8 @@ package eapli.base.app.backoffice.presentation.menu;
 import eapli.base.app.backoffice.presentation.customerManagement.RegisterCustomerAction;
 import eapli.base.app.backoffice.presentation.figureManagement.ListFigureAction;
 import eapli.base.app.backoffice.presentation.figureManagement.SearchFigureAction;
+import eapli.base.app.backoffice.presentation.representativeManagement.ListRepresentativesAction;
+import eapli.base.app.backoffice.presentation.representativeManagement.RegisterRepresentativeAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.RegisterShowRequestAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
@@ -44,8 +46,8 @@ public class CRM_CollaboratorMenu {
     public Menu buildCustomerMenu() {
         final Menu menu = new Menu("Customer >");
         menu.addItem(REGISTER_CUSTOMER_OPTION, "Register Customer", new RegisterCustomerAction());
-        //menu.addItem(REGISTER_CUSTOMER_REPRESENTATIVE_OPTION, "Register Customer Representative", );
-        //menu.addItem(LIST_CUSTOMER_REPRESENTATIVES_OPTION, "List Customer Representatives", );
+        menu.addItem(REGISTER_CUSTOMER_REPRESENTATIVE_OPTION, "Register Customer Representative", new RegisterRepresentativeAction());
+        menu.addItem(LIST_CUSTOMER_REPRESENTATIVES_OPTION, "List Customer Representatives", new ListRepresentativesAction());
         //menu.addItem(EDIT_CUSTOMER_REPRESENTATIVE_OPTION, "Edit Customer Representative",);
         //menu.addItem(DISABLE_CUSTOMER_REPRESENTATIVE_OPTION, "Disable Customer Representative",);
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
