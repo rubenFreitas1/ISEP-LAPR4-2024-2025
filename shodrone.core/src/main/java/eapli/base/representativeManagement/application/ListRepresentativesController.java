@@ -27,9 +27,9 @@ public class ListRepresentativesController {
 
     private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo);
 
-    public Iterable<Representative> allRepresentatives() {
+    public Iterable<Representative> allRepresentatives(Customer customer) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        return representativesvc.findAll();
+        return representativesvc.findByAssociatedCustomer(customer);
     }
 
     public Iterable<Customer> allCustomers() {
