@@ -7,6 +7,7 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showRequestManagement.application.RegisterShowRequestController;
+import eapli.base.showRequestManagement.domain.GenericSelector;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -19,10 +20,7 @@ public class RegisterShowRequestUI extends AbstractUI {
     private final RegisterShowRequestController controller = new RegisterShowRequestController();
     @Override
     protected boolean doShow() {
-        final Iterable<Customer> customers = this.controller.listCustomers();
-        final SelectWidget<Customer> selectWidgetCustomer = new SelectWidget<>("Select a Customer", customers, new CustomerPrinter());
-        selectWidgetCustomer.show();
-        final Customer customer = selectWidgetCustomer.selectedElement();
+        Customer customer = GenericSelector.selectItem(this.controller.listCustomers(), new CustomerPrinter(), "Select a Customer");
 
         String location = requestLocation();
         Calendar date = requestDate();
@@ -61,24 +59,39 @@ public class RegisterShowRequestUI extends AbstractUI {
             }
         }
         List<Figure> figureSequence = new ArrayList<>();
-        final SelectWidget<Figure> selectWidgetFigure = new SelectWidget<>("Public figures (Enter 0 to finish)", figures, new FigurePrinter());
+        List<Figure> availableFigures = new ArrayList<>();
+        figures.forEach(availableFigures::add);
+        final SelectWidget<Figure> selectWidgetFigure = new SelectWidget<>("Public figures (Enter 0 to finish)", availableFigures, new FigurePrinter());
         System.out.println("\nSelect the following figures in the pretended sequence.");
-        boolean addingFigures = true;
-        while (addingFigures) {
+        while (true) {
+            if (availableFigures.isEmpty()) {
+                System.out.println("No more figures available to select.");
+                break;
+            }
+
             selectWidgetFigure.show();
             Figure selected = selectWidgetFigure.selectedElement();
 
             if (selected == null) {
-                addingFigures = false;
+                if (figureSequence.isEmpty()) {
+                    System.out.println("You must select at least one figure before exiting.");
+                    continue;
+                } else {
+                    break;
+                }
             } else {
                 figureSequence.add(selected);
+                availableFigures.remove(selected);
             }
-            System.out.print("Current sequence of figures : ");
-            for (Figure figure : figureSequence) {
-                if (figure.equals(figureSequence.get(figureSequence.size() - 1))) {
-                    System.out.printf("%-20s.", figure.description());
+
+            System.out.print("Current sequence of figures: ");
+            for (int i = 0; i < figureSequence.size(); i++) {
+                Figure figure = figureSequence.get(i);
+                System.out.printf("%-20s", figure.description());
+                if (i != figureSequence.size() - 1) {
+                    System.out.print(" / ");
                 } else {
-                    System.out.printf("%-20s / ", figure.description());
+                    System.out.print(".");
                 }
             }
             System.out.println("\n");
