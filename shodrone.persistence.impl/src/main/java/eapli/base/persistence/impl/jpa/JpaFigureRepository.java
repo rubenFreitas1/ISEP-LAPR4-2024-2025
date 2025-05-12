@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
@@ -65,6 +66,13 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
                         ")",
                 params
         );
+    }
+
+    @Override
+    public Iterable<Figure> findByExclusivityAndCustomer(boolean ignored, Customer customer) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("customer", customer);
+        return match("(e.exclusive = false OR e.customer = :customer)", params);
     }
 
     private String normalize(String input) {

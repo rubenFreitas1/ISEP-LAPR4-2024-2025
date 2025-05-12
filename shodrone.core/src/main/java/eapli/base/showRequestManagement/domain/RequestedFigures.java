@@ -1,19 +1,17 @@
 package eapli.base.showRequestManagement.domain;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.framework.domain.model.DomainEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.List;
-
+/*
+@Entity
 public class RequestedFigures implements DomainEntity<Long>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long requestedFiguresId;
 
-    @Column(nullable = false)
+    @OneToMany
     private List<Figure> sequence;
 
     protected RequestedFigures() {}
@@ -43,3 +41,21 @@ public class RequestedFigures implements DomainEntity<Long>{
     }
 }
 
+ */
+@Embeddable
+public class RequestedFigures {
+
+    @Transient
+    private List<Figure> sequence;
+
+    public RequestedFigures(List<Figure> sequence) {
+        this.sequence = sequence;
+    }
+
+    protected RequestedFigures() {
+    }
+
+    public List<Figure> sequence() {
+        return sequence;
+    }
+}

@@ -1,5 +1,6 @@
 package eapli.base.persistence.impl.inmemory;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
@@ -49,6 +50,13 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
                         figure.keywords().stream()
                                 .map(this::normalize)
                                 .anyMatch(k -> k.equals(normalizedKeyword))
+        );
+    }
+
+    @Override
+    public Iterable<Figure> findByExclusivityAndCustomer(boolean ignored, Customer customer) {
+        return match(figure ->
+                !figure.isExclusive() || customer.equals(figure.customer())
         );
     }
 

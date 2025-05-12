@@ -1,11 +1,14 @@
 package eapli.base.showRequestManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.figureManagement.domain.Figure;
 import eapli.framework.domain.model.AggregateRoot;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
+import java.util.List;
 
+@Entity
 public class ShowRequest implements AggregateRoot<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,19 +29,19 @@ public class ShowRequest implements AggregateRoot<Long> {
     @Column(nullable = false)
     private int duration;
 
-    @OneToOne
-    private RequestedFigures requestedFigures;
+    @ManyToMany
+    private List<Figure> requestedFigures;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ShowRequestStatus status;
 
-    @Column(nullable = false)
-    private eapli.base.customerManagement.domain.Customer customer;
+    @ManyToOne
+    private Customer customer;
 
     protected ShowRequest() {}
 
-    public ShowRequest(String location, Calendar date, int droneNumber, int duration, RequestedFigures requestedFigures, Customer customer) {
+    public ShowRequest(String location, Calendar date, int droneNumber, int duration, List<Figure> requestedFigures, Customer customer) {
         this.location = location;
         this.date = date;
         this.droneNumber = droneNumber;
@@ -59,7 +62,7 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     public int duration() { return this.duration; }
 
-    public RequestedFigures requestedFigures() { return this.requestedFigures; }
+    public List<Figure> requestedFigures() { return this.requestedFigures; }
 
     public ShowRequestStatus status() { return this.status; }
 
@@ -81,11 +84,14 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     @Override
     public boolean sameAs(Object other) {
-        return false;
+        if (this == other) return true;
+        if (!(other instanceof ShowRequest)) return false;
+        ShowRequest that = (ShowRequest) other;
+        return showRequestId != null && showRequestId.equals(that.showRequestId);
     }
 
     @Override
     public Long identity() {
-        return null;
+        return showRequestId;
     }
 }

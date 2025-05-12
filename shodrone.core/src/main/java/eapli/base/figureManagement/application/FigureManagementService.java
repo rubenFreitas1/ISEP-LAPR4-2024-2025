@@ -59,4 +59,7 @@ public class FigureManagementService {
     public Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category){
         return this.figureRepository.findByKeywordAndCategory(keyword, category);
     }
+    public Iterable<Figure> findByExclusivityAndCustomer(boolean exclusive, Customer customer) {
+        return this.figureRepository.findByExclusivityAndCustomer(exclusive, customer);
+    }
 }

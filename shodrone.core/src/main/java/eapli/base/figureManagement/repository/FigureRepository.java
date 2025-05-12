@@ -1,5 +1,6 @@
 package eapli.base.figureManagement.repository;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.framework.domain.repositories.DomainRepository;
@@ -17,4 +18,6 @@ public interface FigureRepository extends DomainRepository<Long, Figure> {
     Iterable<Figure> findByExclusivity(boolean exclusive);
 
     Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category);
+
+    Iterable <Figure> findByExclusivityAndCustomer(boolean exclusive, Customer customer);
 }
