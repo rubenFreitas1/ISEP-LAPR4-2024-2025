@@ -28,7 +28,7 @@ deactivate Action
     activate UI
 
 UI -> Controller** : create
-UI --> Actor: Request Drone Information (Serial Number, Acquisition date)
+UI --> Actor: Request Drone Information (Serial Number)
     deactivate UI
 
  Actor -> UI: Provide Drone Information

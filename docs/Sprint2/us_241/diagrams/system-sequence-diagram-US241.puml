@@ -14,7 +14,7 @@ activate droneTech
 droneTech -> system : Add drone to the inventory
 activate system
 
-system -> droneTech : Request Drone Information (Serial Number, Acquisition date)
+system -> droneTech : Request Drone Information (Serial Number)
 deactivate system
 droneTech -> system : Provide Drone Information
 

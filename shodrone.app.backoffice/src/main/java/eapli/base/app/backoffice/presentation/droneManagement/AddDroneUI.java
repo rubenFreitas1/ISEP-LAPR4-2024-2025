@@ -17,8 +17,8 @@ public class AddDroneUI extends AbstractUI {
         if (!iterable.iterator().hasNext()) {
             System.out.println("There is no registered Drone Models!");
         } else {
-            final SelectWidget<DroneModel> selector = new SelectWidget<>("Select Drone Model", iterable, new DroneModelPrinter());
-            System.out.printf("%-30s%-30s%-30s%-30s", "Model Name", "Manufacturer", "Status", "Created By");
+            String headerModel = String.format("Select Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
+            final SelectWidget<DroneModel> selector = new SelectWidget<>(headerModel, iterable, new DroneModelPrinter());
             selector.show();
             final DroneModel droneModel = selector.selectedElement();
             if(droneModel == null){

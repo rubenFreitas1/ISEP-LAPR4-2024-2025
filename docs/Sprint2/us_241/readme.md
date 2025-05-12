@@ -36,6 +36,17 @@ This must also be achieved by a bootstrap process.
 Normalmente, guarda-se também a data de aquisição. 
 Quando for desativado, a data em que isso acontece também é importante.
 
+>> Bom dia, noutra pergunta o cliente referiu que era necessário guardar a data de aquisição dos drones. Essa data corresponde à data de registo do drone no sistema?
+>
+> Data de aquisição. Acho que diz tudo, não?
+
+>> Quando um drone é adicionado ao inventário podemos assumir sempre um estado como, por exemplo, o estado ativo, ou também pode ser de outro estado ao adicionar?
+>
+> Fará sentido adicionar um drone desactivado ao sistema? Acho que seria perder tempo.
+
+>> É suposto o drone tech, ao adicionar o drone ao inventário, além de inserir o serial number do drone, também inserir o estado do drone se não for possível assumir sempre um estado do drone ao adicionar o mesmo no inventário?
+>
+> Adicionar um drone em manutenção ao sistema seria um problema muito complexo, pois teria que incluir também o processo de manutenção. Esqueça...
 
 ## 3. Analysis
 
@@ -50,42 +61,251 @@ Quando for desativado, a data em que isso acontece também é importante.
 ### 4.3. Applied Patterns
 
 - Domain-Driven Design
-- Builder
 - Factory
-
-
-### 4.4. Acceptance Tests
-
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
-````
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**AddDroneAction**
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+```java
+public class AddDroneAction implements Action {
+    @Override
+    public boolean execute() {
+        return new AddDroneUI().show();
+    }
+}
+```
+**AddDroneUI**
+
+```java
+public class AddDroneUI extends AbstractUI {
+
+    private final AddDroneController controller = new AddDroneController();
+    @Override
+    protected boolean doShow() {
+        final String serialNumber = Console.readLine("Serial Number");
+        final Iterable<DroneModel> iterable = controller.listDroneModels();
+        if (!iterable.iterator().hasNext()) {
+            System.out.println("There is no registered Drone Models!");
+        } else {
+            String headerModel = String.format("Select Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
+            final SelectWidget<DroneModel> selector = new SelectWidget<>(headerModel, iterable, new DroneModelPrinter());
+            selector.show();
+            final DroneModel droneModel = selector.selectedElement();
+            if(droneModel == null){
+                System.out.println("No Drone Model Selected!\n");
+            }else{
+                try{
+                    this.controller.addDrone(serialNumber, droneModel);
+                } catch(IllegalArgumentException e){
+                    System.out.println("\nERROR: " + e.getMessage() + "\n");
+                }
+            }
+
+        }
+        return true;
+    }
+
+    @Override
+    public String headline() {
+        return "Add Drone";
+    }
+}
+```
+
+**AddDroneController**
+
+```java
+@UseCaseController
+public class AddDroneController {
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+
+    private final DroneRepository repo = PersistenceContext.repositories().drones();
+
+    private final DroneModelRepository droneModelRepository = PersistenceContext.repositories().droneModels();
+
+    private final DroneModelManagementService droneModelSvc = new DroneModelManagementService(droneModelRepository);
+
+    private final DroneManagementService droneSvc = new DroneManagementService(repo);
+
+
+    public Iterable<DroneModel> listDroneModels (){
+        return this.droneModelSvc.listActiveDroneModels();
+    }
+
+    public Drone addDrone(final String serialNumber, final DroneModel droneModel){
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
+        return this.droneSvc.registerNewDrone(serialNumber, droneModel,authz.session().get().authenticatedUser());
+    }
+
+}
+```
+
+**DroneManagementService**
+
+```java
+public class DroneManagementService {
+
+    private final DroneRepository droneRepository;
+
+
+    public DroneManagementService(final DroneRepository droneRepository){
+        this.droneRepository = droneRepository;
+    }
+
+    public Drone registerNewDrone(final String serialNumber, final DroneModel droneModel, final Calendar acquisitionDate, final SystemUser user){
+        if(isSerialNumberUsed(serialNumber)){
+            throw new IllegalArgumentException("This Serial Number is already registered in the system!");
+        }
+        Drone newDrone = new Drone(serialNumber, droneModel,acquisitionDate, user);
+        return (Drone) this.droneRepository.save(newDrone);
+    }
+
+    public Drone registerNewDrone(final String serialNumber, final DroneModel droneModel, final SystemUser user){
+        return registerNewDrone(serialNumber, droneModel, CurrentTimeCalendars.now(), user);
+    }
+
+
+    public Drone removeDrone(final Drone drone, final String reason){
+        drone.remove(CurrentTimeCalendars.now(), reason);
+        return (Drone) this.droneRepository.save(drone);
+    }
+
+    public Drone activateDrone(final Drone drone) {
+        drone.activate();
+        return (Drone) this.droneRepository.save(drone);
+    }
+
+    public Iterable<Drone> findByDroneModel(final DroneModel droneModel) {
+        return this.droneRepository.findByDroneModel(droneModel);
+    }
+    public Iterable<Drone> activeDrones(){
+        return this.droneRepository.findByActive(true);
+    }
+
+    public Optional<Drone> findById(Long id){return this.droneRepository.findById(id);}
+
+    public boolean isSerialNumberUsed(String serialNumber){return this.droneRepository.isSerialNameUsed(serialNumber);}
+}
+```
+
+**Drone**
+
+```java
+@Entity
+public class Drone implements AggregateRoot<Long> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long droneId;
+
+
+    @Column(unique = true, nullable = false)
+    private String serialNumber;
+
+    @ManyToOne
+    private DroneModel droneModel;
+
+    private String removeReason;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar acquisitionDate;
+
+    private boolean active;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar deactivatedOn;
+
+    @ManyToOne
+    private SystemUser createdBy;
+
+    protected Drone(){
+
+    }
+
+    public Drone(final String serialNumber, final DroneModel droneModel, final Calendar acquisitionDate, final SystemUser user){
+        Preconditions.noneNull(new Object[] {serialNumber, droneModel, user, acquisitionDate});
+
+        this.serialNumber = serialNumber;
+        this.droneModel = droneModel;
+        this.createdBy = user;
+        this.acquisitionDate = acquisitionDate == null ? CurrentTimeCalendars.now() : acquisitionDate;
+        this.active = true;
+    }
+
+
+    public String serialNumber(){return this.serialNumber;}
+
+    public DroneModel droneModel(){return this.droneModel;}
+
+    public Calendar acquisitionDate(){return this.acquisitionDate;}
+
+    public boolean isActive(){return this.active;}
+
+    public SystemUser createdBy(){return this.createdBy;}
+
+    public Calendar deactivatedOn(){return this.deactivatedOn;}
+
+    public void remove(final Calendar deactivatedOn, final String reason) {
+        if (deactivatedOn != null && !deactivatedOn.before(this.acquisitionDate)) {
+            if (!this.active) {
+                throw new IllegalStateException("Cannot deactivate an inactive Drone!");
+            } else {
+                this.active = false;
+                this.deactivatedOn = deactivatedOn;
+                this.removeReason = reason;
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void activate() {
+        if (!this.isActive()) {
+            this.active = true;
+            this.deactivatedOn = null;
+            this.removeReason = null;
+        }
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Drone)) return false;
+        Drone that = (Drone) other;
+        return droneId != null && droneId.equals(that.droneId);
+    }
+
+    @Override
+    public Long identity() {
+        return this.droneId;
+    }
+
+    @Override
+    public String toString() {
+        return "Drone{" +
+                "id=" + droneId +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", droneModel=" + droneModel +
+                ", acquisitionDate=" + acquisitionDate +
+                ", active=" + active +
+                ", deactivatedOn=" + deactivatedOn +
+                ", removeReason='" + removeReason + '\'' +
+                ", createdBy=" + createdBy +
+                '}';
+    }
+}
+
+```
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Registering Drone**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![Registering-drone](images/demonstration/registering-drone.png)
 
-## 7. Observations
 
-*This section should be used to include any content that does not fit any of the previous sections.*
+**Drone Database**
 
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
+![drone-database](images/demonstration/drone-database.png)
