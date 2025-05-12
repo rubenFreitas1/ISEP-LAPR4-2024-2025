@@ -2,9 +2,11 @@ package eapli.base.droneManagement.application;
 
 import eapli.base.droneManagement.domain.Drone;
 import eapli.base.droneManagement.repositories.DroneRepository;
+import eapli.base.droneModelManagement.application.DroneModelManagementService;
 import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.domain.DroneWindBehavior;
+import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
@@ -22,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,8 +38,14 @@ class DroneManagementServiceTest {
     @Mock
     private DroneRepository repo;
 
+    @Mock
+    private DroneModelRepository repoModel;
+
     @InjectMocks
     private DroneManagementService service;
+
+    @InjectMocks
+    private DroneModelManagementService serviceModel;
 
     PasswordPolicy policy = new ExemploPasswordPolicy();
     PasswordEncoder encoder = new PlainTextEncoder();
@@ -149,5 +158,20 @@ class DroneManagementServiceTest {
         service.activateDrone(drone);
         assertNull(drone.deactivatedOn());
     }
+
+    @Test
+    void listActiveDroneModels_returnsOnlyActiveModels() {
+        DroneModel active1 = new DroneModel("Alpha", "DJI", CurrentTimeCalendars.now(), user, behavior);
+        DroneModel active2 = new DroneModel("Beta", "DJI", CurrentTimeCalendars.now(), user, behavior);
+
+        when(repoModel.findByActive(true)).thenReturn((Iterable<DroneModel>) List.of(active1, active2));
+
+
+        Iterable<DroneModel> result = serviceModel.listActiveDroneModels();
+
+        Assertions.assertIterableEquals(List.of(active1, active2), result);
+        verify(repoModel).findByActive(true);
+    }
+
 
 }
