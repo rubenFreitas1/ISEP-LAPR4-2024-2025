@@ -140,4 +140,29 @@ class FigureCategoryTest {
         assertTrue(str.contains("Test Description"));
         assertTrue(str.contains("createdOn"));
     }
+
+    @Test
+    void testEditFigureCategoryValid() {
+        String newName = "UpdatedName";
+        String newDescription = "Updated Description";
+
+        figureCategory.editFigureCategory(newName, newDescription);
+
+        assertEquals(newName, figureCategory.name());
+        assertEquals(newDescription, figureCategory.description());
+        assertNotNull(figureCategory.changedOn());
+    }
+
+    @Test
+    void testEditFigureCategoryWithNullNameThrowsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                figureCategory.editFigureCategory(null, "Valid Description"));
+    }
+
+    @Test
+    void testEditFigureCategoryWithNullDescriptionThrowsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                figureCategory.editFigureCategory("Valid Name", null));
+    }
+
 }

@@ -119,4 +119,75 @@ public class FigureCategoryManagementServiceTest {
 
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void editFigureCategory_success() {
+        FigureCategory cat = new FigureCategory("OldName", "Old Description", now);
+        when(repo.isFigureCategoryNameUsed("NewName")).thenReturn(false);
+        when(repo.save(cat)).thenReturn(cat);
+
+        FigureCategory result = service.editFigureCategory(cat, "NewName", "New Description");
+
+        assertEquals("NewName", result.name());
+        assertEquals("New Description", result.description());
+        verify(repo).save(cat);
+    }
+
+    @Test
+    void editFigureCategory_nameAlreadyUsed_throwsException() {
+        FigureCategory cat = new FigureCategory("OldName", "Old Description", now);
+        when(repo.isFigureCategoryNameUsed("UsedName")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.editFigureCategory(cat, "UsedName", "Any Description")
+        );
+
+        verify(repo, never()).save(any());
+    }
+
+    @Test
+    void findFigureCategoryByName_returnsResults() {
+        Iterable<FigureCategory> expected = List.of(
+                new FigureCategory("Animals", "Various animals", now)
+        );
+        when(repo.findByName("Animals")).thenReturn(expected);
+
+        Iterable<FigureCategory> result = service.findFigureCategoryByName("Animals");
+
+        assertIterableEquals(expected, result);
+    }
+
+    @Test
+    void findFigureCategoryByDescription_returnsResults() {
+        Iterable<FigureCategory> expected = List.of(
+                new FigureCategory("Sci-Fi", "Spaceships and aliens", now)
+        );
+        when(repo.findByDescription("Spaceships")).thenReturn(expected);
+
+        Iterable<FigureCategory> result = service.findFigureCategoryByDescription("Spaceships");
+
+        assertIterableEquals(expected, result);
+    }
+
+    @Test
+    void findByActive_returnsCorrectList() {
+        Iterable<FigureCategory> expected = List.of(
+                new FigureCategory("ActiveCat", "Still in use", now)
+        );
+        when(repo.findByActive(true)).thenReturn(expected);
+
+        Iterable<FigureCategory> result = service.findByActive(true);
+
+        assertIterableEquals(expected, result);
+    }
+
+    @Test
+    void isFigureCategoryNameUsed_returnsTrueIfUsed() {
+        when(repo.isFigureCategoryNameUsed("Duplicate")).thenReturn(true);
+
+        boolean result = service.isFigureCategoryNameUsed(repo, "Duplicate");
+
+        assertTrue(result);
+    }
+
 }
