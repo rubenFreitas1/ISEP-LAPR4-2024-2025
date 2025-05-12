@@ -14,8 +14,16 @@ activate showDesigner
 showDesigner -> system : Add figure to the catalogue
 activate system
 
-system -> showDesigner : Request Figure Information ("Description, Keywords, Category")
+system -> showDesigner : Show List of Figure Categories
 deactivate system
+
+showDesigner -> system : Select Figure Category
+
+activate system
+
+system -> showDesigner : Request Keywords, Description, Exclusivity
+deactivate system
+
 showDesigner -> system : Provide Figure Information
 
 activate system

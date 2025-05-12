@@ -24,9 +24,8 @@ public class AddFigureUI extends AbstractUI {
             System.out.println("There is no registered Figure Categories!");
             return false;
         }
-
-        final SelectWidget<FigureCategory> selector = new SelectWidget<>("Select Figure Category", iterable, new FigureCategoryPrinter());
-        System.out.printf("%-30s%-30s%-30s%n", "Name", "Description", "Status");
+        String headerFigureCategoryModel = String.format("Select Figure Category\n#  %-30s%-30s%-30s%-30s%-30s", "NAME", "DESCRIPTION", "STATUS", "CREATED ON", "CHANGED ON");
+        final SelectWidget<FigureCategory> selector = new SelectWidget<>(headerFigureCategoryModel, iterable, new FigureCategoryPrinter());
         selector.show();
 
         final FigureCategory figureCategory = selector.selectedElement();

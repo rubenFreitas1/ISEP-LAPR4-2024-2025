@@ -2,54 +2,83 @@
 title Sequence Diagram
 
 actor "Show Designer" as Actor
+participant "AddFigureAction" as Action <<presentation>>
 participant "AddFigureUI" as UI <<presentation>>
 participant "AddFigureController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "FigureManagementService" as FigureManagementService <<application>>
-participant "FigureBuilder" as FigureBuilder <<domain>>
+participant "FigureCategoryManagementService" as FigureCategoryManagementService <<application>>
 participant "Figure" as Figure <<domain>>
 participant "FigureRepository" as FigureRepository <<repository>>
+participant "FigureCategoryRepository" as FigureCategoryRepository <<repository>>
 database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action: Add figure to the catalogue
+    activate Action
+
+        Action -> UI**: create
+        Action -> UI: show()
+
+    deactivate Action
+
     activate UI
 
-UI -> Controller** : create()
+UI -> Controller** : create
 
-UI --> Actor: Request Figure data (Description, Keywords, Category)
+UI -> Controller: listFigureCategories()
+    activate Controller
+
+        Controller -> FigureCategoryManagementService: findByActive(true)
+            activate FigureCategoryManagementService
+
+                FigureCategoryManagementService -> FigureCategoryRepository: findByActive(true)
+                    activate FigureCategoryRepository
+
+                        FigureCategoryRepository -> Database: findByActive(true)
+                            activate Database
+
+                                Database --> FigureCategoryRepository: List of Active Figure Categories
+                            deactivate Database
+
+                        FigureCategoryRepository --> FigureCategoryManagementService: List of Active Figure Categories
+                    deactivate FigureCategoryRepository
+
+                FigureCategoryManagementService --> Controller: List of Active Figure Categories
+            deactivate FigureCategoryManagementService
+        Controller --> UI: List of Active Figure Categories
+    deactivate Controller
+
+
+UI --> Actor: Show List of Figure Categories
+deactivate UI
+Actor -> UI: Select Figure Category
+activate UI
+
+UI --> Actor: Request Keywords, Description, Exclusivity
 deactivate UI
 
-Actor -> UI: Insert Figure data
-
+Actor -> UI: Provide Figure Information
 
     activate UI
 
-        UI -> Controller : addFigure(description, keywords, category)
+        UI -> Controller : addFigure(description, keywords, figureCategory, exclusive, customer)
             activate Controller
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER)
 
                 deactivate AuthorizationService
 
-                Controller -> FigureManagementService : registerNewFigure(description, keywords, category, createdOn, createdBy);
+                Controller -> FigureManagementService : registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
                 activate FigureManagementService
 
-                    FigureManagementService -> FigureBuilder** : create()
-                    FigureManagementService -> FigureBuilder : build()
-                    activate FigureBuilder
+                    FigureManagementService -> Figure: new Figure(description, keywords, figureCategory, exclusive, customer)
+                        activate Figure
 
-                        FigureBuilder -> Figure**: new Figure(description, keywords, category, createdOn, createdBy);
+                            Figure --> FigureManagementService: new Figure
+                        deactivate Figure
 
-                         activate Figure
-
-                         Figure --> FigureBuilder : newFigure
-                         deactivate Figure
-
-                          FigureBuilder --> FigureManagementService : newFigure
-
-                    deactivate FigureBuilder
 
 
                     FigureManagementService -> FigureRepository : save(newFigure)
@@ -70,7 +99,7 @@ Actor -> UI: Insert Figure data
 
                 Controller --> UI
             deactivate Controller
-        UI --> Actor : Inform operation success
+        UI --> Actor : Confirm Figure Added
         deactivate UI
 deactivate Actor
 
