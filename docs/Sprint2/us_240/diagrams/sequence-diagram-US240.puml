@@ -7,7 +7,6 @@ participant "AddDroneModelUI" as UI <<presentation>>
 participant "AddDroneModelController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "DroneModelManagementService" as DroneModelManagementService <<application>>
-participant "DroneModelBuilder" as DroneModelBuilder <<domain>>
 participant "DroneModel" as DroneModel <<domain>>
 participant "DroneModelRepository" as DroneModelRepository <<repository>>
 database "Database" as Database
@@ -26,7 +25,7 @@ deactivate Action
 
 UI -> Controller** : create
 
-UI --> Actor: Request Drone Model Information (Model Name, Manufacturer)
+UI --> Actor: Request Drone Model Information (Model Name, Manufacturer, WindBehavior)
 deactivate UI
 
 Actor -> UI: Provide Drone Model Information
@@ -34,30 +33,25 @@ Actor -> UI: Provide Drone Model Information
 
     activate UI
 
-        UI -> Controller : addDroneModel(modelName, manufacturer, programmingLanguage)
+        UI -> Controller : addDroneModel(modelName, manufacturer, windBehavior)
             activate Controller
 
                 Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH)
 
                 deactivate AuthorizationService
 
-                Controller -> DroneModelManagementService : registerNewDroneModel(modelName, manufacturer,programmingLanguage, createdOn, createdBy);
+                Controller -> DroneModelManagementService : registerNewDroneModel(modelName, manufacturer , systemUser , windBehavior)
                 activate DroneModelManagementService
 
-                    DroneModelManagementService -> DroneModelBuilder** : create
-                    DroneModelManagementService -> DroneModelBuilder : build()
-                    activate DroneModelBuilder
+                    DroneModelManagementService -> DroneModelManagementService : registerNewDroneModel(modelName, manufacturer, createdOn , systemUser, windBehavior)
+                        activate DroneModelManagementService
 
-                        DroneModelBuilder -> DroneModel**: new DroneModel(modelName, manufacturer, programmingLanguage, createdOn, createdBy);
+                            DroneModelManagementService -> DroneModel: new DroneModel(modelName, manufacturer, createdOn, systemUser, windBehavior)
+                                activate DroneModel
 
-                         activate DroneModel
 
-                         DroneModel --> DroneModelBuilder : newDroneModel
-                         deactivate DroneModel
-
-                          DroneModelBuilder --> DroneModelManagementService : newDroneModel
-
-                    deactivate DroneModelBuilder
+                                    DroneModel --> DroneModelManagementService: new DroneModel
+                                deactivate DroneModel
 
 
                     DroneModelManagementService -> DroneModelRepository : save(newDroneModel)
@@ -72,6 +66,8 @@ Actor -> UI: Provide Drone Model Information
 
                              DroneModelRepository --> DroneModelManagementService
                     deactivate DroneModelRepository
+                        DroneModelManagementService --> DroneModelManagementService
+                    deactivate DroneModelManagementService
 
                     DroneModelManagementService --> Controller
                 deactivate DroneModelManagementService

@@ -14,7 +14,7 @@ activate droneTech
 droneTech -> system : Create a drone model
 activate system
 
-system -> droneTech : Request Drone Model Information (Model Name, Manufacturer)
+system -> droneTech : Request Drone Model Information (Model Name, Manufacturer,\n WindBehavior)
 deactivate system
 droneTech -> system : Provide Drone Model Information
 
