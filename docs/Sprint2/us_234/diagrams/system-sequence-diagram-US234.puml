@@ -14,9 +14,9 @@ activate crmManager
 crmManager -> system : Wants to decommission a figure
 activate system
 
-system -> crmManager : Shows list of active figures in the catalogue
+system -> crmManager : Show List of Active Figures
 deactivate system
-crmManager -> system : Choose the figure to decommission
+crmManager -> system : Choose Figure to Decommission
 
 activate system
 

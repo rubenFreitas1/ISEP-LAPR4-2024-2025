@@ -2,6 +2,7 @@
 title Sequence Diagram
 
 actor "CRM Manager" as Actor
+participant "DecommissionFigureAction" as Action <<presentation>>
 participant "DecommissionFigureUI" as UI <<presentation>>
 participant "DecommissionFigureController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
@@ -12,15 +13,20 @@ database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action: Wants to decommission a figure
+    activate Action
+
+        Action -> UI**: create
+        Action -> UI: show()
+    deactivate Action
     activate UI
 
-UI -> Controller** : create()
+UI -> Controller** : create
 
 UI -> Controller: activeFigures()
     activate Controller
 
-        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
 
         Controller -> FigureManagementService: activeFigures()
             activate FigureManagementService
@@ -54,7 +60,7 @@ Actor -> UI: Choose Figure to Decommission
         UI -> Controller : decommissionFigure(figure)
             activate Controller
 
-                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf()
+                Controller -> AuthorizationService : ensureAuthenticatedUserHasAnyOf(Roles.CRM_MANAGER)
 
                 Controller -> FigureManagementService : decommissionFigure(figure)
                 activate FigureManagementService
@@ -79,7 +85,7 @@ Actor -> UI: Choose Figure to Decommission
 
                 Controller --> UI
             deactivate Controller
-        UI --> Actor : Inform operation success
+        UI --> Actor : Confirms Figure has been decommissioned
         deactivate UI
 deactivate Actor
 

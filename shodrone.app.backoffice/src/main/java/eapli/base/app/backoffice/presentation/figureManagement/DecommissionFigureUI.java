@@ -15,7 +15,8 @@ public class DecommissionFigureUI extends AbstractUI {
         if(!figures.iterator().hasNext()){
             System.out.println("There are no registered Figures");
         }else {
-            final SelectWidget<Figure> selectWidget = new SelectWidget<>("Select Figure to Decommission", figures, new FigurePrinter());
+            String headerModel = String.format("Select Figure to Decommission\n#  %-30s%-30s%-30s%-30s", "DESCRIPTION", "FIGURE CATEGORY", "STATUS", "EXCLUSIVITY");
+            final SelectWidget<Figure> selectWidget = new SelectWidget<>(headerModel, figures, new FigurePrinter());
             selectWidget.show();
             final Figure figure = selectWidget.selectedElement();
             if(figure == null) {

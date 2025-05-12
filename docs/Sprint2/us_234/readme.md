@@ -23,7 +23,17 @@ ensuring it is no longer available for future use.
 
 **Forum Insight:**
 
-* Still no questions related to this user story on forum.
+>> Ao descomissionar uma figura, que informação deve ser guardada? Data, motivo? Algo mais?
+>
+> A data em que foi desactivada é importante. Não estou a ver mais nada.
+
+>> É importante ter acesso a uma lista de figuras descomissionadas?
+>
+> Não há user stories nesse sentido, pois não?
+
+>> Uma figura que foi "decommissioned" pode ser "reativada"?
+>
+> Isso é relevante para o projeto?
 
 ## 3. Analysis
 
@@ -41,38 +51,249 @@ ensuring it is no longer available for future use.
 - Factory
 
 
-### 4.4. Acceptance Tests
-
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
-````
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**DecommissionFigureAction**
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+```java
+public class DecommissionFigureAction implements Action {
+
+    @Override
+    public boolean execute() {
+        return new DecommissionFigureUI().show();
+    }
+}
+```
+**DecommissionFigureUI**
+
+```java
+public class DecommissionFigureUI extends AbstractUI {
+
+    private final DecommissionFigureController controller = new DecommissionFigureController();
+
+    @Override
+    protected boolean doShow() {
+        final Iterable<Figure> figures = this.controller.activeFigures();
+        if(!figures.iterator().hasNext()){
+            System.out.println("There are no registered Figures");
+        }else {
+            String headerModel = String.format("Select Figure to Decommission\n#  %-30s%-30s%-30s%-30s", "DESCRIPTION", "FIGURE CATEGORY", "STATUS", "EXCLUSIVITY");
+            final SelectWidget<Figure> selectWidget = new SelectWidget<>(headerModel, figures, new FigurePrinter());
+            selectWidget.show();
+            final Figure figure = selectWidget.selectedElement();
+            if(figure == null) {
+                System.out.println("No figure selected");
+            }else {
+                this.controller.decommissionFigure(figure);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String headline() {
+        return "Decommission Figure";
+    }
+}
+
+```
+
+**DecommissionFigureController**
+
+```java
+@UseCaseController
+public class DecommissionFigureController {
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+
+    private final FigureRepository repo = PersistenceContext.repositories().figures();
+
+    private final FigureManagementService figureManagementService = new FigureManagementService(repo);
+
+    public Iterable<Figure> activeFigures() {
+        return this.figureManagementService.activeFigures();
+    }
+
+    public Figure decommissionFigure(Figure figure) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_MANAGER);
+        return this.figureManagementService.decommissionFigure(figure);
+    }
+}
+```
+
+**FigureManagementService**
+
+```java
+public class FigureManagementService {
+
+    private final FigureRepository figureRepository;
+
+    public FigureManagementService(final FigureRepository figureRepository){
+        this.figureRepository = figureRepository;
+    }
+
+    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer){
+        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer);
+        return (Figure) this.figureRepository.save(newFigure);
+    }
+
+    public Figure decommissionFigure(Figure figure){
+        figure.deactivate(CurrentTimeCalendars.now());
+        return (Figure) this.figureRepository.save(figure);
+    }
+
+    public Figure activateFigure(Figure figure){
+        figure.activate();
+        return (Figure) this.figureRepository.save(figure);
+    }
+
+    public Iterable<Figure> activeFigures(){
+        return this.figureRepository.findByActive(true);
+    }
+
+    public Iterable<Figure> inactiveFigures(){
+        return this.figureRepository.findByActive(false);
+    }
+
+    public Iterable<Figure> findByCategory(FigureCategory figureCategory){
+        return this.figureRepository.findByFigureCategory(figureCategory);
+    }
+
+    public Iterable<Figure> findByKeyword(String keyword){
+        return this.figureRepository.findByKeyword(keyword);
+    }
+
+    public Iterable<Figure> findByExclusivity(boolean exclusive){
+        return this.figureRepository.findByExclusivity(exclusive);
+    }
+    public Iterable<Figure> listPublicFigures(){
+        return this.figureRepository.findByExclusivity(false);
+    }
+    public Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category){
+        return this.figureRepository.findByKeywordAndCategory(keyword, category);
+    }
+}
+```
+
+**Figure**
+
+```java
+@Entity
+public class Figure implements AggregateRoot<Long> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long figureId;
+
+    @ElementCollection
+    private Set<String> keywords;
+
+    private String description;
+
+    @ManyToOne
+    private FigureCategory figureCategory;
+
+    private boolean exclusive;
+
+    private boolean active;
+
+
+    @ManyToOne
+    private Customer customer;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar deactivatedOn;
+
+    protected Figure(){
+    }
+
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
+        Preconditions.noneNull(new Object[] {keywords, figureCategory});
+        this.keywords = new HashSet<>(keywords);
+        this.description = description;
+        this.figureCategory = figureCategory;
+        this.active = true;
+        this.exclusive = exclusive;
+        this.customer = customer;
+    }
+
+    public Set<String> keywords(){
+        return this.keywords;
+    }
+
+    public String description(){
+        return this.description;
+    }
+
+    public FigureCategory figureCategory(){
+        return this.figureCategory;
+    }
+
+    public Calendar deactivatedOn(){
+        return this.deactivatedOn;
+    }
+
+    public Customer customer(){
+        return this.customer;
+    }
+
+    public boolean isActive(){return this.active;}
+
+    public boolean isExclusive(){return this.exclusive;}
+
+
+
+    public void deactivate(final Calendar deactivatedOn) {
+        if (deactivatedOn != null) {
+            if (!this.active) {
+                throw new IllegalStateException("Cannot deactivate an inactive Drone!");
+            } else {
+                this.active = false;
+                this.deactivatedOn = deactivatedOn;
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void activate() {
+        if (!this.isActive()) {
+            this.active = true;
+            this.deactivatedOn = null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Figure{" +
+                "figureId=" + figureId +
+                ", keywords=" + keywords +
+                ", description='" + description + '\'' +
+                ", figureCategory=" + figureCategory +
+                ", exclusive=" + exclusive +
+                ", active=" + active +
+                ", deactivatedOn=" + deactivatedOn +
+                '}';
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Figure)) return false;
+        Figure that = (Figure) other;
+        return figureId != null && figureId.equals(that.figureId);
+    }
+
+    @Override
+    public Long identity() {
+        return this.figureId;
+    }
+}
+```
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Decommission Figure**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
-
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
+![Decommission-figure](images/demonstration/decommission-figure.png)
