@@ -42,6 +42,17 @@ public class FigureCategory implements AggregateRoot<Long> {
     public String name() {
         return this.name;
     }
+    public void changeName(final String name) {
+        Preconditions.noneNull(name);
+        this.name = name;
+        this.changedOn = Calendar.getInstance();
+    }
+
+    public void changeDescription(final String description) {
+        Preconditions.noneNull(description);
+        this.description = description;
+        this.changedOn = Calendar.getInstance();
+    }
 
     public String description() {
         return this.description;
@@ -74,6 +85,13 @@ public class FigureCategory implements AggregateRoot<Long> {
         } else {
             throw new IllegalStateException("FigureCategory is already active");
         }
+    }
+
+    public void editFigureCategory(final String name, final String description) {
+        Preconditions.noneNull(new Object[]{name, description});
+        this.name = name;
+        this.description = description;
+        this.changedOn = Calendar.getInstance();
     }
 
     @Override

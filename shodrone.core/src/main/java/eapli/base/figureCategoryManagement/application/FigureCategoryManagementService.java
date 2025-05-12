@@ -35,6 +35,19 @@ public class FigureCategoryManagementService {
         return this.figureCategoryRepository.findByDescription(description);
     }
 
+    public FigureCategory editFigureCategory(FigureCategory figureCategory,
+                                             String newName,
+                                             String newDescription) {
+        if (isFigureCategoryNameUsed(figureCategoryRepository, newName)) {
+            throw new IllegalArgumentException("Figure Category name already in use");
+        }else {
+            figureCategory.changeName(newName);
+            figureCategory.changeDescription(newDescription);
+        }
+        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+    }
+
+
     public Iterable<FigureCategory> findAll() {
         return this.figureCategoryRepository.findAll();
     }
