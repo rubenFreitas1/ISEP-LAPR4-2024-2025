@@ -1,0 +1,88 @@
+@startuml
+actor "Show Designer" as Designer
+
+participant "«presentation»\nEditFigureCategoryUI" as UI
+participant "«application»\nEditFigureCategoryController" as Controller
+participant "«auth»\nAuthorizationService" as Authz
+participant "«application»\nFigureCategoryManagementService" as Service
+participant "«repository»\nFigureCategoryRepository" as Repo
+database "Database" as DB
+participant "«domain»\nFigureCategory" as Domain
+
+activate Designer
+
+Designer -> UI : Asks to edit Figure Category
+activate UI
+UI -> Controller** : create()
+UI -> Controller : allActiveFigureCategories()
+activate Controller
+Controller -> Authz : ensureAuthenticatedUserHasAnyOf()
+activate Authz
+Authz --> Controller : true
+deactivate Authz
+Controller -> Service : findByActive(true)
+activate Service
+Service -> Repo : findByActive(true)
+activate Repo
+Repo -> DB : query
+activate DB
+DB --> Repo :active categories
+deactivate DB
+Repo --> Service
+deactivate Repo
+Service --> Controller
+deactivate Service
+Controller --> UI : Iterable<FigureCategory>
+deactivate Controller
+UI --> Designer : shows list of active categories
+deactivate UI
+
+Designer -> UI : Selects a category
+activate UI
+
+UI --> Designer : shows categories details
+deactivate UI
+Designer -> UI : Selects a category to edit
+activate UI
+UI --> Designer : asks for new name and description
+deactivate UI
+Designer -> UI : Inserts new name and description
+activate UI
+UI -> Controller : editFigureCategory(FigureCategory, newName, newDescription)
+activate Controller
+Controller -> Authz : ensureAuthenticatedUserHasAnyOf()
+activate Authz
+Authz --> Controller : true
+deactivate Authz
+Controller -> Service : editFigureCategory(FigureCategory, newName, newDescription)
+activate Service
+
+Service -> Repo : isFigureCategoryNameUsed(newName)
+activate Repo
+Repo -> DB : Consulta nome
+activate DB
+DB --> Repo : false
+deactivate DB
+Repo --> Service
+deactivate Repo
+
+Service -> Domain : changeName(newName)
+activate Domain
+Service -> Domain : changeDescription(newDescription)
+deactivate Domain
+Service -> Repo : save(figureCategory)
+activate Repo
+Repo -> DB : update
+activate DB
+DB --> Repo : success message
+deactivate DB
+Repo --> Service : success message
+deactivate Repo
+Service --> Controller : success message
+deactivate Service
+
+Controller --> UI : success message
+deactivate Controller
+UI --> Designer : success message
+
+@enduml

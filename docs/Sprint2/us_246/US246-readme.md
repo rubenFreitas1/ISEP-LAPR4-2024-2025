@@ -30,13 +30,13 @@ Ensuring unique category names and tracking the last update date supports data i
 ![SSD246](images/system-sequence-diagram-US246.svg "SSD246")
 ## 4. Design
 
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
-### 4.1. Realization
+### 4.1. Sequence Diagram
 
-![a class diagram](images/class-diagram-01.svg "A Class Diagram")
+![sequence-diagram](images/sequence-diagram-US246.svg "A Sequence Diagram")
 
 ### 4.3. Applied Patterns
-
+- Domain-Driven Design
+- Factory
 ### 4.4. Acceptance Tests
 
 Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
@@ -59,17 +59,4 @@ public void ensureXxxxYyyy() {
 
 *It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
 
-## 6. Integration/Demonstration
-
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
-
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
-
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
 
