@@ -61,8 +61,8 @@ public class RegisterShowRequestUI extends AbstractUI {
         List<Figure> figureSequence = new ArrayList<>();
         List<Figure> availableFigures = new ArrayList<>();
         figures.forEach(availableFigures::add);
-        final SelectWidget<Figure> selectWidgetFigure = new SelectWidget<>("Public figures (Enter 0 to finish)", availableFigures, new FigurePrinter());
-        System.out.println("\nSelect the following figures in the pretended sequence.");
+        final SelectWidget<Figure> selectWidgetFigure = new SelectWidget<>("Available figures (Enter 0 to finish)", availableFigures, new FigurePrinter());
+        System.out.println("\nSelect the following figures in the pretended order.");
         while (true) {
             if (availableFigures.isEmpty()) {
                 System.out.println("No more figures available to select.");

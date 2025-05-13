@@ -5,6 +5,7 @@ import eapli.base.app.backoffice.presentation.figureManagement.ListFigureAction;
 import eapli.base.app.backoffice.presentation.figureManagement.SearchFigureAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.ListRepresentativesAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.RegisterRepresentativeAction;
+import eapli.base.app.backoffice.presentation.showRequestManagement.EditShowRequestAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ListShowRequestsAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.RegisterShowRequestAction;
 import eapli.framework.actions.Actions;
@@ -60,7 +61,7 @@ public class CRM_CollaboratorMenu {
         final Menu menu = new Menu("Show Request >");
         menu.addItem(REGISTER_SHOW_REQUEST_OPTION, "Register Show Request", new RegisterShowRequestAction());
         menu.addItem(LIST_SHOW_REQUESTS_OPTION, "List Show Requests", new ListShowRequestsAction());
-        //menu.addItem(EDIT_SHOW_REQUEST_OPTION, "Edit Show Request", );
+        menu.addItem(EDIT_SHOW_REQUEST_OPTION, "Edit Show Request", new EditShowRequestAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
         return menu;
     }

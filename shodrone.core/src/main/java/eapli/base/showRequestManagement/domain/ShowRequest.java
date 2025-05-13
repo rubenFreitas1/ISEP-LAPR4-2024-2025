@@ -68,6 +68,46 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     public Customer customer() { return this.customer; }
 
+    public void changeLocation(String location) {
+        if (location != null) {
+            this.location = location;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeDate(Calendar date) {
+        if (date != null) {
+            this.date = date;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeDroneNumber(Integer droneNumber) {
+        if (droneNumber != 0) {
+            this.droneNumber = droneNumber;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeDuration(Integer duration) {
+        if (duration != null) {
+            this.duration = duration;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeRequestedFigures(List<Figure> requestedFigures) {
+        if (requestedFigures != null) {
+            this.requestedFigures = requestedFigures;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     @Override
     public String toString() {
         return "ShowRequest{" +

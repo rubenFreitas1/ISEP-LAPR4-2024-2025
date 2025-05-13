@@ -24,4 +24,28 @@ public class ShowRequestManagementService {
         return this.showRequestRepository.findByCustomer(customer);
     }
 
+    public ShowRequest editShowRequestLocation(ShowRequest showRequest, String location) {
+        showRequest.changeLocation(location);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
+
+    public ShowRequest editShowRequestDate(ShowRequest showRequest, Calendar date) {
+        showRequest.changeDate(date);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
+
+    public ShowRequest editShowRequestDroneNumber(ShowRequest showRequest, int droneNumber) {
+        showRequest.changeDroneNumber(droneNumber);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
+
+    public ShowRequest editShowRequestDuration(ShowRequest showRequest, int duration) {
+        showRequest.changeDuration(duration);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
+
+    public ShowRequest editShowRequestSequenceOfFigures(ShowRequest showRequest, List<Figure> sequenceOfFigures) {
+        showRequest.changeRequestedFigures(sequenceOfFigures);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
 }
