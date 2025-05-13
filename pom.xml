@@ -18,6 +18,7 @@
 		<module>shodrone.infrastructure.application</module>
 		<module>shodrone.bootstrappers</module>
 		<module>shodrone.util.ci</module>
+		<module>shodrone.LPROG</module>
 	</modules>
 	<version>0.1.0</version>
 
@@ -60,6 +61,11 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>5.11.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>4.13.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
