@@ -24,6 +24,11 @@ The show request status information should be provided.
 
 **Forum Insight:**
 
+>> Ao listar um show request, além de mostrar campos como "request ID", "date/time", "location", "number of drones", "duration", e "current status", também prefere que seja mostrado a descrição do show request? Esta dúvida surgiu pois queriamos confirmar se não fica demasiada informação a exibir.
+>
+> Porquê incluir "number of drones" e "duration", mas excluir a descrição?! A ideia da US235 é consultar o conteúdo do show request ou listar os show requests de um cliente?
+
+
 >> Que informação deve ser exibida em cada show request? Tudo o que foi inserido no momento de criação deste + data de criação e o colaborador?
 >
 > Ao listar os show requests de um cliente não se pode saturar a UI de informação, sob pena de se tornar inútil. Listar todos os show requests com certeza que é diferente de consultar todos os detalhes de um show request.
