@@ -17,7 +17,7 @@ public class Representative implements AggregateRoot<Long> {
     private Long representativeId;
     @Column
     private String representativeName;
-    @Column( unique = true, nullable = false)
+    @Column
     private String representativeEmail;
     @Column
     private String representativePassword;

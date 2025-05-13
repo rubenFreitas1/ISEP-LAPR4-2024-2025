@@ -1,6 +1,7 @@
 package eapli.base.representativeManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
@@ -14,12 +15,14 @@ import java.util.Optional;
 public class RepresentativeManagementService {
 
     private final RepresentativeRepository representativeRepository;
+    private final CustomerRepository customerRepository;
 
-    public RepresentativeManagementService(final RepresentativeRepository representativeRepository){
+    public RepresentativeManagementService(final RepresentativeRepository representativeRepository, final CustomerRepository customerRepository) {
         this.representativeRepository = representativeRepository;
+        this.customerRepository = customerRepository;
     }
 
-    public Representative registerNewRepresentative(final String representativeName, final String representativeEmail, final Calendar createdOn, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
+    public void registerNewRepresentative(final String representativeName, final String representativeEmail, final Calendar createdOn, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
         if(representativeName == null || representativeName.isEmpty()){
             throw new IllegalArgumentException("Representative Name cannot be null or empty!");
         }
@@ -43,11 +46,12 @@ public class RepresentativeManagementService {
         }
 
         Representative newRepresentative = new Representative(representativeName, representativeEmail, createdOn, representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
-        return (Representative) this.representativeRepository.save(newRepresentative);
+        associatedCustomer.addRepresentative(newRepresentative);
+        this.customerRepository.save(associatedCustomer);
     }
 
-    public Representative registerNewRepresentative(final String representativeName, final String representativeEmail,final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
-        return registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
+    public void registerNewRepresentative(final String representativeName, final String representativeEmail,final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
+        registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
     }
 
     public boolean isEmailUsed(String representativeEmail) {

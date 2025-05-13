@@ -22,7 +22,7 @@ public class Customer implements AggregateRoot<Long> {
 
     @Column
     private String customerAddress;
-    @Column( unique = true, nullable = false)
+    @Column
     private String customerEmail;
     @Column
     private String customerPassword;
@@ -31,7 +31,7 @@ public class Customer implements AggregateRoot<Long> {
     @Column
     private String customerVatNumber;
 
-    @OneToMany(mappedBy = "associatedCustomer", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Representative> representatives;
 
     @ManyToOne
