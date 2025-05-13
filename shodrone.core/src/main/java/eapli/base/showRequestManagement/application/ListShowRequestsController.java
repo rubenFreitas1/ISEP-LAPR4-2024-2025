@@ -7,10 +7,15 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
+import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
+import eapli.framework.infrastructure.authz.application.AuthorizationService;
+import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
 @UseCaseController
 public class ListShowRequestsController {
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
 
     private final CustomerRepository customerRepository = PersistenceContext.repositories().customers();
     private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepository);
@@ -24,6 +29,7 @@ public class ListShowRequestsController {
     }
 
     public Iterable<ShowRequest> findByCustomer(Customer customer) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR, Roles.CRM_MANAGER);
         return showRequestManagementService.findByCustomer(customer);
     }
 

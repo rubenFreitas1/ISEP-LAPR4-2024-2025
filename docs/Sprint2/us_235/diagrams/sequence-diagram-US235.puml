@@ -2,37 +2,69 @@
 title Sequence Diagram
 
 actor "CRM Manager / CRM Collaborator" as Actor
+participant "ListShowRequestsAction" as Action <<presentation>>
 participant "ListShowRequestsUI" as UI <<presentation>>
 participant "ListShowRequestsController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "CustomerManagementService" as CustomerManagementService <<application>>
 participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
 participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
 database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action: Wants to list show request of client
+activate Action
+
+Action -> UI**: create
+Action -> UI: show()
+deactivate Action
     activate UI
 
-UI -> Controller** : create()
-UI --> Actor: Request Client data (ID)
+UI -> Controller** : create
+UI -> Controller: listCustomers()
+activate Controller
+
+Controller -> CustomerManagementService: findAllActiveCustomers()
+activate CustomerManagementService
+
+CustomerManagementService -> CustomerRepository: findByActive()
+activate CustomerRepository
+
+CustomerRepository -> Database: findByActive()
+activate Database
+
+Database --> CustomerRepository: List of Active Clients
+deactivate Database
+
+CustomerRepository --> CustomerManagementService: List of Active Clients
+deactivate CustomerRepository
+
+CustomerManagementService --> Controller: List of Active Clients
+deactivate CustomerManagementService
+
+Controller --> UI: List of Active Clients
+deactivate Controller
+
+UI --> Actor: Show list of Active Clients
     deactivate UI
-Actor -> UI: Insert Client data
+Actor -> UI: Choose client
 
     activate UI
 
-    UI -> Controller: listShowRequests(clientID)
+    UI -> Controller: findByCustomer(customer)
     activate Controller
 
-        Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+        Controller -> AuthorizationService: ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR, Roles.CRM_MANAGER)
 
-        Controller -> ShowRequestManagementService: listShowRequests(clientID)
+        Controller -> ShowRequestManagementService: findByCustomer(customer)
             activate ShowRequestManagementService
 
-                ShowRequestManagementService -> ShowRequestRepository: findByClientID(clientID)
+                ShowRequestManagementService -> ShowRequestRepository: findByCustomer(customer)
                     activate ShowRequestRepository
 
-                        ShowRequestRepository -> Database:  findByClientID(clientID)
+                        ShowRequestRepository -> Database:  findByCustomer(customer)
                             activate Database
 
                                 Database --> ShowRequestRepository: List of Show Requests
@@ -47,7 +79,7 @@ Actor -> UI: Insert Client data
         Controller --> UI: List of Show Requests
     deactivate Controller
 
-UI --> Actor: Show List of Show Requests
+UI --> Actor: Show list of show requests \n related to the client
 deactivate UI
 deactivate Actor
 

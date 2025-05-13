@@ -14,13 +14,13 @@ activate crmManager
 crmManager -> system : Wants to list show request of client
 activate system
 
-system -> crmManager : Request Client Information ("Id")
+system -> crmManager : Show list of Active Clients
 deactivate system
-crmManager -> system : Provide Client Information
+crmManager -> system : Choose client
 
 activate system
 
-system -> crmManager : Show list of show requests \nrelated to the client
+system -> crmManager : Show list of show requests \n related to the client
 deactivate system
 
 
