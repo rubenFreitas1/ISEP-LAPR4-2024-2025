@@ -71,7 +71,7 @@ public class RepresentativeManagementService {
         return this.representativeRepository.findByAssociatedCustomer(associatedCustomer);
     }
 
-    public Representative deactivateRepresentative(final Representative representative) {
+    public Representative deactivateCustomerRepresentative(final Representative representative) {
         representative.deactivate(CurrentTimeCalendars.now());
         return (Representative) this.representativeRepository.save(representative);
     }
@@ -79,5 +79,4 @@ public class RepresentativeManagementService {
         representative.activate();
         return (Representative) this.representativeRepository.save(representative);
     }
-
 }
