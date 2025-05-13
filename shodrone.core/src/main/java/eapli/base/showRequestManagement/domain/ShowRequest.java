@@ -66,7 +66,7 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     public ShowRequestStatus status() { return this.status; }
 
-    public eapli.base.customerManagement.domain.Customer customer() { return this.customer; }
+    public Customer customer() { return this.customer; }
 
     @Override
     public String toString() {

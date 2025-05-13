@@ -2,7 +2,6 @@ package eapli.base.showRequestManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureManagement.domain.Figure;
-import eapli.base.showRequestManagement.domain.RequestedFigures;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 
@@ -20,4 +19,9 @@ public class ShowRequestManagementService {
         ShowRequest newShowRequest = new ShowRequest(location, date, droneNumber, duration, figureSequence, customer);
         return (ShowRequest) this.showRequestRepository.save(newShowRequest);
     }
+
+    public Iterable<ShowRequest> findByCustomer(Customer customer) {
+        return this.showRequestRepository.findByCustomer(customer);
+    }
+
 }
