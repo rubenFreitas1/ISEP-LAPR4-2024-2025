@@ -95,4 +95,83 @@ class ShowRequestManagementServiceTest {
         verify(showRequestRepository).findByCustomer(customer);
     }
 
+    @Test
+    void editShowRequestLocation_success() {
+        String newLocation = "Avenida Central";
+        showRequest.changeLocation(newLocation);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestLocation(showRequest, newLocation);
+
+        assertNotNull(updated);
+        assertEquals(newLocation, updated.location());
+        verify(showRequestRepository).save(showRequest);
+    }
+
+    @Test
+    void editShowRequestDate_success() {
+        Calendar newDate = Calendar.getInstance();
+        newDate.add(Calendar.DAY_OF_MONTH, 10);
+        showRequest.changeDate(newDate);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestDate(showRequest, newDate);
+
+        assertNotNull(updated);
+        assertEquals(newDate, updated.date());
+        verify(showRequestRepository).save(showRequest);
+    }
+
+    @Test
+    void editShowRequestDroneNumber_success() {
+        int newDroneNumber = 8;
+        showRequest.changeDroneNumber(newDroneNumber);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestDroneNumber(showRequest, newDroneNumber);
+
+        assertNotNull(updated);
+        assertEquals(newDroneNumber, updated.droneNumber());
+        verify(showRequestRepository).save(showRequest);
+    }
+
+    @Test
+    void editShowRequestDuration_success() {
+        int newDuration = 45;
+        showRequest.changeDuration(newDuration);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestDuration(showRequest, newDuration);
+
+        assertNotNull(updated);
+        assertEquals(newDuration, updated.duration());
+        verify(showRequestRepository).save(showRequest);
+    }
+
+    @Test
+    void editShowRequestSequenceOfFigures_success() {
+        Set<String> keywords = new HashSet<>(Set.of("circle", "round"));
+        Figure newFigure = new Figure("Circle", keywords, category, true, null);
+        List<Figure> newFigures = List.of(newFigure);
+
+        showRequest.changeRequestedFigures(newFigures);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestSequenceOfFigures(showRequest, newFigures);
+
+        assertNotNull(updated);
+        assertEquals(newFigures, updated.requestedFigures());
+        verify(showRequestRepository).save(showRequest);
+    }
+
 }
