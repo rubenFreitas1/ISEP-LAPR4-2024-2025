@@ -1,88 +1,29 @@
-```
-# US 101
-
-*This is an example template*
+# US 265 - Generate a simulation report
 
 ## 1. Context
 
-*Explain the context for this task. It is the first time the task is assigned to be developed or this tasks was incomplete in a previous sprint and is to be completed in this sprint? Are we fixing some bug?*
-
-### 1.1 List of issues
-
-Analysis:
-
-Design:
-
-Implement:
-
-Test:
-
+* Shodrone ensures the safety and quality of all drone figures and shows through rigorous simulation and validation before deployment.
+* So the system must produce a comprehensive simulation report. This report will summarize the drone execution outcomes, identify any collisions with corresponding timestamps and coordinates, and ultimately determine if the figure passed safety validation.
 
 ## 2. Requirements
 
-*In this section you should present the functionality that is being developed, how do you understand it, as well as possible correlations to other requirements (i.e., dependencies). You should also add acceptance criteria.*
-
-*Example*
-
-**US G101** As {Ator} I Want...
+**US265** - As a system user, I want to receive a summary of the simulation results so that I can determine if the figure is safe to use.
 
 **Acceptance Criteria:**
 
-- US101.1 The system should...Blá Blá Blá ...
-
-- US101.2. Blá Blá Blá ...
+- US265.1 The system must generate a report and store it in a file.
+- US265.2 The report should include the total number of drones and their execution status.
+- US265.3 If collisions occur, the report must list timestamps and positions.
+- US265.4 The report should indicate whether the figure passed or failed validation.
 
 **Dependencies/References:**
 
-*Regarding this requirement we understand that it relates to...*
+* This user story depends on user story US261 because provides the foundational execution framework, including launching drone processes and managing communication
+* This user story depends on user story US262 because ensures the system collects accurate position data from each drone.
+* This user story depends on user story US263 because it enables the detection and logging of collisions, which are required entries in the final report.
+* This user story depends on user story US264 because is crucial for the report’s integrity, especially in documenting exact timestamps of collisions and ensuring the figure’s validity is accurately assessed.
 
-## 3. Analysis
+**Forum Insight:**
 
-*In this section, the team should report the study/analysis/comparison that was done in order to take the best design decisions for the requirement. This section should also include supporting diagrams/artifacts (such as domain model; use case diagrams, etc.),*
+* Still no questions related to this user story on forum.
 
-## 4. Design
-
-*In this sections, the team should present the solution design that was adopted to solve the requirement. This should include, at least, a diagram of the realization of the functionality (e.g., sequence diagram), a class diagram (presenting the classes that support the functionality), the identification and rational behind the applied design patterns and the specification of the main tests used to validade the functionality.*
-
-### 4.1. Realization
-
-![a class diagram](class-diagram-01.svg "A Class Diagram")
-
-### 4.3. Applied Patterns
-
-### 4.4. Acceptance Tests
-
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
-
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
-````
-
-## 5. Implementation
-
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
-
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
-
-## 6. Integration/Demonstration
-
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
-
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
-
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
-```
