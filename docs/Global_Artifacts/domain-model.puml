@@ -1,8 +1,10 @@
 @startuml
 
-package "**«Aggregate» Client**" #DDDDDD {
+@startuml
 
-        entity "Client" as entity_client <<entity root>> {
+package "**«Aggregate» Customer**" #DDDDDD {
+
+        entity "Customer" as entity_customer <<entity root>> {
         }
         class "VatNumber" as vObject_vatNumber <<(V, #7E84F7)>> {
         }
@@ -22,7 +24,7 @@ package "**«Aggregate» Client**" #DDDDDD {
 
 
 
-        class "ClientStatus" as vObject_clientStatus <<(V, #7E84F7)>> {
+        class "CustomerStatus" as vObject_customerStatus <<(V, #7E84F7)>> {
                     Deleted
                     Infringement
                     Created
@@ -33,18 +35,39 @@ package "**«Aggregate» Client**" #DDDDDD {
         entity "Representative" as entity_representative {
             }
 
-            class "Position" as vObject_position <<(V, #7E84F7)>> {
+        class "Position" as vObject_position <<(V, #7E84F7)>> {
             }
 
+        class "RepresentativeName" as vObject_representativeName <<(V, #7E84F7)>> {
+        }
+        class "RepresentativeEmail" as vObject_representativeEmail <<(V, #7E84F7)>> {
+        }
+        class "RepresentativePassword" as vObject_representativePassword <<(V, #7E84F7)>> {
+                }
+        class "RepresentativePhoneNumber" as vObject_representativePhoneNumber <<(V, #7E84F7)>> {
+        }
+        class "RepresentativeStatus" as vObject_representativeStatus <<(V, #7E84F7)>> {
+            Active
+            Inactive
+        }
+
+
+
         entity_representative *-- vObject_position
-        entity_client "1"<--right"1..*"  entity_representative: "represents"
-        entity_client *--down vObject_clientStatus
-        entity_client *--down vObject_customerAddress
-        entity_client *--down vObject_vatNumber
-        entity_client *--down vObject_email
-        entity_client *--down vObject_name
-        entity_client *--down vObject_password
-        entity_client *--down vObject_phoneNumber
+        entity_representative *-- vObject_representativeName
+        entity_representative *-- vObject_representativeEmail
+        entity_representative *-- vObject_representativePassword
+        entity_representative *-- vObject_representativePhoneNumber
+        entity_representative *-- vObject_representativeStatus
+
+        entity_customer "1"<-->"1..*"  entity_representative: "is associated with"
+        entity_customer *--down vObject_customerStatus
+        entity_customer *--down vObject_customerAddress
+        entity_customer *--down vObject_vatNumber
+        entity_customer *--down vObject_email
+        entity_customer *--down vObject_name
+        entity_customer *--down vObject_password
+        entity_customer *--down vObject_phoneNumber
 
 
 }
@@ -172,6 +195,9 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
     class "Sequence" as vObject_sequence <<(V, #7E84F7)>> {
     }
 
+    class "ProposedSequence" as vObject_proposedSequence <<(V, #7E84F7)>> {
+    }
+
 
     entity_showRequest "1"-->"1" entity_requestedFigures: "contains"
 
@@ -190,6 +216,7 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
 
     entity_showProposal *--down vObject_proposedDuration
     entity_showProposal *--down vObject_proposedNumberDrones
+    entity_proposedFigures *--down vObject_proposedSequence
 
     entity_showSchedule *--down vObject_showDate
     entity_showSchedule *--down vObject_isTested
@@ -263,10 +290,13 @@ package FigureCategory #DDDDDD {
 
 
 entity_requestedFigures "*" -->"1..*" entity_figure:"contains"
+entity_proposedFigures "*" -->"1..*" entity_figure:"contains"
+
+entity_figure "*"-->"1" entity_customer: "created by"
 
 entity_drone "1..*"-->"*" entity_figure: "used in"
 
-entity_representative "1"-down>"1..*" entity_showRequest: "requests"
+entity_customer "1"-down>"1..*" entity_showRequest: "requests"
 
 
 
