@@ -149,4 +149,16 @@ class FigureManagementServiceTest {
         verify(repo).findByKeywordAndCategory("triângulo", category);
     }
 
+    @Test
+    public void listPublicFigures_returnsNonExclusiveFigures() {
+        List<Figure> expected = List.of(figure);
+        when(repo.findByExclusivity(false)).thenReturn(expected);
+
+        Iterable<Figure> result = service.listPublicFigures();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(repo).findByExclusivity(false);
+    }
+
 }
