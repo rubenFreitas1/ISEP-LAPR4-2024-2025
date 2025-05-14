@@ -110,17 +110,28 @@ void simulator_run(const char* fileName, int maxCollisions) {
     int collisions = 0;
     int auxMatrix = 0;
 	MatrixCellInfo matrix[MAX_X][MAX_Y][MAX_Z] = {0};
+
+	int droneStatus = 1;
+
     int totalPositions = readCsv(fileName, &allData, &totalDrones);
+    char reportFile[100] = "simulation_report.txt";
+	FILE* report = fopen(reportFile, "w");
+	if (report == NULL) {
+		perror("Error opening report file");
+		exit(EXIT_FAILURE);
+	}
+
+
     int fd_1[totalDrones][2]; // pipes de comunicação de pai -> drone
     int fd_2[totalDrones][2]; // pipes de comunicação de drone -> pai
-    
+
     struct sigaction act;
     memset(&act, 0, sizeof(struct sigaction));
     //act.sa_handler = signal_handler;
     act.sa_sigaction = signal_handler;
     act.sa_flags = SA_RESTART;
     sigaction(SIGUSR1, &act, NULL);
-    
+
     for (int i = 0; i < totalDrones; i++) {
 		if (pipe(fd_1[i]) == -1 || pipe(fd_2[i]) == -1) {
 			perror("Error creatring pipe!");
@@ -132,7 +143,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	int timestampCount = 0;
 	int* timestamps = getAllTimestamps(allData, totalPositions, &timestampCount);
 	//printTimestamps(timestamps, timestampCount);
-	
+
 	for(int i= 0; i < totalDrones; i++){
 		pids[i] = fork();
 		if(pids[i] == 0){
@@ -152,7 +163,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 				printf("[DRONE %d] READ TIMESTAMP (%ds)\n", myDroneID, ts);
 				if(currentIndex >= dronePositions){ break;}
 				while(currentIndex < dronePositions && droneData[currentIndex].timestamp < ts){
-					currentIndex++;   // avança o currentIndex enquando estiver menor que o timestamp // evito fazer verificações em timestamps menores 
+					currentIndex++;   // avança o currentIndex enquando estiver menor que o timestamp // evito fazer verificações em timestamps menores
 				}
 				if(currentIndex < dronePositions && droneData[currentIndex].timestamp == ts){
 					write(fd_2[i][1], &droneData[currentIndex], sizeof(DroneData));
@@ -168,14 +179,16 @@ void simulator_run(const char* fileName, int maxCollisions) {
 					write(fd_2[i][1], &empty, sizeof(DroneData));
 				}
 			}
-			close(fd_1[i][0]);  
+			close(fd_1[i][0]);
 			close(fd_2[i][1]);
 			free(droneData);
 			exit(0);
-			
-		}	
+
+		}
 	}
-	
+
+	writeHeader(report, totalDrones);
+
 	for (int i = 0; i < timestampCount; i++) {
 		int currentTimestamp = timestamps[i];
 		for(int d = 0; d < totalDrones; d++){
@@ -196,24 +209,32 @@ void simulator_run(const char* fileName, int maxCollisions) {
 					kill(pids[auxMatrix-1], SIGUSR1);
 					collisions++;
 
+					logCollision(report, position.timestamp, position.x, position.y, position.z, position.droneID, auxMatrix);
+
+
 					if(collisions>=maxCollisions){
 						printf("\n\n");
 						printf("COLLISION THRESHOLD HIT! Simulation terminated.\n");
-						
+
 						int endTimestamp = -999;
 						for (int d = 0; d < totalDrones; d++) {
 							write(fd_1[d][1], &endTimestamp, sizeof(int));
 							printf("[ROOT] SEND TERMINATION SIGNAL FOR DRONE: %d\n", d + 1);
 						}
-	
+
 						for (int i = 0; i < totalDrones; i++) {
 							waitpid(pids[i], NULL, 0);
 							printf("!!!DRONE %d ABORTED!!!\n", i + 1);
 						}
-						
+						droneStatus = 0;
+
+						writeExecutionStatus(report, droneStatus);
+						writeValidationStatus(report, 0); // Falhou
+						fclose(report);
+
 						printf("\n\n");
 						printf("[ROOT] SIMULATION ABORTED.\n");
-	
+
 						free(timestamps);
 						free(allData);
 						exit(0);
@@ -223,20 +244,24 @@ void simulator_run(const char* fileName, int maxCollisions) {
 		}
 		storeTempMatrix(matrix, tempMatrix);
 	}
-	
+
 	int endTimestamp = -999;
 	for (int d = 0; d < totalDrones; d++) {
 		write(fd_1[d][1], &endTimestamp, sizeof(int));
 		printf("[ROOT] SEND TERMINATION SIGNAL FOR DRONE: %d\n", d + 1);
 	}
-	
+
 	for (int i = 0; i < totalDrones; i++) {
 		waitpid(pids[i], NULL, 0);
 		printf("!!!DRONE %d FINISHED!!!\n", i + 1);
 	}
-	
+
 	printf("\n\n");
 	printf("[ROOT] SIMULATION COMPLETED.\n");
+
+	writeExecutionStatus(report, droneStatus);
+	writeValidationStatus(report, 1);
+	fclose(report);
 	
 	free(timestamps);
     free(allData);

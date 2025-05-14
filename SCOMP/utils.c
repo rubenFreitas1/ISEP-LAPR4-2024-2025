@@ -115,3 +115,37 @@ void bubbleSort(int* arr, int n) {
         }
     }
 }
+
+// MÉTODO QUE ESCREVE O CABEÇALHO INICIAL DO RELATÓRIO
+// INCLUI O NÚMERO TOTAL DE DRONES E A SECÇÃO DE COLISÕES
+void writeHeader(FILE* report, int totalDrones) {
+    fprintf(report, "=== Simulation Report ===\n");
+    fprintf(report, "Total Drones: %d\n\n", totalDrones);
+    fprintf(report, "--- Collisions ---\n");
+}
+
+// MÉTODO QUE REGISTA UMA COLISÃO NO RELATÓRIO
+// INCLUI O TIMESTAMP, A POSIÇÃO DA COLISÃO E OS DRONES ENVOLVIDOS
+void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2) {
+    fprintf(report, "[COLLISION] Timestamp: %ds | Position: (%.2f, %.2f, %.2f) | Drones involved: %d and %d\n",
+            timestamp, x, y, z, drone1, drone2);
+}
+
+// MÉTODO QUE ESCREVE O RESULTADO FINAL DA SIMULAÇÃO NO RELATÓRIO
+// INDICA SE A SIMULAÇÃO FOI BEM-SUCEDIDA (PASSED) OU SE FALHOU (FAILED)
+void writeValidationStatus(FILE* report, int passed) {
+    fprintf(report, "\n--- Validation ---\n");
+    fprintf(report, "Simulation %s\n", passed ? "PASSED" : "FAILED");
+}
+
+// MÉTODO QUE ESCREVE O ESTADO FINAL DE EXECUÇÃO DOS DRONES NO RELATÓRIO
+// INDICA SE O EXECUTION STATUS É FINISHED OU ABORTED
+void writeExecutionStatus(FILE* report, int status) {
+    fprintf(report, "\n--- Drone Execution Status ---\n");
+    if (status == 1) {
+        fprintf(report, "All drones: FINISHED\n");
+    } else {
+        fprintf(report, "All drones: ABORTED\n");
+    }
+}
+
