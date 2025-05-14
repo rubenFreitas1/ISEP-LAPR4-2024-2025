@@ -112,9 +112,13 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	MatrixCellInfo matrix[MAX_X][MAX_Y][MAX_Z] = {0};
 
 	int droneStatus = 1;
-
     int totalPositions = readCsv(fileName, &allData, &totalDrones);
-    char reportFile[100] = "simulation_report.txt";
+
+    char baseName[100];
+    getBaseName(fileName, baseName);
+
+    char reportFile[150];
+    snprintf(reportFile, sizeof(reportFile), "simulation_report_%s.txt", baseName);
 	FILE* report = fopen(reportFile, "w");
 	if (report == NULL) {
 		perror("Error opening report file");
@@ -228,7 +232,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 						}
 						droneStatus = 0;
 
-						writeExecutionStatus(report, droneStatus);
+						writeExecutionStatus(report, droneStatus, collisions);
 						writeValidationStatus(report, 0); // Falhou
 						fclose(report);
 
@@ -259,7 +263,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	printf("\n\n");
 	printf("[ROOT] SIMULATION COMPLETED.\n");
 
-	writeExecutionStatus(report, droneStatus);
+	writeExecutionStatus(report, droneStatus, collisions);
 	writeValidationStatus(report, 1);
 	fclose(report);
 	

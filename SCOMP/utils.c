@@ -140,12 +140,29 @@ void writeValidationStatus(FILE* report, int passed) {
 
 // MÉTODO QUE ESCREVE O ESTADO FINAL DE EXECUÇÃO DOS DRONES NO RELATÓRIO
 // INDICA SE O EXECUTION STATUS É FINISHED OU ABORTED
-void writeExecutionStatus(FILE* report, int status) {
+void writeExecutionStatus(FILE* report, int status, int collisions) {
+	if (collisions == 0) {
+		fprintf(report, "No collisions occurred during the simulation.\n");
+	}
     fprintf(report, "\n--- Drone Execution Status ---\n");
     if (status == 1) {
         fprintf(report, "All drones: FINISHED\n");
     } else {
         fprintf(report, "All drones: ABORTED\n");
+    }
+}
+
+// MÉTODO QUE RETIRA O NOME BASE DO FICHEIRO A PARTIR DO CAMINHO
+void getBaseName(const char *filePath, char *baseName) {
+    const char *lastSlash = strrchr(filePath, '/');
+    const char *fileName = lastSlash ? lastSlash + 1 : filePath;
+
+    const char *lastDot = strrchr(fileName, '.');
+    if (lastDot) {
+        strncpy(baseName, fileName, lastDot - fileName);
+        baseName[lastDot - fileName] = '\0';
+    } else {
+        strcpy(baseName, fileName);
     }
 }
 

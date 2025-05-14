@@ -31,6 +31,7 @@ void int_to_str(int value, char *str);
 void writeHeader(FILE* report, int totalDrones);
 void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2);
 void writeValidationStatus(FILE* report, int passed);
-void writeExecutionStatus(FILE* report, int statuses);
+void writeExecutionStatus(FILE* report, int statuses, int collisions);
+void getBaseName(const char *filePath, char *baseName);
 
 #endif
