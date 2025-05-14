@@ -30,8 +30,8 @@ public class AddDroneController {
     }
 
     public Drone addDrone(final String serialNumber, final DroneModel droneModel){
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
-        return this.droneSvc.registerNewDrone(serialNumber, droneModel,authz.session().get().authenticatedUser());
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER ,Roles.DRONE_TECH);
+        return this.droneSvc.registerNewDrone(serialNumber, droneModel, authz.session().get().authenticatedUser());
     }
 
 }

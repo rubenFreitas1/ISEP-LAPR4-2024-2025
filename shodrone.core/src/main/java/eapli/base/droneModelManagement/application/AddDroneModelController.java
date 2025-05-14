@@ -20,7 +20,7 @@ public class AddDroneModelController {
 
 
     public DroneModel addDroneModel(final String modelName, final String manufacturer, final DroneWindBehavior windBehavior) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER ,Roles.DRONE_TECH);
         return droneModelsvc.registerNewDroneModel(modelName,manufacturer, authz.session().get().authenticatedUser(), windBehavior);
     }
 }
