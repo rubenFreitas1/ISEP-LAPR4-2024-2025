@@ -53,8 +53,7 @@ package "**«Aggregate» Drone**" #DDDDDD {
 
         entity "Drone" as entity_drone <<entity root>> {
         }
-        class "Routine" as vObject_routine <<(V, #7E84F7)>> {
-        }
+
         class "SerialNumber" as vObject_serialNumber <<id>> <<(V, #7E84F7)>> {
         }
         class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
@@ -63,22 +62,15 @@ package "**«Aggregate» Drone**" #DDDDDD {
         class "DroneStatus" as vObject_droneStatus <<(V, #7E84F7)>> {
             Active
             Inactive
-            Maintenance
-            Faulty
         }
 
-        entity "Maintenance" as entity_maintenance {
-        }
-        class "Date" as vObject_date <<(V, #7E84F7)>> {
-        }
+
+
 
         entity_drone *--down vObject_droneStatus
 
-        entity_drone "*"<-- "*" entity_maintenance: "is done on"
         entity_drone *--down vObject_dslCode
-        entity_drone *--down vObject_routine
         entity_drone *--down vObject_serialNumber
-        entity_maintenance *--down vObject_date
 }
 
 package "**«Aggregate» DroneModel**" #DDDDDD {
@@ -86,14 +78,43 @@ package "**«Aggregate» DroneModel**" #DDDDDD {
     entity "DroneModel" as entity_droneModel  <<entity root>> {
     }
 
+    entity "DroneWindBehavior" as entity_windBehavior {
+    }
+
+    entity "Wind Interval" as entity_windInterval {
+    }
+
+    class "ModelName" as vObject_modelName  <<(V, #7E84F7)>> {
+    }
+
+    class "Manufacturer" as vObject_manufacturer <<(V, #7E84F7)>> {
+    }
+
+    class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
+                        True
+                        False
+    }
+
+    class "Max" as vObject_max <<(V, #7E84F7)>> {
+    }
+
+    class "Min" as vObject_min <<(V, #7E84F7)>> {
+    }
+
+    class "Tolerance" as vObject_tolerance <<(V, #7E84F7)>> {
+    }
+
+    entity_droneModel "1..*"-->"1" entity_windBehavior: "has"
+    entity_windBehavior "1..*"-->"1..*" entity_windInterval: "contains"
+    entity_droneModel *--down vObject_modelName
+    entity_droneModel *--down vObject_manufacturer
+    entity_droneModel *--down vObject_isActive
+    entity_windInterval *--down vObject_min
+    entity_windInterval *--down vObject_max
+    entity_windInterval *--down vObject_tolerance
+
 }
 
-package "**«Aggregate» ProgrammingLanguage**" #DDDDDD {
-
-        entity "ProgrammingLanguage" as entity_programmingLanguage  <<entity root>> {
-        }
-
-}
 
 
 package "**«Aggregate» ShowRequest**" #DDDDDD {
@@ -128,6 +149,9 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
     class "AcceptanceDate" as vObject_acceptanceDate <<(V, #7E84F7)>> {
     }
 
+    entity "ProposedFigures" as entity_proposedFigures{
+        }
+
     class "ProposalStatus" as vObject_proposalStatus <<(V, #7E84F7)>> {
         Accepted
         Declined
@@ -151,6 +175,7 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
 
     entity_showRequest "1"-->"1" entity_requestedFigures: "contains"
 
+    entity_showProposal "1"-->"1" entity_proposedFigures: "contains"
     entity_showProposal *--down vObject_acceptanceDate
     entity_showProposal *--down vObject_proposalStatus
 
@@ -183,28 +208,55 @@ package "**«Aggregate» Figure**" #DDDDDD {
         }
         class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
         }
-        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
-        }
         class "CreatedBy" as vObject_createdBy <<(V, #7E84F7)>> {
         }
-        class "Status" as vObject_status <<(V, #7E84F7)>> {
-            Public
-            Exclusive
-            Decommissioned
+
+        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
         }
 
-        entity_figure *--down vObject_status
+        class "Keywords" as vObject_keywords <<(V, #7E84F7)>> {
+        }
+
+        class "Exclusive" as vObject_exclusive <<(V, #7E84F7)>> {
+            True
+            False
+        }
+
+        class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
+                    True
+                    False
+        }
+
+        entity_figure *--down vObject_isActive
+        entity_figure *--down vObject_exclusive
         entity_figure *--down vObject_createdBy
         entity_figure *--down vObject_description
         entity_figure *--down vObject_figureVersion
         entity_figure *--down vObject_dslCode
+        entity_figure *--down vObject_keywords
 
 }
 
-package "**«Aggregate» FigureType**" #DDDDDD {
+package FigureCategory #DDDDDD {
 
-        entity "FigureType" as entity_figureType  <<entity root>> {
+        entity "FigureCategory" as entity_figureCategory  <<entity root>> {
         }
+
+        class "Description" as vObject_description <<(V, #7E84F7)>> {
+        }
+
+        class "Name" as vObject_name <<(V, #7E84F7)>> {
+        }
+
+        class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
+            True
+            False
+        }
+
+        entity_figureCategory *--down vObject_description
+        entity_figureCategory *--down vObject_name
+        entity_figureCategory *--down vObject_isActive
+
 
 }
 
@@ -217,11 +269,10 @@ entity_drone "1..*"-->"*" entity_figure: "used in"
 entity_representative "1"-down>"1..*" entity_showRequest: "requests"
 
 
-entity_droneModel "*"-->"1" entity_programmingLanguage: "uses"
 
-entity_droneModel "1"<--"*" entity_drone: "contains"
+entity_droneModel "1"<-up"*" entity_drone: "contains"
 
 
-entity_figureType "1"<-- "*" entity_figure: "can be"
+entity_figureCategory "1"<--- "*" entity_figure: "can be"
 
 @enduml
