@@ -34,11 +34,11 @@ title Sequence Diagram - US230
         activate UI
 
         UI -> CTRL**: create
-        UI -> CTRL : listClients()
+        UI -> CTRL : listCustomers()
         activate CTRL
 
             CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
-            CTRL -> CustomerManagementService : listActiveClients()
+            CTRL -> CustomerManagementService : findAllActiveCustomers()
             activate CustomerManagementService
 
                 CustomerManagementService -> CustomerRepository : findByActive(true)
