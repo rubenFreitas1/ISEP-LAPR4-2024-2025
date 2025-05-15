@@ -16,17 +16,17 @@ public class DisableRepresentativeUI extends AbstractUI {
             final SelectWidget<Customer> selectWidgetFigure = new SelectWidget<>("Available figures (Enter 0 to finish)", this.controller.listCustomers(), new CustomerPrinter());
             selectWidgetFigure.show();
             Customer customer = selectWidgetFigure.selectedElement();
-            Iterable<Representative> representatives = this.controller.listCustomerRepresentatives(customer);
-            if (!representatives.iterator().hasNext()) {
+            Iterable<Representative> listOfCustomerRepresentatives = this.controller.listCustomerRepresentatives(customer);
+            if (!listOfCustomerRepresentatives.iterator().hasNext()) {
                 System.out.println("This customer doesnt have any representative.");
                 break;
             }
             while (true) {
-                boolean verification = verifyCustomerRepresentativesAllDeactivated(representatives);
+                boolean verification = verifyCustomerRepresentativesAllDeactivated(listOfCustomerRepresentatives);
                 if (verification) {
                     break;
                 }
-                Representative representative = GenericSelector.selectItem(representatives, new RepresentativePrinter(), "Select a Customer Representative");
+                Representative representative = GenericSelector.selectItem(listOfCustomerRepresentatives, new RepresentativePrinter(), "Select a Customer Representative");
                 if (!representative.isActive()) {
                     System.out.println("The Selected Customer Representative is already deactivated.");
                 } else {

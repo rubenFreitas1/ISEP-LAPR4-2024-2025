@@ -4,12 +4,13 @@ skinparam packageStyle rectangle
 skinparam shadowing false
 
 actor "CRM Collaborator" as crmCollaborator
-participant "DisableCustomerAction" as ACTION <<presentation>>
-participant "DisableCustomerUI" as UI <<presentation>>
-participant "DisableCustomerController" as CTRL <<application>>
+participant "DisableRepresentativeAction" as ACTION <<presentation>>
+participant "DisableRepresentativeUI" as UI <<presentation>>
+participant "DisableRepresentativeController" as CTRL <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
 participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
+participant "Representative" as Representative <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
 participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
 database "Database" as Database
@@ -29,11 +30,11 @@ activate crmCollaborator
     activate UI
 
         UI -> CTRL** : create
-        UI -> CTRL : listClients()
+        UI -> CTRL : listCustomers()
         activate CTRL
 
             CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
-            CTRL -> CustomerManagementService : listActiveClients()
+            CTRL -> CustomerManagementService : findAllActiveCustomers()
             activate CustomerManagementService
 
                 CustomerManagementService -> CustomerRepository : findByActive(true)
@@ -42,16 +43,16 @@ activate crmCollaborator
                     CustomerRepository -> Database : findByActive(true)
                     activate Database
 
-                        Database -> CustomerRepository : listOfActiveClients
+                        Database -> CustomerRepository : listOfActiveCustomers
                     deactivate Database
 
-                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                    CustomerRepository -> CustomerManagementService : listOfActiveCustomers
                 deactivate CustomerRepository
 
-                CustomerManagementService -> CTRL : listOfActiveClients
+                CustomerManagementService -> CTRL : listOfActiveCustomers
             deactivate CustomerManagementService
 
-            CTRL -> UI : listOfActiveClients
+            CTRL -> UI : listOfActiveCustomers
         deactivate CTRL
 
         UI -> crmCollaborator : Shows list of clients
@@ -60,16 +61,16 @@ activate crmCollaborator
     crmCollaborator -> UI : Selects a client
     activate UI
 
-        UI -> CTRL : listCustomerRepresentative(customer)
+        UI -> CTRL : listCustomerRepresentatives(customer)
         activate CTRL
 
-            CTRL -> RepresentativeManagementService : listCustomerRepresentative(customer)
+            CTRL -> RepresentativeManagementService : findByAssociatedCustomer(customer)
             activate RepresentativeManagementService
 
-                RepresentativeManagementService -> RepresentativeRepository : findByActive(true)
+                RepresentativeManagementService -> RepresentativeRepository : findByAssociatedCustomer(customer)
                 activate RepresentativeRepository
 
-                    RepresentativeRepository -> Database : findByActive(true)
+                    RepresentativeRepository -> Database :  findByActive(true)
                     activate Database
 
                         Database -> RepresentativeRepository : listOfCustomerRepresentatives
@@ -96,6 +97,11 @@ activate crmCollaborator
             CTRL -> RepresentativeManagementService : deactivateCustomerRepresentative(representative)
             activate RepresentativeManagementService
 
+                RepresentativeManagementService -> Representative : deactivate(CurrentTimeCalendars.now()
+                activate Representative
+
+                    Representative -> RepresentativeManagementService
+                deactivate Representative
                 RepresentativeManagementService -> RepresentativeRepository : save(representative)
                 activate RepresentativeRepository
 
