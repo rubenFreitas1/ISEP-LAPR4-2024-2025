@@ -16,9 +16,7 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
         final String normalizedKeyword = normalize(keyword);
 
         return match(figure ->
-                figure.keywords().stream()
-                        .map(this::normalize)
-                        .anyMatch(k -> k.equals(normalizedKeyword))
+                figure.normalizedKeywords().contains(normalizedKeyword)
         );
     }
 
@@ -47,9 +45,7 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
 
         return match(figure ->
                 figure.figureCategory().equals(category) &&
-                        figure.keywords().stream()
-                                .map(this::normalize)
-                                .anyMatch(k -> k.equals(normalizedKeyword))
+                        figure.normalizedKeywords().contains(normalizedKeyword)
         );
     }
 
@@ -62,9 +58,8 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
 
     private String normalize(String input) {
         if (input == null) return null;
-        // Remove accents and convert to lowercase
-        String noAccents = Normalizer.normalize(input, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", ""); // Remove non-spacing marks (accents)
-        return noAccents.toLowerCase(); // Convert to lowercase
+
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}+", "").toLowerCase();
     }
 }

@@ -6,6 +6,7 @@ import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
+import java.text.Normalizer;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,9 @@ public class Figure implements AggregateRoot<Long> {
 
     @ElementCollection
     private Set<String> keywords;
+
+    @ElementCollection
+    private Set<String> normalizedKeywords;
 
     private String description;
 
@@ -47,6 +51,11 @@ public class Figure implements AggregateRoot<Long> {
         this.active = true;
         this.exclusive = exclusive;
         this.customer = customer;
+
+        this.normalizedKeywords = new HashSet<>();
+        for (String keyword : keywords) {
+            this.normalizedKeywords.add(normalize(keyword));
+        }
     }
 
     public Set<String> keywords(){
@@ -72,6 +81,8 @@ public class Figure implements AggregateRoot<Long> {
     public boolean isActive(){return this.active;}
 
     public boolean isExclusive(){return this.exclusive;}
+
+    public Set<String> normalizedKeywords() { return this.normalizedKeywords; }
 
 
 
@@ -119,5 +130,12 @@ public class Figure implements AggregateRoot<Long> {
     @Override
     public Long identity() {
         return this.figureId;
+    }
+
+    private String normalize(String input) {
+        if (input == null) return null;
+
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}+", "").toLowerCase();
     }
 }

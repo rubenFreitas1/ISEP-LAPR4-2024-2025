@@ -8,6 +8,7 @@ import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,13 +22,11 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
 
     @Override
     public Iterable<Figure> findByKeyword(String keyword) {
-        final String normalizedKeyword = normalize(keyword); // normalize keyword here
-
         final Map<String, Object> params = new HashMap<>();
-        params.put("keyword", normalizedKeyword);
+        params.put("keyword", normalize(keyword));
 
         return match(
-                "EXISTS (SELECT k FROM e.keywords k WHERE LOWER(k) = :keyword)",
+                "EXISTS (SELECT k FROM e.normalizedKeywords k WHERE k = :keyword)",
                 params
         );
     }
@@ -61,8 +60,7 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
 
         return match(
                 "e.figureCategory = :category AND EXISTS (" +
-                        "SELECT k FROM e.keywords k " +
-                        "WHERE LOWER(k) = :keyword" +
+                        "SELECT k FROM e.normalizedKeywords k WHERE k = :keyword" +
                         ")",
                 params
         );
@@ -77,8 +75,8 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
 
     private String normalize(String input) {
         if (input == null) return null;
-        return java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .toLowerCase();
+
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}+", "").toLowerCase();
     }
 }
