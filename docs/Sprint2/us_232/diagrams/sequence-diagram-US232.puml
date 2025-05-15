@@ -29,74 +29,88 @@ activate crmCollaborator
 
     activate UI
 
-        UI -> CTRL : findFigure(category and/or keyword)
+        UI -> CTRL : ensureAuthenticatedUser()
         activate CTRL
 
             CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
-            alt Search figure only with keyword
+        deactivate CTRL
 
-                CTRL -> FigureManagementService : findFigure(keyword)
-                activate FigureManagementService
+        alt Search figure only with keyword
+        UI -> CTRL : findFiguresByKeyword(keyword)
+        activate CTRL
 
-                    FigureManagementService -> FigureRepository : findByKeyword(keyword)
-                    activate FigureRepository
+            CTRL -> FigureManagementService : findFigure(keyword)
+            activate FigureManagementService
 
-                        FigureRepository -> Database : findByKeyword(keyword)
-                        activate Database
+                FigureManagementService -> FigureRepository : findByKeyword(keyword)
+                activate FigureRepository
 
-                            Database -> FigureRepository : figure
-                        deactivate Database
+                    FigureRepository -> Database : findByKeyword(keyword)
+                    activate Database
 
-                        FigureRepository -> FigureManagementService : figure
-                    deactivate FigureRepository
+                        Database -> FigureRepository : figure
+                    deactivate Database
 
-                    FigureManagementService -> CTRL : figure
-                deactivate FigureManagementService
+                    FigureRepository -> FigureManagementService : figure
+                deactivate FigureRepository
 
-            else Search figure only with category
-
-                CTRL -> FigureManagementService : findFigure(category)
-                activate FigureManagementService
-
-                    FigureManagementService -> FigureRepository : findByFigureCategory(category)
-                    activate FigureRepository
-
-                        FigureRepository -> Database : findByFigureCategory(category)
-                        activate Database
-
-                            Database -> FigureRepository : figure
-                        deactivate Database
-
-                        FigureRepository -> FigureManagementService : figure
-                    deactivate FigureRepository
-
-                    FigureManagementService -> CTRL : figure
-                deactivate FigureManagementService
-
-            else Search figure with keyword and category
-
-                CTRL -> FigureManagementService : findFigure(category)
-                activate FigureManagementService
-
-                    FigureManagementService -> FigureRepository : findByKeywordAndCategory(keyword, category)
-                    activate FigureRepository
-
-                        FigureRepository -> Database : findByKeywordAndCategory(keyword, category)
-                        activate Database
-
-                            Database -> FigureRepository : figure
-                        deactivate Database
-
-                        FigureRepository -> FigureManagementService : figure
-                    deactivate FigureRepository
-
-                    FigureManagementService -> CTRL : figure
-                deactivate FigureManagementService
-            end
+                FigureManagementService -> CTRL : figure
+            deactivate FigureManagementService
 
             CTRL -> UI : figure
         deactivate CTRL
 
+        else Search figure only with category
+        UI -> CTRL : findFiguresByCategory(category)
+        activate CTRL
+
+            CTRL -> FigureManagementService : findByCategory(figureCategory)
+            activate FigureManagementService
+
+                FigureManagementService -> FigureRepository : findByFigureCategory(category)
+                activate FigureRepository
+
+                    FigureRepository -> Database : findByFigureCategory(category)
+                    activate Database
+
+                        Database -> FigureRepository : figure
+                    deactivate Database
+
+                    FigureRepository -> FigureManagementService : figure
+                deactivate FigureRepository
+
+                FigureManagementService -> CTRL : figure
+            deactivate FigureManagementService
+
+            CTRL -> UI : figure
+        deactivate CTRL
+
+        else Search figure with keyword and category
+        UI -> CTRL : findFiguresByKeywordAndCategory(keyword, category)
+        activate CTRL
+
+            CTRL -> FigureManagementService : findByKeywordAndCategory(keyword, category)
+            activate FigureManagementService
+
+                FigureManagementService -> FigureRepository : findByKeywordAndCategory(keyword, category)
+                activate FigureRepository
+
+                    FigureRepository -> Database : findByKeywordAndCategory(keyword, category)
+                    activate Database
+
+                        Database -> FigureRepository : figure
+                    deactivate Database
+
+                    FigureRepository -> FigureManagementService : figure
+                deactivate FigureRepository
+
+                FigureManagementService -> CTRL : figure
+            deactivate FigureManagementService
+
+            CTRL -> UI : figure
+        deactivate CTRL
+
+        end
         UI -> crmCollaborator : Displays the search results of the figure \nand displays operation success
     deactivate UI
 
