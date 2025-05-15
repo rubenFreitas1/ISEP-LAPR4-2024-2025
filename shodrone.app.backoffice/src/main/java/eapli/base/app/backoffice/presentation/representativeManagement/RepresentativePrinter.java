@@ -7,7 +7,7 @@ import eapli.framework.visitor.Visitor;
 public class RepresentativePrinter implements Visitor<Representative>, GenericSelector.ItemPrinter<Representative> {
     @Override
     public void visit(Representative visitee) {
-        System.out.printf("%-30s%-30s%-30s%-30s", visitee.representativeName(), visitee.representativeEmail(), visitee.isActive() ? "Active" : "Inactive", visitee.createdBy().name());
+        System.out.printf("%-30s%-30s%-30s%-30s%-30s", visitee.representativeName(), visitee.representativeEmail(), visitee.representativePassword(),visitee.representativePhoneNumber(), visitee.representativePosition());
     }
 
     @Override

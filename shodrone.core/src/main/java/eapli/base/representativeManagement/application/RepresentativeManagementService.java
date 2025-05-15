@@ -27,7 +27,7 @@ public class RepresentativeManagementService {
             throw new IllegalArgumentException("Representative Name cannot be null or empty!");
         }
         if(representativeEmail == null || representativeEmail.isEmpty() || isEmailUsed(representativeEmail)){
-            throw new IllegalArgumentException("Representative Email cannot be null or empty!");
+            throw new IllegalArgumentException("Representative Email is already in use. (Also it cannot be null or empty!)");
         }
         if(representativePassword == null || representativePassword.isEmpty()){
             throw new IllegalArgumentException("Representative Password cannot be null or empty!");
@@ -54,8 +54,51 @@ public class RepresentativeManagementService {
         registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
     }
 
+    public void editRepresentative(final Representative representative, final String newName, final String newEmail, final String newPassword, final String newPhoneNumber, final String newPosition){
+        boolean edited = false;
+        if(newName == null || newName.isEmpty()){
+            throw new IllegalArgumentException("Representative Name cannot be null or empty!");
+        }else if(!newName.equals("N")){
+            edited = true;
+            representative.changeName(newName);
+        }
+        if(newEmail == null || newEmail.isEmpty() || isEmailUsed(newEmail) || isEmailUsed(newEmail)){
+            throw new IllegalArgumentException("Representative Email is already in use. (Also it cannot be null or empty!)");
+        }else if(!newEmail.equals("N")){
+            edited = true;
+            representative.changeEmail(newEmail);
+        }
+        if(newPassword == null || newPassword.isEmpty()){
+            throw new IllegalArgumentException("Representative Password cannot be null or empty!");
+        }else if(!newPassword.equals("N")){
+            edited = true;
+            representative.changePassword(newPassword);
+        }
+        if(newPhoneNumber == null || newPhoneNumber.isEmpty()){
+            throw new IllegalArgumentException("Representative Phone Number cannot be null or empty!");
+        }else if(!newPhoneNumber.equals("N")){
+            edited = true;
+            representative.changePhoneNumber(newPhoneNumber);
+        }
+        if(newPosition == null || newPosition.isEmpty()){
+            throw new IllegalArgumentException("Representative Position cannot be null or empty!");
+        }else if(!newPosition.equals("N")){
+            edited = true;
+            representative.changePosition(newPosition);
+        }
+
+        if (edited) {
+            representative.changeChangedOn();
+            this.representativeRepository.save(representative);
+        }
+    }
+
     public boolean isEmailUsed(String representativeEmail) {
         return this.representativeRepository.isEmailUsed(representativeEmail);
+    }
+
+    public boolean isPhoneNumberUsed(String representativePhoneNumber) {
+        return this.representativeRepository.isPhoneNumberUsed(representativePhoneNumber);
     }
 
     public Optional<Representative> findById(final Long id){

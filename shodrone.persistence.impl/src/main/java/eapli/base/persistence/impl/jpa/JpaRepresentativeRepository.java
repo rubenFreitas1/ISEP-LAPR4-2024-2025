@@ -43,4 +43,10 @@ public class JpaRepresentativeRepository extends JpaAutoTxRepository<Representat
         params.put("customer", associatedCustomer);
         return match("e.associatedCustomer = :customer", params);
     }
+    @Override
+    public boolean isPhoneNumberUsed(String representativePhoneNumber) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("phone", representativePhoneNumber);
+        return matchOne("e.representativePhoneNumber = :phone", params).isPresent();
+    }
 }

@@ -35,6 +35,9 @@ public class Representative implements AggregateRoot<Long> {
 
     @Temporal(TemporalType.DATE)
     private Calendar createdOn;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar changedOn;
     @ManyToOne
     private SystemUser createdBy;
 
@@ -50,6 +53,7 @@ public class Representative implements AggregateRoot<Long> {
         this.representativePosition = representativePosition;
         this.createdBy = createdBy;
         this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
+        this.changedOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
         this.active = true;
     }
 
@@ -95,6 +99,26 @@ public class Representative implements AggregateRoot<Long> {
             throw new IllegalArgumentException();
         }
     }
+
+    public void changeName(final String representativeName) {
+        this.representativeName = representativeName;
+    }
+    public void changeEmail(final String representativeEmail) {
+        this.representativeEmail = representativeEmail;
+    }
+    public void changePassword(final String representativePassword) {
+        this.representativePassword = representativePassword;
+    }
+    public void changePhoneNumber(final String representativePhoneNumber) {
+        this.representativePhoneNumber = representativePhoneNumber;
+    }
+    public void changePosition(final String representativePosition) {
+        this.representativePosition = representativePosition;
+    }
+    public void changeChangedOn() {
+        this.changedOn = Calendar.getInstance();
+    }
+
     public void activate() {
         if (!this.isActive()) {
             this.active = true;

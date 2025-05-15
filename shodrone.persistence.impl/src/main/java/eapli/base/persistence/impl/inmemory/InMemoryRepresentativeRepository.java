@@ -31,4 +31,9 @@ public class InMemoryRepresentativeRepository extends InMemoryDomainRepository<R
             return e.associatedCustomer().equals(associatedCustomer);
         });
     }
+
+    @Override
+    public boolean isPhoneNumberUsed(String representativePhoneNumber) {
+        return matchOne(e -> e.representativePhoneNumber().equalsIgnoreCase(representativePhoneNumber)).isPresent();
+    }
 }
