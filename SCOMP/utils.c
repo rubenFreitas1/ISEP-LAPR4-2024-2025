@@ -126,9 +126,10 @@ void writeHeader(FILE* report, int totalDrones) {
 
 // MÉTODO QUE REGISTA UMA COLISÃO NO RELATÓRIO
 // INCLUI O TIMESTAMP, A POSIÇÃO DA COLISÃO E OS DRONES ENVOLVIDOS
-void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2) {
+void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2, float x1, float y1, float z1) {
     fprintf(report, "[COLLISION] Timestamp: %ds | Position: (%.2f, %.2f, %.2f) | Drones involved: %d and %d\n",
             timestamp, x, y, z, drone1, drone2);
+    fprintf(report, "\nDrone %d moved to position: (%.2f, %.2f, %.2f)\n", drone1, x1, y1, z1);
 }
 
 // MÉTODO QUE ESCREVE O RESULTADO FINAL DA SIMULAÇÃO NO RELATÓRIO
@@ -164,5 +165,9 @@ void getBaseName(const char *filePath, char *baseName) {
     } else {
         strcpy(baseName, fileName);
     }
+}
+
+void intToStr(int num, char* str) {
+    snprintf(str, 12, "%d", num);
 }
 

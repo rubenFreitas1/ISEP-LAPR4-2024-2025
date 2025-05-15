@@ -16,7 +16,18 @@
 int myDroneID = 0;
 
 void signal_handler(int sig, siginfo_t *si, void *context) {
-    printf("[DRONE %d] Received SIGUSR1 !\n", myDroneID);
+	(void)sig;
+    (void)si;
+    (void)context;
+    char buffer[64];
+    char bufferDroneID[12];
+
+    intToStr(myDroneID, bufferDroneID);
+    strcpy(buffer, "[DRONE ");
+    strcat(buffer, bufferDroneID);
+    strcat(buffer, "] Received SIGUSR1 !\n");
+
+    write(STDOUT_FILENO, buffer, strlen(buffer));
 }
 
 
@@ -100,6 +111,51 @@ void storeTempMatrix(MatrixCellInfo matrix[MAX_X][MAX_Y][MAX_Z], MatrixCellInfo 
     }
 }
 
+//Método para verificar se uma posição é válida
+int isPositionValid(int x, int y, int z) {
+    return x >= 0 && x < MAX_X && y >= 0 && y < MAX_Y && z >= 0 && z < MAX_Z;
+}
+
+//Método para encontrar a posição adjacente mais próxima da colisão
+DroneData findFreeAdjacentPosition(MatrixCellInfo tempMatrix[MAX_X][MAX_Y][MAX_Z], DroneData original) {
+    int origX = (int)original.x;
+    int origY = (int)original.y;
+    int origZ = (int)original.z;
+
+    int maxRadius = (MAX_X > MAX_Y ? MAX_X : MAX_Y);
+    if (MAX_Z > maxRadius) maxRadius = MAX_Z;
+
+    for (int radius = 1; radius < maxRadius; radius++) {
+
+        int xPos[2] = {origX + radius, origX - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(xPos[i], origY, origZ) && tempMatrix[xPos[i]][origY][origZ].droneID == 0) {
+                DroneData newData = original;
+                newData.x = xPos[i];
+                return newData;
+            }
+        }
+
+        int yPos[2] = {origY + radius, origY - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(origX, yPos[i], origZ) && tempMatrix[origX][yPos[i]][origZ].droneID == 0) {
+                DroneData newData = original;
+                newData.y = yPos[i];
+                return newData;
+            }
+        }
+
+        int zPos[2] = {origZ + radius, origZ - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(origX, origY, zPos[i]) && tempMatrix[origX][origY][zPos[i]].droneID == 0) {
+                DroneData newData = original;
+                newData.z = zPos[i];
+                return newData;
+            }
+        }
+    }
+    return original;
+}
 
 
 
@@ -131,7 +187,6 @@ void simulator_run(const char* fileName, int maxCollisions) {
 
     struct sigaction act;
     memset(&act, 0, sizeof(struct sigaction));
-    //act.sa_handler = signal_handler;
     act.sa_sigaction = signal_handler;
     act.sa_flags = SA_RESTART;
     sigaction(SIGUSR1, &act, NULL);
@@ -146,7 +201,6 @@ void simulator_run(const char* fileName, int maxCollisions) {
     simulator_info(allData, totalPositions, totalDrones);
 	int timestampCount = 0;
 	int* timestamps = getAllTimestamps(allData, totalPositions, &timestampCount);
-	//printTimestamps(timestamps, timestampCount);
 
 	for(int i= 0; i < totalDrones; i++){
 		pids[i] = fork();
@@ -157,7 +211,6 @@ void simulator_run(const char* fileName, int maxCollisions) {
 			int dronePositions = 0;
 			DroneData* droneData = NULL;
 			getSpecificDroneData(allData, totalPositions, &droneData, myDroneID, &dronePositions);
-			//printDroneData(myDroneID, droneData, dronePositions);
 			int ts;
 			int currentIndex = 0;
 			while (read(fd_1[i][0], &ts, sizeof(int)) > 0) {
@@ -212,9 +265,13 @@ void simulator_run(const char* fileName, int maxCollisions) {
 					kill(pids[d],SIGUSR1);
 					kill(pids[auxMatrix-1], SIGUSR1);
 					collisions++;
-
-					logCollision(report, position.timestamp, position.x, position.y, position.z, position.droneID, auxMatrix);
-
+					
+					DroneData newPos = findFreeAdjacentPosition(tempMatrix, position);
+					updateMatrix(tempMatrix,newPos);
+					printf("[ROOT] Drone %d redirected to new position (%.2f, %.2f, %.2f) after collision.\n", position.droneID, newPos.x, newPos.y, newPos.z);
+					
+					logCollision(report, position.timestamp, position.x, position.y, position.z, position.droneID, auxMatrix, newPos.x, newPos.y, newPos.z);
+					
 
 					if(collisions>=maxCollisions){
 						printf("\n\n");
