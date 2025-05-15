@@ -17,7 +17,7 @@ database "Database" as Database
 
 title System Sequence Diagram - US236
 
- activate crmCollaborator
+activate crmCollaborator
 
      crmCollaborator -> ACTION : Ask to edit a show request
      activate ACTION
@@ -29,11 +29,11 @@ title System Sequence Diagram - US236
         activate UI
 
             UI -> CTRL**: create
-            UI -> CTRL : listClients()
+            UI -> CTRL : listCustomers()
             activate CTRL
 
                 CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
-                CTRL -> CustomerManagementService : listActiveClients()
+                CTRL -> CustomerManagementService : findAllActiveCustomers()
                 activate CustomerManagementService
 
                     CustomerManagementService -> CustomerRepository : findByActive(true)
@@ -59,10 +59,10 @@ title System Sequence Diagram - US236
      crmCollaborator -> UI : Selects the client
      activate UI
 
-        UI -> CTRL : listShowRequest(customer)
+        UI -> CTRL : listCustomerShowRequests(customer)
         activate CTRL
 
-            CTRL -> ShowRequestManagementService : listShowRequest(customer)
+            CTRL -> ShowRequestManagementService : findByCustomer(customer)
             activate ShowRequestManagementService
 
                 ShowRequestManagementService -> ShowRequestRepository : findByCustomer(customer)
@@ -71,19 +71,19 @@ title System Sequence Diagram - US236
                     ShowRequestRepository -> Database : findByCustomer(customer)
                     activate Database
 
-                        Database -> ShowRequestRepository : showRequest
+                        Database -> ShowRequestRepository : showRequests
                     deactivate Database
 
-                    ShowRequestRepository -> ShowRequestManagementService : showRequest
+                    ShowRequestRepository -> ShowRequestManagementService : showRequests
                 deactivate ShowRequestRepository
 
-                ShowRequestManagementService -> CTRL : showRequest
+                ShowRequestManagementService -> CTRL : showRequests
             deactivate ShowRequestManagementService
 
-            CTRL -> UI : showRequest
+            CTRL -> UI : showRequests
         deactivate CTRL
 
-        UI -> crmCollaborator : displays show request associated to the client
+        UI -> crmCollaborator : displays show requests associated to the client
      deactivate UI
 
      crmCollaborator -> UI : Selects the show request
@@ -102,8 +102,40 @@ title System Sequence Diagram - US236
      crmCollaborator -> UI: types the requested data
      activate UI
 
-         end
-         UI -> crmCollaborator : displays operation success
+        alt Edit Show Request Location
+        UI -> CTRL : editShowRequestLocation(showRequest, location)
+        activate CTRL
+
+            CTRL -> ShowRequestManagementService : editShowRequestLocation(showRequest, location)
+            activate ShowRequestManagementService
+
+                ShowRequestManagementService -> ShowRequest : changeLocation(location)
+                activate ShowRequest
+
+                    ShowRequest -> ShowRequestManagementService :
+                deactivate ShowRequest
+
+                ShowRequestManagementService -> ShowRequestRepository : save(showRequest)
+                activate ShowRequestRepository
+
+                    ShowRequestRepository -> Database : save()
+                    activate Database
+
+                        Database -> ShowRequestRepository : showRequest
+                    deactivate Database
+
+                    ShowRequestRepository -> ShowRequestManagementService : showRequest
+                deactivate ShowRequestRepository
+                ShowRequestManagementService -> CTRL : showRequest
+            deactivate ShowRequestManagementService
+
+            CTRL -> UI : showRequest
+        deactivate CTRL
+
+        else Edit Other Atribbutes
+        end
+        end
+        UI -> crmCollaborator : displays operation success
      deactivate UI
 
  @enduml
