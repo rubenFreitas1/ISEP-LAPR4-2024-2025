@@ -42,4 +42,14 @@ public class RegisterRepresentativeController {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
         return customersvc.findAllCustomers();
     }
+
+    public boolean isEmailUsed(String email) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repreRepo.isEmailUsed(email);
+    }
+
+    public boolean isPhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repreRepo.isPhoneNumberUsed(phoneNumber);
+    }
 }

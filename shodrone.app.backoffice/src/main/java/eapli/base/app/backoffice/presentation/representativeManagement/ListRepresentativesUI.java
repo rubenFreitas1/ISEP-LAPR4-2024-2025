@@ -38,7 +38,7 @@ public class ListRepresentativesUI extends AbstractListUI<Representative> {
 
     @Override
     protected String listHeader() {
-        return String.format("#  %-30s%-30s%-30s%-30s", "REPRESENTATIVE NAME", "REPRESENTATIVE EMAIL", "STATUS", "CREATED BY");
+        return String.format("#  %-30s%-30s%-30s%-30s%-30s", "REPRESENTATIVE NAME", "REPRESENTATIVE EMAIL", "REPRESENTATIVE PASSWORD", "REPRESENTATIVE PHONE NUMBER", "REPRESENTATIVE POSITION");
     }
 
     @Override

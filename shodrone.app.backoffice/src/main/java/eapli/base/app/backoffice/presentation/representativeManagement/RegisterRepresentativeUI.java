@@ -17,14 +17,71 @@ public class RegisterRepresentativeUI extends AbstractUI {
         if (selectedCustomer == null) {
             selectCustomer();
         }
+        String name = null,email = null,password = null,phone = null,position = null;
 
-        final String representativeName = Console.readLine("Representative Name: ");
-        final String representativeEmail = Console.readLine("Representative Email: ");
-        final String representativePassword = Console.readLine("Representative Password: ");
-        final String representativePhone = Console.readLine("Representative Phone Number: ");
-        final String representativePosition = Console.readLine("Representative Position: ");
+        while (true) {
+            try {
+                name = Console.readLine("Representative Name: ");
+                if (name.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Name cannot be empty.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                email = Console.readLine("Representative Email: ");
+                if (theController.isEmailUsed(email)) {
+                    throw new IllegalArgumentException("Email is already used by another representative.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                password = Console.readLine("Representative Password: ");
+                if (password.length() < 6) {
+                    throw new IllegalArgumentException("Password must be at least 6 characters long.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        // Phone
+        while (true) {
+            try {
+                phone = Console.readLine("Representative Phone Number: ");
+                if (theController.isPhoneNumberUsed(phone)) {
+                    throw new IllegalArgumentException("Phone number is already used by another representative.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        // Position
+        while (true) {
+            try {
+                position = Console.readLine("Representative Position: ");
+                if (position.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Position cannot be empty.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
         try{
-            this.theController.registerRepresentative(representativeName, representativeEmail, representativePassword, representativePhone, selectedCustomer, representativePosition);
+            this.theController.registerRepresentative(name, email, password, phone, selectedCustomer, position);
         } catch (IllegalArgumentException e){
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }
