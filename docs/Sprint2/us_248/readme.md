@@ -36,39 +36,291 @@ This feature enhances visibility and organization as the number of categories gr
 - Domain-Driven Design
 - Factory
 
-### 4.4. Acceptance Tests
+## 5. Implementation
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
+**ChangeFigureCategoryStatusAction**
 
-**Test 1:** *Verifies that it is not possible to ...*
+```java
+public class ChangeFigureCategoryStatusAction implements Action {
 
-**Refers to Acceptance Criteria:** US101.1
+    @Override
+    public boolean execute() {
+        return new ChangeFigureCategoryStatusUI().show();
+    }
+}
 
 
 ```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
+**ChangeFigureCategoryStatusUI**
+```java
+public class ChangeFigureCategoryStatusUI extends AbstractUI{
+
+    private final ChangeFigureCategoryStatusController theController = new ChangeFigureCategoryStatusController();
+
+    @Override
+    public String headline() {
+        return "Change Figure Category Status";
+    }
+
+    protected String listHeader() {
+        return String.format(" #  %-30s%-30s%-30s%-30s%-30s", "NAME", "DESCRIPTION", "STATUS", "CREATED ON", "CHANGED ON");
+    }
+
+    protected String emptyMessage() {
+        return "No figure categories found";
+    }
+
+    protected String elementName() {
+        return "Figure Category";
+    }
+
+    protected Iterable<FigureCategory> elements() {
+        return this.theController.allFigureCategories();
+    }
+
+
+    protected Visitor<FigureCategory> elementPrinter() {
+        return new FigureCategoryPrinter();
+    }
+
+
+    @Override
+    protected boolean doShow() {
+        final Iterable<FigureCategory> figureCategories = elements();
+        if (!figureCategories.iterator().hasNext()) {
+            System.out.println("There are no registered Figure Categories in the system");
+        } else {
+            final SelectWidget<FigureCategory> selector = new SelectWidget<>(listHeader(), figureCategories, elementPrinter());
+            selector.show();
+            final FigureCategory figureCategory = selector.selectedElement();
+            if (figureCategory == null) {
+                System.out.println("No figure category selected");
+            } else {
+                this.theController.changeFigureCategoryStatus(figureCategory, !figureCategory.isActive());
+                System.out.println("Figure Category status changed successfully");
+            }
+        }
+        return true;
+    }
+
 }
-````
 
-## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+```
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+**FigureCategoryManagementService**
+```Java
+public class FigureCategoryManagementService {
 
+    private final FigureCategoryRepository figureCategoryRepository;
+
+    public FigureCategoryManagementService(final FigureCategoryRepository figureCategoryRepository) {
+        this.figureCategoryRepository = figureCategoryRepository;
+    }
+
+    public FigureCategory registerNewFigureCategory(final String name, final String description) {
+        if(isFigureCategoryNameUsed(figureCategoryRepository, name)){
+            throw new IllegalArgumentException("Figure Category name already in use");
+        }
+        FigureCategory figureCategory = new FigureCategory(name, description, CurrentTimeCalendars.now());
+        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+    }
+
+    public Optional<FigureCategory> findFigureCategoryById(Long id) {
+        return this.figureCategoryRepository.findById(id);
+    }
+
+    public Iterable<FigureCategory> findFigureCategoryByName(String name) {
+        return this.figureCategoryRepository.findByName(name);
+    }
+
+    public Iterable<FigureCategory> findFigureCategoryByDescription(String description) {
+        return this.figureCategoryRepository.findByDescription(description);
+    }
+
+    public FigureCategory editFigureCategory(FigureCategory figureCategory,
+                                             String newName,
+                                             String newDescription) {
+        if (isFigureCategoryNameUsed(figureCategoryRepository, newName)) {
+            throw new IllegalArgumentException("Figure Category name already in use");
+        }else {
+            figureCategory.changeName(newName);
+            figureCategory.changeDescription(newDescription);
+        }
+        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+    }
+
+
+    public Iterable<FigureCategory> findAll() {
+        return this.figureCategoryRepository.findAll();
+    }
+
+    public FigureCategory deactivateFigureCategory(FigureCategory figureCategory) {
+        figureCategory.deactivate(CurrentTimeCalendars.now());
+        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+    }
+
+    public FigureCategory activateFigureCategory(FigureCategory figureCategory) {
+        figureCategory.activate(CurrentTimeCalendars.now());
+        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+    }
+
+
+    public boolean isFigureCategoryNameUsed(FigureCategoryRepository repo, String name) {
+        return repo.isFigureCategoryNameUsed(name);
+    }
+
+    public Iterable<FigureCategory> findByActive(boolean active) {
+        return this.figureCategoryRepository.findByActive(active);
+    }
+
+    public void changeStatus (FigureCategory figureCategory, boolean newStatus) {
+        if (newStatus) {
+            figureCategory.activate(Calendar.getInstance());
+        } else {
+            figureCategory.deactivate(Calendar.getInstance());
+        }
+        this.figureCategoryRepository.save(figureCategory);
+    }
+}
+
+
+```
+
+**FigureCategory**
+
+```Java
+public class FigureCategory implements AggregateRoot<Long> {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long figureCategoryId;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar createdOn;
+    private boolean active;
+    @Temporal(TemporalType.DATE)
+    private Calendar changedOn;
+
+
+
+    protected FigureCategory() {
+    }
+
+    public FigureCategory(final String name, final String description, final Calendar createdOn) {
+        Preconditions.noneNull(new Object[]{name, description});
+        this.name = name;
+        this.description = description;
+        this.active = true;
+        this.createdOn = createdOn == null ? Calendar.getInstance() : createdOn;
+        this.changedOn = createdOn == null ? Calendar.getInstance() : createdOn;
+    }
+
+    public String name() {
+        return this.name;
+    }
+    public void changeName(final String name) {
+        Preconditions.noneNull(name);
+        this.name = name;
+        this.changedOn = Calendar.getInstance();
+    }
+
+    public void changeDescription(final String description) {
+        Preconditions.noneNull(description);
+        this.description = description;
+        this.changedOn = Calendar.getInstance();
+    }
+
+    public String description() {
+        return this.description;
+    }
+
+    public Calendar createdOn() {return this.createdOn;}
+
+    public Calendar changedOn() {return this.changedOn;}
+
+    public boolean isActive() {
+        return this.active;
+    }
+
+    public void deactivate(final Calendar changedOn) {
+        if (changedOn != null && !changedOn.before(this.createdOn)) {
+            if (!this.active) {
+                throw new IllegalStateException("FigureCategory is already deactivated");
+            }
+            this.active = false;
+            this.changedOn = changedOn;
+        } else {
+            throw new IllegalArgumentException("Deactivation date cannot be before creation date");
+        }
+    }
+
+    public void activate(final Calendar changedOn) {
+        if (!this.isActive()) {
+            this.active = true;
+            this.changedOn = changedOn == null ? Calendar.getInstance() : changedOn;
+        } else {
+            throw new IllegalStateException("FigureCategory is already active");
+        }
+    }
+
+    public void editFigureCategory(final String name, final String description) {
+        Preconditions.noneNull(new Object[]{name, description});
+        this.name = name;
+        this.description = description;
+        this.changedOn = Calendar.getInstance();
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof FigureCategory)) {
+            return false;
+        }
+        FigureCategory that = (FigureCategory) other;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public String toString() {
+        return "FigureCategory{" +
+                "figureCategoryId=" + figureCategoryId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdOn=" + createdOn +
+                ", active=" + active +
+                ", changedOn=" + changedOn +
+                '}';
+    }
+
+
+    @Override
+    public Long identity() {
+        return figureCategoryId;
+    }
+}
+
+```
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Category Selection and changing status**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![Category-selection](images/demonstration/categorySelection.png)
 
-## 7. Observations
 
-*This section should be used to include any content that does not fit any of the previous sections.*
+**Database Result**
 
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
+*after*
+![Database](images/demonstration/database2.png)
 
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
 
+*before*
+![Database](images/demonstration/database.png)

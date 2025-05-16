@@ -184,22 +184,46 @@ public class RegisterRepresentativeUI extends AbstractUI {
 
 ```
 
-**RegisterCustomerController**
+**RegisterRepresentativeController**
 ```java
-public class RegisterCustomerController {
+public class RegisterRepresentativeController {
+
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
 
-    private final CustomerRepository repo = PersistenceContext.repositories().customers();
-    private final RepresentativeRepository repo2 = PersistenceContext.repositories().representatives();
+    private final RepresentativeRepository repreRepo = PersistenceContext.repositories().representatives();
 
-    private final CustomerManagementService customersvc = new CustomerManagementService(repo);
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo);
+    private final CustomerRepository customerRepo = PersistenceContext.repositories().customers();
 
-    public Customer registerCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
+    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo);
+
+    private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo);
+
+
+    public void registerRepresentative(final String representativeName, final String representativeEmail, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        Customer newCustomer = customersvc.registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, authz.session().get().authenticatedUser());
-        representativesvc.registerNewRepresentative(representativeName, representativeEmail, representativePassword, representativePhoneNumber, newCustomer, representativePosition, authz.session().get().authenticatedUser());
-        return newCustomer;
+
+        if (associatedCustomer == null) {
+            throw new IllegalArgumentException("Associated Customer cannot be null.");
+        }
+
+        System.out.println("Registering representative for customer: " + associatedCustomer.identity());
+
+        representativesvc.registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, authz.session().get().authenticatedUser());
+    }
+
+    public Iterable<Customer> allCustomers() {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customersvc.findAllCustomers();
+    }
+
+    public boolean isEmailUsed(String email) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repreRepo.isEmailUsed(email);
+    }
+
+    public boolean isPhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repreRepo.isPhoneNumberUsed(phoneNumber);
     }
 }
 
@@ -475,3 +499,7 @@ public class Representative implements AggregateRoot<Long> {
 **Registering Representative**
 
 ![Registering-representative](images/demonstration/registeringRepresentative.png)
+
+**Database Result**
+
+![Database](images/demonstration/database.png)
