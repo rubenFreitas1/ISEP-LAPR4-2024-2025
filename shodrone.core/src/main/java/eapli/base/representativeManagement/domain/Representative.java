@@ -81,6 +81,7 @@ public class Representative implements AggregateRoot<Long> {
     public Calendar createdOn() {
         return this.createdOn;
     }
+    public Calendar changedOn() {return this.changedOn;}
     public boolean isActive() {
         return this.active;
     }

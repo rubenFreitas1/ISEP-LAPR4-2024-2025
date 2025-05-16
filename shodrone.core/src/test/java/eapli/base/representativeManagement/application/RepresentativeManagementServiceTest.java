@@ -98,4 +98,96 @@ class RepresentativeManagementServiceTest {
         assertNotNull(result.deactivatedOn());
         verify(representativeRepository).save(representative);
     }
+
+    @Test
+    void registerNewRepresentative_shouldSaveCustomerWithRepresentative() {
+        when(representativeRepository.isEmailUsed("new.rep@email.com")).thenReturn(false);
+
+        service.registerNewRepresentative(
+                "New Rep",
+                "new.rep@email.com",
+                "securePass123",
+                "910000002",
+                customer,
+                "Marketing",
+                systemUser
+        );
+
+        verify(customerRepository).save(customer);
+    }
+
+    @Test
+    void registerNewRepresentative_withUsedEmail_shouldThrowException() {
+        when(representativeRepository.isEmailUsed("john.rep@email.com")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewRepresentative(
+                        "New Rep",
+                        "john.rep@email.com",
+                        "securePass123",
+                        "910000002",
+                        customer,
+                        "Marketing",
+                        systemUser
+                )
+        );
+    }
+
+    @Test
+    void editRepresentative_shouldUpdateAndSaveRepresentative() {
+        when(representativeRepository.isEmailUsed("john.new@email.com")).thenReturn(false);
+
+        service.editRepresentative(representative,
+                "New Name",
+                "john.new@email.com",
+                "newPass123",
+                "910000999",
+                "Director");
+
+        verify(representativeRepository).save(representative);
+        assertEquals("New Name", representative.representativeName());
+        assertEquals("john.new@email.com", representative.representativeEmail());
+        assertEquals("newPass123", representative.representativePassword());
+        assertEquals("910000999", representative.representativePhoneNumber());
+        assertEquals("Director", representative.representativePosition());
+    }
+
+    @Test
+    void editRepresentative_withUsedEmail_shouldThrowException() {
+        when(representativeRepository.isEmailUsed("existing@email.com")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.editRepresentative(representative,
+                        "New Name",
+                        "existing@email.com",
+                        "newPass123",
+                        "910000999",
+                        "Director")
+        );
+    }
+
+    @Test
+    void activateRepresentative_shouldActivateAndSave() {
+        representative.deactivate(Calendar.getInstance()); // Primeiro desativamos
+        assertFalse(representative.isActive());
+
+        when(representativeRepository.save(any(Representative.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Representative result = service.activateRepresentative(representative);
+
+        assertTrue(result.isActive());
+        assertNull(result.deactivatedOn());
+        verify(representativeRepository).save(representative);
+    }
+
+    @Test
+    void isPhoneNumberUsed_shouldReturnRepositoryResult() {
+        when(representativeRepository.isPhoneNumberUsed("910000001")).thenReturn(true);
+
+        boolean result = service.isPhoneNumberUsed("910000001");
+
+        assertTrue(result);
+        verify(representativeRepository).isPhoneNumberUsed("910000001");
+    }
+
 }
