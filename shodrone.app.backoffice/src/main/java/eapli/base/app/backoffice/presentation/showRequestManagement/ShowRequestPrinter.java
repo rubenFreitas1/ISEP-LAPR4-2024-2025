@@ -12,11 +12,11 @@ public class ShowRequestPrinter implements Visitor<ShowRequest>, GenericSelector
 
     @Override
     public void visit(ShowRequest visitee) {
-        System.out.printf("%-30s%-30s%-30d%-30d%-30s", visitee.location(), visitee.date()!= null ? sdf.format(visitee.date().getTime()) : "N/A", visitee.droneNumber(),visitee.duration() , visitee.customer().customerName());
+        System.out.printf("%-50s%-30s%-30d%-30d%-30s", visitee.location(), visitee.date()!= null ? sdf.format(visitee.date().getTime()) : "N/A", visitee.droneNumber(),visitee.duration() , visitee.customer().customerName());
     }
 
     @Override
     public String print(ShowRequest item) {
-        return String.format("%-30s%-30s%-30d%-30d%-30s", item.location(), item.date() != null ? sdf.format(item.date().getTime()) : "N/A", item.droneNumber(), item.duration(), item.customer().customerName());
+        return String.format("%-50s%-30s%-30d%-30d%-30s", item.location(), item.date() != null ? sdf.format(item.date().getTime()) : "N/A", item.droneNumber(), item.duration(), item.customer().customerName());
     }
 }

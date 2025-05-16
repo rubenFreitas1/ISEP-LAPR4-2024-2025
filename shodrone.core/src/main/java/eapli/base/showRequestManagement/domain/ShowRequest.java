@@ -3,6 +3,7 @@ package eapli.base.showRequestManagement.domain;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
@@ -18,7 +19,13 @@ public class ShowRequest implements AggregateRoot<Long> {
     private Calendar createdOn;
 
     @Column(nullable = false)
-    private String location;
+    private GeoLocation location;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private int altitude;
 
     @Temporal(TemporalType.DATE)
     private Calendar date;
@@ -39,9 +46,13 @@ public class ShowRequest implements AggregateRoot<Long> {
     @ManyToOne
     private Customer customer;
 
+    @Temporal(TemporalType.DATE)
+    private Calendar editedOn;
+    @ManyToOne
+    private SystemUser createdBy;
     protected ShowRequest() {}
 
-    public ShowRequest(String location, Calendar date, int droneNumber, int duration, List<Figure> requestedFigures, Customer customer) {
+    public ShowRequest(GeoLocation location, Calendar date, int droneNumber, int duration, List<Figure> requestedFigures, Customer customer, String description, int altitude, SystemUser user) {
         this.location = location;
         this.date = date;
         this.droneNumber = droneNumber;
@@ -50,11 +61,15 @@ public class ShowRequest implements AggregateRoot<Long> {
         this.customer = customer;
         this.createdOn = Calendar.getInstance();
         this.status = ShowRequestStatus.PENDING;
+        this.description = description;
+        this.altitude = altitude;
+        this.createdBy = user;
+
     }
 
     public Calendar createdOn() { return this.createdOn; }
 
-    public String location() { return this.location; }
+    public GeoLocation location() { return this.location; }
 
     public Calendar date() { return this.date; }
 
@@ -68,9 +83,36 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     public Customer customer() { return this.customer; }
 
-    public void changeLocation(String location) {
+    public String description() { return this.description; }
+
+    public int altitude() { return this.altitude; }
+
+    public Calendar editedOn() { return this.editedOn; }
+
+    public SystemUser user() { return this.createdBy; }
+
+    public void changeAltitude(Integer altitude) {
+        if (altitude != null) {
+            this.altitude = altitude;
+            this.editedOn = Calendar.getInstance();
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeDescription(String description) {
+        if (description != null) {
+            this.description = description;
+            this.editedOn = Calendar.getInstance();
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void changeLocation(GeoLocation location) {
         if (location != null) {
             this.location = location;
+            this.editedOn = Calendar.getInstance();
         } else {
             throw new IllegalArgumentException();
         }
@@ -79,6 +121,7 @@ public class ShowRequest implements AggregateRoot<Long> {
     public void changeDate(Calendar date) {
         if (date != null) {
             this.date = date;
+            this.editedOn = Calendar.getInstance();
         } else {
             throw new IllegalArgumentException();
         }
@@ -87,6 +130,7 @@ public class ShowRequest implements AggregateRoot<Long> {
     public void changeDroneNumber(Integer droneNumber) {
         if (droneNumber != 0) {
             this.droneNumber = droneNumber;
+            this.editedOn = Calendar.getInstance();
         } else {
             throw new IllegalArgumentException();
         }
@@ -95,6 +139,7 @@ public class ShowRequest implements AggregateRoot<Long> {
     public void changeDuration(Integer duration) {
         if (duration != null) {
             this.duration = duration;
+            this.editedOn = Calendar.getInstance();
         } else {
             throw new IllegalArgumentException();
         }
@@ -103,6 +148,7 @@ public class ShowRequest implements AggregateRoot<Long> {
     public void changeRequestedFigures(List<Figure> requestedFigures) {
         if (requestedFigures != null) {
             this.requestedFigures = requestedFigures;
+            this.editedOn = Calendar.getInstance();
         } else {
             throw new IllegalArgumentException();
         }
@@ -113,12 +159,17 @@ public class ShowRequest implements AggregateRoot<Long> {
         return "ShowRequest{" +
                 "showRequestId=" + showRequestId +
                 ", createdOn=" + createdOn +
-                ", location='" + location + '\'' +
+                ", location=" + location +
+                ", description='" + description + '\'' +
+                ", altitude=" + altitude +
                 ", date=" + date +
                 ", droneNumber=" + droneNumber +
                 ", duration=" + duration +
                 ", requestedFigures=" + requestedFigures +
                 ", status=" + status +
+                ", customer=" + customer +
+                ", editedOn=" + editedOn +
+                ", createdBy=" + createdBy +
                 '}';
     }
 

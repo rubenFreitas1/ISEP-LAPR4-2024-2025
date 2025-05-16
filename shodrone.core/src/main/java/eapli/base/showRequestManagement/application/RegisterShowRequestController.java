@@ -10,6 +10,7 @@ import eapli.base.figureManagement.application.FigureManagementService;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.Roles;
@@ -43,8 +44,8 @@ public class RegisterShowRequestController {
     public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
         return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
     }
-    public ShowRequest registerShowRequest(Customer customer, String location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence) {
-        return showRequestManagementService.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence);
+    public ShowRequest registerShowRequest(Customer customer, GeoLocation location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence, String description, int altitude) {
+        return showRequestManagementService.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence, description, altitude, authz.session().get().authenticatedUser());
     }
     public Iterable<FigureCategory> listFigureCategories() {
         return figureCategoryManagementService.findByActive(true);

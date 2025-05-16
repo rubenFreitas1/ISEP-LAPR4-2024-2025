@@ -26,6 +26,7 @@ public class ShowRequestTest {
     private List<Figure> figures;
     private Calendar now;
     private FigureCategory category;
+    private GeoLocation geoLocation;
 
     @BeforeEach
     void setup() {
@@ -45,16 +46,19 @@ public class ShowRequestTest {
 
         customer = new Customer("Alice", "Wonderland Street", "alice@mail.com",
                 "987654321", "123123123", "456456456", user, Customer.CustomerStatus.CREATED, now);
+
+        geoLocation = new GeoLocation(38.7169, -9.1399);
     }
+
 
     @Test
     void constructor_initializesCorrectly() {
         Calendar futureDate = Calendar.getInstance();
         futureDate.add(Calendar.DAY_OF_MONTH, 5);
 
-        ShowRequest request = new ShowRequest("Central Park", futureDate, 5, 30, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, futureDate, 5, 30, figures, customer, "Test show", 100, user);
 
-        assertEquals("Central Park", request.location());
+        assertEquals(geoLocation, request.location());
         assertEquals(futureDate, request.date());
         assertEquals(5, request.droneNumber());
         assertEquals(30, request.duration());
@@ -66,61 +70,64 @@ public class ShowRequestTest {
 
     @Test
     void changeLocation_updatesLocation() {
-        ShowRequest request = new ShowRequest("Old Place", now, 2, 20, figures, customer);
-        request.changeLocation("New Place");
-        assertEquals("New Place", request.location());
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50,user);
+        GeoLocation newLocation = new GeoLocation(40.7128, -74.0060); // New York
+
+        request.changeLocation(newLocation);
+        assertEquals(newLocation, request.location());
     }
 
     @Test
     void changeLocation_null_throwsException() {
-        ShowRequest request = new ShowRequest("Old Place", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50,user);
         assertThrows(IllegalArgumentException.class, () -> request.changeLocation(null));
     }
 
     @Test
     void changeDate_updatesDate() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         Calendar newDate = Calendar.getInstance();
         newDate.add(Calendar.DAY_OF_MONTH, 10);
+
         request.changeDate(newDate);
         assertEquals(newDate, request.date());
     }
 
     @Test
     void changeDate_null_throwsException() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         assertThrows(IllegalArgumentException.class, () -> request.changeDate(null));
     }
 
     @Test
-    void changeDroneNumber_validNumber_updatesNumber() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+    void changeDroneNumber_valid_updatesNumber() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         request.changeDroneNumber(7);
         assertEquals(7, request.droneNumber());
     }
 
     @Test
-    void changeDroneNumber_zero_throwsException() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+    void changeDroneNumber_invalid_throwsException() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         assertThrows(IllegalArgumentException.class, () -> request.changeDroneNumber(0));
     }
 
     @Test
     void changeDuration_valid_updatesDuration() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         request.changeDuration(50);
         assertEquals(50, request.duration());
     }
 
     @Test
     void changeDuration_null_throwsException() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         assertThrows(IllegalArgumentException.class, () -> request.changeDuration(null));
     }
 
     @Test
     void changeRequestedFigures_valid_updatesFigures() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         Set<String> newKeywords = new HashSet<>(Set.of("robot", "AI"));
         Figure newFigure = new Figure("Robot figure", newKeywords, category, true, customer);
         List<Figure> newFigures = List.of(newFigure);
@@ -131,7 +138,35 @@ public class ShowRequestTest {
 
     @Test
     void changeRequestedFigures_null_throwsException() {
-        ShowRequest request = new ShowRequest("Location", now, 2, 20, figures, customer);
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         assertThrows(IllegalArgumentException.class, () -> request.changeRequestedFigures(null));
     }
+    @Test
+    void changeAltitude_valid_updatesAltitude() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
+        request.changeAltitude(150);
+        assertEquals(150, request.altitude());
+        assertNotNull(request.editedOn());
+    }
+
+    @Test
+    void changeAltitude_null_throwsException() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
+        assertThrows(IllegalArgumentException.class, () -> request.changeAltitude(null));
+    }
+
+    @Test
+    void changeDescription_valid_updatesDescription() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial description", 50, user);
+        request.changeDescription("New description");
+        assertEquals("New description", request.description());
+        assertNotNull(request.editedOn());
+    }
+
+    @Test
+    void changeDescription_null_throwsException() {
+        ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial description", 50, user);
+        assertThrows(IllegalArgumentException.class, () -> request.changeDescription(null));
+    }
+
 }

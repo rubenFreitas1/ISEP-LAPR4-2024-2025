@@ -3,6 +3,7 @@ package eapli.base.showRequestManagement.application;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
@@ -43,6 +44,9 @@ class ShowRequestManagementServiceTest {
     private FigureCategory category;
     private Customer customer;
     private List<Figure> figures;
+    private GeoLocation geoLocation;
+    private String description;
+    private int altitude;
 
     private ShowRequest showRequest;
     private Calendar date;
@@ -58,30 +62,32 @@ class ShowRequestManagementServiceTest {
         customer = new Customer("Pedrão", "rua do pedrao", "pedrao.email@gmail.com", "12345", "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
         Figure figure = new Figure("Star", keywords, category, false, null);
         figures = List.of(figure);
-        showRequest = new ShowRequest("Parque da Cidade", date, 5, 30, figures, customer);
+        geoLocation = new GeoLocation(41.1579, -8.6291);
+        description = "Light drone show at the city park";
+        altitude = 100;
+        showRequest = new ShowRequest(geoLocation, date, 5, 30, figures, customer, description, altitude, systemUser);
     }
 
     @Test
     void registerShowRequest_success() {
-        String location = "Parque da Cidade";
-        int duration = 30;
-        int drones = 5;
-
         when(showRequestRepository.save(any(ShowRequest.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ShowRequest result = service.registerShowRequest(customer, location, date, duration, drones, figures);
+        ShowRequest result = service.registerShowRequest(customer, geoLocation, date, 5, 30, figures, description, altitude, systemUser);
 
         assertNotNull(result);
-        assertEquals(location, result.location());
+        assertEquals(geoLocation, result.location());
         assertEquals(date, result.date());
-        assertEquals(drones, result.droneNumber());
-        assertEquals(duration, result.duration());
+        assertEquals(5, result.droneNumber());
+        assertEquals(30, result.duration());
         assertEquals(figures, result.requestedFigures());
         assertEquals(customer, result.customer());
+        assertEquals(description, result.description());
+        assertEquals(altitude, result.altitude());
 
         verify(showRequestRepository).save(any(ShowRequest.class));
     }
+
 
     @Test
     void findByCustomer_returnsRequests() {
@@ -97,7 +103,7 @@ class ShowRequestManagementServiceTest {
 
     @Test
     void editShowRequestLocation_success() {
-        String newLocation = "Avenida Central";
+        GeoLocation newLocation = new GeoLocation(41.545, -8.426);
         showRequest.changeLocation(newLocation);
 
         when(showRequestRepository.save(any(ShowRequest.class)))
@@ -109,6 +115,7 @@ class ShowRequestManagementServiceTest {
         assertEquals(newLocation, updated.location());
         verify(showRequestRepository).save(showRequest);
     }
+
 
     @Test
     void editShowRequestDate_success() {
@@ -173,5 +180,34 @@ class ShowRequestManagementServiceTest {
         assertEquals(newFigures, updated.requestedFigures());
         verify(showRequestRepository).save(showRequest);
     }
+    @Test
+    void editShowRequestDescription_success() {
+        String newDescription = "Show noturno com figuras novas";
+        showRequest.changeDescription(newDescription);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestDescription(showRequest, newDescription);
+
+        assertNotNull(updated);
+        assertEquals(newDescription, updated.description());
+        verify(showRequestRepository).save(showRequest);
+    }
+    @Test
+    void editShowRequestAltitude_success() {
+        int newAltitude = 120;
+        showRequest.changeAltitude(newAltitude);
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenReturn(showRequest);
+
+        ShowRequest updated = service.editShowRequestAltitude(showRequest, newAltitude);
+
+        assertNotNull(updated);
+        assertEquals(newAltitude, updated.altitude());
+        verify(showRequestRepository).save(showRequest);
+    }
+
 
 }

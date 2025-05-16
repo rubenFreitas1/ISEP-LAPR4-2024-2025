@@ -10,6 +10,7 @@ import eapli.base.figureManagement.application.FigureManagementService;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.Roles;
@@ -54,8 +55,16 @@ public class EditShowRequestController {
         return figureCategoryManagementService.findByActive(true);
     }
 
-    public ShowRequest editShowRequestLocation(ShowRequest showRequest, String location) {
+    public ShowRequest editShowRequestLocation(ShowRequest showRequest, GeoLocation location) {
         return this.showRequestManagementService.editShowRequestLocation(showRequest, location);
+    }
+    public ShowRequest editShowRequestDescription(ShowRequest showRequest, String description) {
+        showRequest.changeDescription(description);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
+    }
+    public ShowRequest editShowRequestAltitude(ShowRequest showRequest, int altitude) {
+        showRequest.changeAltitude(altitude);
+        return (ShowRequest) this.showRequestRepository.save(showRequest);
     }
 
     public ShowRequest editShowRequestDate(ShowRequest showRequest, Calendar date) {

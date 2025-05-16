@@ -8,6 +8,7 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showRequestManagement.application.EditShowRequestController;
 import eapli.base.showRequestManagement.domain.GenericSelector;
+import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
@@ -58,26 +59,36 @@ public class EditShowRequestUI extends AbstractUI {
                 }
                 switch (choice) {
                     case 1:
-                        System.out.println("\nEdit Show Request Location");
-                        String location = requestLocation();
-                        showRequest = this.controller.editShowRequestLocation(showRequest, location);
+                        System.out.println("\nSelect a Show Request Description");
+                        String description = requestDescription();
+                        showRequest = this.controller.editShowRequestDescription(showRequest, description);
                         break;
                     case 2:
+                        System.out.println("\nEdit Show Request Location");
+                        GeoLocation location = requestLocation();
+                        showRequest = this.controller.editShowRequestLocation(showRequest, location);
+                        break;
+                    case 3:
+                        System.out.println("\nEdit Show Request Altitude");
+                        int altitude = requestAltitude();
+                        showRequest = this.controller.editShowRequestAltitude(showRequest, altitude);
+                        break;
+                    case 4:
                         System.out.println("\nEdit Show Request Date");
                         Calendar date = requestDate();
                         showRequest = this.controller.editShowRequestDate(showRequest, date);
                         break;
-                    case 3:
+                    case 5:
                         System.out.println("\nEdit Show Request Drone Number");
                         int droneNumber = requestDroneNumber();
                         showRequest = this.controller.editShowRequestDroneNumber(showRequest, droneNumber);
                         break;
-                    case 4:
+                    case 6:
                         System.out.println("\nEdit Show Request Duration");
                         int duration = requestDuration();
                         showRequest = this.controller.editShowRequestDuration(showRequest, duration);
                         break;
-                    case 5:
+                    case 7:
                         System.out.println("\nEdit Show Request Sequence of Figures");
                         List<Figure> sequenceFigures = requestSequenceOfFigures(customer);
                         showRequest = this.controller.editShowRequestSequenceOfFigures(showRequest, sequenceFigures);
@@ -95,7 +106,9 @@ public class EditShowRequestUI extends AbstractUI {
 
     private void menuAttributes(ShowRequest showRequest) {
         System.out.println("\nCurrent Show Request attributes:");
+        System.out.printf("Description: %s\n", showRequest.description());
         System.out.printf("Location: %s\n", showRequest.location());
+        System.out.printf("Altitude: %d\n", showRequest.altitude());
         System.out.printf("Date: %s\n", showRequest.date()!= null ? sdf.format(showRequest.date().getTime()) : "N/A");
         System.out.printf("Drone Number: %s\n", showRequest.droneNumber());
         System.out.printf("Duration: %s\n", showRequest.duration());
@@ -113,22 +126,75 @@ public class EditShowRequestUI extends AbstractUI {
     }
     private void menuSelection() {
         System.out.println("\nSelect the attribute you which to edit.");
-        System.out.println("1. Location");
-        System.out.println("2. Date");
-        System.out.println("3. Drone Number");
-        System.out.println("4. Duration");
-        System.out.println("5. Sequence of figures");
+        System.out.println("1. Description");
+        System.out.println("2. GeoLocation");
+        System.out.println("3. Altitude");
+        System.out.println("4. Date");
+        System.out.println("5. Drone Number");
+        System.out.println("6. Duration");
+        System.out.println("7. Sequence of figures");
         System.out.println("0. Exit");
     }
-    private String requestLocation() {
-        String location;
+    private String requestDescription() {
+        String description;
         do {
-            location = Console.readLine("Enter the show location:");
-            if (location.trim().isEmpty() || location.matches("\\d+")) {
-                System.out.println("Invalid location. It cannot be empty or consist only of numbers. Please enter a valid location.");
+            description = Console.readLine("Enter a description for the show:");
+            if (description.trim().isEmpty()) {
+                System.out.println("Description cannot be empty. Please enter a valid description.");
             }
-        } while (location.trim().isEmpty() || location.matches("\\d+"));
-        return location;
+        } while (description.trim().isEmpty());
+
+        return description;
+    }
+
+    private int requestAltitude() {
+        int altitude = 0;
+        boolean valid = false;
+
+        do {
+            try {
+                String input = Console.readLine("Enter the altitude (in meters, positive number):");
+                altitude = Integer.parseInt(input);
+                if (altitude <= 0) {
+                    System.out.println("Altitude must be a positive number.");
+                } else {
+                    valid = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        } while (!valid);
+
+        return altitude;
+    }
+    private GeoLocation requestLocation() {
+        double latitude = 0;
+        double longitude = 0;
+        boolean valid = false;
+
+        do {
+            try {
+                String latStr = Console.readLine("\nEnter the latitude (-90 to 90):");
+                latitude = Double.parseDouble(latStr);
+                if (latitude < -90 || latitude > 90) {
+                    System.out.println("Latitude must be between -90 and 90.");
+                    continue;
+                }
+
+                String lonStr = Console.readLine("Enter the longitude (-180 to 180):");
+                longitude = Double.parseDouble(lonStr);
+                if (longitude < -180 || longitude > 180) {
+                    System.out.println("Longitude must be between -180 and 180.");
+                    continue;
+                }
+
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter numeric values for latitude and longitude.");
+            }
+        } while (!valid);
+
+        return new GeoLocation(latitude, longitude);
     }
     private Calendar requestDate() {
         Calendar date = null;
@@ -208,7 +274,7 @@ public class EditShowRequestUI extends AbstractUI {
             if (inputAnswer) {
                 try {
                     FigureCategory figureCategory = requestCategory();
-                    String description = requestDescription();
+                    String description = requestFigureDescription();
                     Set<String> keywords = requestListKeywords();
                     if(excluviseMenu()){
                         boolean exclusive = true;
@@ -344,7 +410,7 @@ public class EditShowRequestUI extends AbstractUI {
         }
         return figureCategory;
     }
-    private String requestDescription() {
+    private String requestFigureDescription() {
         String description = "";
         boolean validDescription = false;
         while (!validDescription) {

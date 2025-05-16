@@ -8,6 +8,7 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showRequestManagement.application.RegisterShowRequestController;
 import eapli.base.showRequestManagement.domain.GenericSelector;
+import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -22,7 +23,9 @@ public class RegisterShowRequestUI extends AbstractUI {
     protected boolean doShow() {
         Customer customer = GenericSelector.selectItem(this.controller.listCustomers(), new CustomerPrinter(), "Select a Customer");
 
-        String location = requestLocation();
+        String description = requestDescription();
+        GeoLocation location = requestLocation();
+        int altitude = requestAltitude();
         Calendar date = requestDate();
         int droneNumber = requestDroneNumber();
         int duration = requestDuration();
@@ -41,14 +44,14 @@ public class RegisterShowRequestUI extends AbstractUI {
             if (inputAnswer) {
                 try {
                     FigureCategory figureCategory = requestCategory();
-                    String description = requestDescription();
+                    String figureDescription = requestFigureDescription();
                     Set<String> keywords = requestListKeywords();
                     if(excluviseMenu()){
                         boolean exclusive = true;
-                        controller.addFigure(description, keywords, figureCategory, exclusive, customer);
+                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, customer);
                     } else {
                         boolean exclusive = false;
-                        controller.addFigure(description, keywords, figureCategory, exclusive, null);
+                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, null);
                     }
                     figures = this.controller.figures(customer);
 
@@ -97,7 +100,7 @@ public class RegisterShowRequestUI extends AbstractUI {
             System.out.println("\n");
         }
         try {
-            controller.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence);
+            controller.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence, description, altitude);
             System.out.println("Show Request successfully registered!");
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
@@ -111,15 +114,67 @@ public class RegisterShowRequestUI extends AbstractUI {
         return "";
     }
 
-    private String requestLocation() {
-        String location;
+    private String requestDescription() {
+        String description;
         do {
-            location = Console.readLine("\nEnter the show location:");
-            if (location.trim().isEmpty() || location.matches("\\d+")) {
-                System.out.println("Invalid location. It cannot be empty or consist only of numbers. Please enter a valid location.");
+            description = Console.readLine("Enter a description for the show:");
+            if (description.trim().isEmpty()) {
+                System.out.println("Description cannot be empty. Please enter a valid description.");
             }
-        } while (location.trim().isEmpty() || location.matches("\\d+"));
-        return location;
+        } while (description.trim().isEmpty());
+
+        return description;
+    }
+
+    private int requestAltitude() {
+        int altitude = 0;
+        boolean valid = false;
+
+        do {
+            try {
+                String input = Console.readLine("Enter the altitude (in meters, positive number):");
+                altitude = Integer.parseInt(input);
+                if (altitude <= 0) {
+                    System.out.println("Altitude must be a positive number.");
+                } else {
+                    valid = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        } while (!valid);
+
+        return altitude;
+    }
+
+    private GeoLocation requestLocation() {
+        double latitude = 0;
+        double longitude = 0;
+        boolean valid = false;
+
+        do {
+            try {
+                String latStr = Console.readLine("\nEnter the latitude (-90 to 90):");
+                latitude = Double.parseDouble(latStr);
+                if (latitude < -90 || latitude > 90) {
+                    System.out.println("Latitude must be between -90 and 90.");
+                    continue;
+                }
+
+                String lonStr = Console.readLine("Enter the longitude (-180 to 180):");
+                longitude = Double.parseDouble(lonStr);
+                if (longitude < -180 || longitude > 180) {
+                    System.out.println("Longitude must be between -180 and 180.");
+                    continue;
+                }
+
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter numeric values for latitude and longitude.");
+            }
+        } while (!valid);
+
+        return new GeoLocation(latitude, longitude);
     }
     private Calendar requestDate() {
         Calendar date = null;
@@ -262,7 +317,7 @@ public class RegisterShowRequestUI extends AbstractUI {
         }
         return figureCategory;
     }
-    private String requestDescription() {
+    private String requestFigureDescription() {
         String description = "";
         boolean validDescription = false;
         while (!validDescription) {

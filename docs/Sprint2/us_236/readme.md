@@ -19,14 +19,14 @@
 
 **Forum Insight:**
 
->>Boa tarde,/
-Ao editar um show request, acha relevante registar essa edição no seu histórico, uma vez que se trata de um acontecimento relacionado com o próprio show request?/
-Muito obrigado,/
+>>Boa tarde,\
+Ao editar um show request, acha relevante registar essa edição no seu histórico, uma vez que se trata de um acontecimento relacionado com o próprio show request?\
+Muito obrigado,\
 Gabriel Sotto Mayor
 >
-> Boa tarde,/
-Parece-me apropriado registar as alterações do show request./
-Cumprimentos,/
+> Boa tarde,\
+Parece-me apropriado registar as alterações do show request.\
+Cumprimentos,\
 Angelo Martins
 
 >>Boa tarde,
