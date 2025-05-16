@@ -14,7 +14,8 @@
 
 - US244.1 The system must guarantee that there is a customer registered
 - US224.2 The system must detect if a customer is already disabled 
-- US224.3 The system must guarantee that the customer gets disabled
+- US224.3 The system must return all the representatives associated to customer
+- US224.4 The system must guarantee that the customer gets disabled
 
 **Dependencies/References:**
 
@@ -37,39 +38,206 @@
 
 ### 4.3. Applied Patterns
 
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
+
 ### 4.4. Acceptance Tests
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
+**Test 1:** *Verifies that all active customers are returned*
 
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
+**Refers to Acceptance Criteria:** US224.2
 
 
 ```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
+@Test
+    void findAllActiveCustomers_shouldReturnActiveCustomers() {
+        List<Customer> expected = List.of(customer);
+        when(customerRepository.findByActive()).thenReturn(expected);
+
+        Iterable<Customer> result = service.findAllActiveCustomers();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(customerRepository).findByActive();
+    }
 ````
+
+**Test 2:** *Verifies that all customer representatives are return*
+
+**Refers to Acceptance Criteria:** US224.3
+
+```
+@Test
+    void findByAssociatedCustomer_shouldReturnCustomerRepresentatives() {
+        List<Representative> expected = List.of(representative);
+        when(representativeRepository.findByAssociatedCustomer(customer)).thenReturn(expected);
+
+        Iterable<Representative> result = service.findByAssociatedCustomer(customer);
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(representativeRepository).findByAssociatedCustomer(customer);
+    }
+```
+
+**Test 3:** *Verifies that the customer representative gets disabled*
+
+**Refers to Acceptance Criteria:** US224.4
+
+```
+@Test
+void deactivateCustomerRepresentative_shouldDeactivateAndSaveRepresentative() {
+when(representativeRepository.save(any(Representative.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Representative result = service.deactivateCustomerRepresentative(representative);
+
+        assertNotNull(result);
+        assertFalse(result.isActive());
+        assertNotNull(result.deactivatedOn());
+        verify(representativeRepository).save(representative);
+    }
+```
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**DisableRepresentativeAction**
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+```java
+public class DisableRepresentativeAction implements Action {
+    @Override
+    public boolean execute() {
+        return new DisableRepresentativeUI().doShow();
+    }
+}
+```
+
+**DisableRepresentativeUI**
+
+```java
+public class DisableRepresentativeUI extends AbstractUI {
+    private final DisableRepresentativeController controller = new DisableRepresentativeController();
+    @Override
+    protected boolean doShow() {
+        while (true) {
+            final SelectWidget<Customer> selectWidgetFigure = new SelectWidget<>("Available figures (Enter 0 to finish)", this.controller.listCustomers(), new CustomerPrinter());
+            selectWidgetFigure.show();
+            Customer customer = selectWidgetFigure.selectedElement();
+            Iterable<Representative> listOfCustomerRepresentatives = this.controller.listCustomerRepresentatives(customer);
+            if (!listOfCustomerRepresentatives.iterator().hasNext()) {
+                System.out.println("This customer doesnt have any representative.");
+                break;
+            }
+            while (true) {
+                boolean verification = verifyCustomerRepresentativesAllDeactivated(listOfCustomerRepresentatives);
+                if (verification) {
+                    break;
+                }
+                Representative representative = GenericSelector.selectItem(listOfCustomerRepresentatives, new RepresentativePrinter(), "Select a Customer Representative");
+                if (!representative.isActive()) {
+                    System.out.println("The Selected Customer Representative is already deactivated.");
+                } else {
+                    this.controller.deactivateCustomerRepresentative(representative);
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String headline() {
+        return "";
+    }
+
+    private boolean verifyCustomerRepresentativesAllDeactivated(Iterable<Representative> representatives) {
+        int cont = 0;
+        for (Representative representative : representatives) {
+            if (representative.isActive()) {
+                cont++;
+                break;
+            }
+        }
+        if (cont == 0) {
+            System.out.println("The Customer Representatives are all deactivated.");
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+**DisableRepresentativeController**
+
+```java
+public class DisableRepresentativeController {
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final CustomerRepository customerRepo = PersistenceContext.repositories().customers();
+    private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepo);
+    private final RepresentativeRepository representativeRepo = PersistenceContext.repositories().representatives();
+    private final RepresentativeManagementService representativeManagementService = new RepresentativeManagementService(representativeRepo, customerRepo);
+
+    public Iterable<Customer> listCustomers() {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customerManagementService.findAllActiveCustomers();
+    }
+
+    public Iterable<Representative> listCustomerRepresentatives(Customer customer) {
+        return representativeManagementService.findByAssociatedCustomer(customer);
+    }
+
+    public Representative deactivateCustomerRepresentative(Representative representative) {
+        return this.representativeManagementService.deactivateCustomerRepresentative(representative);
+    }
+}
+```
+
+**CustomerManagementService**
+
+```java
+public Iterable<Customer> findAllActiveCustomers() {
+        return this.customerRepository.findByActive();
+}
+```
+
+**RepresentativeManagementService**
+
+```java
+public Iterable<Representative> findByAssociatedCustomer(final Customer associatedCustomer){
+        return this.representativeRepository.findByAssociatedCustomer(associatedCustomer);
+}
+public Representative deactivateCustomerRepresentative(final Representative representative) {
+    representative.deactivate(CurrentTimeCalendars.now());
+    return (Representative) this.representativeRepository.save(representative);
+}
+```
+
+**Representative**
+
+```java
+public void deactivate(final Calendar deactivatedOn) {
+        if (deactivatedOn != null && !deactivatedOn.before(this.createdOn)) {
+            if (!this.active) {
+                throw new IllegalStateException("Cannot deactivate an inactive Drone Model!");
+            } else {
+                this.active = false;
+                this.deactivatedOn = deactivatedOn;
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+}
+```
 
 ## 6. Integration/Demonstration
 
 *In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
 
 *It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
-
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
 
