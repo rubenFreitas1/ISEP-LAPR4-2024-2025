@@ -21,7 +21,8 @@ public class ListFigureCategoryController {
     private final FigureCategoryManagementService figureCategorySvc = new FigureCategoryManagementService(repo);
 
     public Iterable<FigureCategory> allFigureCategories() {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER,Roles.CRM_COLLABORATOR);
+
         return figureCategorySvc.findAll();
     }
 }
