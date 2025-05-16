@@ -43,7 +43,6 @@
 - Low Coupling
 - High Cohesion
 - Polymorphism
-- Polymorphism
 - Pure Fabrication
 - Indirection
 - Protected Variations

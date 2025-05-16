@@ -45,7 +45,6 @@
 - Low Coupling
 - High Cohesion
 - Polymorphism
-- Polymorphism
 - Pure Fabrication
 - Indirection
 - Protected Variations
@@ -547,13 +546,13 @@ public ShowRequest registerShowRequest(Customer customer, String location, Calen
 
 ## 6. Integration/Demonstration
 
-**Disabling Customer Representative**
+**Registering a show request**
 
 ![Register-show-request](images/demonstration/register-show-request(1).png)
 ![Register-show-request](images/demonstration/register-show-request(2).png)
 ![Register-show-request](images/demonstration/register-show-request(3).png)
 ![Register-show-request](images/demonstration/register-show-request(4).png)
 
-**Representative Database**
+**Show Request Database**
 
 ![Show-Request-database](images/demonstration/show_request_database.png)
