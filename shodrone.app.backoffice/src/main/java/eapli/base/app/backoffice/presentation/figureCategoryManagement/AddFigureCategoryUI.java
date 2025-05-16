@@ -11,10 +11,11 @@ public class AddFigureCategoryUI extends AbstractUI {
     @Override
     protected boolean doShow() {
         final String categoryName = Console.readLine("Category Name: ");
-        final String description = Console.readLine("Description: ");
+        final String categoryDescription = Console.readLine("Description: ");
 
         try {
-            this.controller.addFigureCategory(categoryName, description);
+            this.controller.addFigureCategory(categoryName, categoryDescription);
+            System.out.println("\nFigure Category added successfully!\n");
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }

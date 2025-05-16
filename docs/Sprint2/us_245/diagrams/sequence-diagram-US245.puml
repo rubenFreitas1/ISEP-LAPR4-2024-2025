@@ -6,7 +6,6 @@ participant "AddFigureCategoryUI" as UI <<presentation>>
 participant "AddFigureCategoryController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "FigureCategoryManagementService" as FigureCategoryManagementService <<application>>
-participant "FigureCategoryBuilder" as FigureCategoryBuilder <<domain>>
 participant "FigureCategory" as FigureCategory <<domain>>
 participant "FigureCategoryRepository" as FigureCategoryRepository <<repository>>
 database "Database" as Database
@@ -27,30 +26,22 @@ Actor -> UI: Insert FigureCategory data
 
     activate UI
 
-        UI -> Controller : addFigureCategory(figureName, figureDescription)
+        UI -> Controller : addFigureCategory(categoryName, categoryDescription)
             activate Controller
 
                 Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
 
                 deactivate AuthorizationService
 
-                Controller -> FigureCategoryManagementService : registerNewFigureCategory(figureName, figureDescription, createdOn);
+                Controller -> FigureCategoryManagementService : registerNewFigureCategory(figureName, figureDescription);
                 activate FigureCategoryManagementService
 
-                    FigureCategoryManagementService -> FigureCategoryBuilder** : create()
-                    FigureCategoryManagementService -> FigureCategoryBuilder : build()
-                    activate FigureCategoryBuilder
 
-                        FigureCategoryBuilder -> FigureCategory**: new FigureCategory(figureName, figureDescription, createdOn);
+                    FigureCategoryManagementService -> FigureCategory : new FigureCategory(name, description, CurrentTimeCalendars.now())
+                    activate FigureCategory
 
-                         activate FigureCategory
-
-                         FigureCategory --> FigureCategoryBuilder : newFigureCategory
-                         deactivate FigureCategory
-
-                          FigureCategoryBuilder --> FigureCategoryManagementService : newFigureCategory
-
-                    deactivate FigureCategoryBuilder
+                        FigureCategory --> FigureCategoryManagementService
+                    deactivate FigureCategory
 
 
                     FigureCategoryManagementService -> FigureCategoryRepository : save(newFigureCategory)
