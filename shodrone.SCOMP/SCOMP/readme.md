@@ -51,7 +51,18 @@ De seguida, há outro ciclo que percorre cada drone, ficando à espera de recebe
 
 ### US 263
 
-*
+* Com esta user story é possível detetar colisões entre os drones durante uma simulação. Esta funcionalidade é executada durante o ciclo que percorre todos os drones ao longo dos time steps. Quando, num determinado 
+instante, o drone envia para o processo principal a sua informação, esta é usada pelo método updateMatrix. Este método recebe como parâmetros uma matriz 3D temporária, que é inicializada entre o ciclo for que percorre 
+todos os time steps e o que percorre todos os drones, e a informação do drone.
+No método updateMatrix tentamos atualizar a posição dada pelo drone. Se a posição estiver disponível, então o drone é guardado nela e o método retorna 0; se não estiver disponível, significa que já existe um drone 
+nessa posição, retornando assim o ID desse drone.
+Caso o valor retornado pelo updateMatrix seja diferente de 0, significa que ocorreu uma colisão. Com isto, o processo principal envia sinais para os drones envolvidos e um contador de colisões é incrementado. Antes de 
+prosseguir, é verificado se o threshold de colisões foi atingido e, se tiver sido, então a simulação e os drones são abortados e terminados. Caso contrário, uma nova posição será encontrada para o drone que colidiu, 
+utilizando a função findFreeAdjacentPosition.
+Esta função recebe como parâmetros a matriz 3D temporária e a informação do drone, e procura pela posição adjacente mais próxima. O drone é então colocado na matriz temporária, retornando a sua informação atualizada 
+com a nova posição. De forma simples, este método define um raio de procura e vai, eixo a eixo e posição a posição, procurar por um lugar vazio. Ou seja, começa no eixo do X e verifica a posição (x+1, y, z), na próxima
+iteração (x-1, y, z), até chegar ao (x, y, z-raio). Se ainda assim não encontrar uma posição, esse drone, nesse time step, não é colocado na simulação.
+Depois de encontrar uma nova posição, é chamado o updateMatrix para colocar o drone na sua nova posição, sendo também documentada toda esta informação no report.
 
 ### US 264
 
@@ -64,7 +75,15 @@ Só depois de receber todas as posições e detetar as possíveis colisões (exp
  
 ### US 265
 
-*
+* O objetivo desta user story é gerar um relatório da simulação em tempo real, à medida que a simulação decorre, e guardar os resultados num ficheiro. O relatório começa com um cabeçalho (header),
+inicial, e vai sendo atualizado progressivamente com informação sobre colisões, posições e estados dos drones.\
+-Início da simulação:\
+Antes de começar a simulação dos time steps, a função escreve um cabeçalho no ficheiro simulation_report_nomeficheiroinput.txt, com o número total de drones.\
+-Durante a simulação:\
+Caso ocorra uma colisão, esta é imediatamente registada no relatório com o timestamp, as coordenadas da colisão e os drones envolvidos nela.\
+Após o registo da colisão será escrito a nova localização do drone indentificando o mesmo.\
+-Fim da simulação:\
+Após a simulação terminar será escrito no report o execution status dos drones juntamente com uma mensagem a dizer se a figura passou ou falhou na validação
 
 ## AUTOAVALIAÇÃO
 

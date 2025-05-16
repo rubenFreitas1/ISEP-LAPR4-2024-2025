@@ -266,13 +266,6 @@ void simulator_run(const char* fileName, int maxCollisions) {
 					kill(pids[auxMatrix-1], SIGUSR1);
 					collisions++;
 					
-					DroneData newPos = findFreeAdjacentPosition(tempMatrix, position);
-					updateMatrix(tempMatrix,newPos);
-					printf("[ROOT] Drone %d redirected to new position (%.2f, %.2f, %.2f) after collision.\n", position.droneID, newPos.x, newPos.y, newPos.z);
-					
-					logCollision(report, position.timestamp, position.x, position.y, position.z, position.droneID, auxMatrix, newPos.x, newPos.y, newPos.z);
-					
-
 					if(collisions>=maxCollisions){
 						printf("\n\n");
 						printf("COLLISION THRESHOLD HIT! Simulation terminated.\n");
@@ -290,7 +283,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 						droneStatus = 0;
 
 						writeExecutionStatus(report, droneStatus, collisions);
-						writeValidationStatus(report, 0); // Falhou
+						writeValidationStatus(report, 0);
 						fclose(report);
 
 						printf("\n\n");
@@ -300,6 +293,13 @@ void simulator_run(const char* fileName, int maxCollisions) {
 						free(allData);
 						exit(0);
 					}
+					
+					DroneData newPos = findFreeAdjacentPosition(tempMatrix, position);
+					updateMatrix(tempMatrix,newPos);
+					printf("[ROOT] Drone %d redirected to new position (%.2f, %.2f, %.2f) after collision.\n", position.droneID, newPos.x, newPos.y, newPos.z);
+					
+					logCollision(report, position.timestamp, position.x, position.y, position.z, position.droneID, auxMatrix, newPos.x, newPos.y, newPos.z);
+					
 				}
 			}
 		}
