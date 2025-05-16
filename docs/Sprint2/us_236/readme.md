@@ -19,7 +19,41 @@
 
 **Forum Insight:**
 
-* Still no questions related to this user story on forum.
+>>Boa tarde,/
+Ao editar um show request, acha relevante registar essa edição no seu histórico, uma vez que se trata de um acontecimento relacionado com o próprio show request?/
+Muito obrigado,/
+Gabriel Sotto Mayor
+>
+> Boa tarde,/
+Parece-me apropriado registar as alterações do show request./
+Cumprimentos,/
+Angelo Martins
+
+>>Boa tarde,
+Relativamente à user story US236 – Edit Show Requests, gostaria de confirmar alguns pontos:\
+1 Que campos de um show request podem ser editados?
+   É possível editar todos os dados inseridos no momento da criação ou há campos que devem permanecer inalteráveis?\
+2 O CRM Collaborator pode editar qualquer show request, ou apenas os criados por si?\
+3 Deve existir algum registo dessa edição?\
+Cumprimentos,
+> 
+>Boa tarde,\
+1 O enunciado da US236 tem boas indicações sobre o que pode ser alterado. Não me parece razoável alterar o cliente.\
+2 No enunciado não são indicadas restrições.\
+3 Era muito mau se não houvesse.\
+Cumprimentos,\
+Angelo Martins
+
+>>Boa tarde,\
+Na us 236, todos os campos de um show request podem ser editados ? ou o cliente apenas quer que seja possivel editar alguns campos em especifico ?
+Um show request pode ser editato para cancelar o pedido?\
+Obrigado.
+> 
+> Boa tarde,\
+1 Não vai alterar o cliente...\
+2 Não.\
+Cumprimentos,\
+Angelo Martins
 
 ## 3. Analysis
 

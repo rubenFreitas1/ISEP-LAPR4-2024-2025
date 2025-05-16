@@ -24,7 +24,52 @@
 
 **Forum Insight:**
 
-* Still no questions related to this user story on forum.
+>> Boa tarde, um cliente pode pedir dois show requests na mesma data e hora? Se sim, podem também ser na mesma geolocalozação?
+> 
+>Bom dia,\
+Não há nada nos requisitos que o impeça.\
+Cumprimentos,\
+Angelo Martins
+
+>>Bom dia, existe algum atributo do show request que o identifique unicamente no negócio?
+> 
+> Boa tarde,\
+Cada show request terá provavelmente um número ou um código. Uma prática usual é numerar sequencialmente os show requests dentro do mesmo ano (e.g. 22/2025).\
+Cumprimentos,\
+Angelo Martins
+
+>>Boa tarde,\
+Tendo em conta que o Show request terá que ter informação acerca da localização do espetáculo, o cliente deseja implementar regras de negócio para este campo?\
+Por exemplo:\
+ existem zonas de exclusão aérea, onde não é permitido tráfego aéreo\
+ existem zonas onde não são permitidos drones.
+> 
+> Bom dia,\
+O local terá uma localização, incluindo altitude, porque esta última pode afetar o funcionamento dos drone.
+Nada mais.\
+Cumprimentos,\
+Angelo Martins
+
+>>Bom dia, como é que os show requests\
+são identificados no sistema, ou seja, quando\
+se pesquisa por um show request por exemplo, pesquisa-se\
+pelo cliente ou outra coisa?
+> 
+>Boa tarde,\
+Seria interessante conseguir pesquisar por cliente e/ou intervalo de datas e/ou CRM Colaborator. Ou seja, qualquer combinação dos três.\
+Cumprimentos,\
+Angelo Martins
+
+>>Boa tarde,\
+No show request pedido pelo cliente, o local que ele fornecerá pode ser considerado um address?\
+Cumprimentos,\
+Grupo 41
+> 
+>Boa tarde,\
+Faz mais sentido uma geolocalização.\
+Cumprimentos,\
+Angelo Martins
+
 
 ## 3. Analysis
 
