@@ -5,7 +5,7 @@
     <parent>
         <groupId>lapr4</groupId>
         <artifactId>shodrone</artifactId>
-        <relativePath>../</relativePath>
+        <relativePath>../pom.xml</relativePath>
         <version>0.1.0</version>
     </parent>
     

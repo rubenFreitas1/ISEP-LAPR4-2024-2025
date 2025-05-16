@@ -173,5 +173,18 @@ class DroneManagementServiceTest {
         verify(repoModel).findByActive(true);
     }
 
+    @Test
+    void listActiveDrones_returnsOnlyActiveDrones() {
+        Drone activeDrone1 = new Drone("DRONE10001", droneModel, now, user);
+        Drone activeDrone2 = new Drone("DRONE10002", droneModel, now, user);
+
+        when(repo.findByActive(true)).thenReturn((Iterable<Drone>) List.of(activeDrone1, activeDrone2));
+
+        Iterable<Drone> result = service.activeDrones();
+
+        Assertions.assertIterableEquals(List.of(activeDrone1, activeDrone2), result);
+        verify(repo).findByActive(true);
+    }
+
 
 }
