@@ -23,7 +23,7 @@ public class DisableRepresentativeController {
     }
 
     public Iterable<Representative> listCustomerRepresentatives(Customer customer) {
-        return representativeRepo.findByAssociatedCustomer(customer);
+        return representativeManagementService.findByAssociatedCustomer(customer);
     }
 
     public Representative deactivateCustomerRepresentative(Representative representative) {
