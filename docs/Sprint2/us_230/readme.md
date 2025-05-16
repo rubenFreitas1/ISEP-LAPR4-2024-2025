@@ -13,6 +13,8 @@
 
 - US230.1 The system must guarantee the show date is a valid one
 - US230.2 The system must guarantee there are drones in the inventory
+- US230.3 The system must display only active customers
+- US230.4 The system must display figure that are associated to the customer and all public figures
 
 **Dependencies/References:**
 
@@ -37,38 +39,521 @@
 
 ### 4.3. Applied Patterns
 
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
+
 ### 4.4. Acceptance Tests
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
+**Test 1:** *Verifies that all active customers are returned*
 
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
+**Refers to Acceptance Criteria:** US230.3
 
 ```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
+    @Test
+    void findAllActiveCustomers_shouldReturnActiveCustomers() {
+        List<Customer> expected = List.of(customer);
+        when(customerRepository.findByActive()).thenReturn(expected);
+
+        Iterable<Customer> result = service.findAllActiveCustomers();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(customerRepository).findByActive();
+    }
 ````
+
+**Test 3:** *Verifies that all figures that are associated to a customer and public are returned*
+
+**Refers to Acceptance Criteria:** US230.4
+
+````
+    @Test
+    public void findByExclusivityAndCustomer_returnsCorrectFigures() {
+
+        List<Figure> expected = List.of(figure);
+        when(repo.findByExclusivityAndCustomer(false, customer)).thenReturn(expected);
+
+        Iterable<Figure> result = service.findByExclusivityAndCustomer(false, customer);
+
+        assertNotNull(result);
+        List<Figure> resultList = new ArrayList<>();
+        result.forEach(resultList::add);
+
+        assertEquals(1, resultList.size());
+        assertEquals(figure, resultList.get(0));
+        verify(repo).findByExclusivityAndCustomer(false, customer);
+    }
+````
+
+**Test 3:** *Verifies that the new figure is successfully registered*
+
+**Refers to Acceptance Criteria:** no acceptance criteria is referenced
+````
+    @Test
+    public void registerNewFigure_success() {
+        when(repo.save(any(Figure.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Figure result = service.registerNewFigure(
+                "Triângulo equilátero",
+                Set.of("triângulo", "ângulo", "figura"),
+                category,
+                false,
+                null
+        );
+
+        assertEquals("Triângulo equilátero", result.description());
+        verify(repo).save(any(Figure.class));
+    }
+````
+
+**Test 4:** *Verifies that the show request is successfully registered*
+
+**Refers to Acceptance Criteria:** no acceptance criteria is referenced
+````
+    @Test
+    void registerShowRequest_success() {
+        String location = "Parque da Cidade";
+        int duration = 30;
+        int drones = 5;
+
+        when(showRequestRepository.save(any(ShowRequest.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        ShowRequest result = service.registerShowRequest(customer, location, date, duration, drones, figures);
+
+        assertNotNull(result);
+        assertEquals(location, result.location());
+        assertEquals(date, result.date());
+        assertEquals(drones, result.droneNumber());
+        assertEquals(duration, result.duration());
+        assertEquals(figures, result.requestedFigures());
+        assertEquals(customer, result.customer());
+
+        verify(showRequestRepository).save(any(ShowRequest.class));
+    }
+````
+
+**Test 5:** *Verifies that all active figure categories are returned*
+
+**Refers to Acceptance Criteria:** no acceptance criteria is referenced
+
+````
+    @Test
+    void findByActive_returnsCorrectList() {
+        Iterable<FigureCategory> expected = List.of(
+                new FigureCategory("ActiveCat", "Still in use", now)
+        );
+        when(repo.findByActive(true)).thenReturn(expected);
+
+        Iterable<FigureCategory> result = service.findByActive(true);
+
+        assertIterableEquals(expected, result);
+    }
+````
+
+
 
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
+**RegisterShowRequestAction**
+```java
+package eapli.base.app.backoffice.presentation.showRequestManagement;
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+import eapli.framework.actions.Action;
+
+public class RegisterShowRequestAction implements Action {
+    @Override
+    public boolean execute() {
+        return new RegisterShowRequestUI().show();
+    }
+}
+```
+**RegisterShowRequestUI**
+```java
+package eapli.base.app.backoffice.presentation.showRequestManagement;
+
+import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
+import eapli.base.app.backoffice.presentation.figureCategoryManagement.FigureCategoryPrinter;
+import eapli.base.app.backoffice.presentation.figureManagement.FigurePrinter;
+import eapli.base.customerManagement.domain.Customer;
+import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showRequestManagement.application.RegisterShowRequestController;
+import eapli.base.showRequestManagement.domain.GenericSelector;
+import eapli.framework.io.util.Console;
+import eapli.framework.presentation.console.AbstractUI;
+import eapli.framework.presentation.console.SelectWidget;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class RegisterShowRequestUI extends AbstractUI {
+    private final RegisterShowRequestController controller = new RegisterShowRequestController();
+    @Override
+    protected boolean doShow() {
+        Customer customer = GenericSelector.selectItem(this.controller.listCustomers(), new CustomerPrinter(), "Select a Customer");
+
+        String location = requestLocation();
+        Calendar date = requestDate();
+        int droneNumber = requestDroneNumber();
+        int duration = requestDuration();
+        Iterable<Figure> figures = this.controller.figures(customer);
+
+        boolean inputAnswer = true;
+        boolean start = true;
+        while (inputAnswer) {
+            System.out.println("\nCurrent list of available figures: ");
+            for (Figure figure : figures) {
+                System.out.println(figure.description());
+            }
+            System.out.print("\n");
+            inputAnswer = verifyAddFigure(start);
+            start = false;
+            if (inputAnswer) {
+                try {
+                    FigureCategory figureCategory = requestCategory();
+                    String description = requestDescription();
+                    Set<String> keywords = requestListKeywords();
+                    if(excluviseMenu()){
+                        boolean exclusive = true;
+                        controller.addFigure(description, keywords, figureCategory, exclusive, customer);
+                    } else {
+                        boolean exclusive = false;
+                        controller.addFigure(description, keywords, figureCategory, exclusive, null);
+                    }
+                    figures = this.controller.figures(customer);
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println("ERROR: " + e.getMessage());
+                    return false;
+                }
+            }
+        }
+        List<Figure> figureSequence = new ArrayList<>();
+        List<Figure> availableFigures = new ArrayList<>();
+        figures.forEach(availableFigures::add);
+        final SelectWidget<Figure> selectWidgetFigure = new SelectWidget<>("Available figures (Enter 0 to finish)", availableFigures, new FigurePrinter());
+        System.out.println("\nSelect the following figures in the pretended order.");
+        while (true) {
+            if (availableFigures.isEmpty()) {
+                System.out.println("No more figures available to select.");
+                break;
+            }
+
+            selectWidgetFigure.show();
+            Figure selected = selectWidgetFigure.selectedElement();
+
+            if (selected == null) {
+                if (figureSequence.isEmpty()) {
+                    System.out.println("You must select at least one figure before exiting.");
+                    continue;
+                } else {
+                    break;
+                }
+            } else {
+                figureSequence.add(selected);
+                availableFigures.remove(selected);
+            }
+
+            System.out.print("Current sequence of figures: ");
+            for (int i = 0; i < figureSequence.size(); i++) {
+                Figure figure = figureSequence.get(i);
+                System.out.printf("%-20s", figure.description());
+                if (i != figureSequence.size() - 1) {
+                    System.out.print(" / ");
+                } else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println("\n");
+        }
+        try {
+            controller.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence);
+            System.out.println("Show Request successfully registered!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("\nERROR: " + e.getMessage() + "\n");
+        }
+
+        return true;
+    }
+
+    @Override
+    public String headline() {
+        return "";
+    }
+
+    private String requestLocation() {
+        String location;
+        do {
+            location = Console.readLine("\nEnter the show location:");
+            if (location.trim().isEmpty() || location.matches("\\d+")) {
+                System.out.println("Invalid location. It cannot be empty or consist only of numbers. Please enter a valid location.");
+            }
+        } while (location.trim().isEmpty() || location.matches("\\d+"));
+        return location;
+    }
+    private Calendar requestDate() {
+        Calendar date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+        Calendar currentDate = Calendar.getInstance();
+
+        String dateRegex = "\\d{4}-\\d{2}-\\d{2}";
+
+        while (date == null) {
+            String dateInput = Console.readLine("\nEnter the show date (yyyy-MM-dd):");
+
+            if (!dateInput.matches(dateRegex)) {
+                System.out.println("Invalid date. Please ensure the date is real and follows the format yyyy-MM-dd.");
+                continue;
+            }
+
+            try {
+                Date parsedDate = sdf.parse(dateInput);
+                Calendar enteredDate = Calendar.getInstance();
+                enteredDate.setTime(parsedDate);
+
+                if (enteredDate.before(currentDate)) {
+                    System.out.println("The entered date is in the past. Please enter a future date.");
+                } else {
+                    date = enteredDate;
+                }
+
+            } catch (ParseException e) {
+                System.out.println("Invalid date. Please ensure the date is real and follows the format yyyy-MM-dd.");
+            }
+        }
+        return date;
+    }
+    private int requestDroneNumber() {
+        int droneNumber = -1;
+        while (droneNumber <= 0) {
+            try {
+                droneNumber = Integer.parseInt(Console.readLine("\nEnter number of drones:"));
+                if (droneNumber <= 0) {
+                    System.out.println("The number must be greater than 0.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+        return droneNumber;
+    }
+
+    private int requestDuration() {
+        int duration = -1;
+        while (duration <= 0) {
+            try {
+                duration = Integer.parseInt(Console.readLine("\nEnter duration (in minutes):"));
+                if (duration <= 0) {
+                    System.out.println("Duration must be greater than 0.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
+        return duration;
+    }
+    private boolean verifyAddFigure(boolean start) {
+        String newFigureInput;
+        boolean inputAnswer;
+
+        do {
+            if (start) {
+                newFigureInput = Console.readLine("Do you wish to add a figure? (yes/no):").trim().toLowerCase();
+            } else {
+                newFigureInput = Console.readLine("Do you wish to add another figure? (yes/no):").trim().toLowerCase();
+            }
+            if (newFigureInput.isEmpty() || (!newFigureInput.equals("yes") && !newFigureInput.equals("no"))) {
+                System.out.println("Invalid input. Please type 'yes' or 'no'.");
+            }
+        } while (newFigureInput.isEmpty() || (!newFigureInput.equals("yes") && !newFigureInput.equals("no")));
+
+        inputAnswer = newFigureInput.equals("yes");
+        return inputAnswer;
+    }
+    private Set<String> requestListKeywords() {
+        Set<String> keywords = requestKeyWords();
+
+        while (keywords.isEmpty()) {
+            System.out.println("No keywords added. Please enter at least one keyword.");
+            keywords = requestKeyWords();
+        }
+        return keywords;
+    }
+    private boolean excluviseMenu(){
+        System.out.println("Is this Figure exclusive to a customer?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int option = Console.readInteger("Select an option: ");
+        switch (option) {
+            case 1:
+                return true;
+            case 2:
+                return false;
+            default:
+                System.out.println("Invalid option. Please try again.");
+                excluviseMenu();
+        }
+        return false;
+    }
+    private Set<String> requestKeyWords(){
+        Set<String> keywords = new HashSet<>();
+        System.out.println("\nInsert keywords:");
+        boolean addMore = true;
+        while (addMore) {
+            String kw = Console.readLine("Enter a keyword:").trim();
+            if (!kw.isEmpty()) {
+                keywords.add(kw);
+            } else {
+                System.out.println("ERROR: Keyword cannot be empty. Please enter a valid keyword.");
+            }
+
+            String response = Console.readLine("Do you want to add another keyword? (yes/no):").trim().toLowerCase();
+            addMore = response.equals("yes");
+        }
+        return keywords;
+    }
+    private FigureCategory requestCategory() {
+        FigureCategory figureCategory;
+        Iterable<FigureCategory> iterable = controller.listFigureCategories();
+
+        if (!iterable.iterator().hasNext()) {
+            throw new IllegalArgumentException("No figure categories available.");
+        }
+        String headerFigureCategoryModel = String.format("Select Figure Category\n#  %-30s%-30s%-30s%-30s%-30s", "NAME", "DESCRIPTION", "STATUS", "CREATED ON", "CHANGED ON");
+        final SelectWidget<FigureCategory> selector = new SelectWidget<>(headerFigureCategoryModel, iterable, new FigureCategoryPrinter());
+        selector.show();
+
+        figureCategory = selector.selectedElement();
+        while (figureCategory == null) {
+            System.out.println("No figure category selected! Please select a valid category.");
+            selector.show();
+            figureCategory = selector.selectedElement();
+        }
+        return figureCategory;
+    }
+    private String requestDescription() {
+        String description = "";
+        boolean validDescription = false;
+        while (!validDescription) {
+            description = Console.readLine("Enter figure description:").trim();
+            if (description.isEmpty()) {
+                System.out.println("Description cannot be empty. Please enter a valid description.");
+            } else {
+                validDescription = true;
+            }
+        }
+        return description;
+    }
+}
+
+```
+
+**RegisterShowRequestController**
+```java
+package eapli.base.showRequestManagement.application;
+
+import eapli.base.customerManagement.application.CustomerManagementService;
+import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.repositories.CustomerRepository;
+import eapli.base.figureCategoryManagement.application.FigureCategoryManagementService;
+import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
+import eapli.base.figureManagement.application.FigureManagementService;
+import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
+import eapli.base.usermanagement.domain.Roles;
+import eapli.framework.domain.repositories.TransactionalContext;
+import eapli.framework.infrastructure.authz.application.AuthorizationService;
+import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+
+public class RegisterShowRequestController {
+    private final TransactionalContext autoTx = PersistenceContext.repositories().newTransactionalContext();
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final CustomerRepository customerRepository = PersistenceContext.repositories().customers(autoTx);
+    private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepository);
+    private final ShowRequestRepository showRequestRepository = PersistenceContext.repositories().showRequests();
+    private final ShowRequestManagementService showRequestManagementService = new ShowRequestManagementService(showRequestRepository);
+    private final FigureRepository figureRepository = PersistenceContext.repositories().figures();
+    private final FigureManagementService figureManagementService = new FigureManagementService(figureRepository);
+    private final FigureCategoryRepository figureCategoryRepository = PersistenceContext.repositories().figureCategories(autoTx);
+    private final FigureCategoryManagementService figureCategoryManagementService = new FigureCategoryManagementService(figureCategoryRepository);
+
+    public Iterable<Customer> listCustomers() {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customerManagementService.findAllActiveCustomers();
+    }
+    public Iterable<Figure> figures(Customer customer) {
+        return figureManagementService.findByExclusivityAndCustomer(false, customer);
+    }
+    public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+    }
+    public ShowRequest registerShowRequest(Customer customer, String location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence) {
+        return showRequestManagementService.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence);
+    }
+    public Iterable<FigureCategory> listFigureCategories() {
+        return figureCategoryManagementService.findByActive(true);
+    }
+}
+```
+**FigureManagementService**
+```java
+public Iterable<Figure> findByExclusivityAndCustomer(boolean exclusive, Customer customer) {
+        return this.figureRepository.findByExclusivityAndCustomer(exclusive, customer);
+}
+public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer){
+    Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer);
+    return (Figure) this.figureRepository.save(newFigure);
+}
+```
+**FigureCategoryManagementService**
+```java
+public Iterable<FigureCategory> findByActive(boolean active) {  
+    return this.figureCategoryRepository.findByActive(active);
+}
+```
+**CustomerManagementService**
+```java
+public Iterable<Customer> findAllActiveCustomers() {
+    return this.customerRepository.findByActive();
+}
+```
+**ShowRequestManagementService**
+```java
+public ShowRequest registerShowRequest(Customer customer, String location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence) {
+    //RequestedFigures newRequestedFigures = new RequestedFigures(figureSequence);
+    ShowRequest newShowRequest = new ShowRequest(location, date, droneNumber, duration, figureSequence, customer);
+    return (ShowRequest) this.showRequestRepository.save(newShowRequest);
+}
+```
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Disabling Customer Representative**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![Register-show-request](images/demonstration/register-show-request(1).png)
+![Register-show-request](images/demonstration/register-show-request(2).png)
+![Register-show-request](images/demonstration/register-show-request(3).png)
+![Register-show-request](images/demonstration/register-show-request(4).png)
 
-## 7. Observations
+**Representative Database**
 
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
+![Show-Request-database](images/demonstration/show_request_database.png)

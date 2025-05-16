@@ -39,7 +39,6 @@
 ### 4.3. Applied Patterns
 
 - Information Expert
-- Creator
 - Controller
 - Low Coupling
 - High Cohesion
@@ -298,8 +297,8 @@ public void deactivate(final Calendar deactivatedOn) {
 
 **Disabling Customer Representative**
 
-![Disabling-customer-representative](images/demonstration/representative_database(1).png)
-![Disabling-customer-representative](images/demonstration/representative_database(2).png)
+![Disabling-customer-representative](images/demonstration/disable-customer-representative(1).png)
+![Disabling-customer-representative](images/demonstration/disable-customer-representative(2).png)
 
 **Representative Database**
 

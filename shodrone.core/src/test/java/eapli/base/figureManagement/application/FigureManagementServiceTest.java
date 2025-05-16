@@ -1,8 +1,15 @@
 package eapli.base.figureManagement.application;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
+import eapli.base.usermanagement.domain.Roles;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +35,32 @@ class FigureManagementServiceTest {
 
     private FigureCategory category;
     private Figure figure;
-
+    private Customer customer;
+    private SystemUser systemUser;
     private final Calendar now = CurrentTimeCalendars.now();
     @BeforeEach
     public void setup() {
+        PasswordPolicy policy = new ExemploPasswordPolicy();
+        PlainTextEncoder encoder = new PlainTextEncoder();
+        systemUser = new SystemUserBuilder(policy, encoder)
+                .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
+                .withRoles(Roles.ADMIN)
+                .build();
+
         category = new FigureCategory("Geometria", "Estudo de figuras geométricas", now);
         Set<String> keywords = new HashSet<>(Set.of("triângulo", "ângulo", "figura"));
         figure = new Figure("Triângulo equilátero", keywords, category, false, null);
+        customer = new Customer(
+                "Client Name",
+                "Client Address",
+                "client@email.com",
+                "VAT123",
+                "910000000",
+                "CC123456",
+                systemUser,
+                Customer.CustomerStatus.CREATED,
+                Calendar.getInstance()
+        );
     }
 
     @Test
@@ -160,5 +186,23 @@ class FigureManagementServiceTest {
         assertEquals(expected, result);
         verify(repo).findByExclusivity(false);
     }
+
+    @Test
+    public void findByExclusivityAndCustomer_returnsCorrectFigures() {
+
+        List<Figure> expected = List.of(figure);
+        when(repo.findByExclusivityAndCustomer(false, customer)).thenReturn(expected);
+
+        Iterable<Figure> result = service.findByExclusivityAndCustomer(false, customer);
+
+        assertNotNull(result);
+        List<Figure> resultList = new ArrayList<>();
+        result.forEach(resultList::add);
+
+        assertEquals(1, resultList.size());
+        assertEquals(figure, resultList.get(0));
+        verify(repo).findByExclusivityAndCustomer(false, customer);
+    }
+
 
 }

@@ -11,8 +11,6 @@ participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
 participant "FigureManagementService" as FigureManagementService <<application>>
 participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
-participant "FigureBuilder" as FigureBuilder <<domain>>
-participant "ShowRequestBuilder" as ShowRequestBuilder <<domain>>
 participant "Figure" as Figure <<domain>>
 participant "ShowRequest" as ShowRequest <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
@@ -86,18 +84,11 @@ title Sequence Diagram - US230
                 CTRL -> FigureManagementService : registerNewFigure(description, keywords, category, createdOn, createdBy)
                 activate FigureManagementService
 
-                    FigureManagementService -> FigureBuilder**: create
-                    FigureManagementService -> FigureBuilder : build()
-                    activate FigureBuilder
+                    FigureManagementService -> Figure : new Figure(description, keywords, figureCategory, exclusive, Customer)
+                    activate Figure
 
-                        FigureBuilder -> Figure**: new Figure(description, keywords, category, createdOn, createdBy);
-                        activate Figure
-
-                            Figure -> FigureBuilder : newFigure
-                        deactivate Figure
-
-                        FigureBuilder -> FigureManagementService : newFigure
-                    deactivate FigureBuilder
+                        Figure -> FigureManagementService : new Figure
+                    deactivate Figure
 
                     FigureManagementService -> FigureRepository : save(newFigure)
                     activate FigureRepository
@@ -139,18 +130,11 @@ title Sequence Diagram - US230
             CTRL -> ShowRequestManagementService : registerShowRequest(client, location, date, duration, numberDrones, figureSequence)
             activate ShowRequestManagementService
 
-                ShowRequestManagementService -> ShowRequestBuilder** : create
-                ShowRequestManagementService -> ShowRequestBuilder : build()
-                activate ShowRequestBuilder
+                ShowRequestManagementService -> ShowRequest : new ShowRequest(client, location, date, duration, numberDrones, figureSequence)
+                activate ShowRequest
 
-                    ShowRequestBuilder -> ShowRequest : newShowRequest(client, location, date, duration, numberDrones, figureSequence)
-                    activate ShowRequest
-
-                        ShowRequest -> ShowRequestBuilder : newShowRequest
-                    deactivate ShowRequest
-
-                    ShowRequestBuilder -> ShowRequestManagementService : newShowRequest
-                deactivate ShowRequestBuilder
+                    ShowRequest -> ShowRequestManagementService : new ShowRequest
+                deactivate ShowRequest
 
                 ShowRequestManagementService -> ShowRequestRepository : save(newShowRequest)
                 activate ShowRequestRepository
