@@ -190,4 +190,50 @@ public class FigureCategoryManagementServiceTest {
         assertTrue(result);
     }
 
+    @Test
+    void changeStatus_shouldActivateFigureCategory_ifInactive() {
+        FigureCategory cat = new FigureCategory("Dinosaurs", "Prehistoric figures", now);
+        cat.deactivate(Calendar.getInstance()); // começa desativada
+
+        when(repo.save(cat)).thenReturn(cat);
+
+        service.changeStatus(cat, true);
+
+        assertTrue(cat.isActive());
+        verify(repo).save(cat);
+    }
+
+    @Test
+    void changeStatus_shouldDeactivateFigureCategory_ifActive() {
+        FigureCategory cat = new FigureCategory("Aliens", "Extraterrestrial figures", now);
+        assertTrue(cat.isActive());
+
+        when(repo.save(cat)).thenReturn(cat);
+
+        service.changeStatus(cat, false);
+
+        assertFalse(cat.isActive());
+        verify(repo).save(cat);
+    }
+
+    @Test
+    void changeStatus_shouldThrowException_ifActivatingAlreadyActiveCategory() {
+        FigureCategory cat = new FigureCategory("Fantasy", "Magic and myths", now); // já ativa
+
+        assertThrows(IllegalStateException.class, () -> service.changeStatus(cat, true));
+
+        verify(repo, never()).save(any());
+    }
+
+    @Test
+    void changeStatus_shouldThrowException_ifDeactivationDateBeforeCreatedOn() {
+        FigureCategory cat = new FigureCategory("Futuristic", "Futurescapes", now);
+
+        Calendar invalidDeactivationDate = (Calendar) now.clone();
+        invalidDeactivationDate.add(Calendar.DATE, -10);
+
+        assertThrows(IllegalArgumentException.class, () -> cat.deactivate(invalidDeactivationDate));
+    }
+
+
 }
