@@ -52,12 +52,42 @@ public class EditFigureCategoryUI extends AbstractListUI<FigureCategory> {
             if (figureCategory == null) {
                 System.out.println("No figure category selected");
             } else {
-                final String name = Console.readLine("Name: ");
-                final String description = Console.readLine("Description: ");
-                this.theController.editFigureCategory(figureCategory, name, description);
-                System.out.println("Figure Category edited successfully");
+                String name = null, description = null;
+
+                while (true) {
+                    try {
+                        name = Console.readLine("Name |(If you do not desire to change type N)|: ");
+                        if (!name.equalsIgnoreCase("N") && name.trim().isEmpty()) {
+                            throw new IllegalArgumentException("Name cannot be empty.");
+                        }
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        description = Console.readLine("Description |(If you do not desire to change type N)|: ");
+                        if (!description.equalsIgnoreCase("N") && description.trim().isEmpty()) {
+                            throw new IllegalArgumentException("Description cannot be empty.");
+                        }
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+
+                try {
+                    this.theController.editFigureCategory(figureCategory, name, description);
+                    System.out.println("Figure Category edited successfully");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Unexpected error while editing figure category: " + e.getMessage());
                 }
             }
-        return true;
+            return true;
         }
+        return true;
+    }
 }
+

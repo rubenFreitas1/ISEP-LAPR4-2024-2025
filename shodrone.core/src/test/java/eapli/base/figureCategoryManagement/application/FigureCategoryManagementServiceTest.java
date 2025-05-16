@@ -124,12 +124,11 @@ public class FigureCategoryManagementServiceTest {
     void editFigureCategory_success() {
         FigureCategory cat = new FigureCategory("OldName", "Old Description", now);
         when(repo.isFigureCategoryNameUsed("NewName")).thenReturn(false);
-        when(repo.save(cat)).thenReturn(cat);
 
-        FigureCategory result = service.editFigureCategory(cat, "NewName", "New Description");
+        service.editFigureCategory(cat, "NewName", "New Description");
 
-        assertEquals("NewName", result.name());
-        assertEquals("New Description", result.description());
+        assertEquals("NewName", cat.name());
+        assertEquals("New Description", cat.description());
         verify(repo).save(cat);
     }
 

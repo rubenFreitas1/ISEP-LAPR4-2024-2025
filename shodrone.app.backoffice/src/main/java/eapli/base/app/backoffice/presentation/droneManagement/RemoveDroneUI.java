@@ -29,6 +29,7 @@ public class RemoveDroneUI extends AbstractUI {
                     System.out.println("Reason cannot be empty");
                 }else {
                     this.controller.removeDrone(drone, reason);
+                    System.out.println("Drone removed successfully");
                 }
             }
         }

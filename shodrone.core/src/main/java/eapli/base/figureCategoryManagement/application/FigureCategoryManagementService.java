@@ -35,16 +35,27 @@ public class FigureCategoryManagementService {
         return this.figureCategoryRepository.findByDescription(description);
     }
 
-    public FigureCategory editFigureCategory(FigureCategory figureCategory,
-                                             String newName,
-                                             String newDescription) {
-        if (isFigureCategoryNameUsed(figureCategoryRepository, newName)) {
-            throw new IllegalArgumentException("Figure Category name already in use");
-        }else {
-            figureCategory.changeName(newName);
+    public void editFigureCategory(FigureCategory figureCategory, String newName, String newDescription) {
+        boolean edited = false;
+        if (newName == null || newName.isEmpty()) {
+            throw new IllegalArgumentException("Figure Category name cannot be null or empty!");
+        } else if (!newName.equals("N")) {
+            edited = true;
+           if (isFigureCategoryNameUsed(figureCategoryRepository, newName)) {
+                throw new IllegalArgumentException("Figure Category name already in use");
+            }else {
+                figureCategory.changeName(newName);
+            }
+        }
+        if (newDescription == null || newDescription.isEmpty()) {
+            throw new IllegalArgumentException("Figure Category description cannot be null or empty!");
+        } else if (!newDescription.equals("N")) {
+            edited = true;
             figureCategory.changeDescription(newDescription);
         }
-        return (FigureCategory) this.figureCategoryRepository.save(figureCategory);
+        if (edited) {
+            figureCategoryRepository.save(figureCategory);
+        }
     }
 
 

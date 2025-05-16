@@ -197,5 +197,7 @@ public class DroneManagementService {
 ## 6. Integration/Demonstration
 
 **Removing Drone**
+![Removing Drone](images/removing-drone.png)
 
 **Drone Database**
+![Drone Database](images/removing-drone-database.png)

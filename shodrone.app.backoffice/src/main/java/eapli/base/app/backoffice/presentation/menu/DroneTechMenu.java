@@ -22,8 +22,7 @@ public class DroneTechMenu {
     private static final int ADD_DRONE_OPTION = 3;
     private static final int REMOVE_DRONE_OPTION = 4;
     private static final int LIST_DRONES_OPTION = 5;
-    private static final int SHOW_GENERATION_OPTION = 6;
-    private static final int SPECIFY_PROGRAMMING_LANGUAGE_OPTION = 7;
+
 
     public Menu buildDroneMenu() {
         final Menu menu = new Menu("Drone >");
@@ -32,8 +31,6 @@ public class DroneTechMenu {
         menu.addItem(ADD_DRONE_OPTION, "Add Drone to Inventory", new AddDroneAction());
         menu.addItem(REMOVE_DRONE_OPTION, "Remove Drone from Inventory", new RemoveDroneAction());
         menu.addItem(LIST_DRONES_OPTION, "List Active Drones", new ListActiveDronesAction());
-        //menu.addItem(SHOW_GENERATION_OPTION, "Show Generation",);
-        //menu.addItem(SPECIFY_PROGRAMMING_LANGUAGE_OPTION, "Specify Programming Language",);
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
 
         return menu;

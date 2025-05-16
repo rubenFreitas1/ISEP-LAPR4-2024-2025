@@ -1,6 +1,7 @@
 package eapli.base.app.backoffice.presentation.menu;
 
 import eapli.base.app.backoffice.presentation.customerManagement.RegisterCustomerAction;
+import eapli.base.app.backoffice.presentation.figureCategoryManagement.ListFigureCategoriesAction;
 import eapli.base.app.backoffice.presentation.figureManagement.ListFigureAction;
 import eapli.base.app.backoffice.presentation.figureManagement.SearchFigureAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.DisableRepresentativeAction;
@@ -72,7 +73,7 @@ public class CRM_CollaboratorMenu {
         final Menu menu = new Menu("Figure >");
         menu.addItem(LIST_PUBLIC_FIGURE_OPTION, "List all Public Figures", new ListFigureAction());
         menu.addItem(SEARCH_FIGURE_CATALOGUE_OPTION, "Search Figure Catalogue", new SearchFigureAction());
-        //menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories", );
+        menu.addItem(LIST_FIGURE_CATEGORIES_OPTION, "List Figure Categories", new ListFigureCategoriesAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
         return menu;
     }

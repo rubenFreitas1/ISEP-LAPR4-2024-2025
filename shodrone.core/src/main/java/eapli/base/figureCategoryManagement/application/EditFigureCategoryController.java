@@ -16,9 +16,7 @@ public class EditFigureCategoryController {
 
     public FigureCategory editFigureCategory(FigureCategory figureCategory, String newName, String newDescription) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
-        figureCategorySvc.editFigureCategory(figureCategory,
-                newName,
-                newDescription);
+        figureCategorySvc.editFigureCategory(figureCategory, newName, newDescription);
         return figureCategory;
     }
 
