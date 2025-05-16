@@ -93,9 +93,9 @@
 **Refers to Acceptance Criteria:** US224.4
 
 ```
-@Test
-void deactivateCustomerRepresentative_shouldDeactivateAndSaveRepresentative() {
-when(representativeRepository.save(any(Representative.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    @Test
+    void deactivateCustomerRepresentative_shouldDeactivateAndSaveRepresentative() {
+    when(representativeRepository.save(any(Representative.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Representative result = service.deactivateCustomerRepresentative(representative);
 
@@ -103,6 +103,65 @@ when(representativeRepository.save(any(Representative.class))).thenAnswer(invoca
         assertFalse(result.isActive());
         assertNotNull(result.deactivatedOn());
         verify(representativeRepository).save(representative);
+    }
+    @Test
+    void deactivate_validDate_shouldDeactivateRepresentative() {
+        Representative rep = new Representative(
+                "Bob Jones",
+                "bob@email.com",
+                now,
+                "pass123",
+                "923456789",
+                customer,
+                "Support",
+                user
+        );
+
+        Calendar futureDate = (Calendar) now.clone();
+        futureDate.add(Calendar.DAY_OF_YEAR, 1);
+
+        rep.deactivate(futureDate);
+        assertFalse(rep.isActive());
+        assertEquals(futureDate, rep.deactivatedOn());
+    }
+
+    @Test
+    void deactivate_withDateBeforeCreatedOn_shouldThrowException() {
+        Representative rep = new Representative(
+                "Carla Lima",
+                "carla@email.com",
+                now,
+                "pass123",
+                "933456789",
+                customer,
+                "Marketing",
+                user
+        );
+
+        Calendar pastDate = (Calendar) now.clone();
+        pastDate.add(Calendar.DAY_OF_YEAR, -1);
+
+        assertThrows(IllegalArgumentException.class, () -> rep.deactivate(pastDate));
+    }
+
+    @Test
+    void deactivate_whenAlreadyInactive_shouldThrowException() {
+        Representative rep = new Representative(
+                "David Silva",
+                "david@email.com",
+                now,
+                "pass123",
+                "943456789",
+                customer,
+                "IT",
+                user
+        );
+
+        Calendar futureDate = (Calendar) now.clone();
+        futureDate.add(Calendar.DAY_OF_YEAR, 1);
+
+        rep.deactivate(futureDate);
+        assertThrows(IllegalStateException.class, () -> rep.deactivate(futureDate));
     }
 ```
 
@@ -237,7 +296,11 @@ public void deactivate(final Calendar deactivatedOn) {
 
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Disabling Customer Representative**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
+![Disabling-customer-representative](images/demonstration/representative_database(1).png)
+![Disabling-customer-representative](images/demonstration/representative_database(2).png)
 
+**Representative Database**
+
+![Representative-database](images/demonstration/representative_database.png)
