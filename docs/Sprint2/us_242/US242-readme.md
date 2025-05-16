@@ -44,37 +44,158 @@ audit and reporting needs.
 
 ### 4.4. Acceptance Tests
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
+**Test 1:** *Verifies that removes drone and saves the date of deactivation*
 
-**Test 1:** *Verifies that it is not possible to ...*
+**Refers to Acceptance Criteria:** US242.1
+```java
+@Test
+    void removeDrone_savesDeactivatedDrone() {
+        Drone drone = new Drone("DRONE10001", droneModel, now, user);
+        when(repo.save(drone)).thenReturn(drone);
 
-**Refers to Acceptance Criteria:** US101.1
+        Drone result = service.removeDrone(drone, "Test reason");
 
+        Assertions.assertFalse(result.isActive());
+        verify(repo).save(drone);
+    }
+````
+**Test 2:** *Verifies that removes drone and saves the correct date of deactivation*
 
-```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
+**Refers to Acceptance Criteria:** US242.1
+```java
+@Test
+void removeDrone_setsCorrectDeactivationDate() {
+Drone drone = new Drone("DRONE10003", droneModel, now, user);
+service.removeDrone(drone, "Test reason");
+assertNotNull(drone.deactivatedOn());
 }
 ````
 
+
 ## 5. Implementation
 
-*In this section the team should present, if necessary, some evidencies that the implementation is according to the design. It should also describe and explain other important artifacts necessary to fully understand the implementation like, for instance, configuration files.*
 
-*It is also a best practice to include a listing (with a brief summary) of the major commits regarding this requirement.*
+**RemoveDroneAction**
 
+```java
+public class RemoveDroneAction implements Action {
+    @Override
+    public boolean execute() {
+        return new RemoveDroneUI().show();
+    }
+}
+
+```
+**RemoveDroneUI**
+
+```java
+public class RemoveDroneUI extends AbstractUI {
+
+    private final RemoveDroneController controller = new RemoveDroneController();
+
+    @Override
+    protected boolean doShow() {
+        final Iterable<Drone> drones = this.controller.activeDrones();
+        if (!drones.iterator().hasNext()) {
+            System.out.println("There are no registered Drones");
+        } else {
+            final SelectWidget<Drone> selector = new SelectWidget<>("Select Drone to Remove", drones, new DronePrinter());
+            selector.show();
+            final Drone drone = selector.selectedElement();
+            if (drone == null) {
+                System.out.println("No drone selected");
+            } else {
+                final String reason = Console.readLine("Reason for removing the drone: ");
+                if (reason.isEmpty()) {
+                    System.out.println("Reason cannot be empty");
+                }else {
+                    this.controller.removeDrone(drone, reason);
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String headline() {
+        return "Remove Drone";
+    }
+}
+```
+
+**RemoveDroneController**
+
+```java
+@UseCaseController
+public class RemoveDroneController {
+
+    private final AuthorizationService authz = AuthzRegistry.authorizationService();
+
+    private final DroneRepository repo = PersistenceContext.repositories().drones();
+
+    private final DroneManagementService droneSvc = new DroneManagementService(repo);
+
+    public void removeDrone(final Drone drone, final String reason) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
+        this.droneSvc.removeDrone(drone,reason);
+    }
+
+    public Iterable<Drone> activeDrones() {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.DRONE_TECH);
+        return this.droneSvc.activeDrones();
+    }
+}
+```
+
+**DroneManagementService**
+
+```java
+public class DroneManagementService {
+
+    private final DroneRepository droneRepository;
+
+
+    public DroneManagementService(final DroneRepository droneRepository){
+        this.droneRepository = droneRepository;
+    }
+
+    public Drone registerNewDrone(final String serialNumber, final DroneModel droneModel, final Calendar acquisitionDate, final SystemUser user){
+        if(isSerialNumberUsed(serialNumber)){
+            throw new IllegalArgumentException("This Serial Number is already registered in the system!");
+        }
+        Drone newDrone = new Drone(serialNumber, droneModel,acquisitionDate, user);
+        return (Drone) this.droneRepository.save(newDrone);
+    }
+
+    public Drone registerNewDrone(final String serialNumber, final DroneModel droneModel, final SystemUser user){
+        return registerNewDrone(serialNumber, droneModel, CurrentTimeCalendars.now(), user);
+    }
+
+
+    public Drone removeDrone(final Drone drone, final String reason){
+        drone.remove(CurrentTimeCalendars.now(), reason);
+        return (Drone) this.droneRepository.save(drone);
+    }
+
+    public Drone activateDrone(final Drone drone) {
+        drone.activate();
+        return (Drone) this.droneRepository.save(drone);
+    }
+
+    public Iterable<Drone> findByDroneModel(final DroneModel droneModel) {
+        return this.droneRepository.findByDroneModel(droneModel);
+    }
+    public Iterable<Drone> activeDrones(){
+        return this.droneRepository.findByActive(true);
+    }
+
+    public Optional<Drone> findById(Long id){return this.droneRepository.findById(id);}
+
+    public boolean isSerialNumberUsed(String serialNumber){return this.droneRepository.isSerialNameUsed(serialNumber);}
+}
+```
 ## 6. Integration/Demonstration
 
-*In this section the team should describe the efforts realized in order to integrate this functionality with the other parts/components of the system*
+**Removing Drone**
 
-*It is also important to explain any scripts or instructions required to execute an demonstrate this functionality*
-
-## 7. Observations
-
-*This section should be used to include any content that does not fit any of the previous sections.*
-
-*The team should present here, for instance, a critical prespective on the developed work including the analysis of alternative solutioons or related works*
-
-*The team should include in this section statements/references regarding third party works that were used in the development this work.*
-
+**Drone Database**

@@ -17,7 +17,8 @@ public class RemoveDroneUI extends AbstractUI {
         if (!drones.iterator().hasNext()) {
             System.out.println("There are no registered Drones");
         } else {
-            final SelectWidget<Drone> selector = new SelectWidget<>("Select Drone to Remove", drones, new DronePrinter());
+            String headerRemoveDrone = String.format("Select Drone to Remove\n#  %-30s%-30s%-30s%-30s", "SERIAL NUMBER", "MODEL NAME", "STATUS", "CREATED BY");
+            final SelectWidget<Drone> selector = new SelectWidget<>(headerRemoveDrone, drones, new DronePrinter());
             selector.show();
             final Drone drone = selector.selectedElement();
             if (drone == null) {
