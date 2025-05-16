@@ -70,4 +70,13 @@ public class FigureCategoryManagementService {
     public Iterable<FigureCategory> findByActive(boolean active) {
         return this.figureCategoryRepository.findByActive(active);
     }
+
+    public void changeStatus (FigureCategory figureCategory, boolean newStatus) {
+        if (newStatus) {
+            figureCategory.activate(Calendar.getInstance());
+        } else {
+            figureCategory.deactivate(Calendar.getInstance());
+        }
+        this.figureCategoryRepository.save(figureCategory);
+    }
 }
