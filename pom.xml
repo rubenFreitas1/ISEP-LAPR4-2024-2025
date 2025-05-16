@@ -19,7 +19,8 @@
 		<module>shodrone.bootstrappers</module>
 		<module>shodrone.util.ci</module>
 		<module>shodrone.LPROG</module>
-	</modules>
+        <module>shodrone.SCOMP</module>
+    </modules>
 	<version>0.1.0</version>
 
 	<properties>

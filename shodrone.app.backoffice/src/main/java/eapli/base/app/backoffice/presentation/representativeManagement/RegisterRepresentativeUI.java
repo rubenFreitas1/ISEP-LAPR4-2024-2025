@@ -55,7 +55,6 @@ public class RegisterRepresentativeUI extends AbstractUI {
             }
         }
 
-        // Phone
         while (true) {
             try {
                 phone = Console.readLine("Representative Phone Number: ");
@@ -68,7 +67,6 @@ public class RegisterRepresentativeUI extends AbstractUI {
             }
         }
 
-        // Position
         while (true) {
             try {
                 position = Console.readLine("Representative Position: ");

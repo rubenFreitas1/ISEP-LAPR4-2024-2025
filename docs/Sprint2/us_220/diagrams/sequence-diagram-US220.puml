@@ -6,9 +6,11 @@ participant "RegisterCustomerUI" as UI <<presentation>>
 participant "RegisterCustomerController" as Controller <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "CustomerBuilder" as CustomerBuilder <<domain>>
+participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
 participant "Customer" as Customer <<domain>>
+participant "Representative" as Representative <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
+participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
 database "Database" as Database
 
 activate Actor
@@ -18,7 +20,7 @@ Actor -> UI: show()
 
 UI -> Controller** : create()
 
-UI --> Actor: Request Customer Information (Name, Email, Phone Number,\n VatNumber, Address)
+UI --> Actor: Request Customer Information (Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
 deactivate UI
 
 Actor -> UI: Insert Customer data
@@ -26,30 +28,24 @@ Actor -> UI: Insert Customer data
 
     activate UI
 
-        UI -> Controller : registerCustomer(Name, Email, Phone Number,\n VatNumber, Address)
+        UI -> Controller : registerCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
             activate Controller
 
                 Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
 
                 deactivate AuthorizationService
 
-                Controller -> CustomerManagementService : registerNewCustomer(Name, Email, Phone Number,\n VatNumber, Address)
+                Controller -> CustomerManagementService : registerNewCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address)
                 activate CustomerManagementService
 
-                    CustomerManagementService -> CustomerBuilder** : create()
-                    CustomerManagementService -> CustomerBuilder : build()
-                    activate CustomerBuilder
 
-                        CustomerBuilder -> Customer**: new Customer(Name, Email, Phone Number,\n VatNumber, Address)
+                    CustomerManagementService -> Customer : create()
+                    activate Customer
 
-                         activate Customer
 
-                         Customer --> CustomerBuilder : newCustomer
-                         deactivate Customer
+                    Customer -> CustomerManagementService : newCustomer
 
-                          CustomerBuilder --> CustomerManagementService : newCustomer
-
-                    deactivate CustomerBuilder
+                    deactivate Customer
 
 
                     CustomerManagementService -> CustomerRepository : save(newCustomer)
@@ -67,6 +63,26 @@ Actor -> UI: Insert Customer data
 
                     CustomerManagementService --> Controller
                 deactivate CustomerManagementService
+
+                Controller -> RepresentativeManagementService : registerNewRepresentative(representativeName, representativeEmail,\n createdOn, representativePassword, representativePhoneNumber,\n associatedCustomer, representativePosition)
+                activate RepresentativeManagementService
+
+                RepresentativeManagementService ->Representative:create()
+                activate Representative
+                Representative -> RepresentativeManagementService : newRepresentative
+                deactivate Representative
+
+                RepresentativeManagementService -> RepresentativeRepository :save(newRepresentative)
+                activate RepresentativeRepository
+                RepresentativeRepository ->Database :save()
+                activate Database
+                Database --> RepresentativeRepository
+                deactivate Database
+                RepresentativeRepository -->RepresentativeManagementService
+                deactivate RepresentativeRepository
+                RepresentativeManagementService --> Controller
+                deactivate RepresentativeManagementService
+
 
                 Controller --> UI
             deactivate Controller
