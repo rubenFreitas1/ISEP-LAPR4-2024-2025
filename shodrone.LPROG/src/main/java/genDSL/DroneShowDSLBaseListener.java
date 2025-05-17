@@ -1,4 +1,5 @@
-package genDSL;// Generated from C:/Users/Sousa/IdeaProjects/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.LPROG/src/main/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+// Generated from D:/Utilizadores/JoseRibeiro/Desktop/Universidade/2ºano_4ºsemestre/PROJETO_SEM4/shodrone.LPROG/src/main/java/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+package genDSL;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -28,13 +29,13 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVersion_id(DroneShowDSLParser.Version_idContext ctx) { }
+	@Override public void enterVersion(DroneShowDSLParser.VersionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVersion_id(DroneShowDSLParser.Version_idContext ctx) { }
+	@Override public void exitVersion(DroneShowDSLParser.VersionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -47,6 +48,30 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(DroneShowDSLParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAfterBlock(DroneShowDSLParser.AfterBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAfterBlock(DroneShowDSLParser.AfterBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -100,13 +125,13 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterValue(DroneShowDSLParser.ValueContext ctx) { }
+	@Override public void enterExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitValue(DroneShowDSLParser.ValueContext ctx) { }
+	@Override public void exitExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -148,25 +173,13 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgumentList(DroneShowDSLParser.ArgumentListContext ctx) { }
+	@Override public void enterParams(DroneShowDSLParser.ParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgumentList(DroneShowDSLParser.ArgumentListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArgument(DroneShowDSLParser.ArgumentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArgument(DroneShowDSLParser.ArgumentContext ctx) { }
+	@Override public void exitParams(DroneShowDSLParser.ParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -184,13 +197,73 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMethod(DroneShowDSLParser.MethodContext ctx) { }
+	@Override public void enterMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMethod(DroneShowDSLParser.MethodContext ctx) { }
+	@Override public void exitMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMethodName(DroneShowDSLParser.MethodNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethodName(DroneShowDSLParser.MethodNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMethodParams(DroneShowDSLParser.MethodParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMethodParams(DroneShowDSLParser.MethodParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterColorParam(DroneShowDSLParser.ColorParamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitColorParam(DroneShowDSLParser.ColorParamContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -220,61 +293,61 @@ public class DroneShowDSLBaseListener implements DroneShowDSLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(DroneShowDSLParser.ExpressionContext ctx) { }
+	@Override public void enterMultExpr(DroneShowDSLParser.MultExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(DroneShowDSLParser.ExpressionContext ctx) { }
+	@Override public void exitMultExpr(DroneShowDSLParser.MultExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperator(DroneShowDSLParser.OperatorContext ctx) { }
+	@Override public void enterNegExpr(DroneShowDSLParser.NegExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperator(DroneShowDSLParser.OperatorContext ctx) { }
+	@Override public void exitNegExpr(DroneShowDSLParser.NegExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdentifier(DroneShowDSLParser.IdentifierContext ctx) { }
+	@Override public void enterPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdentifier(DroneShowDSLParser.IdentifierContext ctx) { }
+	@Override public void exitPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumber(DroneShowDSLParser.NumberContext ctx) { }
+	@Override public void enterAddExpr(DroneShowDSLParser.AddExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumber(DroneShowDSLParser.NumberContext ctx) { }
+	@Override public void exitAddExpr(DroneShowDSLParser.AddExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterColor(DroneShowDSLParser.ColorContext ctx) { }
+	@Override public void enterPrimary(DroneShowDSLParser.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitColor(DroneShowDSLParser.ColorContext ctx) { }
+	@Override public void exitPrimary(DroneShowDSLParser.PrimaryContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

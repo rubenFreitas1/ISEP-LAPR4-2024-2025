@@ -1,4 +1,5 @@
-package genDSL;// Generated from C:/Users/Sousa/IdeaProjects/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.LPROG/src/main/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+// Generated from D:/Utilizadores/JoseRibeiro/Desktop/Universidade/2ºano_4ºsemestre/PROJETO_SEM4/shodrone.LPROG/src/main/java/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+package genDSL;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -24,7 +25,7 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVersion_id(DroneShowDSLParser.Version_idContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVersion(DroneShowDSLParser.VersionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -32,6 +33,20 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitStatement(DroneShowDSLParser.StatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAfterBlock(DroneShowDSLParser.AfterBlockContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -66,7 +81,7 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitValue(DroneShowDSLParser.ValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -94,14 +109,7 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgumentList(DroneShowDSLParser.ArgumentListContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitArgument(DroneShowDSLParser.ArgumentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParams(DroneShowDSLParser.ParamsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -115,7 +123,42 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMethod(DroneShowDSLParser.MethodContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMethodName(DroneShowDSLParser.MethodNameContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMethodParams(DroneShowDSLParser.MethodParamsContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitColorParam(DroneShowDSLParser.ColorParamContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -136,33 +179,33 @@ public class DroneShowDSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpression(DroneShowDSLParser.ExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultExpr(DroneShowDSLParser.MultExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOperator(DroneShowDSLParser.OperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNegExpr(DroneShowDSLParser.NegExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIdentifier(DroneShowDSLParser.IdentifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumber(DroneShowDSLParser.NumberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddExpr(DroneShowDSLParser.AddExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitColor(DroneShowDSLParser.ColorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimary(DroneShowDSLParser.PrimaryContext ctx) { return visitChildren(ctx); }
 }

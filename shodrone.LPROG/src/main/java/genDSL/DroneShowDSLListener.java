@@ -1,4 +1,5 @@
-package genDSL;// Generated from C:/Users/Sousa/IdeaProjects/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.LPROG/src/main/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+// Generated from D:/Utilizadores/JoseRibeiro/Desktop/Universidade/2ºano_4ºsemestre/PROJETO_SEM4/shodrone.LPROG/src/main/java/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+package genDSL;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -17,15 +18,15 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 */
 	void exitProgram(DroneShowDSLParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#version_id}.
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#version}.
 	 * @param ctx the parse tree
 	 */
-	void enterVersion_id(DroneShowDSLParser.Version_idContext ctx);
+	void enterVersion(DroneShowDSLParser.VersionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#version_id}.
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#version}.
 	 * @param ctx the parse tree
 	 */
-	void exitVersion_id(DroneShowDSLParser.Version_idContext ctx);
+	void exitVersion(DroneShowDSLParser.VersionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DroneShowDSLParser#statement}.
 	 * @param ctx the parse tree
@@ -36,6 +37,26 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(DroneShowDSLParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#beforeBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#beforeBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#afterBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterAfterBlock(DroneShowDSLParser.AfterBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#afterBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitAfterBlock(DroneShowDSLParser.AfterBlockContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DroneShowDSLParser#declaration}.
 	 * @param ctx the parse tree
@@ -77,15 +98,15 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 */
 	void exitVariableType(DroneShowDSLParser.VariableTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#value}.
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#expressionOrCoordinate}.
 	 * @param ctx the parse tree
 	 */
-	void enterValue(DroneShowDSLParser.ValueContext ctx);
+	void enterExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#value}.
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#expressionOrCoordinate}.
 	 * @param ctx the parse tree
 	 */
-	void exitValue(DroneShowDSLParser.ValueContext ctx);
+	void exitExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DroneShowDSLParser#coordinate}.
 	 * @param ctx the parse tree
@@ -117,25 +138,15 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 */
 	void exitShapeType(DroneShowDSLParser.ShapeTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#argumentList}.
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#params}.
 	 * @param ctx the parse tree
 	 */
-	void enterArgumentList(DroneShowDSLParser.ArgumentListContext ctx);
+	void enterParams(DroneShowDSLParser.ParamsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#argumentList}.
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#params}.
 	 * @param ctx the parse tree
 	 */
-	void exitArgumentList(DroneShowDSLParser.ArgumentListContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#argument}.
-	 * @param ctx the parse tree
-	 */
-	void enterArgument(DroneShowDSLParser.ArgumentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#argument}.
-	 * @param ctx the parse tree
-	 */
-	void exitArgument(DroneShowDSLParser.ArgumentContext ctx);
+	void exitParams(DroneShowDSLParser.ParamsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DroneShowDSLParser#methodCall}.
 	 * @param ctx the parse tree
@@ -147,15 +158,65 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 */
 	void exitMethodCall(DroneShowDSLParser.MethodCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#method}.
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#methodCallTail}.
 	 * @param ctx the parse tree
 	 */
-	void enterMethod(DroneShowDSLParser.MethodContext ctx);
+	void enterMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#method}.
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#methodCallTail}.
 	 * @param ctx the parse tree
 	 */
-	void exitMethod(DroneShowDSLParser.MethodContext ctx);
+	void exitMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#methodName}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodName(DroneShowDSLParser.MethodNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#methodName}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodName(DroneShowDSLParser.MethodNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#methodParams}.
+	 * @param ctx the parse tree
+	 */
+	void enterMethodParams(DroneShowDSLParser.MethodParamsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#methodParams}.
+	 * @param ctx the parse tree
+	 */
+	void exitMethodParams(DroneShowDSLParser.MethodParamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#coordinateParam}.
+	 * @param ctx the parse tree
+	 */
+	void enterCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#coordinateParam}.
+	 * @param ctx the parse tree
+	 */
+	void exitCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#expressionParams}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#expressionParams}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#colorParam}.
+	 * @param ctx the parse tree
+	 */
+	void enterColorParam(DroneShowDSLParser.ColorParamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#colorParam}.
+	 * @param ctx the parse tree
+	 */
+	void exitColorParam(DroneShowDSLParser.ColorParamContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DroneShowDSLParser#groupBlock}.
 	 * @param ctx the parse tree
@@ -177,53 +238,61 @@ public interface DroneShowDSLListener extends ParseTreeListener {
 	 */
 	void exitPauseStatement(DroneShowDSLParser.PauseStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#expression}.
+	 * Enter a parse tree produced by the {@code MultExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(DroneShowDSLParser.ExpressionContext ctx);
+	void enterMultExpr(DroneShowDSLParser.MultExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#expression}.
+	 * Exit a parse tree produced by the {@code MultExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(DroneShowDSLParser.ExpressionContext ctx);
+	void exitMultExpr(DroneShowDSLParser.MultExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#operator}.
+	 * Enter a parse tree produced by the {@code NegExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterOperator(DroneShowDSLParser.OperatorContext ctx);
+	void enterNegExpr(DroneShowDSLParser.NegExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#operator}.
+	 * Exit a parse tree produced by the {@code NegExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitOperator(DroneShowDSLParser.OperatorContext ctx);
+	void exitNegExpr(DroneShowDSLParser.NegExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#identifier}.
+	 * Enter a parse tree produced by the {@code PrimaryExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterIdentifier(DroneShowDSLParser.IdentifierContext ctx);
+	void enterPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#identifier}.
+	 * Exit a parse tree produced by the {@code PrimaryExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitIdentifier(DroneShowDSLParser.IdentifierContext ctx);
+	void exitPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#number}.
+	 * Enter a parse tree produced by the {@code AddExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumber(DroneShowDSLParser.NumberContext ctx);
+	void enterAddExpr(DroneShowDSLParser.AddExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#number}.
+	 * Exit a parse tree produced by the {@code AddExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumber(DroneShowDSLParser.NumberContext ctx);
+	void exitAddExpr(DroneShowDSLParser.AddExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DroneShowDSLParser#color}.
+	 * Enter a parse tree produced by {@link DroneShowDSLParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void enterColor(DroneShowDSLParser.ColorContext ctx);
+	void enterPrimary(DroneShowDSLParser.PrimaryContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DroneShowDSLParser#color}.
+	 * Exit a parse tree produced by {@link DroneShowDSLParser#primary}.
 	 * @param ctx the parse tree
 	 */
-	void exitColor(DroneShowDSLParser.ColorContext ctx);
+	void exitPrimary(DroneShowDSLParser.PrimaryContext ctx);
 }

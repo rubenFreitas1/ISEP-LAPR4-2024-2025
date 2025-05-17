@@ -1,4 +1,5 @@
-package genDSL;// Generated from C:/Users/Sousa/IdeaProjects/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.LPROG/src/main/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+// Generated from D:/Utilizadores/JoseRibeiro/Desktop/Universidade/2ºano_4ºsemestre/PROJETO_SEM4/shodrone.LPROG/src/main/java/antlr/DroneShowDSL.g4 by ANTLR 4.13.2
+package genDSL;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -16,17 +17,29 @@ public interface DroneShowDSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(DroneShowDSLParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#version_id}.
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#version}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVersion_id(DroneShowDSLParser.Version_idContext ctx);
+	T visitVersion(DroneShowDSLParser.VersionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DroneShowDSLParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStatement(DroneShowDSLParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#beforeBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBeforeBlock(DroneShowDSLParser.BeforeBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#afterBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAfterBlock(DroneShowDSLParser.AfterBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DroneShowDSLParser#declaration}.
 	 * @param ctx the parse tree
@@ -52,11 +65,11 @@ public interface DroneShowDSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariableType(DroneShowDSLParser.VariableTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#value}.
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#expressionOrCoordinate}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitValue(DroneShowDSLParser.ValueContext ctx);
+	T visitExpressionOrCoordinate(DroneShowDSLParser.ExpressionOrCoordinateContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DroneShowDSLParser#coordinate}.
 	 * @param ctx the parse tree
@@ -76,17 +89,11 @@ public interface DroneShowDSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitShapeType(DroneShowDSLParser.ShapeTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#argumentList}.
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#params}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgumentList(DroneShowDSLParser.ArgumentListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#argument}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArgument(DroneShowDSLParser.ArgumentContext ctx);
+	T visitParams(DroneShowDSLParser.ParamsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DroneShowDSLParser#methodCall}.
 	 * @param ctx the parse tree
@@ -94,11 +101,41 @@ public interface DroneShowDSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethodCall(DroneShowDSLParser.MethodCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#method}.
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#methodCallTail}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethod(DroneShowDSLParser.MethodContext ctx);
+	T visitMethodCallTail(DroneShowDSLParser.MethodCallTailContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#methodName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodName(DroneShowDSLParser.MethodNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#methodParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodParams(DroneShowDSLParser.MethodParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#coordinateParam}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCoordinateParam(DroneShowDSLParser.CoordinateParamContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#expressionParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressionParams(DroneShowDSLParser.ExpressionParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#colorParam}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColorParam(DroneShowDSLParser.ColorParamContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DroneShowDSLParser#groupBlock}.
 	 * @param ctx the parse tree
@@ -112,33 +149,37 @@ public interface DroneShowDSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPauseStatement(DroneShowDSLParser.PauseStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#expression}.
+	 * Visit a parse tree produced by the {@code MultExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(DroneShowDSLParser.ExpressionContext ctx);
+	T visitMultExpr(DroneShowDSLParser.MultExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#operator}.
+	 * Visit a parse tree produced by the {@code NegExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOperator(DroneShowDSLParser.OperatorContext ctx);
+	T visitNegExpr(DroneShowDSLParser.NegExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#identifier}.
+	 * Visit a parse tree produced by the {@code PrimaryExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdentifier(DroneShowDSLParser.IdentifierContext ctx);
+	T visitPrimaryExpr(DroneShowDSLParser.PrimaryExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#number}.
+	 * Visit a parse tree produced by the {@code AddExpr}
+	 * labeled alternative in {@link DroneShowDSLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumber(DroneShowDSLParser.NumberContext ctx);
+	T visitAddExpr(DroneShowDSLParser.AddExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DroneShowDSLParser#color}.
+	 * Visit a parse tree produced by {@link DroneShowDSLParser#primary}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitColor(DroneShowDSLParser.ColorContext ctx);
+	T visitPrimary(DroneShowDSLParser.PrimaryContext ctx);
 }

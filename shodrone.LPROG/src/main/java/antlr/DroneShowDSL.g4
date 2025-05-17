@@ -1,13 +1,10 @@
 grammar DroneShowDSL;
 
-// Parser Rules
 program
-    : VERSION_DECL version_id SEMICOLON
-      statement+
-      EOF
+    : 'DSL' 'version' version ';' statement* EOF
     ;
 
-version_id
+version
     : VERSION_ID
     ;
 
@@ -17,7 +14,18 @@ statement
     | methodCall
     | groupBlock
     | pauseStatement
+    | beforeBlock
+    | afterBlock
     ;
+
+beforeBlock
+    : 'before' statement* 'endbefore'
+    ;
+
+afterBlock
+    : 'after' statement* 'endafter'
+    ;
+
 
 declaration
     : typeDeclaration
@@ -25,134 +33,139 @@ declaration
     ;
 
 typeDeclaration
-    : DRONE_TYPE identifier SEMICOLON
+    : 'DroneType' IDENTIFIER ';'
     ;
 
 variableAssignment
-    : variableType identifier EQUALS value SEMICOLON
+    : variableType IDENTIFIER '=' expressionOrCoordinate ';'
     ;
 
 variableType
-    : POSITION
-    | VELOCITY
-    | DISTANCE
+    : 'Position'
+    | 'Velocity'
+    | 'Distance'
     ;
 
-value
-    : coordinate
-    | expression
-    ;
-
-coordinate
-    : LPAREN expression COMMA expression COMMA expression RPAREN
-    ;
-
-objectCreation
-    : shapeType identifier LPAREN argumentList RPAREN SEMICOLON
-    ;
-
-shapeType
-    : LINE
-    | RECTANGLE
-    | CIRCLE
-    | TRIANGLE
-    | CUBE
-    ;
-
-argumentList
-    : argument (COMMA argument)*
-    ;
-
-argument
-    : identifier
-    | expression
+expressionOrCoordinate
+    : expression
     | coordinate
     ;
 
+coordinate
+    : '(' expression ',' expression ',' expression ')'
+    ;
+
+objectCreation
+    : shapeType IDENTIFIER '(' params ')' ';'
+    ;
+
+shapeType
+    : 'Line'
+    | 'Rectangle'
+    | 'Circle'
+    | 'Circumference'
+    ;
+
+params
+    : expression (',' expression)*
+    ;
+
 methodCall
-    : identifier DOT method SEMICOLON
+    : IDENTIFIER '.' methodName (methodCallTail)? ';'
     ;
 
-method
-    : LIGHTS_ON LPAREN color RPAREN
-    | LIGHTS_OFF
-    | MOVE LPAREN coordinate COMMA expression COMMA expression RPAREN
-    | ROTATE LPAREN argumentList RPAREN
+methodCallTail
+    : '(' methodParams? ')'
     ;
 
-groupBlock
-    : GROUP
-      statement+
-      ENDGROUP
+
+methodName
+    : 'lightsOn'
+    | 'lightsOff'
+    | 'move'
+    | 'movePos'
+    | 'rotate'
     ;
 
-pauseStatement
-    : PAUSE LPAREN expression RPAREN SEMICOLON
+methodParams
+    : colorParam
+    | coordinateParam
+    | expressionParams
     ;
 
-expression
-    : number
-    | identifier
-    | expression operator expression
-    | LPAREN expression RPAREN
+coordinateParam
+    : coordinate (',' expression)*
     ;
 
-operator
-    : PLUS
-    | MINUS
-    | MULTIPLY
-    | DIVIDE
+expressionParams
+    : expression (',' expression)*
     ;
 
-identifier
-    : IDENTIFIER
-    ;
-
-number
-    : NUMBER
-    ;
-
-color
+colorParam
     : COLOR
     ;
 
-// Lexer Rules
-VERSION_DECL : 'DSL' WS 'version' ;
-DRONE_TYPE   : 'DroneType' ;
-POSITION     : 'Position' ;
-VELOCITY     : 'Velocity' ;
-DISTANCE     : 'Distance' ;
-LINE         : 'Line' ;
-RECTANGLE    : 'Rectangle' ;
-CIRCLE       : 'Circle' ;
-TRIANGLE     : 'Triangle' ;
-CUBE         : 'Cube' ;
-LIGHTS_ON    : 'lightsOn' ;
-LIGHTS_OFF   : 'lightsOff' ;
-MOVE         : 'move' ;
-ROTATE       : 'rotate' ;
-GROUP        : 'group' ;
-ENDGROUP     : 'endgroup' ;
-PAUSE        : 'pause' ;
+groupBlock
+    : 'group' statement* 'endgroup'
+    ;
 
-LPAREN       : '(' ;
-RPAREN       : ')' ;
-SEMICOLON    : ';' ;
-COMMA        : ',' ;
-DOT          : '.' ;
-EQUALS       : '=' ;
-PLUS         : '+' ;
-MINUS        : '-' ;
-MULTIPLY     : '*' ;
-DIVIDE       : '/' ;
+pauseStatement
+    : 'pause' '(' expression ')' ';'
+    ;
 
-PI           : 'PI' ;
-COLOR        : 'RED' | 'GREEN' | 'BLUE' | 'YELLOW' | 'WHITE' | 'BLACK' | 'PURPLE' | 'ORANGE' ;
-VERSION_ID   : [0-9]+ ('.' [0-9]+)* ;
-IDENTIFIER   : [a-zA-Z][a-zA-Z0-9_]* ;
-NUMBER       : '-'? [0-9]+ ('.' [0-9]+)? ;
+expression
+    : primary                                      #PrimaryExpr
+    | '-' expression                               #NegExpr
+    | expression ('*' | '/') expression            #MultExpr
+    | expression ('+' | '-') expression            #AddExpr
+    ;
 
-COMMENT      : '//' ~[\r\n]* -> skip ;
-BLOCK_COMMENT: '/*' .*? '*/' -> skip ;
-WS           : [ \t\r\n]+ -> skip ;
+primary
+    : NUMBER
+    | FLOAT
+    | PI
+    | IDENTIFIER
+    | '(' expression ')'
+    ;
 
+COLOR
+    : 'RED'
+    | 'GREEN'
+    | 'BLUE'
+    | 'YELLOW'
+    ;
+
+PI  : 'PI' ;
+
+// Redefine the tokens to ensure FLOAT has priority over VERSION_ID
+FLOAT
+    : [0-9]+ '.' [0-9]+
+    ;
+
+VERSION_ID
+    : [0-9]+ '.' [0-9]+ '.' [0-9]+
+    ;
+
+NUMBER
+    : [0-9]+
+    ;
+
+IDENTIFIER
+    : [a-zA-Z][a-zA-Z0-9_]*
+    ;
+
+WS
+    : [ \t\r\n]+ -> skip
+    ;
+
+COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
+
+MULTILINE_COMMENT
+    : '/*' .*? '*/' -> skip
+    ;
+
+STRING
+    : '"' (~["\\] | '\\' .)* '"'
+    ;
