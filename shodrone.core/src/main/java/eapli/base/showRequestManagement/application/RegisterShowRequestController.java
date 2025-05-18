@@ -42,7 +42,7 @@ public class RegisterShowRequestController {
         return figureManagementService.findByExclusivityAndCustomer(false, customer);
     }
     public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
-        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser());
     }
     public ShowRequest registerShowRequest(Customer customer, GeoLocation location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence, String description, int altitude) {
         return showRequestManagementService.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence, description, altitude, authz.session().get().authenticatedUser());

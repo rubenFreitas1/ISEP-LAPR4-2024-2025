@@ -41,7 +41,7 @@ public class ShowRequestTest {
         category = new FigureCategory("Sci-fi", "Sci-fi figures", now);
 
         Set<String> keywords = new HashSet<>(Set.of("alien", "space"));
-        Figure figure = new Figure("Alien figure", keywords, category, false, null);
+        Figure figure = new Figure("Alien figure", keywords, category, false, null, user);
         figures = new ArrayList<>(List.of(figure));
 
         customer = new Customer("Alice", "Wonderland Street", "alice@mail.com",
@@ -129,7 +129,7 @@ public class ShowRequestTest {
     void changeRequestedFigures_valid_updatesFigures() {
         ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", 50, user);
         Set<String> newKeywords = new HashSet<>(Set.of("robot", "AI"));
-        Figure newFigure = new Figure("Robot figure", newKeywords, category, true, customer);
+        Figure newFigure = new Figure("Robot figure", newKeywords, category, true, customer, user);
         List<Figure> newFigures = List.of(newFigure);
 
         request.changeRequestedFigures(newFigures);

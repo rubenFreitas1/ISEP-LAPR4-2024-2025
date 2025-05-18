@@ -60,7 +60,7 @@ class ShowRequestManagementServiceTest {
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles( Roles.ADMIN).build();
         customer = new Customer("Pedrão", "rua do pedrao", "pedrao.email@gmail.com", "12345", "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
-        Figure figure = new Figure("Star", keywords, category, false, null);
+        Figure figure = new Figure("Star", keywords, category, false, null, systemUser);
         figures = List.of(figure);
         geoLocation = new GeoLocation(41.1579, -8.6291);
         description = "Light drone show at the city park";
@@ -166,7 +166,7 @@ class ShowRequestManagementServiceTest {
     @Test
     void editShowRequestSequenceOfFigures_success() {
         Set<String> keywords = new HashSet<>(Set.of("circle", "round"));
-        Figure newFigure = new Figure("Circle", keywords, category, true, null);
+        Figure newFigure = new Figure("Circle", keywords, category, true, null, systemUser);
         List<Figure> newFigures = List.of(newFigure);
 
         showRequest.changeRequestedFigures(newFigures);

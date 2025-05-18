@@ -13,7 +13,6 @@ import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @UseCaseController
@@ -33,7 +32,7 @@ public class AddFigureController {
 
     public Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory figureCategory, boolean exclusive, Customer customer) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
-        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser());
     }
 
     public Iterable<FigureCategory> listFigureCategories() {

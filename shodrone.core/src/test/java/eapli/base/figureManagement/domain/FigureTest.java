@@ -49,7 +49,7 @@ class FigureTest {
 
     @Test
     void constructor_createsActiveFigure() {
-        Figure figure = new Figure("A dragon figure", keywords, category, true, customer);
+        Figure figure = new Figure("A dragon figure", keywords, category, true, customer, user);
         assertEquals("A dragon figure", figure.description());
         assertEquals(category, figure.figureCategory());
         assertEquals(customer, figure.customer());
@@ -59,27 +59,34 @@ class FigureTest {
 
     @Test
     void constructor_allowsNullCustomer() {
-        Figure figure = new Figure("Figure without customer", keywords, category, false, null);
+        Figure figure = new Figure("Figure without customer", keywords, category, false, null, user);
         assertNull(figure.customer());
     }
 
     @Test
     void constructor_nullKeywords_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Figure("Invalid figure", null, category, false, null);
+            new Figure("Invalid figure", null, category, false, null, user);
+        });
+    }
+
+    @Test
+    void constructor_nullCreatedBy_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Figure("Invalid figure", keywords, category, false, null, null);
         });
     }
 
     @Test
     void constructor_nullCategory_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Figure("Invalid figure", keywords, null, false, null);
+            new Figure("Invalid figure", keywords, null, false, null, user);
         });
     }
 
     @Test
     void deactivate_setsInactiveAndStoresDate() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false, null);
+        Figure figure = new Figure("Alien sculpture", keywords, category, false, null, user);
         Calendar today = Calendar.getInstance();
 
         figure.deactivate(today);
@@ -90,7 +97,7 @@ class FigureTest {
 
     @Test
     void deactivate_alreadyInactive_throwsException() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null);
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
         Calendar today = Calendar.getInstance();
         figure.deactivate(today);
 
@@ -102,14 +109,14 @@ class FigureTest {
 
     @Test
     void deactivate_nullDate_throwsException() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null);
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
 
         assertThrows(IllegalArgumentException.class, () -> figure.deactivate(null));
     }
 
     @Test
     void activate_reactivatesFigureAndClearsDeactivationDate() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null);
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
         Calendar today = Calendar.getInstance();
         figure.deactivate(today);
 

@@ -48,7 +48,7 @@ public class EditShowRequestController {
     }
 
     public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
-        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser());
     }
 
     public Iterable<FigureCategory> listFigureCategories() {

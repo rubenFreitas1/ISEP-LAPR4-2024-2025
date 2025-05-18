@@ -4,10 +4,11 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+
 import java.util.Set;
 
 @Component
@@ -19,8 +20,8 @@ public class FigureManagementService {
         this.figureRepository = figureRepository;
     }
 
-    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer){
-        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer);
+    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy) {
+        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer, createdBy);
         return (Figure) this.figureRepository.save(newFigure);
     }
 

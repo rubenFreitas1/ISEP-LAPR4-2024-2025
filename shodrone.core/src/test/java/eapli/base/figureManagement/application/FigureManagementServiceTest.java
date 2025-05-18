@@ -49,7 +49,7 @@ class FigureManagementServiceTest {
 
         category = new FigureCategory("Geometria", "Estudo de figuras geométricas", now);
         Set<String> keywords = new HashSet<>(Set.of("triângulo", "ângulo", "figura"));
-        figure = new Figure("Triângulo equilátero", keywords, category, false, null);
+        figure = new Figure("Triângulo equilátero", keywords, category, false, null, systemUser);
         customer = new Customer(
                 "Client Name",
                 "Client Address",
@@ -72,7 +72,8 @@ class FigureManagementServiceTest {
                 Set.of("triângulo", "ângulo", "figura"),
                 category,
                 false,
-                null
+                null,
+                systemUser
         );
 
         assertEquals("Triângulo equilátero", result.description());

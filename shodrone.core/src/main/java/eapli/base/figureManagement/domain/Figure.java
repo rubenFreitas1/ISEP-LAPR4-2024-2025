@@ -3,6 +3,7 @@ package eapli.base.figureManagement.domain;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
@@ -29,6 +30,9 @@ public class Figure implements AggregateRoot<Long> {
     @ManyToOne
     private FigureCategory figureCategory;
 
+    @ManyToOne
+    private SystemUser createdBy;
+
     private boolean exclusive;
 
     private boolean active;
@@ -43,15 +47,15 @@ public class Figure implements AggregateRoot<Long> {
     protected Figure(){
     }
 
-    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
-        Preconditions.noneNull(new Object[] {keywords, figureCategory});
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy) {
+        Preconditions.noneNull(new Object[] {keywords, figureCategory, createdBy});
         this.keywords = new HashSet<>(keywords);
         this.description = description;
         this.figureCategory = figureCategory;
         this.active = true;
         this.exclusive = exclusive;
         this.customer = customer;
-
+        this.createdBy = createdBy;
         this.normalizedKeywords = new HashSet<>();
         for (String keyword : keywords) {
             this.normalizedKeywords.add(normalize(keyword));
@@ -84,7 +88,7 @@ public class Figure implements AggregateRoot<Long> {
 
     public Set<String> normalizedKeywords() { return this.normalizedKeywords; }
 
-
+    public SystemUser createdBy() { return this.createdBy;}
 
     public void deactivate(final Calendar deactivatedOn) {
         if (deactivatedOn != null) {
@@ -111,10 +115,13 @@ public class Figure implements AggregateRoot<Long> {
         return "Figure{" +
                 "figureId=" + figureId +
                 ", keywords=" + keywords +
+                ", normalizedKeywords=" + normalizedKeywords +
                 ", description='" + description + '\'' +
                 ", figureCategory=" + figureCategory +
+                ", createdBy=" + createdBy +
                 ", exclusive=" + exclusive +
                 ", active=" + active +
+                ", customer=" + customer +
                 ", deactivatedOn=" + deactivatedOn +
                 '}';
     }

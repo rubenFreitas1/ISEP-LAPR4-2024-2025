@@ -70,10 +70,10 @@ Actor -> UI: Provide Figure Information
 
                 deactivate AuthorizationService
 
-                Controller -> FigureManagementService : registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+                Controller -> FigureManagementService : registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser())
                 activate FigureManagementService
 
-                    FigureManagementService -> Figure: new Figure(description, keywords, figureCategory, exclusive, customer)
+                    FigureManagementService -> Figure: new Figure(description, keywords, figureCategory, exclusive, customer, createdBy)
                         activate Figure
 
                             Figure --> FigureManagementService: new Figure
