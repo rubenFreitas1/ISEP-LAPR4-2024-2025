@@ -89,7 +89,7 @@ MULTILINE_COMMENT
 STRING
 
 rule names:
-program
+start
 version
 statement
 beforeBlock
