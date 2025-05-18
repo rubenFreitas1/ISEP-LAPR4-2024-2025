@@ -23,9 +23,7 @@
  */
 package eapli.base.infrastructure.bootstrapers;
 
-import eapli.base.infrastructure.bootstrapers.demo.BackofficeUsersBootstrapper;
-import eapli.base.infrastructure.bootstrapers.demo.DroneBootstrapper;
-import eapli.base.infrastructure.bootstrapers.demo.DroneModelBootstrapper;
+import eapli.base.infrastructure.bootstrapers.demo.*;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
@@ -61,7 +59,8 @@ public class BaseBootstrapper implements Action {
 	@Override
 	public boolean execute() {
 		// declare bootstrap actions
-		final Action[] actions = { new MasterUsersBootstrapper(), new BackofficeUsersBootstrapper(), new DroneModelBootstrapper(), new DroneBootstrapper()};
+		final Action[] actions = { new MasterUsersBootstrapper(), new BackofficeUsersBootstrapper(), new DroneModelBootstrapper(), new DroneBootstrapper(),
+		new FigureCategoryBootstrapper(), new CustomerBootstrapper() , new FigureBootstrapper(), new ShowRequestBootstrapper() };
 
 		registerPowerUser();
 		authenticateForBootstrapping();

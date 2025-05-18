@@ -31,7 +31,7 @@ public class AddFigureController {
     private final FigureCategoryManagementService figureCategoryManagementService = new FigureCategoryManagementService(PersistenceContext.repositories().figureCategories());
 
     public Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory figureCategory, boolean exclusive, Customer customer) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER ,Roles.SHOW_DESIGNER);
         return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser());
     }
 

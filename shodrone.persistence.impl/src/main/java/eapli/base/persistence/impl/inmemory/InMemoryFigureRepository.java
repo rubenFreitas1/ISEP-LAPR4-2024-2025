@@ -21,6 +21,11 @@ public class InMemoryFigureRepository extends InMemoryDomainRepository<Figure, L
     }
 
     @Override
+    public Optional<Figure> findById(Long id) {
+        return matchOne(e -> e.identity().equals(id));
+    }
+
+    @Override
     public Iterable<Figure> findByFigureCategory(FigureCategory figureCategory) {
         return match(e -> e.figureCategory().equals(figureCategory));
     }

@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface FigureRepository extends DomainRepository<Long, Figure> {
 
+    Optional<Figure> findById(Long id);
+
     Iterable<Figure> findByKeyword(String keyword);
 
     Iterable<Figure> findByFigureCategory(FigureCategory figureCategory);

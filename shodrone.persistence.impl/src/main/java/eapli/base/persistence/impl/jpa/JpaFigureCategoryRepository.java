@@ -8,6 +8,7 @@ import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class JpaFigureCategoryRepository extends JpaAutoTxRepository<FigureCategory, Long, Long> implements FigureCategoryRepository {
 
@@ -44,5 +45,12 @@ public class JpaFigureCategoryRepository extends JpaAutoTxRepository<FigureCateg
         final Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         return matchOne("e.name = :name", params).isPresent();
+    }
+
+    @Override
+    public Optional<FigureCategory> findById(Long id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return matchOne("e.figureCategoryId = :id", params);
     }
 }

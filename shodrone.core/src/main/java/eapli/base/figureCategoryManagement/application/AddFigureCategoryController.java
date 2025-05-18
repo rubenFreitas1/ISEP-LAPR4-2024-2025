@@ -15,7 +15,7 @@ public class AddFigureCategoryController {
     private final FigureCategoryManagementService figureCategorySvc = new FigureCategoryManagementService(repo);
 
     public FigureCategory addFigureCategory(final String name, final String description) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.SHOW_DESIGNER);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER, Roles.SHOW_DESIGNER);
         return figureCategorySvc.registerNewFigureCategory(name, description);
     }
 }

@@ -20,6 +20,12 @@ public class JpaFigureRepository extends JpaAutoTxRepository<Figure, Long, Long>
         super(puname, Application.settings().getExtendedPersistenceProperties(), "figureId");
     }
 
+    public Optional<Figure> findById(final Long id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return matchOne("e.figureId = :id", params);
+    }
+
     @Override
     public Iterable<Figure> findByKeyword(String keyword) {
         final Map<String, Object> params = new HashMap<>();

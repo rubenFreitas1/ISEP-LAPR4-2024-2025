@@ -4,7 +4,6 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.representativeManagement.application.RepresentativeManagementService;
-import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
@@ -22,7 +21,7 @@ public class RegisterCustomerController {
     private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo);
 
     public Customer registerCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER,Roles.CRM_COLLABORATOR);
         Customer newCustomer = customersvc.registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, authz.session().get().authenticatedUser());
         representativesvc.registerNewRepresentative(representativeName, representativeEmail, representativePassword, representativePhoneNumber, newCustomer, representativePosition, authz.session().get().authenticatedUser());
         return newCustomer;

@@ -9,6 +9,7 @@ import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class JpaCustomerRepository extends JpaAutoTxRepository<Customer, Long, Long> implements CustomerRepository {
 
@@ -36,5 +37,12 @@ public class JpaCustomerRepository extends JpaAutoTxRepository<Customer, Long, L
         final Map<String, Object> params = new HashMap<>();
         params.put("email", customerEmail);
         return matchOne("e.customerEmail = :email", params).isPresent();
+    }
+
+    @Override
+    public Optional<Customer> findById(Long id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return matchOne("e.customerId = :id", params);
     }
 }

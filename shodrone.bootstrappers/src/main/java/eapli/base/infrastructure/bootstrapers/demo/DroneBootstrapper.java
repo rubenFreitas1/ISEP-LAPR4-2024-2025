@@ -32,7 +32,7 @@ public class DroneBootstrapper implements Action {
         addDrone("DJI123456", droneModel);
         addDrone("Yuneec123456", droneModel2);
         addDrone("Autel123456", droneModel3);
-        return false;
+        return true;
     }
 
 
