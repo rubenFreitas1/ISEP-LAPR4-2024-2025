@@ -40,8 +40,14 @@ for maintenance, deployment, or replacement tasks.
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
 
 ### 4.4. Acceptance Tests
 

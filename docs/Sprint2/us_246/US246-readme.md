@@ -35,8 +35,15 @@ Ensuring unique category names and tracking the last update date supports data i
 ![sequence-diagram](images/sequence-diagram-US246.svg "A Sequence Diagram")
 
 ### 4.3. Applied Patterns
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
+
 ### 4.4. Acceptance Tests
 
 

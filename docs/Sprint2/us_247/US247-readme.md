@@ -32,8 +32,15 @@ This feature enhances visibility and organization as the number of categories gr
 ![a class diagram](images/sequence-diagram-US247.svg "A Class Diagram")
 
 ### 4.3. Applied Patterns
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
+
 ### 4.4. Acceptance Tests
 
 Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.

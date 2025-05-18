@@ -62,8 +62,16 @@ The system must ensure that each category has a unique name, includes timestamps
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
+
 ### 4.4. Acceptance Tests
 
 
