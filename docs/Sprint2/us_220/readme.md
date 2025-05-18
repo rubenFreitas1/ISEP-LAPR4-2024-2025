@@ -33,9 +33,59 @@
 ![Sequence Diagram](images/sequence-diagram-US220.svg)
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
 
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that a customer is created correctly*
+
+```
+    @Test
+    void registerNewCustomer_shouldRegisterSuccessfully() {
+        when(customerRepository.isEmailUsed("client@email.com")).thenReturn(false);
+        when(customerRepository.isVatNumberUsed("CC123456")).thenReturn(false);
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+
+        Customer result = service.registerNewCustomer(
+                "Client Name",
+                "Client Address",
+                "client@email.com",
+                "VAT123",
+                "910000000",
+                "CC123456",
+                systemUser
+        );
+
+        assertNotNull(result);
+        assertEquals("Client Name", result.customerName());
+        verify(customerRepository).save(any(Customer.class));
+    }
+
+````
+
+**Test 2:** *Verifies that the representative is created along with the customer*
+
+```
+
+@Test
+    void addRepresentative_shouldAddSuccessfully() {
+        Representative rep = new Representative("Alice Smith", "alice@email.com", now, "password123", "912345678", customer, "Sales Manager", user);
+
+        customer.addRepresentative(rep);
+
+        assertEquals(1, customer.representatives().size());
+        assertTrue(customer.representatives().contains(rep));
+    }
+
+````
 ## 5. Implementation
 
 **RegisterCustomerAction**
@@ -52,7 +102,6 @@ public class RegisterCustomerAction implements Action {
         return new RegisterCustomerUI().show();
     }
 }
-
 
 ```
 **RegisterCustomerUI**

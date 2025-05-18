@@ -11,7 +11,7 @@
 
 **Acceptance Criteria:**
 
-- There are no acceptance criteria defined for this user story.
+- US223.1 There are no acceptance criteria defined for this user story.
 
 **Dependencies/References:**
 
@@ -32,9 +32,75 @@
 ![Sequence Diagram](images/sequence-diagram-US223.svg)
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
 
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that the representative information is updated*
+
+```
+    @Test
+    void changeMethods_shouldUpdateFieldsCorrectly() {
+        Representative rep = new Representative(
+                "Felipe",
+                "felipe@email.com",
+                now,
+                "pass123",
+                "963456789",
+                customer,
+                "Analyst",
+                user
+        );
+
+        rep.changeName("Felipe Santos");
+        rep.changeEmail("felipe.santos@email.com");
+        rep.changePassword("newpass123");
+        rep.changePhoneNumber("964444444");
+        rep.changePosition("Senior Analyst");
+
+        assertEquals("Felipe Santos", rep.representativeName());
+        assertEquals("felipe.santos@email.com", rep.representativeEmail());
+        assertEquals("newpass123", rep.representativePassword());
+        assertEquals("964444444", rep.representativePhoneNumber());
+        assertEquals("Senior Analyst", rep.representativePosition());
+    }
+````
+**Test 2:** *Verifies that the changedOn field is updated when the representative information is changed*
+
+```
+@Test
+void changeChangedOn_shouldUpdateChangedOnField() throws InterruptedException {
+Representative rep = new Representative(
+"Helena",
+"helena@email.com",
+now,
+"mypassword",
+"967777777",
+customer,
+"Manager",
+user
+);
+
+        Calendar originalChangedOn = rep.createdOn();
+
+        Thread.sleep(10);
+
+        rep.changeChangedOn();
+
+        Calendar updatedChangedOn = rep.changedOn();
+
+        assertNotNull(updatedChangedOn);
+        assertTrue(updatedChangedOn.after(originalChangedOn),
+                "Expected changedOn to be after the original value");
+    }
+````
 ## 5. Implementation
 
 

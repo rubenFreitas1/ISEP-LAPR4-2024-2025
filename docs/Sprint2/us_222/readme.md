@@ -43,9 +43,50 @@ Test:
 ![Sequence Diagram](images/sequence-diagram-US222.svg)
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
 
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that all representatives are returned*
+
+```
+    @Test
+    void findAll_shouldReturnAllRepresentatives() {
+        List<Representative> expected = List.of(representative);
+        when(representativeRepository.findAll()).thenReturn(expected);
+
+        Iterable<Representative> result = service.findAll();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(representativeRepository).findAll();
+    }
+
+````
+
+**Test 2:** *Verifies that all customer representatives are returned*
+
+```
+    @Test
+    void findByAssociatedCustomer_shouldReturnCustomerRepresentatives() {
+        List<Representative> expected = List.of(representative);
+        when(representativeRepository.findByAssociatedCustomer(customer)).thenReturn(expected);
+
+        Iterable<Representative> result = service.findByAssociatedCustomer(customer);
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(representativeRepository).findByAssociatedCustomer(customer);
+    }
+
+````
 
 ## 5. Implementation
 

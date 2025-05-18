@@ -36,25 +36,69 @@
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Polymorphism
+- Pure Fabrication
+- Indirection
+- Protected Variations
 
 ### 4.4. Acceptance Tests
 
-Include here the main tests used to validate the functionality. Focus on how they relate to the acceptance criteria. May be automated or manual tests.
-
-**Test 1:** *Verifies that it is not possible to ...*
-
-**Refers to Acceptance Criteria:** US101.1
-
+**Test 1:** *Verifies that a representative is created correctly*
 
 ```
-@Test(expected = IllegalArgumentException.class)
-public void ensureXxxxYyyy() {
-...
-}
+    @Test
+    void constructor_shouldCreateRepresentative() {
+        Representative rep = new Representative(
+                "Alice Smith",
+                "alice@email.com",
+                now,
+                "password123",
+                "912345678",
+                customer,
+                "Sales Manager",
+                user
+        );
+
+        assertEquals("Alice Smith", rep.representativeName());
+        assertEquals("alice@email.com", rep.representativeEmail());
+        assertEquals("password123", rep.representativePassword());
+        assertEquals("912345678", rep.representativePhoneNumber());
+        assertEquals(customer, rep.associatedCustomer());
+        assertEquals("Sales Manager", rep.representativePosition());
+        assertEquals(user, rep.createdBy());
+        assertTrue(rep.isActive());
+        assertNotNull(rep.createdOn());
+        assertNull(rep.deactivatedOn());
+    }
+
 ````
 
+**Test 2:** *Verifies that a representative is created correctly with a customer associated*
+
+```
+    @Test
+    void registerNewRepresentative_shouldSaveCustomerWithRepresentative() {
+        when(representativeRepository.isEmailUsed("new.rep@email.com")).thenReturn(false);
+
+        service.registerNewRepresentative(
+                "New Rep",
+                "new.rep@email.com",
+                "securePass123",
+                "910000002",
+                customer,
+                "Marketing",
+                systemUser
+        );
+
+        verify(customerRepository).save(customer);
+    }
+
+````
 ## 5. Implementation
 
 

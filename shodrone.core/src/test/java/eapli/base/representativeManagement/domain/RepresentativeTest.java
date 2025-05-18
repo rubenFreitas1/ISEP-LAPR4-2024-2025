@@ -198,9 +198,9 @@ class RepresentativeTest {
                 user
         );
 
-        Calendar originalChangedOn = rep.createdOn(); // No construtor, changedOn == createdOn
+        Calendar originalChangedOn = rep.createdOn();
 
-        Thread.sleep(10); // Garante um pequeno intervalo de tempo
+        Thread.sleep(10);
 
         rep.changeChangedOn();
 

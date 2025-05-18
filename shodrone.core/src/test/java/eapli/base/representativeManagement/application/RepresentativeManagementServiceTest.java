@@ -168,7 +168,7 @@ class RepresentativeManagementServiceTest {
 
     @Test
     void activateRepresentative_shouldActivateAndSave() {
-        representative.deactivate(Calendar.getInstance()); // Primeiro desativamos
+        representative.deactivate(Calendar.getInstance());
         assertFalse(representative.isActive());
 
         when(representativeRepository.save(any(Representative.class))).thenAnswer(invocation -> invocation.getArgument(0));
