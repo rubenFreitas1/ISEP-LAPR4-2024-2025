@@ -159,14 +159,14 @@ LINE_1_FORMAT: 'A Shodrone tem o prazer de submeter à V/ apreciação uma propo
                | 'Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.'
                | (WORD | '[Company Name]') ' is a VIP client and Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.';
 
-LINE_2_FORMAT: 'Shodrone is a company that prioritizes safety, which is why it uses the most advanced AI technology to support the development of its shows, with all shows being previously and carefully tested/simulated with AI-Test© technology before being presented to the client.'
-               | 'A Shodrone é uma empresa que dá prioridade à segurança, pelo que usa a mais avançada tecnologia de IA para apoiar o desenvolvimento dos seus shows, sendo que todos os shows são prévia e cuidadosamente testados/simulados com a tecnologia AI-Test© antes de serem apresentados ao cliente.'
+LINE_2_FORMAT: 'Shodrone is a company that prioritizes safety, which is why it uses the most advanced AI technology to support the development of its shows, with all shows being previously and carefully tested/simulated with AI-Test technology before being presented to the client.'
+               | 'A Shodrone é uma empresa que dá prioridade à segurança, pelo que usa a mais avançada tecnologia de IA para apoiar o desenvolvimento dos seus shows, sendo que todos os shows são prévia e cuidadosamente testados/simulados com a tecnologia AI-Test antes de serem apresentados ao cliente.'
                ;
 LINE_3_FORMAT: 'In the link ' (LINK | '[link to show video]') ' there is a video with a simulation of the proposed show.'
                |'No link ' (LINK | '[link to show video]') ' encontra-se um vídeo com a simulação do show proposto.'
                ;
-CLOSING_FORMAT: 'Com a aplicação do AI-Test©, um exclusivo da Shodrone, temos a confiança de oferecer um seguro de responsabilidade civil no valor de ' ([0-9]+ | '[valor do seguro]') ' para o show. Os dados detalhados do show são apresentados em anexo.'
-                 | 'With the application of AI-Test©, a Shodrone exclusive, we are confident in offering liability insurance in the amount of ' ([0-9]+ | '[insurance amount]') ' for the show. Detailed show data is presented in the attachment.';
+CLOSING_FORMAT: 'Com a aplicação do AI-Test, um exclusivo da Shodrone, temos a confiança de oferecer um seguro de responsabilidade civil no valor de ' ([0-9]+ | '[valor do seguro]') ' para o show. Os dados detalhados do show são apresentados em anexo.'
+                 | 'With the application of AI-Test, a Shodrone exclusive, we are confident in offering liability insurance in the amount of ' ([0-9]+ | '[insurance amount]') ' for the show. Detailed show data is presented in the attachment.';
 SHOW_DATE_FORMAT: ('Date - ' | 'Data - ') (DATE | '[date of the event]');
 FIGURE_ITEM: ([1-9][0-9]?' - 'WORD) | ('[position in show] - [figure name]');
 LINK

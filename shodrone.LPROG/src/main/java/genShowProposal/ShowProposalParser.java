@@ -1,4 +1,4 @@
-// Generated from C:/ISEP-PROJETOS/LAPR4/shodrone.LPROG/src/main/java/antlr/ShowProposal.g4 by ANTLR 4.13.2
+// Generated from C:/ISEP-PROJETOS/lapr4_projeto/shodrone.LPROG/src/main/java/antlr/ShowProposal.g4 by ANTLR 4.13.2
 package genShowProposal;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -146,6 +146,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_proposal; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterProposal(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitProposal(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitProposal(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ProposalContext proposal() throws RecognitionException {
@@ -218,6 +231,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_header; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterHeader(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitHeader(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitHeader(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final HeaderContext header() throws RecognitionException {
@@ -251,6 +277,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_greeting; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterGreeting(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitGreeting(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitGreeting(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GreetingContext greeting() throws RecognitionException {
@@ -305,6 +344,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_companyInfo; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterCompanyInfo(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitCompanyInfo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitCompanyInfo(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CompanyInfoContext companyInfo() throws RecognitionException {
@@ -358,6 +410,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_personName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterPersonName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitPersonName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitPersonName(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PersonNameContext personName() throws RecognitionException {
@@ -397,6 +462,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_company; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterCompany(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitCompany(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitCompany(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CompanyContext company() throws RecognitionException {
@@ -457,6 +535,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_address; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterAddress(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitAddress(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitAddress(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AddressContext address() throws RecognitionException {
@@ -496,6 +587,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_vatNumber; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterVatNumber(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitVatNumber(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitVatNumber(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VatNumberContext vatNumber() throws RecognitionException {
@@ -539,6 +643,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_reference; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterReference(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitReference(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitReference(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ReferenceContext reference() throws RecognitionException {
@@ -572,6 +689,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_titleProposal; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterTitleProposal(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitTitleProposal(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitTitleProposal(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TitleProposalContext titleProposal() throws RecognitionException {
@@ -623,6 +753,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_body; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterBody(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitBody(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitBody(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BodyContext body() throws RecognitionException {
@@ -661,6 +804,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_line_1; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterLine_1(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitLine_1(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitLine_1(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Line_1Context line_1() throws RecognitionException {
@@ -691,6 +847,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_line_2; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterLine_2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitLine_2(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitLine_2(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Line_2Context line_2() throws RecognitionException {
@@ -721,6 +890,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_line_3; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterLine_3(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitLine_3(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitLine_3(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Line_3Context line_3() throws RecognitionException {
@@ -751,6 +933,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_closing; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterClosing(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitClosing(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitClosing(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ClosingContext closing() throws RecognitionException {
@@ -793,6 +988,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_signature; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterSignature(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitSignature(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitSignature(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SignatureContext signature() throws RecognitionException {
@@ -849,6 +1057,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_signature_option; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterSignature_option(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitSignature_option(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitSignature_option(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Signature_optionContext signature_option() throws RecognitionException {
@@ -906,6 +1127,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_preferencePhrase; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterPreferencePhrase(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitPreferencePhrase(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitPreferencePhrase(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PreferencePhraseContext preferencePhrase() throws RecognitionException {
@@ -944,6 +1178,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_subscribePhrase; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterSubscribePhrase(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitSubscribePhrase(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitSubscribePhrase(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SubscribePhraseContext subscribePhrase() throws RecognitionException {
@@ -982,6 +1229,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_lastPhrase; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterLastPhrase(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitLastPhrase(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitLastPhrase(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LastPhraseContext lastPhrase() throws RecognitionException {
@@ -1011,6 +1271,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_regards; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterRegards(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitRegards(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitRegards(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final RegardsContext regards() throws RecognitionException {
@@ -1072,6 +1345,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_showDetails; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterShowDetails(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitShowDetails(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitShowDetails(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ShowDetailsContext showDetails() throws RecognitionException {
@@ -1132,6 +1418,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_location; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterLocation(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitLocation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitLocation(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LocationContext location() throws RecognitionException {
@@ -1162,6 +1461,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_date; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterDate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitDate(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitDate(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DateContext date() throws RecognitionException {
@@ -1192,6 +1504,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_time; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterTime(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitTime(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitTime(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TimeContext time() throws RecognitionException {
@@ -1222,6 +1547,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_duration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterDuration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitDuration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitDuration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DurationContext duration() throws RecognitionException {
@@ -1259,6 +1597,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_droneList; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterDroneList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitDroneList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitDroneList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DroneListContext droneList() throws RecognitionException {
@@ -1328,6 +1679,19 @@ public class ShowProposalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_figureList; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).enterFigureList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalListener ) ((ShowProposalListener)listener).exitFigureList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalVisitor ) return ((ShowProposalVisitor<? extends T>)visitor).visitFigureList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final FigureListContext figureList() throws RecognitionException {
