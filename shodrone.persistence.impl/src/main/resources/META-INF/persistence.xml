@@ -12,11 +12,12 @@
     <class>eapli.framework.infrastructure.authz.domain.model.RoleAssignment</class>
     <class>eapli.base.droneModelManagement.domain.DroneModel</class>
     <class>eapli.base.droneManagement.domain.Drone</class>
+    <class>eapli.base.droneModelManagement.domain.DroneWindBehavior</class>
+    <class>eapli.base.droneModelManagement.domain.WindInterval</class>
     <class>eapli.base.figureCategoryManagement.domain.FigureCategory</class>
     <class>eapli.base.figureManagement.domain.Figure</class>
     <class>eapli.base.showRequestManagement.domain.ShowRequest</class>
     <class>eapli.base.showRequestManagement.domain.RequestedFigures</class>
-    <class>eapli.base.droneModelManagement.domain.DroneWindBehavior</class>
     <class>eapli.base.customerManagement.domain.Customer</class>
     <class>eapli.base.representativeManagement.domain.Representative</class>
 

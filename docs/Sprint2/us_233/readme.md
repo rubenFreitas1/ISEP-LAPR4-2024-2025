@@ -50,9 +50,81 @@ If a figure is custom-made to a customer’s request it is not public and can on
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Pure Fabrication
+- Indirection
 
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies the creation of a figure with valid data*
+
+```
+    @Test
+    void constructor_createsActiveFigure() {
+        Figure figure = new Figure("A dragon figure", keywords, category, true, customer, user);
+        assertEquals("A dragon figure", figure.description());
+        assertEquals(category, figure.figureCategory());
+        assertEquals(customer, figure.customer());
+        assertTrue(figure.isActive());
+        assertTrue(figure.keywords().contains("dragon"));
+    }
+````
+
+**Test 2:** *Verifies handling of null values in the constructor*
+
+````
+    @Test
+    void constructor_allowsNullCustomer() {
+        Figure figure = new Figure("Figure without customer", keywords, category, false, null, user);
+        assertNull(figure.customer());
+    }
+
+    @Test
+    void constructor_nullKeywords_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Figure("Invalid figure", null, category, false, null, user);
+        });
+    }
+
+    @Test
+    void constructor_nullCreatedBy_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Figure("Invalid figure", keywords, category, false, null, null);
+        });
+    }
+    
+    @Test
+    void constructor_nullCategory_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Figure("Invalid figure", keywords, null, false, null, user);
+        });
+    }
+````
+
+**Test 3:** *Verifies creation and registration of a new figure via the management service*
+
+````
+    @Test
+    public void registerNewFigure_success() {
+        when(repo.save(any(Figure.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Figure result = service.registerNewFigure(
+                "Triângulo equilátero",
+                Set.of("triângulo", "ângulo", "figura"),
+                category,
+                false,
+                null,
+                systemUser
+        );
+
+        assertEquals("Triângulo equilátero", result.description());
+        verify(repo).save(any(Figure.class));
+    }
+````
 
 ## 5. Implementation
 

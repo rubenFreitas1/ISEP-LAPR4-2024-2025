@@ -60,8 +60,101 @@ Quando for desativado, a data em que isso acontece também é importante.
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Pure Fabrication
+- Indirection
+
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that the constructor creates a drone with valid data*
+
+```
+    @Test
+    void constructor_validData_shouldCreateDrone() {
+        Drone drone = new Drone("DRONE1101", droneModel, now, user);
+
+        assertEquals("DRONE1101", drone.serialNumber());
+        assertEquals(droneModel, drone.droneModel());
+        assertEquals(user, drone.createdBy());
+        assertEquals(now, drone.acquisitionDate());
+        assertTrue(drone.isActive());
+    }
+````
+
+**Test 2:** *Verifies that the constructor throws exceptions when any required parameter is null*
+
+````
+    @Test
+    void constructor_nullSerialNumber_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new Drone(null, droneModel, now, user));
+    }
+
+    @Test
+    void constructor_nullDroneModel_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new Drone("dr123132", null, now, user));
+    }
+
+    @Test
+    void constructor_nullAcquisitionDate_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new Drone("dr123132", droneModel, null, user));
+    }
+
+    @Test
+    void constructor_nullSystemUser_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new Drone("dr123132", droneModel, now, null));
+    }
+````
+
+**Test 3:** *Verifies successful registration of a new drone when the serial number is not already used*
+
+````
+    @Test
+    public void registerNewDrone_success() {
+        String serialNumber = "DRONE10001";
+
+        when(repo.isSerialNameUsed(serialNumber)).thenReturn(false);
+        when(repo.save(any(Drone.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        Drone drone = service.registerNewDrone(serialNumber, droneModel, user);
+
+        Assertions.assertEquals(serialNumber, drone.serialNumber());
+        verify(repo).save(any(Drone.class));
+    }
+````
+
+**Test 4:** *Verifies that registering a drone with a duplicate serial number throws an exception*
+
+````
+    @Test
+    void registerNewDrone_duplicateSerialNumber_throwsException() {
+        String serialNumber = "DRONE10001";
+        when(repo.isSerialNameUsed(serialNumber)).thenReturn(true);
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDrone(serialNumber, droneModel, user)
+        );
+    }
+````
+
+**Test 5:** *Verifies the service correctly identifies whether a serial number is already used or not*
+
+````
+    @Test
+    void isSerialNumberUsed_trueAndFalse() {
+        String usedSerial = "USED123";
+        String unusedSerial = "NEW123";
+
+        when(repo.isSerialNameUsed(usedSerial)).thenReturn(true);
+        when(repo.isSerialNameUsed(unusedSerial)).thenReturn(false);
+
+        assertTrue(service.isSerialNumberUsed(usedSerial));
+        assertFalse(service.isSerialNumberUsed(unusedSerial));
+    }
+````
+
 
 ## 5. Implementation
 

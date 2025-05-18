@@ -15,13 +15,16 @@ public class DroneWindBehavior implements DomainEntity<Long> {
     private Long droneWindBehaviorId;
 
     @ElementCollection
+    @CollectionTable(name = "DRONEWINDBEHAVIOR_XWINDTOLERANCES", joinColumns = @JoinColumn(name = "droneWindBehaviorId"))
     private List<WindInterval> xWindTolerances = new ArrayList<>();
 
     @ElementCollection
-    private List<WindInterval> yWindTolerances= new ArrayList<>();
+    @CollectionTable(name = "DRONEWINDBEHAVIOR_YWINDTOLERANCES", joinColumns = @JoinColumn(name = "droneWindBehaviorId"))
+    private List<WindInterval> yWindTolerances = new ArrayList<>();
 
     @ElementCollection
-    private List<WindInterval> zWindTolerances= new ArrayList<>();
+    @CollectionTable(name = "DRONEWINDBEHAVIOR_ZWINDTOLERANCES", joinColumns = @JoinColumn(name = "droneWindBehaviorId"))
+    private List<WindInterval> zWindTolerances = new ArrayList<>();
 
 
 

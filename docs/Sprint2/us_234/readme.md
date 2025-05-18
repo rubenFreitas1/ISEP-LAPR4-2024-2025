@@ -47,10 +47,60 @@ ensuring it is no longer available for future use.
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Pure Fabrication
+- Indirection
 
+### 4.4. Acceptance Tests
 
+**Test 1:** *Verifies that deactivating a figure sets it as inactive and stores the date*
+
+```
+    @Test
+    void deactivate_setsInactiveAndStoresDate() {
+        Figure figure = new Figure("Alien sculpture", keywords, category, false, null, user);
+        Calendar today = Calendar.getInstance();
+
+        figure.deactivate(today);
+
+        assertFalse(figure.isActive());
+        assertEquals(today, figure.deactivatedOn());
+    }
+````
+
+**Test 2:** *Verifies that deactivating an already inactive figure throws an exception*
+
+````
+    @Test
+    void deactivate_alreadyInactive_throwsException() {
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
+        Calendar today = Calendar.getInstance();
+        figure.deactivate(today);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> figure.deactivate(today));
+
+        assertEquals("Cannot deactivate an inactive Drone!", exception.getMessage());
+    }
+````
+
+**Test 3:** *Verifies that the service deactivates the figure and persists it*
+
+````
+   @Test
+    public void decommissionFigure_setsInactive() {
+        when(repo.save(figure)).thenReturn(figure);
+
+        Figure result = service.decommissionFigure(figure);
+
+        assertFalse(result.isActive());
+        assertNotNull(result.deactivatedOn());
+        verify(repo).save(figure);
+    }
+````
 
 ## 5. Implementation
 

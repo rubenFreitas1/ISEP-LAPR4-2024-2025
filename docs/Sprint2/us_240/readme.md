@@ -77,9 +77,113 @@ se pesquisa por um modelo por exemplo, pesquisa-se pelo nome ou outra coisa?
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Creator
+- Controller
+- Low Coupling
+- High Cohesion
+- Pure Fabrication
+- Indirection
 
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that a valid DroneModel object is created with the correct properties*
+
+```
+    @Test
+    void constructor_validData_shouldCreateDroneModel() {
+        DroneModel model = new DroneModel("Falcon", "DJI", now, user, behavior);
+        assertEquals("Falcon", model.modelName());
+        assertEquals("DJI", model.manufacturer());
+        assertEquals(user, model.createdBy());
+        assertEquals(now, model.createdOn());
+        assertEquals(behavior, model.windBehavior());
+        assertTrue(model.isActive());
+    }
+````
+
+**Test 2:** *Verifies that the constructor throws an exception when required parameters are null*
+
+````
+    @Test
+    void constructor_nullModelName_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new DroneModel(null, "DJI", now, user, behavior));
+    }
+
+    @Test
+    void constructor_nullManufacturer_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new DroneModel("Falcon", null, now, user, behavior));
+    }
+
+    @Test
+    void constructor_nullBehavior_shouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> new DroneModel("Falcon", "DJI", now, user, null));
+    }
+````
+
+**Test 3:** *Verifies that a new drone model is successfully registered when the model name is not already used*
+
+````
+    @Test
+    public void registerNewDroneModel_success() {
+        String name = "Falcon";
+        String manufacturer = "DJI";
+
+
+
+        when(repo.isDroneModelNameUsed(name)).thenReturn(false);
+        when(repo.save(any(DroneModel.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        DroneModel model = service.registerNewDroneModel(name, manufacturer, user, behavior);
+
+        Assertions.assertEquals(name, model.modelName());
+        verify(repo).save(any(DroneModel.class));
+    }
+````
+
+**Test 4:** *Verifies that registering a drone model with a duplicate name throws an exception*
+
+````
+    @Test
+    void registerNewDroneModel_duplicateName_throwsException() {
+        String name = "Falcon";
+        when(repo.isDroneModelNameUsed(name)).thenReturn(true);
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDroneModel(name, "DJI", user, behavior)
+        );
+    }
+````
+
+**Test 5:** *Verifies that registering a drone model with null parameters throws exceptions*
+
+````
+    @Test
+    void registerNewDroneModel_null_modelName_throwsException() {
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDroneModel(null, "DJI", user, behavior)
+        );
+    }
+
+    @Test
+    void registerNewDroneModel_null_manufacturer_throwsException() {
+        String name = "Falcon";
+        when(repo.isDroneModelNameUsed(name)).thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDroneModel(name, null, user, behavior)
+        );
+    }
+
+    @Test
+    void registerNewDroneModel_null_user_throwsException() {
+        String name = "Falcon";
+        when(repo.isDroneModelNameUsed(name)).thenReturn(false);
+        assertThrows(IllegalArgumentException.class, () ->
+                service.registerNewDroneModel(name, "DJI", null, behavior)
+        );
+    }
+````
 
 ## 5. Implementation
 

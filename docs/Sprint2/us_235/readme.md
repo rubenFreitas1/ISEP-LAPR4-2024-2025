@@ -56,8 +56,30 @@ The show request status information should be provided.
 
 ### 4.3. Applied Patterns
 
-- Domain-Driven Design
-- Factory
+- Information Expert
+- Controller
+- Low Coupling
+- High Cohesion
+- Pure Fabrication
+- Indirection
+
+### 4.4. Acceptance Tests
+
+**Test 1:** *Verifies that findByCustomer returns the correct show requests for a given customer*
+
+```
+    @Test
+    void findByCustomer_returnsRequests() {
+        List<ShowRequest> expected = List.of(showRequest);
+        when(showRequestRepository.findByCustomer(customer)).thenReturn(expected);
+
+        Iterable<ShowRequest> result = service.findByCustomer(customer);
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(showRequestRepository).findByCustomer(customer);
+    }
+````
 
 
 ## 5. Implementation
