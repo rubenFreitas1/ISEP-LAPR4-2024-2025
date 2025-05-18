@@ -13,7 +13,7 @@ public class DroneShowDSL {
         DroneShowDSLLexer lexer = new DroneShowDSLLexer(CharStreams.fromFileName("filesLPROG/sample_DSL_figure_3.txt"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DroneShowDSLParser parser = new DroneShowDSLParser(tokens);
-        ParseTree tree = parser.program();
+        ParseTree tree = parser.start();
         System.out.println(tree.toStringTree(parser));
         System.out.println("Done!");
     }
