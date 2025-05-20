@@ -21,6 +21,6 @@
 
 * Still no questions related to this user story on forum.
 
-## 6. Integration/Demonstration
+## 3. Integration/Demonstration
 
 
