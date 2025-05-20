@@ -1,30 +1,32 @@
 
-# US 220
+# US 312 - Add figures to a proposal
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
-
+* As a CRM Collaborator, I want to add one of the active figures to a show proposal making sure that te same figure cannot be repeated back to back in the proposal.
+I also want to make sure that the figure is compatible with the drone models in the show.
+ 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 312** - As a CRM Collaborator, I want to add one of the available figures to a show proposal.
+
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
-
+- US312.1 Any active figure can be added to the show proposal. A figure may have more than one occurrence in a show, but never in two consecutive positions.
+- US312.2 For each figure, it must be established the relation between each drone type in the figure and the drone models in the show.
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US310, creates a proposal, US245 creates a figure category and US233 adds a figure to the catalogue*
 
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/System_Sequence_Diagram_US312.svg)
 
 ## 4. Design
 

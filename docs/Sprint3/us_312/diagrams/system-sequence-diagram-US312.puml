@@ -1,0 +1,31 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US312
+
+== Add figures to a proposal ==
+activate crmCollaborator
+
+crmCollaborator -> system : Selects proposal to edit
+activate system
+system --> crmCollaborator : Returns list of proposals
+deactivate system
+crmCollaborator -> system : Wants to add a figure to a proposal
+activate system
+
+system --> crmCollaborator :Shows list of active figures
+deactivate system
+crmCollaborator -> system : Selects figure/s to add
+
+activate system
+system --> crmCollaborator : Confirm Customer Added figure/s
+deactivate system
+
+
+
+@enduml
