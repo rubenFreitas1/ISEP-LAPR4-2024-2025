@@ -1,0 +1,45 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US311
+
+== Add drones to a proposal ==
+activate crmCollaborator
+
+crmCollaborator -> system : Wants to configure the list of drone models of a show proposal
+activate system
+
+system -> crmCollaborator : Show list of show proposals
+deactivate system
+crmCollaborator -> system : Choose show proposal
+
+activate system
+
+loop While user wants to add drone Models
+
+system -> crmCollaborator : Show list of drone models
+deactivate system
+
+crmCollaborator -> system : Choose drone models
+activate system
+
+alt User wants to add a new drone Model
+            system -> crmCollaborator : Request number of drones
+
+deactivate system
+
+crmCollaborator -> system : Provide number of drones
+         else User does not want to add a drone Model
+activate system
+end
+end
+system -> crmCollaborator : Confirm if operation was successful
+
+
+
+@enduml

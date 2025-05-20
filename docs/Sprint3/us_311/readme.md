@@ -1,36 +1,42 @@
-
-# US 220
+# US 311 - Add drones to a proposal
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*This user story focuses on enabling CRM collaborators to configure the drone list for a proposal, ensuring that only valid models (i.e., those that exist in Shodrone's inventory)
+can be selected. At this stage, there is no requirement to verify whether drones are already allocated to another show on the same date.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US311** As a CRM Collaborator, I want to configure the list of drone models (number of drones and model) of
+a show proposal.
+The drones in the proposal must be compatible with the drones in the Shodrone’s inventory. There is
+no need to verify if these drones are used in another show on the same date.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US311.1 The drone models in the proposal must be compatible with the drones in the Shodrone’s inventory.
+- US311.2 The system does not need to validate the availability of drones for a specific date.
+- US311.3 The user must be able to add multiple drone models with corresponding quantities to a single proposal.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency on the US310, since this US creates a show proposal.*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
+
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US311.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US311.svg)
+
 ### 4.3. Applied Patterns
 
 - Information Expert
