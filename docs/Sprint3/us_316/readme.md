@@ -18,7 +18,11 @@
 **Dependencies/References:**
 
 *There is a dependency with US310, US311, US312 and US315 as the show proposal needs to have all information needed to send it to the customer.*
+
+
 *There is a dependency with US347,  as the show proposal needs to be generated and so it need to have a specific structure.*
+
+
 *There is a dependency with US255,  as it needs to be generated and interpreted correctly.*
 
 **Forum Insight:**
