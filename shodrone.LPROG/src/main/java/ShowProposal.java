@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ShowProposal {
     public static void main(String[] args) throws IOException {
         System.out.println(System.getProperty("user.dir"));
-        ShowProposalLexer lexer = new ShowProposalLexer(CharStreams.fromFileName("filesLPROG/show_proposal02.txt"));
+        ShowProposalLexer lexer = new ShowProposalLexer(CharStreams.fromFileName("filesLPROG/show_proposal01.txt"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ShowProposalParser parser = new ShowProposalParser(tokens);
         ParseTree tree = parser.proposal();

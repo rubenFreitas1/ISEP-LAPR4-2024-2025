@@ -48,8 +48,8 @@ public class ShowProposalParser extends Parser {
 			"'[CRM Manager Name]'", "'[Company name]'", "'['", "'Company'", "' '", 
 			"'Name'", "']'", "'[Address with postal code and country]'", "'[VAT Number]'", 
 			"'Show Proposal'", "'Proposta de Show'", "'CRM Manager'", "'Being certain that we will be the target of your preference.'", 
-			"'Estando certos que seremos alvo da V/ prefer\\u00C3\\u00AAncia.'", 
-			"'We subscribe at your disposal.'", "'Subscrevemo-nos ao dispor.'", "'Looking forward to hearing from you soon.'", 
+			"'Estando certos que seremos alvo da V/ prefer\\u00EAncia.'", "'We subscribe at your disposal.'", 
+			"'Subscrevemo-nos ao dispor.'", "'Looking forward to hearing from you soon.'", 
 			"'Best regards,'", "'Melhores cumprimentos,'", "'#List of used drones'", 
 			"'#Lista de drones utilizados'", "'#Lista de figuras'", "'#List of figures'"
 		};
