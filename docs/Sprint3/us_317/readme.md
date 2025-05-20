@@ -1,36 +1,38 @@
-
-# US 220
+# US 317 - Mark show proposal as accepted
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*This user story addresses the need for CRM collaborators to explicitly record the acceptance by uploading the customer’s
+confirmation email, ensuring that approvals are documented and visible within the system.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US317** As CRM Collaborator, I want to mark the proposal as accepted by the customer by attaching the customer’s acceptance email.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US317.1 When marking a proposal as accepted, the system requires the user to upload the customer’s acceptance email
+- US317.2 Once marked as accepted, the proposal status is updated to "Accepted".
+- US317.3 The system prevents marking a proposal as "Accepted" without attaching an acceptance email.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency on the US310, since this US creates a show proposal.*
+*There is a dependency on the US371, since this US is the response from the customer to the proposal.*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US317.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US317.svg)
 ### 4.3. Applied Patterns
 
 - Information Expert

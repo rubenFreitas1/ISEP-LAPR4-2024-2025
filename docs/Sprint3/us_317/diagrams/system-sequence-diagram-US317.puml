@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US317
+
+== Mark show proposal as accepted ==
+activate crmCollaborator
+
+crmCollaborator -> system : Wants to mark show proposal as accepted
+activate system
+
+system -> crmCollaborator : Displays the accepted\n responses received from customers
+deactivate system
+crmCollaborator -> system : Selects the accepted response
+
+activate system
+system -> system: Mark show proposal\n associated to the\n response as accepted
+system -> crmCollaborator : Confirm Show Proposal was accepted
+deactivate system
+
+
+
+@enduml
