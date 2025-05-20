@@ -7,7 +7,7 @@
 
 ## 2. Requirements
 
-**US316** As CRM Collaborator, I want to send the show proposal to the customer.
+**US 316** As CRM Collaborator, I want to send the show proposal to the customer.
 
 **Acceptance Criteria:**
 

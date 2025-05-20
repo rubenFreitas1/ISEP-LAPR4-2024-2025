@@ -6,7 +6,7 @@
 *As a PO, I want the simulation system collision detection thread to notify the report generation thread through condition variables when a collision occurs, so that the report is updated in real time with accurate collision information.*
 ## 2. Requirements
 
-**US G363** As CRM, I Want to register a customer.
+**US 363** As CRM, I Want to register a customer.
 
 **Acceptance Criteria:**
 

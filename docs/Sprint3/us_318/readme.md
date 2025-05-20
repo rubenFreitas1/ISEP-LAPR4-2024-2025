@@ -6,7 +6,7 @@
 *As CRM Manager, I want to be able to configure the template that formats the document to be sent to the customer. The plugin used to validate the proposal template must be previously registered in the system.*
 ## 2. Requirements
 
-**US G318** As CRM Manager, I want to be able to configure the template that formats the document to be sent to the customer.
+**US 318** As CRM Manager, I want to be able to configure the template that formats the document to be sent to the customer.
 
 **Acceptance Criteria:**
 

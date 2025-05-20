@@ -7,7 +7,7 @@
 
 ## 2. Requirements
 
-**US G321** As a Drone Tech, I want to add a maintenance type.
+**US 321** As a Drone Tech, I want to add a maintenance type.
 
 **Acceptance Criteria:**
 
