@@ -1,22 +1,25 @@
 
-# US 220
+# US 316
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*As CRM Collaborator, I want to send the show proposal to the customer.The proposal to be sent is a properly formatted document with the show details and a link to the video preview. The format of the proposal must be one supported by the system and has to be generated using the correct plugin.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US316** As CRM Collaborator, I want to send the show proposal to the customer.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US316.1 The proposal to be sent is a properly formatted document with the show details and a link to the video preview.
+
+- US316.2 The format of the proposal must be one supported by the system and has to be generated using the correct plugin.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US310, US311, US312 and US315 as the show proposal needs to have all information needed to send it to the customer.*
+*There is a dependency with US347,  as the show proposal needs to be generated and so it need to have a specific structure.*
+*There is a dependency with US255,  as it needs to be generated and interpreted correctly.*
 
 **Forum Insight:**
 
@@ -24,7 +27,7 @@
 * 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US316.svg)
 
 ## 4. Design
 

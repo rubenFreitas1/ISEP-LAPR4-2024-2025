@@ -1,0 +1,32 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US316
+
+== Send Show Proposal ==
+activate crmCollaborator
+
+crmCollaborator -> system : Send Show Proposal
+activate system
+
+system -> system : Gets all complete proposals
+
+system -> crmCollaborator : List of Complete Proposals
+deactivate system
+crmCollaborator -> system : Provide proposal
+
+activate system
+
+system -> system : Sends proposal\n to the customer assigned
+
+system -> crmCollaborator : Confirm proposal sent
+deactivate system
+
+
+
+@enduml
