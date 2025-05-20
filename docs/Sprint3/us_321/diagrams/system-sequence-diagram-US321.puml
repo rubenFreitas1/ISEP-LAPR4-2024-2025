@@ -1,0 +1,30 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US321
+
+== Add a maintenance type ==
+activate droneTech
+
+droneTech -> system : Add maintenance type
+activate system
+
+system -> droneTech : Request maintenance type data(name, interval)
+deactivate system
+droneTech -> system : Provide maintenance type data
+
+activate system
+
+system -> system : Create maintenance type
+
+system -> droneTech : Confirm maintenance type creation
+deactivate system
+
+
+
+@enduml

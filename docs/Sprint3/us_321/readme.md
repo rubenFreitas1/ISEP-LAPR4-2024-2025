@@ -1,21 +1,21 @@
 
-# US 220
+# US 321
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*As a Drone Tech, I want to add a maintenance type.The maintenance types apply to all drone models.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US G321** As a Drone Tech, I want to add a maintenance type.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US321.1 The maintenance types apply to all drone models.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US240, as drone models need to exist to apply maintenance.*
 
 
 **Forum Insight:**
@@ -24,7 +24,7 @@
 * 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US321.svg)
 
 ## 4. Design
 
