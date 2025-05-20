@@ -1,21 +1,20 @@
 
-# US 220
+# US 318
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
-
+*As CRM Manager, I want to be able to configure the template that formats the document to be sent to the customer. The plugin used to validate the proposal template must be previously registered in the system.*
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US G318** As CRM Manager, I want to be able to configure the template that formats the document to be sent to the customer.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US318.1 The plugin used to validate the proposal template must be previously registered in the system.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US255,  as it needs to be implemented in order to verify possible proposals.*
 
 
 **Forum Insight:**
@@ -24,7 +23,7 @@
 * 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US318.svg)
 
 ## 4. Design
 

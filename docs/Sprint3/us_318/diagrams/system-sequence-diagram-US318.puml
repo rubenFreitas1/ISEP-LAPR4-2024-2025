@@ -1,0 +1,32 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Manager" as crmManager
+participant "System" as system
+
+title System Sequence Diagram - US318
+
+== Configure a Show Proposal ==
+activate crmManager
+
+crmManager -> system : Configure a Show Proposal
+activate system
+
+system ->system: Get all the show proposal templates
+
+system -> crmManager : Request Show Proposal Template
+deactivate system
+crmManager -> system : Provide Show Proposal Template
+
+activate system
+system -> crmManager : Request new configuration for the show proposal
+deactivate system
+crmManager -> system : Provide new configuration
+activate system
+system -> system : Update the show proposal template
+system -> crmManager : Confirm configuration updated
+deactivate system
+
+@enduml
