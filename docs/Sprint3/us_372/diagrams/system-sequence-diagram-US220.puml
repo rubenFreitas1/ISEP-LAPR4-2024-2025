@@ -1,0 +1,30 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US220
+
+== Register a customer ==
+activate crmCollaborator
+
+crmCollaborator -> system : Register a customer
+activate system
+
+system -> crmCollaborator : Request Customer Information ("Name, Email, Phone Number,\n VatNumber and Address")
+deactivate system
+crmCollaborator -> system : Provide Customer Information
+
+activate system
+
+system -> system : Create and associate a representative
+
+system -> crmCollaborator : Confirm Customer Added
+deactivate system
+
+
+
+@enduml
