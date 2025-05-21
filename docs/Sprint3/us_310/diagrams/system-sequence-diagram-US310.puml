@@ -26,23 +26,21 @@ activate crmCollaborator
     crmCollaborator -> system : selects a show request
     activate system
 
-        system -> crmCollaborator : displays the current attributes of the show request(location, date, time, duration, \ntotal number of drones) and asks the user if he wants to change the attribute(s)
+         system -> crmCollaborator : displays the current attributes of the show request(location, date, time, duration, \ntotal number of drones) and asks the user if he wants to change the attribute(s)
     deactivate system
 
+    crmCollaborator -> system : selects the attribute he wants to change or selects the option to don't change any attribute
     alt If the user wants to change the attributes displayed
-    crmCollaborator -> system : selects the attribute he wants to change and the data for that attribute
     activate system
 
-        system -> crmCollaborator : displays operation success
+         system -> crmCollaborator : request the data of the attribute
     deactivate system
 
-    else If the user doesn't want to change the attribute
-    crmCollaborator -> system : selects the option to don't change the attribute
+    crmCollaborator -> system : types requested data
     activate system
 
-        system -> crmCollaborator : displays operation success
+        end
+        system -> crmCollaborator :  displays operation success
     deactivate system
-    end
-deactivate system
 
 @enduml

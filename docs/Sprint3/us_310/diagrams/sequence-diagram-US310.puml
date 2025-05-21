@@ -1,93 +1,139 @@
 @startuml
-title Sequence Diagram
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
 
-actor "CRM Collaborator" as Actor
-participant "RegisterCustomerUI" as UI <<presentation>>
-participant "RegisterCustomerController" as Controller <<application>>
+actor "CRM Collaborator" as crmCollaborator
+participant "RegisterShowProposalAction" as ACTION <<presentation>>
+participant "RegisterShowProposalUI" as UI <<presentation>>
+participant "RegisterShowProposalController" as CTRL <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
-participant "Customer" as Customer <<domain>>
-participant "Representative" as Representative <<domain>>
+participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
+participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "ShowProposal" as ShowProposal <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
-participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
+participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
 database "Database" as Database
 
-activate Actor
+title Sequence Diagram - US230
 
-Actor -> UI: show()
-    activate UI
+ activate crmCollaborator
 
-UI -> Controller** : create()
+     crmCollaborator -> ACTION : Asks to start creating a show proposal
+     activate ACTION
 
-UI --> Actor: Request Customer Information (Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-deactivate UI
+        ACTION -> UI** : create
+        ACTION -> UI : show()
+        deactivate ACTION
 
-Actor -> UI: Insert Customer data
+        activate UI
 
+        UI -> CTRL**: create
+        UI -> CTRL : listCustomers()
+        activate CTRL
 
-    activate UI
+            CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
+            CTRL -> CustomerManagementService : findAllActiveCustomers()
+            activate CustomerManagementService
 
-        UI -> Controller : registerCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-            activate Controller
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+                    CustomerRepository -> Database : findByActive(true)
+                    activate Database
 
-                deactivate AuthorizationService
+                        Database -> CustomerRepository : listOfActiveClients
+                    deactivate Database
 
-                Controller -> CustomerManagementService : registerNewCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address)
-                activate CustomerManagementService
+                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                deactivate CustomerRepository
 
+                CustomerManagementService -> CTRL : listOfActiveClients
+            deactivate CustomerManagementService
 
-                    CustomerManagementService -> Customer : create()
-                    activate Customer
+            CTRL -> UI : listOfActiveClients
+        deactivate CTRL
+        UI -> crmCollaborator : displays the list of customers
+     deactivate UI
 
+     crmCollaborator -> UI : selects the customer
+     activate UI
 
-                    Customer -> CustomerManagementService : newCustomer
+        UI -> CTRL : listShowRequests(customer)
+        activate CTRL
 
-                    deactivate Customer
+            CTRL -> ShowRequestManagementService : findAllCustomerShowRequests(customer)
+            activate ShowRequestManagementService
 
+                ShowRequestManagementService -> ShowRequestRepository : findByCustomer(customer)
+                activate ShowRequestRepository
 
-                    CustomerManagementService -> CustomerRepository : save(newCustomer)
+                    ShowRequestRepository -> Database : findByCustomer(customer)
+                    activate Database
 
-                    activate CustomerRepository
+                        Database -> ShowRequestRepository : listOfShowRequests
+                    deactivate Database
 
-                             CustomerRepository -> Database : save()
-                             activate Database
+                    ShowRequestRepository -> ShowRequestManagementService : listOfShowRequests
+                deactivate ShowRequestRepository
 
-                                Database --> CustomerRepository
-                             deactivate Database
+                ShowRequestManagementService -> CTRL : listOfShowRequests
+            deactivate ShowRequestManagementService
 
-                             CustomerRepository --> CustomerManagementService
-                    deactivate CustomerRepository
+            CTRL -> UI : listOfShowRequests
+        deactivate CTRL
 
-                    CustomerManagementService --> Controller
-                deactivate CustomerManagementService
+        UI -> crmCollaborator : Displays the list of show request associated to the customer
+     deactivate UI
 
-                Controller -> RepresentativeManagementService : registerNewRepresentative(representativeName, representativeEmail,\n createdOn, representativePassword, representativePhoneNumber,\n associatedCustomer, representativePosition)
-                activate RepresentativeManagementService
+     crmCollaborator -> UI : selects a show request
+     activate UI
 
-                RepresentativeManagementService ->Representative:create()
-                activate Representative
-                Representative -> RepresentativeManagementService : newRepresentative
-                deactivate Representative
+         UI -> crmCollaborator : displays the current attributes of the show request(location, date, time, duration, \ntotal number of drones) and asks the user if he wants to change the attribute(s)
+     deactivate UI
 
-                RepresentativeManagementService -> RepresentativeRepository :save(newRepresentative)
-                activate RepresentativeRepository
-                RepresentativeRepository ->Database :save()
-                activate Database
-                Database --> RepresentativeRepository
-                deactivate Database
-                RepresentativeRepository -->RepresentativeManagementService
-                deactivate RepresentativeRepository
-                RepresentativeManagementService --> Controller
-                deactivate RepresentativeManagementService
+     crmCollaborator -> UI : selects the attribute he wants to change or selects the option to don't change any attribute
+     alt If the user wants to change the attributes displayed
+     activate UI
 
+        UI -> crmCollaborator : request the data of the attribute
+     deactivate UI
 
-                Controller --> UI
-            deactivate Controller
-        UI --> Actor : Inform operation success
-        deactivate UI
-deactivate Actor
+     crmCollaborator -> UI : types requested data
+     activate UI
 
-@enduml
+        end
+        UI -> CTRL : registerShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+        activate CTRL
+
+            CTRL -> ShowProposalManagementService : registerShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+            activate ShowProposalManagementService
+
+                ShowProposalManagementService -> ShowProposal : new ShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+                activate ShowProposal
+
+                    ShowProposal -> ShowProposalManagementService : new ShowProposal
+                deactivate ShowProposal
+
+                ShowProposalManagementService -> ShowProposalRepository : save(showProposal)
+                activate ShowProposalRepository
+
+                    ShowProposalRepository -> Database : save()
+                    activate Database
+
+                        Database --> ShowProposalRepository :
+                    deactivate Database
+
+                    ShowProposalRepository --> ShowProposalManagementService :
+                deactivate ShowProposalRepository
+                ShowProposalManagementService --> CTRL :
+            deactivate ShowProposalManagementService
+
+            CTRL --> UI :
+        deactivate CTRL
+
+        UI -> crmCollaborator :  displays operation success
+     deactivate UI
+ @enduml
