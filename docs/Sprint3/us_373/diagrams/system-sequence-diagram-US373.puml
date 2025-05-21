@@ -1,0 +1,28 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Customer" as customer
+participant "System" as system
+
+title System Sequence Diagram - US373
+
+== Get Show Info ==
+activate customer
+
+    customer -> system : asks to get the details of a show
+    activate system
+
+        system -> customer : displays all the customer shows
+    deactivate system
+
+    customer -> system : selects a show
+    activate system
+
+    system -> customer : displays the details of the selected show
+    deactivate system
+
+
+
+@enduml

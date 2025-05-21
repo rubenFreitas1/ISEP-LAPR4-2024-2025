@@ -2,7 +2,9 @@
 
 ## 1. Context
 
-
+* After the show proposal has been created, the CRMCollaborator should enhance the proposal by adding a video of the simulated show.
+* This video serves as a visual preview to help the customer understand how the actual drone show will look. Even though the actual video generation is out of scope for this project (LAPR4), a video file must still be attached to the proposal using an existing or mock video. This functionality improves customer communication and increases the chances of proposal approval.
+* To complete this task, a valid show proposal must already exist, and the CRM Collaborator must have access to the proposal and the ability to associate it with a video file.
 
 ## 2. Requirements
 

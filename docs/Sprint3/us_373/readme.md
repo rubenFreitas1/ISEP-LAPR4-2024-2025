@@ -1,36 +1,36 @@
-
-# US 220
+# US 373
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+* This functionality allows the Customer to access the system and retrieve detailed information about their shows, including the drone models used, figures performed, and overall duration of the show.
+* This user story ensures that the system provides a clear and accessible way for customers to track their show history and upcoming scheduled events, promoting transparency and improving customer experience.
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 373** As a Customer, I want to get the details of a show (scheduled or in the past), including the drone models, figures, duraƟon, etc.
+
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US373.1 The system must display all the show of the customer(the ones that are scheduled or in the past)
+- US373.2 The system should display details of the show including drone models, figures, duration, etc.
 
-**Dependencies/References:**
-
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is no dependencies attached to this US*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
+
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US373.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US373.svg)
 ### 4.3. Applied Patterns
 
 - Information Expert
