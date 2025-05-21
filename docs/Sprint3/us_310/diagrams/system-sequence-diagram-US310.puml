@@ -1,0 +1,48 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US310
+
+== Create Show Proposal ==
+activate crmCollaborator
+
+    crmCollaborator -> system : Asks to start creating a show proposal
+    activate system
+
+        system -> crmCollaborator : displays the list of customers
+    deactivate system
+
+    crmCollaborator -> system : selects the costumer
+    activate system
+
+        system -> crmCollaborator : Displays the list of show request associated to the customer
+    deactivate system
+
+    crmCollaborator -> system : selects a show request
+    activate system
+
+        system -> crmCollaborator : displays the current attributes of the show request(location, date, time, duration, \ntotal number of drones) and asks the user if he wants to change the attribute(s)
+    deactivate system
+
+    alt If the user wants to change the attributes displayed
+    crmCollaborator -> system : selects the attribute he wants to change and the data for that attribute
+    activate system
+
+        system -> crmCollaborator : displays operation success
+    deactivate system
+
+    else If the user doesn't want to change the attribute
+    crmCollaborator -> system : selects the option to don't change the attribute
+    activate system
+
+        system -> crmCollaborator : displays operation success
+    deactivate system
+    end
+deactivate system
+
+@enduml

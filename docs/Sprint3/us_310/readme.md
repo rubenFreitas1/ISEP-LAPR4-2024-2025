@@ -1,21 +1,26 @@
-
-# US 220
+# US 310
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+* Once a show request is created, the CRM Collaborator can initiate the process of creating a show proposal, which will be sent to the customer for approval. This proposal must include the total number of drones to be used and must follow a predefined template. At the current stage, all show figures are designed to use all available drones. A show proposal can only be created if there is no existing proposal for that request, and the show request must already be registered in the system. 
+* This user story focuses on enabling CRM Collaborators to start the creation of a show proposal, ensuring that the system supports the required validations and business rules to proceed with customer engagement
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 310** As CRM Collaborator I want to start the process for creating a show proposal so that we can reply to the customer
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US310.1 The show proposal includes the total number of drones to be used in the show.
+- US310.2 Currently, all figures in a show must use all drones.
+- US310.3 The show proposal must follow a predefined template.
+- US310.4 The user cannot select a show request already with a proposal
+
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US220, because to select a show request it needs to have a user registered.* \
+*There is a dependency with US230, to make a show proposal it needs to have a show request already registered.*
 
 
 **Forum Insight:**
@@ -24,13 +29,13 @@
 * 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US310.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US310.svg)
 ### 4.3. Applied Patterns
 
 - Information Expert
