@@ -1,22 +1,21 @@
-
-# US 220
+# US 315
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 315** As CRM Collaborator, I want to add a video(In the scope of LAPR4, the team does not need to actually generate the video and can use any suitable video file.) of the simulated show so the customer can have a preview of the show.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US315.1 The user must input a video file
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US220, because to select a show request it needs to have a user registered.* \
+*There is a dependency with US310, because to add a video of a simulation the show proposal must already be registered*
 
 **Forum Insight:**
 
@@ -24,13 +23,13 @@
 * 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/system-sequence-diagram-US315.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US315.svg)
 ### 4.3. Applied Patterns
 
 - Information Expert

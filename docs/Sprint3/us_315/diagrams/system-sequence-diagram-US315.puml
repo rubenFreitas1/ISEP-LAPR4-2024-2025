@@ -1,0 +1,38 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "CRM Collaborator" as crmCollaborator
+participant "System" as system
+
+title System Sequence Diagram - US315
+
+== Add video of simulation to the proposal ==
+activate crmCollaborator
+
+    crmCollaborator -> system : Asks to add a video of simulation to a show proposal
+    activate system
+
+        system -> crmCollaborator : displays list of customers
+    deactivate system
+
+    crmCollaborator -> system : selects a customer
+    activate system
+
+        system -> crmCollaborator : displays the list of show proposal of the customer
+    deactivate system
+
+    crmCollaborator -> system : selects a show proposal
+    activate system
+
+        system -> crmCollaborator : request a video file of the simulation
+    deactivate system
+
+    crmCollaborator -> system : gives video file
+    activate system
+
+        system -> crmCollaborator : displays operation success
+    deactivate system
+
+@enduml
