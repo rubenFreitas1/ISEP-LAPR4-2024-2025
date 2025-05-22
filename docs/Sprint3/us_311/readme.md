@@ -40,7 +40,6 @@ no need to verify if these drones are used in another show on the same date.
 ### 4.3. Applied Patterns
 
 - Information Expert
-- Creator
 - Controller
 - Low Coupling
 - High Cohesion

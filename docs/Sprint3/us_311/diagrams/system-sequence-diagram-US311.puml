@@ -25,7 +25,7 @@ loop While user wants to add drone Models
 system -> crmCollaborator : Show list of drone models
 deactivate system
 
-crmCollaborator -> system : Choose drone models
+crmCollaborator -> system : Choose drone model
 activate system
 
 alt User wants to add a new drone Model

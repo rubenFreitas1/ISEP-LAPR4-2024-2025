@@ -2,92 +2,112 @@
 title Sequence Diagram
 
 actor "CRM Collaborator" as Actor
-participant "RegisterCustomerUI" as UI <<presentation>>
-participant "RegisterCustomerController" as Controller <<application>>
-participant "AuthorizationService" as AuthorizationService <<auth>>
-participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
-participant "Customer" as Customer <<domain>>
-participant "Representative" as Representative <<domain>>
-participant "CustomerRepository" as CustomerRepository <<repository>>
-participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+participant "AddDronesToProposalAction" as Action <<presentation>>
+participant "AddDronesToProposalUI" as UI <<presentation>>
+participant "AddDronesToProposalController" as Controller <<application>>
+participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "DroneModelManagementService" as DroneModelManagementService <<application>>
+participant "ShowProposal" as ShowProposal <<domain>>
+participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
+participant "DroneModelRepository" as DroneModelRepository <<repository>>
 database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action**: Wants to configure the list of\n drone models of a show proposal
+
+activate Action
+
+Action -> UI** : create
+Action -> UI: show()
+
+deactivate Action
     activate UI
 
-UI -> Controller** : create()
+UI -> Controller** : create
+UI -> Controller: getListShowProposals()
 
-UI --> Actor: Request Customer Information (Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
+    activate Controller
+
+        Controller -> ShowProposalManagementService: getListShowProposals()
+        activate ShowProposalManagementService
+
+        ShowProposalManagementService -> ShowProposalRepository: findAll()
+        activate ShowProposalRepository
+
+        ShowProposalRepository -> Database: findAll()
+        activate Database
+
+        Database --> ShowProposalRepository: List of Show Proposals
+        deactivate Database
+        ShowProposalRepository --> ShowProposalManagementService: List of Show Proposals
+        deactivate ShowProposalRepository
+        ShowProposalManagementService --> Controller: List of Show Proposals
+        deactivate ShowProposalManagementService
+        Controller --> UI: List of Show Proposals
+    deactivate Controller
+
+UI --> Actor: Show list of show proposals
 deactivate UI
 
-Actor -> UI: Insert Customer data
+Actor -> UI: Choose show proposal
 
 
     activate UI
 
-        UI -> Controller : registerCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-            activate Controller
+        UI -> Controller: getListDroneModels()
+        activate Controller
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+            Controller -> DroneModelManagementService: listActiveDroneModels()
+            activate DroneModelManagementService
 
-                deactivate AuthorizationService
+            DroneModelManagementService -> DroneModelRepository: findByActive(true)
+            activate DroneModelRepository
 
-                Controller -> CustomerManagementService : registerNewCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address)
-                activate CustomerManagementService
-
-
-                    CustomerManagementService -> Customer : create()
-                    activate Customer
-
-
-                    Customer -> CustomerManagementService : newCustomer
-
-                    deactivate Customer
-
-
-                    CustomerManagementService -> CustomerRepository : save(newCustomer)
-
-                    activate CustomerRepository
-
-                             CustomerRepository -> Database : save()
-                             activate Database
-
-                                Database --> CustomerRepository
-                             deactivate Database
-
-                             CustomerRepository --> CustomerManagementService
-                    deactivate CustomerRepository
-
-                    CustomerManagementService --> Controller
-                deactivate CustomerManagementService
-
-                Controller -> RepresentativeManagementService : registerNewRepresentative(representativeName, representativeEmail,\n createdOn, representativePassword, representativePhoneNumber,\n associatedCustomer, representativePosition)
-                activate RepresentativeManagementService
-
-                RepresentativeManagementService ->Representative:create()
-                activate Representative
-                Representative -> RepresentativeManagementService : newRepresentative
-                deactivate Representative
-
-                RepresentativeManagementService -> RepresentativeRepository :save(newRepresentative)
-                activate RepresentativeRepository
-                RepresentativeRepository ->Database :save()
+                DroneModelRepository -> Database: findByActive(true)
                 activate Database
-                Database --> RepresentativeRepository
+
+                Database --> DroneModelRepository: List of Active Drone Models
                 deactivate Database
-                RepresentativeRepository -->RepresentativeManagementService
-                deactivate RepresentativeRepository
-                RepresentativeManagementService --> Controller
-                deactivate RepresentativeManagementService
+                DroneModelRepository --> DroneModelManagementService: List of Active Drone Models
+            deactivate DroneModelRepository
+            DroneModelManagementService --> Controller: List of Active Drone Models
+            deactivate DroneModelManagementService
+        Controller --> UI: List of Active Drone Models
+        deactivate Controller
 
+    loop While user wants to add drone Models
 
-                Controller --> UI
-            deactivate Controller
-        UI --> Actor : Inform operation success
-        deactivate UI
+    UI --> Actor: Show list of drone models
+    deactivate UI
+
+    Actor -> UI: Choose drone model
+    activate UI
+
+    UI --> Actor: Request number of drones
+    deactivate UI
+
+    Actor -> UI: Provide number of drones
+    activate UI
+
+    UI -> Controller: addDroneModelToProposal(droneModel, quantity)
+    activate Controller
+
+        Controller -> ShowProposalManagementService: addDroneModelToProposal(droneModel, quantity)
+        activate ShowProposalManagementService
+
+        ShowProposalManagementService -> ShowProposal: updateListDroneModels(droneModel, quantity)
+        activate ShowProposal
+
+        ShowProposal --> ShowProposalManagementService
+        deactivate ShowProposal
+        ShowProposalManagementService --> Controller
+        deactivate ShowProposalManagementService
+    Controller --> UI
+    deactivate Controller
+    end
+    UI --> Actor: Confirm if operation was successful
+    deactivate UI
 deactivate Actor
 
 @enduml
