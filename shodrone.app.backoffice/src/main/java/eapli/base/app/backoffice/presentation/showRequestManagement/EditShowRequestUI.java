@@ -48,8 +48,8 @@ public class EditShowRequestUI extends AbstractUI {
             menuSelection();
             while (true) {
                 String input = Console.readLine("Enter your choice: ");
-                if (!input.matches("[0-5]")) {
-                    System.out.println("Invalid option. Please enter a number between 0 and 5.");
+                if (!input.matches("[0-7]")) {
+                    System.out.println("Invalid option. Please enter a number between 0 and 7.");
                     continue;
                 }
                 int choice = Integer.parseInt(input);

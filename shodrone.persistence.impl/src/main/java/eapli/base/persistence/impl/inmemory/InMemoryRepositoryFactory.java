@@ -20,7 +20,6 @@
  */
 package eapli.base.persistence.impl.inmemory;
 
-import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
@@ -28,6 +27,7 @@ import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
+import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
@@ -95,6 +95,14 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	public ShowRequestRepository showRequests() {
 		return showRequests(null);
 	}
+
+	@Override
+	public ShowProposalRepository showProposals(TransactionalContext autoTx) {
+		return new InMemoryShowProposalRepository();
+	}
+
+	@Override
+	public ShowProposalRepository showProposals() { return showProposals(null); }
 
 	@Override
 	public FigureRepository figures(TransactionalContext autoTx) {

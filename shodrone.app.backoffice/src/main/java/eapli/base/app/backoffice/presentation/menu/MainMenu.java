@@ -73,7 +73,9 @@ public class MainMenu extends AbstractUI {
 
 	private static final int SHOW_REQUEST_OPTION = 3;
 
-	private static final int FIGURE_OPTION = 4;
+	private static final int SHOW_PROPOSAL_OPTION = 4;
+
+	private static final int FIGURE_OPTION = 5;
 
 	// CRM MANAGER MENU
 	private static final int CRM_MANAGER_OPTION = 2;
@@ -136,6 +138,8 @@ public class MainMenu extends AbstractUI {
 			mainMenu.addSubMenu(CUSTOMER_OPTION, customerMenu);
 			final Menu showRequestMenu = new CRM_CollaboratorMenu().buildShowRequestMenu();
 			mainMenu.addSubMenu(SHOW_REQUEST_OPTION, showRequestMenu);
+			final Menu showProposalMenu = new CRM_CollaboratorMenu().buildShowProposalMenu();
+			mainMenu.addSubMenu(SHOW_PROPOSAL_OPTION, showProposalMenu);
 			final Menu showFigureMenu = new CRM_CollaboratorMenu().buildFigureMenu();
 			mainMenu.addSubMenu(FIGURE_OPTION, showFigureMenu);
 		}

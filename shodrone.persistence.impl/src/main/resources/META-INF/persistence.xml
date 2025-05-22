@@ -18,6 +18,7 @@
     <class>eapli.base.figureManagement.domain.Figure</class>
     <class>eapli.base.showRequestManagement.domain.ShowRequest</class>
     <class>eapli.base.showRequestManagement.domain.RequestedFigures</class>
+    <class>eapli.base.showProposalManagement.domain.ShowProposal</class>
     <class>eapli.base.customerManagement.domain.Customer</class>
     <class>eapli.base.representativeManagement.domain.Representative</class>
 

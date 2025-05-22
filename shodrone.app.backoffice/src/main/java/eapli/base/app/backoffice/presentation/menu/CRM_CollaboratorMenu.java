@@ -8,6 +8,7 @@ import eapli.base.app.backoffice.presentation.representativeManagement.DisableRe
 import eapli.base.app.backoffice.presentation.representativeManagement.EditRepresentativeAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.ListRepresentativesAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.RegisterRepresentativeAction;
+import eapli.base.app.backoffice.presentation.showProposalManagement.RegisterShowProposalAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.EditShowRequestAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ListShowRequestsAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.RegisterShowRequestAction;
@@ -37,6 +38,9 @@ public class CRM_CollaboratorMenu {
 
     private static final int EDIT_SHOW_REQUEST_OPTION = 3;
 
+    // SHOW PROPOSAL MENU
+
+    private static final int REGISTER_SHOW_PROPOSAL_OPTION = 1;
 
     // FIGURE MENU
 
@@ -66,6 +70,12 @@ public class CRM_CollaboratorMenu {
         menu.addItem(LIST_SHOW_REQUESTS_OPTION, "List Show Requests", new ListShowRequestsAction());
         menu.addItem(EDIT_SHOW_REQUEST_OPTION, "Edit Show Request", new EditShowRequestAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
+        return menu;
+    }
+
+    public Menu buildShowProposalMenu() {
+        final Menu menu = new Menu("Show Proposal >");
+        menu.addItem(REGISTER_SHOW_PROPOSAL_OPTION, "Register Show Proposal", new RegisterShowProposalAction());
         return menu;
     }
 

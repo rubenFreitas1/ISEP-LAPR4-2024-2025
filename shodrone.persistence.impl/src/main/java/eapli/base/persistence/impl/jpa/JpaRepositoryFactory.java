@@ -28,6 +28,7 @@ import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
+import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.utentemanagement.repositories.SignupRequestRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
@@ -87,6 +88,16 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     @Override
     public ShowRequestRepository showRequests() {
         return new JpaShowRequestRepository(Application.settings().getPersistenceUnitName());
+    }
+
+    @Override
+    public ShowProposalRepository showProposals(TransactionalContext autoTx) {
+        return new JpaShowProposalRepository(autoTx);
+    }
+
+    @Override
+    public ShowProposalRepository showProposals() {
+        return new JpaShowProposalRepository(Application.settings().getPersistenceUnitName());
     }
 
     @Override
