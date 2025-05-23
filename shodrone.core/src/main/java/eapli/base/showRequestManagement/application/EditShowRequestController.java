@@ -62,10 +62,6 @@ public class EditShowRequestController {
         showRequest.changeDescription(description);
         return (ShowRequest) this.showRequestRepository.save(showRequest);
     }
-    public ShowRequest editShowRequestAltitude(ShowRequest showRequest, int altitude) {
-        showRequest.changeAltitude(altitude);
-        return (ShowRequest) this.showRequestRepository.save(showRequest);
-    }
 
     public ShowRequest editShowRequestDate(ShowRequest showRequest, Calendar date) {
         return this.showRequestManagementService.editShowRequestDate(showRequest, date);

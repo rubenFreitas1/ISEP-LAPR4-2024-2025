@@ -24,9 +24,6 @@ public class ShowRequest implements AggregateRoot<Long> {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private int altitude;
-
     @Temporal(TemporalType.DATE)
     private Calendar date;
 
@@ -41,7 +38,7 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ShowRequestStatus status;
+    private ShowStatus status;
 
     @ManyToOne
     private Customer customer;
@@ -52,7 +49,7 @@ public class ShowRequest implements AggregateRoot<Long> {
     private SystemUser createdBy;
     protected ShowRequest() {}
 
-    public ShowRequest(GeoLocation location, Calendar date, int droneNumber, int duration, List<Figure> requestedFigures, Customer customer, String description, int altitude, SystemUser user) {
+    public ShowRequest(GeoLocation location, Calendar date, int droneNumber, int duration, List<Figure> requestedFigures, Customer customer, String description, SystemUser user) {
         this.location = location;
         this.date = date;
         this.droneNumber = droneNumber;
@@ -60,9 +57,8 @@ public class ShowRequest implements AggregateRoot<Long> {
         this.requestedFigures = requestedFigures;
         this.customer = customer;
         this.createdOn = Calendar.getInstance();
-        this.status = ShowRequestStatus.PENDING;
+        this.status = ShowStatus.PENDING;
         this.description = description;
-        this.altitude = altitude;
         this.createdBy = user;
 
     }
@@ -79,26 +75,15 @@ public class ShowRequest implements AggregateRoot<Long> {
 
     public List<Figure> requestedFigures() { return this.requestedFigures; }
 
-    public ShowRequestStatus status() { return this.status; }
+    public ShowStatus status() { return this.status; }
 
     public Customer customer() { return this.customer; }
 
     public String description() { return this.description; }
 
-    public int altitude() { return this.altitude; }
-
     public Calendar editedOn() { return this.editedOn; }
 
     public SystemUser user() { return this.createdBy; }
-
-    public void changeAltitude(Integer altitude) {
-        if (altitude != null) {
-            this.altitude = altitude;
-            this.editedOn = Calendar.getInstance();
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
 
     public void changeDescription(String description) {
         if (description != null) {
@@ -161,7 +146,6 @@ public class ShowRequest implements AggregateRoot<Long> {
                 ", createdOn=" + createdOn +
                 ", location=" + location +
                 ", description='" + description + '\'' +
-                ", altitude=" + altitude +
                 ", date=" + date +
                 ", droneNumber=" + droneNumber +
                 ", duration=" + duration +

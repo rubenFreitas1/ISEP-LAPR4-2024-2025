@@ -25,7 +25,6 @@ public class RegisterShowRequestUI extends AbstractUI {
 
         String description = requestDescription();
         GeoLocation location = requestLocation();
-        int altitude = requestAltitude();
         Calendar date = requestDate();
         int droneNumber = requestDroneNumber();
         int duration = requestDuration();
@@ -100,7 +99,7 @@ public class RegisterShowRequestUI extends AbstractUI {
             System.out.println("\n");
         }
         try {
-            controller.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence, description, altitude);
+            controller.registerShowRequest(customer, location, date, duration, droneNumber, figureSequence, description);
             System.out.println("Show Request successfully registered!");
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
@@ -174,7 +173,8 @@ public class RegisterShowRequestUI extends AbstractUI {
             }
         } while (!valid);
 
-        return new GeoLocation(latitude, longitude);
+        int altitude = requestAltitude();
+        return new GeoLocation(latitude, longitude, altitude);
     }
     private Calendar requestDate() {
         Calendar date = null;

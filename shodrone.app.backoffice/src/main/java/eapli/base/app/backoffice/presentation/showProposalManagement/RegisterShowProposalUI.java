@@ -38,7 +38,7 @@ public class RegisterShowProposalUI extends AbstractUI {
             return false;
         }
 
-        headerModel = String.format("\nSelect a Show Requests\n#  %-30s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
+        headerModel = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
         ShowRequest showRequest = GenericSelector.selectItem(showRequests, new ShowRequestPrinter(), headerModel);
         if (showRequest == null) {
             System.out.println("Show Request cannot be null!");
@@ -105,7 +105,7 @@ public class RegisterShowProposalUI extends AbstractUI {
 
     private void menuAttributes(GeoLocation location, Calendar date, int duration, int droneNumber) {
         System.out.println("\nCurrent Show Proposal attributes:");
-        System.out.printf("Location: %s\n", location);
+        System.out.printf("GeoLocation: %s\n", location);
         System.out.printf("Date: %s\n", date != null ? sdf.format(date.getTime()) : "N/A");
         System.out.printf("Duration: %s\n", duration);
         System.out.printf("Drone Number: %s\n", droneNumber);
@@ -145,7 +145,28 @@ public class RegisterShowProposalUI extends AbstractUI {
             }
         } while (!valid);
 
-        return new GeoLocation(latitude, longitude);
+        int altitude = requestAltitude();
+        return new GeoLocation(latitude, longitude, altitude);
+    }
+    private int requestAltitude() {
+        int altitude = 0;
+        boolean valid = false;
+
+        do {
+            try {
+                String input = Console.readLine("Enter the altitude (in meters, positive number):");
+                altitude = Integer.parseInt(input);
+                if (altitude <= 0) {
+                    System.out.println("Altitude must be a positive number.");
+                } else {
+                    valid = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        } while (!valid);
+
+        return altitude;
     }
     private Calendar requestDate() {
         Calendar date = null;

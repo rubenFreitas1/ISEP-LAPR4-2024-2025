@@ -16,9 +16,9 @@ public class ShowRequestManagementService {
     public ShowRequestManagementService(final ShowRequestRepository showRequestRepository) {
         this.showRequestRepository = showRequestRepository;
     }
-    public ShowRequest registerShowRequest(Customer customer, GeoLocation location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence, String description, int altitude, SystemUser authenticatedUser) {
+    public ShowRequest registerShowRequest(Customer customer, GeoLocation location, Calendar date, int duration, int droneNumber, List<Figure> figureSequence, String description, SystemUser authenticatedUser) {
         //RequestedFigures newRequestedFigures = new RequestedFigures(figureSequence);
-        ShowRequest newShowRequest = new ShowRequest(location, date, droneNumber, duration, figureSequence, customer, description, altitude, authenticatedUser);
+        ShowRequest newShowRequest = new ShowRequest(location, date, droneNumber, duration, figureSequence, customer, description, authenticatedUser);
         return (ShowRequest) this.showRequestRepository.save(newShowRequest);
     }
 
@@ -32,10 +32,6 @@ public class ShowRequestManagementService {
     }
     public ShowRequest editShowRequestDescription(ShowRequest showRequest, String description) {
         showRequest.changeDescription(description);
-        return (ShowRequest) this.showRequestRepository.save(showRequest);
-    }
-    public ShowRequest editShowRequestAltitude(ShowRequest showRequest, int altitude) {
-        showRequest.changeAltitude(altitude);
         return (ShowRequest) this.showRequestRepository.save(showRequest);
     }
 

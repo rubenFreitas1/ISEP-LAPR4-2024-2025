@@ -62,10 +62,9 @@ class ShowRequestManagementServiceTest {
         customer = new Customer("Pedrão", "rua do pedrao", "pedrao.email@gmail.com", "12345", "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
         Figure figure = new Figure("Star", keywords, category, false, null, systemUser);
         figures = List.of(figure);
-        geoLocation = new GeoLocation(41.1579, -8.6291);
+        geoLocation = new GeoLocation(41.1579, -8.6291, 100);
         description = "Light drone show at the city park";
-        altitude = 100;
-        showRequest = new ShowRequest(geoLocation, date, 5, 30, figures, customer, description, altitude, systemUser);
+        showRequest = new ShowRequest(geoLocation, date, 5, 30, figures, customer, description, systemUser);
     }
 
     @Test
@@ -73,7 +72,7 @@ class ShowRequestManagementServiceTest {
         when(showRequestRepository.save(any(ShowRequest.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ShowRequest result = service.registerShowRequest(customer, geoLocation, date, 5, 30, figures, description, altitude, systemUser);
+        ShowRequest result = service.registerShowRequest(customer, geoLocation, date, 5, 30, figures, description, systemUser);
 
         assertNotNull(result);
         assertEquals(geoLocation, result.location());
@@ -83,7 +82,6 @@ class ShowRequestManagementServiceTest {
         assertEquals(figures, result.requestedFigures());
         assertEquals(customer, result.customer());
         assertEquals(description, result.description());
-        assertEquals(altitude, result.altitude());
 
         verify(showRequestRepository).save(any(ShowRequest.class));
     }
@@ -103,7 +101,7 @@ class ShowRequestManagementServiceTest {
 
     @Test
     void editShowRequestLocation_success() {
-        GeoLocation newLocation = new GeoLocation(41.545, -8.426);
+        GeoLocation newLocation = new GeoLocation(41.545, -8.426, 102);
         showRequest.changeLocation(newLocation);
 
         when(showRequestRepository.save(any(ShowRequest.class)))
@@ -194,20 +192,4 @@ class ShowRequestManagementServiceTest {
         assertEquals(newDescription, updated.description());
         verify(showRequestRepository).save(showRequest);
     }
-    @Test
-    void editShowRequestAltitude_success() {
-        int newAltitude = 120;
-        showRequest.changeAltitude(newAltitude);
-
-        when(showRequestRepository.save(any(ShowRequest.class)))
-                .thenReturn(showRequest);
-
-        ShowRequest updated = service.editShowRequestAltitude(showRequest, newAltitude);
-
-        assertNotNull(updated);
-        assertEquals(newAltitude, updated.altitude());
-        verify(showRequestRepository).save(showRequest);
-    }
-
-
 }

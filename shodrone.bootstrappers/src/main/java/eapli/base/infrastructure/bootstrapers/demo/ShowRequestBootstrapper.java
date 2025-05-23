@@ -29,8 +29,8 @@ public class ShowRequestBootstrapper implements Action {
 
     @Override
     public boolean execute() {
-        final GeoLocation location1 = new GeoLocation(40.7128, -74.0060);
-        final GeoLocation location2 = new GeoLocation(34.0522, -118.2437);
+        final GeoLocation location1 = new GeoLocation(40.7128, -74.0060, 100);
+        final GeoLocation location2 = new GeoLocation(34.0522, -118.2437, 55);
         Calendar now = Calendar.getInstance();
         Optional<Customer> c1 = customerRepository.findById(1L);
         Optional<Customer> c2 = customerRepository.findById(2L);
@@ -50,7 +50,7 @@ public class ShowRequestBootstrapper implements Action {
     private ShowRequest addShowRequest(final Customer customer, final GeoLocation location, final Calendar date, final int duration, final int droneNumber, final List<Figure> figureList, final String description, final int altitude) {
         ShowRequest showRequest = null;
         try {
-            showRequest = registerShowRequestController.registerShowRequest(customer, location, date, duration,droneNumber, figureList, description, altitude);
+            showRequest = registerShowRequestController.registerShowRequest(customer, location, date, duration,droneNumber, figureList, description);
         } catch (final Exception e) {
             LOGGER.warn("Assuming {} already exists (activate trace log for details)", location);
             LOGGER.trace("Assuming existing record", e);

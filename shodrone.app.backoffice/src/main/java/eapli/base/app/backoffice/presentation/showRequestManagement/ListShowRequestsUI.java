@@ -33,7 +33,7 @@ public class ListShowRequestsUI extends AbstractUI {
                 if(!showRequests.iterator().hasNext()) {
                     System.out.println("There are no registered Show Requests in the system for this Customer!");
                 } else {
-                    String headerShowRequest = String.format("List of Show Requests\n#  %-30s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
+                    String headerShowRequest = String.format("List of Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
                     final ListWidget<ShowRequest> listWidget = new ListWidget<>(headerShowRequest, showRequests, new ShowRequestPrinter());
                     listWidget.show();
                 }

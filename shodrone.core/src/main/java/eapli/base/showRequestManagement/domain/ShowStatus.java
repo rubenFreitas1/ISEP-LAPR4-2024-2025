@@ -1,6 +1,6 @@
 package eapli.base.showRequestManagement.domain;
 
-public enum ShowRequestStatus {
+public enum ShowStatus {
     PENDING,
     ACCEPTED,
     DECLINED

@@ -37,7 +37,7 @@ public class EditShowRequestUI extends AbstractUI {
             return false;
         }
 
-        headerModel = String.format("\nSelect a Show Requests\n#  %-30s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
+        headerModel = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
         ShowRequest showRequest = GenericSelector.selectItem(showRequests, new ShowRequestPrinter(), headerModel);
         if (showRequest == null) {
             System.out.println("Show Request cannot be null!");
@@ -48,8 +48,8 @@ public class EditShowRequestUI extends AbstractUI {
             menuSelection();
             while (true) {
                 String input = Console.readLine("Enter your choice: ");
-                if (!input.matches("[0-7]")) {
-                    System.out.println("Invalid option. Please enter a number between 0 and 7.");
+                if (!input.matches("[0-6]")) {
+                    System.out.println("Invalid option. Please enter a number between 0 and 6.");
                     continue;
                 }
                 int choice = Integer.parseInt(input);
@@ -69,26 +69,21 @@ public class EditShowRequestUI extends AbstractUI {
                         showRequest = this.controller.editShowRequestLocation(showRequest, location);
                         break;
                     case 3:
-                        System.out.println("\nEdit Show Request Altitude");
-                        int altitude = requestAltitude();
-                        showRequest = this.controller.editShowRequestAltitude(showRequest, altitude);
-                        break;
-                    case 4:
                         System.out.println("\nEdit Show Request Date");
                         Calendar date = requestDate();
                         showRequest = this.controller.editShowRequestDate(showRequest, date);
                         break;
-                    case 5:
+                    case 4:
                         System.out.println("\nEdit Show Request Drone Number");
                         int droneNumber = requestDroneNumber();
                         showRequest = this.controller.editShowRequestDroneNumber(showRequest, droneNumber);
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("\nEdit Show Request Duration");
                         int duration = requestDuration();
                         showRequest = this.controller.editShowRequestDuration(showRequest, duration);
                         break;
-                    case 7:
+                    case 6:
                         System.out.println("\nEdit Show Request Sequence of Figures");
                         List<Figure> sequenceFigures = requestSequenceOfFigures(customer);
                         showRequest = this.controller.editShowRequestSequenceOfFigures(showRequest, sequenceFigures);
@@ -108,7 +103,6 @@ public class EditShowRequestUI extends AbstractUI {
         System.out.println("\nCurrent Show Request attributes:");
         System.out.printf("Description: %s\n", showRequest.description());
         System.out.printf("Location: %s\n", showRequest.location());
-        System.out.printf("Altitude: %d\n", showRequest.altitude());
         System.out.printf("Date: %s\n", showRequest.date()!= null ? sdf.format(showRequest.date().getTime()) : "N/A");
         System.out.printf("Drone Number: %s\n", showRequest.droneNumber());
         System.out.printf("Duration: %s\n", showRequest.duration());
@@ -128,11 +122,10 @@ public class EditShowRequestUI extends AbstractUI {
         System.out.println("\nSelect the attribute you which to edit.");
         System.out.println("1. Description");
         System.out.println("2. GeoLocation");
-        System.out.println("3. Altitude");
-        System.out.println("4. Date");
-        System.out.println("5. Drone Number");
-        System.out.println("6. Duration");
-        System.out.println("7. Sequence of figures");
+        System.out.println("3. Date");
+        System.out.println("4. Drone Number");
+        System.out.println("5. Duration");
+        System.out.println("6. Sequence of figures");
         System.out.println("0. Exit");
     }
     private String requestDescription() {
@@ -194,7 +187,8 @@ public class EditShowRequestUI extends AbstractUI {
             }
         } while (!valid);
 
-        return new GeoLocation(latitude, longitude);
+        int altitude = requestAltitude();
+        return new GeoLocation(latitude, longitude, altitude);
     }
     private Calendar requestDate() {
         Calendar date = null;
