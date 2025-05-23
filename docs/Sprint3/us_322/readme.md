@@ -1,36 +1,34 @@
-
-# US 220
+# US 322 - List maintenance types
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
-
+*This user story is part of the Drone Tech module, which is responsible for managing the maintenance types of drones. The goal is to provide a way for users to list all maintenance types available in the system.*
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 322** As a Drone Tech, I want to list all maintenance types in the system.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US322.1 The system must allow the user to list all maintenance types.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US240 and US341, since it needs Drones to exist and Drone model also.*
 
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/System_Sequence_Diagram_US322.svg)
 
 ## 4. Design
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US322.svg)
 ### 4.3. Applied Patterns
 
 - Information Expert
