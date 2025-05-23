@@ -16,7 +16,7 @@
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+* This user story has a dependency with US251 DSL grammar.*
 
 
 **Forum Insight:**
