@@ -15,7 +15,7 @@
 
 **Dependencies/References:**
 
-* This user story has a dependency with US255 DSL grammar.*
+* This user story has a dependency with US255 show proposal grammar.*
 
 
 **Forum Insight:**

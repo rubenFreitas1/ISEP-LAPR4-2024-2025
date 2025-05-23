@@ -16,7 +16,7 @@
 
 **Dependencies/References:**
 
-* This user story has a dependency with US251 DSL grammar.*
+* This user story has a dependency with US251 DSL grammar.
 
 
 **Forum Insight:**

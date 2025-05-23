@@ -15,7 +15,7 @@
 
 **Dependencies/References:**
 
-* This user story has a dependency with US253 Drone grammar.*
+* This user story has a dependency with US253 Drone grammar.
 
 
 **Forum Insight:**
