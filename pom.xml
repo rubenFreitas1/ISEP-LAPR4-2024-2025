@@ -8,7 +8,7 @@
 	<artifactId>shodrone</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>shodrone.app1</module>
+		<module>shodrone.customer</module>
 		<module>shodrone.app2</module>
 		<module>shodrone.app.backoffice</module>
 		<module>shodrone.app.common.console</module>

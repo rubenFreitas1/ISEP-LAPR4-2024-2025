@@ -38,9 +38,16 @@ public final class Roles {
 	 */
 	public static final Role POWER_USER = Role.valueOf("POWER_USER");
 	/**
-	 * Utente
+	 * Representative
 	 */
 	public static final Role CUSTOMER_REPRESENTATIVE = Role.valueOf("CUSTOMER_REPRESENTATIVE");
+
+
+	/**
+	 * Customer
+	 */
+	public static final Role CUSTOMER = Role.valueOf("CUSTOMER");
+
 
 	/**
 	 * Administrator

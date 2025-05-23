@@ -9,6 +9,7 @@ import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+import eapli.framework.infrastructure.authz.application.UserManagementService;
 
 @UseCaseController
 public class RegisterCustomerController {
@@ -19,6 +20,9 @@ public class RegisterCustomerController {
 
     private final CustomerManagementService customersvc = new CustomerManagementService(repo);
     private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo);
+
+    private final UserManagementService userSvc = AuthzRegistry.userService();
+
 
     public Customer registerCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER,Roles.CRM_COLLABORATOR);
