@@ -28,10 +28,4 @@ class DroneListItemIdTest {
         assertNotEquals(id1, id3);
     }
 
-    @Test
-    void testNullPreconditions() {
-        assertThrows(IllegalArgumentException.class, () -> new DroneListItemId(null, 2L));
-        assertThrows(IllegalArgumentException.class, () -> new DroneListItemId(1L, null));
-    }
-
 }

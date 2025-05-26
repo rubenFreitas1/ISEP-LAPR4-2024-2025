@@ -34,7 +34,7 @@ class CustomerTest {
 
         Name name = Name.valueOf("John", "Doe");
         EmailAddress email = EmailAddress.valueOf("john@example.com");
-        Optional<Password> password = Password.encodedAndValid("password123", policy, encoder);
+        Optional<Password> password = Password.encodedAndValid("Password123", policy, encoder);
         customer = new Customer(
                 name,
                 "123 Main St",
@@ -69,10 +69,10 @@ class CustomerTest {
 
     @Test
     void getters_returnCorrectValues() {
-        assertEquals("John Doe", customer.customerName());
+        assertEquals("John Doe", customer.customerName().toString());
         assertEquals("123 Main St", customer.customerAddress());
-        assertEquals("john@example.com", customer.customerEmail());
-        assertEquals("password123", customer.customerPassword());
+        assertEquals("john@example.com", customer.customerEmail().toString());
+        assertEquals(Password.encodedAndValid("Password123", new ExemploPasswordPolicy(), new PlainTextEncoder()).get(), customer.customerPassword());
         assertEquals("912345678", customer.customerPhoneNumber());
         assertEquals("PT123456789", customer.customerVatNumber());
         assertEquals(user, customer.createdBy());
