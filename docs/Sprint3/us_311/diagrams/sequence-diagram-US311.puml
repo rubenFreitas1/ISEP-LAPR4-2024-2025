@@ -6,8 +6,8 @@ participant "AddDronesToProposalAction" as Action <<presentation>>
 participant "AddDronesToProposalUI" as UI <<presentation>>
 participant "AddDronesToProposalController" as Controller <<application>>
 participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
-participant "DroneModelManagementService" as DroneModelManagementService <<application>>
 participant "ShowProposal" as ShowProposal <<domain>>
+participant "DroneListItem" as DroneListItem <<domain>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
 participant "DroneModelRepository" as DroneModelRepository <<repository>>
 database "Database" as Database
@@ -29,21 +29,17 @@ UI -> Controller: getListShowProposals()
 
     activate Controller
 
-        Controller -> ShowProposalManagementService: getListShowProposals()
-        activate ShowProposalManagementService
+        Controller -> ShowProposalRepository: findByStatusAndEmptyDroneList(ShowProposalStatus.PENDING)
 
-        ShowProposalManagementService -> ShowProposalRepository: findAll()
         activate ShowProposalRepository
 
-        ShowProposalRepository -> Database: findAll()
+        ShowProposalRepository -> Database: findByStatusAndEmptyDroneList(ShowProposalStatus.PENDING)
         activate Database
 
         Database --> ShowProposalRepository: List of Show Proposals
         deactivate Database
-        ShowProposalRepository --> ShowProposalManagementService: List of Show Proposals
+        ShowProposalRepository --> Controller: List of Show Proposals
         deactivate ShowProposalRepository
-        ShowProposalManagementService --> Controller: List of Show Proposals
-        deactivate ShowProposalManagementService
         Controller --> UI: List of Show Proposals
     deactivate Controller
 
@@ -58,21 +54,21 @@ Actor -> UI: Choose show proposal
         UI -> Controller: getListDroneModels()
         activate Controller
 
-            Controller -> DroneModelManagementService: listActiveDroneModels()
-            activate DroneModelManagementService
-
-            DroneModelManagementService -> DroneModelRepository: findByActive(true)
+            Controller -> DroneModelRepository: findByActive(true)
             activate DroneModelRepository
+
+
+
 
                 DroneModelRepository -> Database: findByActive(true)
                 activate Database
 
                 Database --> DroneModelRepository: List of Active Drone Models
                 deactivate Database
-                DroneModelRepository --> DroneModelManagementService: List of Active Drone Models
+                DroneModelRepository --> Controller: List of Active Drone Models
+
+
             deactivate DroneModelRepository
-            DroneModelManagementService --> Controller: List of Active Drone Models
-            deactivate DroneModelManagementService
         Controller --> UI: List of Active Drone Models
         deactivate Controller
 
@@ -90,14 +86,20 @@ Actor -> UI: Choose show proposal
     Actor -> UI: Provide number of drones
     activate UI
 
-    UI -> Controller: addDroneModelToProposal(droneModel, quantity)
+    UI -> Controller: addDroneModelToProposal(showProposal ,droneModel, quantity)
     activate Controller
 
-        Controller -> ShowProposalManagementService: addDroneModelToProposal(droneModel, quantity)
+        Controller -> ShowProposalManagementService: addDroneModelToProposal(showProposal, droneModel, quantity)
         activate ShowProposalManagementService
 
-        ShowProposalManagementService -> ShowProposal: updateListDroneModels(droneModel, quantity)
+        ShowProposalManagementService -> ShowProposal: addDroneToList( droneModel, quantity)
         activate ShowProposal
+
+        ShowProposal -> DroneListItem: new DroneListItem(droneModel, showProposal, quantity)
+        activate DroneListItem
+
+        DroneListItem --> ShowProposal
+        deactivate DroneListItem
 
         ShowProposal --> ShowProposalManagementService
         deactivate ShowProposal
@@ -106,6 +108,21 @@ Actor -> UI: Choose show proposal
     Controller --> UI
     deactivate Controller
     end
+    UI -> Controller: save(showProposal)
+    activate Controller
+
+    Controller -> ShowProposalRepository: save(showProposal)
+    activate ShowProposalRepository
+
+    ShowProposalRepository -> Database: save(showProposal)
+    activate Database
+
+    Database --> ShowProposalRepository
+    deactivate Database
+    ShowProposalRepository --> Controller
+    deactivate ShowProposalRepository
+    Controller --> UI
+    deactivate Controller
     UI --> Actor: Confirm if operation was successful
     deactivate UI
 deactivate Actor

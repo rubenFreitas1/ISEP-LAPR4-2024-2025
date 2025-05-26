@@ -4,7 +4,6 @@ import eapli.base.app.backoffice.presentation.droneModelManagement.DroneModelPri
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.showProposalManagement.application.AddDronesToProposalController;
 import eapli.base.showProposalManagement.domain.ShowProposal;
-import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -17,7 +16,7 @@ public class AddDronesToProposalUI extends AbstractUI {
     private final AddDronesToProposalController controller = new AddDronesToProposalController();
     @Override
     protected boolean doShow() {
-        Iterable<ShowProposal> showProposalList = this.controller.getListShowProposals(ShowProposalStatus.PENDING);
+        Iterable<ShowProposal> showProposalList = this.controller.getListShowProposals();
         if (!showProposalList.iterator().hasNext()) {
             System.out.println("There are no registered Show Proposals in the system to add Drone Models!");
             return false;

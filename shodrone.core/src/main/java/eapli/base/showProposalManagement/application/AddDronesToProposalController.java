@@ -25,8 +25,8 @@ public class AddDronesToProposalController {
         return this.droneModelRepository.findByActive(true);
     }
 
-    public Iterable<ShowProposal> getListShowProposals(ShowProposalStatus status){
-        return this.showProposalRepository.findByStatusAndEmptyDroneList(status);
+    public Iterable<ShowProposal> getListShowProposals(){
+        return this.showProposalRepository.findByStatusAndEmptyDroneList(ShowProposalStatus.PENDING);
     }
 
     public boolean addDroneModelToProposal(ShowProposal showProposal,DroneModel droneModel, int quantity){
