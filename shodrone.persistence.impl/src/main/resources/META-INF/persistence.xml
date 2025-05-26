@@ -6,6 +6,7 @@
   <persistence-unit name="SHODRONE">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+
     <class>eapli.framework.infrastructure.authz.domain.model.SystemUser</class>
     <class>eapli.framework.infrastructure.authz.domain.model.Role</class>
     <class>eapli.framework.infrastructure.authz.domain.model.RoleSet</class>
@@ -21,6 +22,7 @@
     <class>eapli.base.showProposalManagement.domain.ShowProposal</class>
     <class>eapli.base.customerManagement.domain.Customer</class>
     <class>eapli.base.representativeManagement.domain.Representative</class>
+    <class>eapli.base.showProposalManagement.domain.DroneListItem</class>
 
 
     <properties>
