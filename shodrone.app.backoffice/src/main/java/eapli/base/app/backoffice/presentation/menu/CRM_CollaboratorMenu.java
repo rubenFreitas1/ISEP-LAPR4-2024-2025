@@ -8,6 +8,7 @@ import eapli.base.app.backoffice.presentation.representativeManagement.DisableRe
 import eapli.base.app.backoffice.presentation.representativeManagement.EditRepresentativeAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.ListRepresentativesAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.RegisterRepresentativeAction;
+import eapli.base.app.backoffice.presentation.showProposalManagement.AddDronesToProposalAction;
 import eapli.base.app.backoffice.presentation.showProposalManagement.RegisterShowProposalAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.EditShowRequestAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ListShowRequestsAction;
@@ -41,6 +42,8 @@ public class CRM_CollaboratorMenu {
     // SHOW PROPOSAL MENU
 
     private static final int REGISTER_SHOW_PROPOSAL_OPTION = 1;
+
+    private static final int ADD_DRONE_MODELS_PROPOSAL = 2;
 
     // FIGURE MENU
 
@@ -76,6 +79,7 @@ public class CRM_CollaboratorMenu {
     public Menu buildShowProposalMenu() {
         final Menu menu = new Menu("Show Proposal >");
         menu.addItem(REGISTER_SHOW_PROPOSAL_OPTION, "Register Show Proposal", new RegisterShowProposalAction());
+        menu.addItem(ADD_DRONE_MODELS_PROPOSAL, "Add Drone Models to Proposal", new AddDronesToProposalAction());
         return menu;
     }
 

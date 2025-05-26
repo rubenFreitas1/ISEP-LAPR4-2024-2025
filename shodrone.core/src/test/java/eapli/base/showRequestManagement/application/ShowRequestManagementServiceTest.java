@@ -42,7 +42,6 @@ class ShowRequestManagementServiceTest {
     private List<Figure> figures;
     private GeoLocation geoLocation;
     private String description;
-    private int altitude;
 
     private ShowRequest showRequest;
     private Calendar date;
@@ -77,8 +76,8 @@ class ShowRequestManagementServiceTest {
         assertNotNull(result);
         assertEquals(geoLocation, result.location());
         assertEquals(date, result.date());
-        assertEquals(5, result.droneNumber());
-        assertEquals(30, result.duration());
+        assertEquals(30, result.droneNumber());
+        assertEquals(5, result.duration());
         assertEquals(figures, result.requestedFigures());
         assertEquals(customer, result.customer());
         assertEquals(description, result.description());

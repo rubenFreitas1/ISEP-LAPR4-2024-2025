@@ -1,5 +1,6 @@
 package eapli.base.showProposalManagement.domain;
 
+import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.framework.domain.model.AggregateRoot;
@@ -7,7 +8,9 @@ import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 public class ShowProposal implements AggregateRoot<Long> {
@@ -41,10 +44,15 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     @ManyToOne
     private SystemUser createdBy;
+    @Enumerated(EnumType.STRING)
+    private ShowProposalStatus status;
+
+    @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
+    private List<DroneListItem> droneModelList;
 
     protected ShowProposal() {}
 
-    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, ShowProposalStatus status) {
         this.showRequest = showRequest;
         this.location = location;
         this.date = date;
@@ -54,7 +62,42 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.createdOn = Calendar.getInstance();
         this.proposalNumber = proposalNumber;
         this.createdBy = createdBy;
+        this.status = status;
+        this.droneModelList = new ArrayList<>();
     }
+
+    public boolean addDroneToList(DroneModel droneModel, int quantity){
+        if (droneModel == null || quantity <= 0) return false;
+
+        int currentTotal = 0;
+        for (DroneListItem item : droneModelList) {
+            currentTotal += item.numberOfDrones();
+        }
+
+        if (currentTotal + quantity > totalDroneNumber) {
+            return false;
+        }
+
+        for (DroneListItem item : droneModelList) {
+            if (item.droneModel().equals(droneModel)) {
+                return false;
+            }
+        }
+
+        DroneListItem newItem = new DroneListItem(droneModel, this, quantity);
+        droneModelList.add(newItem);
+        return true;
+    }
+
+    public int allDroneModels_Quantity(){
+        int currentTotal = 0;
+        for (DroneListItem item : droneModelList) {
+            currentTotal += item.numberOfDrones();
+        }
+        return currentTotal;
+    }
+
+    public ShowProposalStatus status(){return  this.status;}
 
     public ShowRequest showRequest() { return this.showRequest; }
 

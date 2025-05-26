@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
@@ -18,4 +19,15 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
                 .filter(p -> p.showRequest().equals(showRequest))
                 .count();
     }
+
+    @Override
+    public Iterable<ShowProposal> findByStatus(ShowProposalStatus status) {
+        return this.match(e -> e.status().equals(status));
+    }
+
+    @Override
+    public Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowProposalStatus status) {
+        return this.match(e -> e.status().equals(status) && e.allDroneModels_Quantity() == 0);
+    }
+
 }
