@@ -60,7 +60,7 @@ package "**«Aggregate» Customer**" #DDDDDD {
         entity_representative *-- vObject_representativePhoneNumber
         entity_representative *-- vObject_representativeStatus
 
-        entity_customer "1"<-->"1..*"  entity_representative: "is associated with"
+        entity_customer "1"--"1..*"  entity_representative: "is associated with"
         entity_customer *--down vObject_customerStatus
         entity_customer *--down vObject_customerAddress
         entity_customer *--down vObject_vatNumber

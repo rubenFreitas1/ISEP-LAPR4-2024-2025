@@ -93,13 +93,13 @@ class ShowProposalTest {
     }
 
     @Test
-    void addDroneToList_shouldFail_ExceedingTotalLimit() {
+    void addDroneToList_Fail_ExceedingTotalLimit() {
         assertTrue(proposal.addDroneToList(modelA, 4));
         assertFalse(proposal.addDroneToList(modelB, 2)); // Total é 5
     }
 
     @Test
-    void addDroneToList_shouldFail_ModelAlreadyAdded() {
+    void addDroneToList_Fail_ModelAlreadyAdded() {
         assertTrue(proposal.addDroneToList(modelA, 3));
         assertFalse(proposal.addDroneToList(modelA, 1));
     }
