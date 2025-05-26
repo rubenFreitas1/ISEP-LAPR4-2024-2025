@@ -8,10 +8,8 @@ import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.Mockito.*;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -59,7 +55,11 @@ class ShowRequestManagementServiceTest {
         systemUser = new SystemUserBuilder(policy, encoder)
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles( Roles.ADMIN).build();
-        customer = new Customer("Pedrão", "rua do pedrao", "pedrao.email@gmail.com", "12345", "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
+
+        Name name = Name.valueOf("Pedrão", "Pedrão");
+        EmailAddress email = EmailAddress.valueOf("pedrao.email@gmail.com");
+        Optional<Password> password = Password.encodedAndValid("123456", policy, encoder);
+        customer = new Customer(name, "rua do pedrao", email, password, "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
         Figure figure = new Figure("Star", keywords, category, false, null, systemUser);
         figures = List.of(figure);
         geoLocation = new GeoLocation(41.1579, -8.6291, 100);

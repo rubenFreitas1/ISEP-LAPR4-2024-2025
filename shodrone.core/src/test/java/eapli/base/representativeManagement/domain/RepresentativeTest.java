@@ -3,13 +3,13 @@ package eapli.base.representativeManagement.domain;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +29,10 @@ class RepresentativeTest {
                 .with("john", "StrongPass123", "John", "Doe", "john@email.com")
                 .withRoles(Roles.ADMIN).build();
 
-        customer = new Customer("123456789", "Acme Corp", "Rua A", "acme@email.com", "911234567", "CC123456", user, Customer.CustomerStatus.CREATED, now);
+        Name name = Name.valueOf("Acme Corp", "Inc.");
+        EmailAddress email = EmailAddress.valueOf("acme@email.com");
+        Optional<Password> password = Password.encodedAndValid("VAT123", policy, encoder);
+        customer = new Customer(name, "Acme Corp", email, password, "911234567", "CC123456", user, Customer.CustomerStatus.CREATED, now);
     }
 
     @Test

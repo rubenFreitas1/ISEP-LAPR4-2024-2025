@@ -27,7 +27,7 @@ public class InMemoryCustomerRepository extends InMemoryDomainRepository<Custome
     }
     @Override
     public boolean isEmailUsed(String customerEmail) {
-        return matchOne(e -> e.customerEmail().equalsIgnoreCase(customerEmail)).isPresent();
+        return matchOne(e -> e.customerEmail().equals(customerEmail)).isPresent();
     }
 
 }

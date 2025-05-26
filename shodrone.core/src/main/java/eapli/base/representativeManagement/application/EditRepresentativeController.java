@@ -6,14 +6,20 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @UseCaseController
 public class EditRepresentativeController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
+    private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
 
     private final RepresentativeRepository representativeRepo = PersistenceContext.repositories().representatives();
 
@@ -21,7 +27,7 @@ public class EditRepresentativeController {
 
     private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(representativeRepo, customerRepo);
 
-    private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo);
+    private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
 
     public Representative editRepresentative(Representative representative,String representativeName, String representativeEmail, String representativePassword, String representativePhoneNumber, String representativePosition){
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);

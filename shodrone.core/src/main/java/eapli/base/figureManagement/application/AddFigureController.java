@@ -8,10 +8,14 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
@@ -19,12 +23,14 @@ import java.util.Set;
 public class AddFigureController {
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
+    private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
 
      private final FigureRepository repo = PersistenceContext.repositories().figures();
 
      private final CustomerRepository repoCustomer = PersistenceContext.repositories().customers();
 
-     private final CustomerManagementService customerManagementService = new CustomerManagementService(repoCustomer);
+     private final CustomerManagementService customerManagementService = new CustomerManagementService(repoCustomer, passwordEncoder, passwordPolicy);
 
     private final FigureManagementService figureManagementService = new FigureManagementService(repo);
 

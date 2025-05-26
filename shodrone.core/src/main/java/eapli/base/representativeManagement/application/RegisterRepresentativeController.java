@@ -6,16 +6,22 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.application.UseCaseController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
+import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
 import eapli.framework.time.util.CurrentTimeCalendars;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @UseCaseController
 public class RegisterRepresentativeController {
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
+    private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
+    private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
 
     private final RepresentativeRepository repreRepo = PersistenceContext.repositories().representatives();
 
@@ -23,7 +29,7 @@ public class RegisterRepresentativeController {
 
     private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo);
 
-    private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo);
+    private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
 
 
     public void registerRepresentative(final String representativeName, final String representativeEmail, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition) {

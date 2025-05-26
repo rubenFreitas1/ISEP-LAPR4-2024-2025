@@ -4,9 +4,8 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,7 +44,11 @@ class FigureTest {
         keywords = new HashSet<>();
         keywords.add("dragon");
         keywords.add("magic");
-        customer = new Customer("Pedro", "rua do pedro", "pedro.email@gmail.com","123456789", "123456789","123456789",user, Customer.CustomerStatus.CREATED,now);
+
+        Name name = Name.valueOf("Pedro", "Pereira");
+        EmailAddress email = EmailAddress.valueOf("pedro.email@gmail.com");
+        Optional<Password> password = Password.encodedAndValid("123456789", policy, encoder);
+        customer = new Customer(name, "rua do pedro", email,password, "123456789","123456789",user, Customer.CustomerStatus.CREATED,now);
     }
 
     @Test

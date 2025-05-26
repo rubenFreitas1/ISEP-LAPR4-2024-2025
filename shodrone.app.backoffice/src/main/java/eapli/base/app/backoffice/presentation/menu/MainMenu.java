@@ -28,6 +28,7 @@ import eapli.base.app.backoffice.presentation.authz.ActivateUserAction;
 import eapli.base.app.backoffice.presentation.authz.AddUserUI;
 import eapli.base.app.backoffice.presentation.authz.DeactivateUserAction;
 import eapli.base.app.backoffice.presentation.authz.ListUsersAction;
+import eapli.base.app.common.console.presentation.authz.LogoutUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.actions.Actions;
@@ -123,6 +124,11 @@ public class MainMenu extends AbstractUI {
 
 		final Menu myUserMenu = new MyUserMenu();
 		mainMenu.addSubMenu(MY_USER_OPTION, myUserMenu);
+
+		if (authz.isAuthenticatedUserAuthorizedTo(Roles.CUSTOMER, Roles.CUSTOMER_REPRESENTATIVE)) {
+			System.exit(0);
+			new ExitWithMessageAction("Acesso negado. Clientes e Representantes nao tem permissoes para aceder ao backoffice.");
+		}
 
 		if (!Application.settings().isMenuLayoutHorizontal()) {
 			mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));

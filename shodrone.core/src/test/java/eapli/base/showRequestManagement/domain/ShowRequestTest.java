@@ -5,9 +5,8 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +43,11 @@ public class ShowRequestTest {
         Figure figure = new Figure("Alien figure", keywords, category, false, null, user);
         figures = new ArrayList<>(List.of(figure));
 
-        customer = new Customer("Alice", "Wonderland Street", "alice@mail.com",
-                "987654321", "123123123", "456456456", user, Customer.CustomerStatus.CREATED, now);
+        Name name = Name.valueOf("Alice", "Smith");
+        EmailAddress email = EmailAddress.valueOf("alice@mail.com");
+        Optional<Password> password = Password.encodedAndValid("987654321", policy, encoder);
+        customer = new Customer(name, "Wonderland Street", email,
+                password, "123123123", "456456456", user, Customer.CustomerStatus.CREATED, now);
 
         geoLocation = new GeoLocation(38.7169, -9.1399, 100);
     }

@@ -3,13 +3,13 @@ package eapli.base.customerManagement.domain;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
+import java.util.Optional;
 
 import static eapli.base.customerManagement.domain.Customer.CustomerStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,11 +31,15 @@ class CustomerTest {
                 .with("john", "StrongPass123", "John", "Doe", "john@email.com")
                 .withRoles(Roles.ADMIN).build();
 
+
+        Name name = Name.valueOf("John", "Doe");
+        EmailAddress email = EmailAddress.valueOf("john@example.com");
+        Optional<Password> password = Password.encodedAndValid("password123", policy, encoder);
         customer = new Customer(
-                "John Doe",
+                name,
                 "123 Main St",
-                "john@example.com",
-                "password123",
+                email,
+                password,
                 "912345678",
                 "PT123456789",
                 user,

@@ -28,7 +28,7 @@
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US316.svg)
@@ -41,7 +41,6 @@
 ### 4.3. Applied Patterns
 
 - Information Expert
-- Creator
 - Controller
 - Low Coupling
 - High Cohesion

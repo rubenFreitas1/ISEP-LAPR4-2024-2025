@@ -4,10 +4,8 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
-import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
-import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -44,11 +43,15 @@ class CustomerManagementServiceTest {
                 .withRoles(Roles.ADMIN)
                 .build();
 
+
+        Name name = Name.valueOf("Client", "Name");
+        EmailAddress email = EmailAddress.valueOf("client@email.com");
+        Optional<Password> password = Password.encodedAndValid("VAT123", policy, encoder);
         customer = new Customer(
-                "Client Name",
+                name,
                 "Client Address",
-                "client@email.com",
-                "VAT123",
+                email,
+                password,
                 "910000000",
                 "CC123456",
                 systemUser,
@@ -71,12 +74,18 @@ class CustomerManagementServiceTest {
 
     @Test
     void registerNewCustomer_shouldRegisterSuccessfully() {
+        PasswordPolicy policy = new ExemploPasswordPolicy();
+        PlainTextEncoder encoder = new PlainTextEncoder();
+
         when(customerRepository.isEmailUsed("client@email.com")).thenReturn(false);
         when(customerRepository.isVatNumberUsed("CC123456")).thenReturn(false);
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
+
+
+
         Customer result = service.registerNewCustomer(
-                "Client Name",
+                "Client", "Name",
                 "Client Address",
                 "client@email.com",
                 "VAT123",
@@ -95,7 +104,7 @@ class CustomerManagementServiceTest {
         when(customerRepository.isEmailUsed("client@email.com")).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> service.registerNewCustomer(
-                "Client Name",
+                "Client", "Name",
                 "Client Address",
                 "client@email.com",
                 "VAT123",

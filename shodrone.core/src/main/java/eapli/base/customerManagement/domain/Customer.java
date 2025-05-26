@@ -2,6 +2,9 @@ package eapli.base.customerManagement.domain;
 
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.Name;
+import eapli.framework.infrastructure.authz.domain.model.Password;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import jakarta.persistence.*;
@@ -9,6 +12,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Customer implements AggregateRoot<Long> {
@@ -18,14 +22,14 @@ public class Customer implements AggregateRoot<Long> {
     private Long customerId;
 
     @Column( unique = true, nullable = false)
-    private String customerName;
+    private Name customerName;
 
     @Column
     private String customerAddress;
     @Column
-    private String customerEmail;
+    private EmailAddress customerEmail;
     @Column
-    private String customerPassword;
+    private Password customerPassword;
     @Column
     private String customerPhoneNumber;
     @Column
@@ -55,11 +59,11 @@ public class Customer implements AggregateRoot<Long> {
     protected Customer() {
     }
 
-    public Customer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status, final Calendar createdOn) {
+    public Customer(final Name customerName, final String customerAddress, final EmailAddress customerEmail, final Optional<Password> password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status, final Calendar createdOn) {
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerEmail = customerEmail;
-        this.customerPassword = password;
+        this.customerPassword = password.orElse(null);
         this.customerPhoneNumber = customerPhoneNumber;
         this.customerVatNumber = customerVatNumber;
         this.createdBy = createdBy;
@@ -68,16 +72,16 @@ public class Customer implements AggregateRoot<Long> {
         this.representatives = new ArrayList<>();
     }
 
-    public String customerName() {
+    public Name customerName() {
         return this.customerName;
     }
     public String customerAddress() {
         return this.customerAddress;
     }
-    public String customerEmail() {
+    public EmailAddress customerEmail() {
         return this.customerEmail;
     }
-    public String customerPassword() {
+    public Password customerPassword() {
         return this.customerPassword;
     }
     public String customerPhoneNumber() {
