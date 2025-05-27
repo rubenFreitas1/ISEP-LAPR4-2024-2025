@@ -41,6 +41,10 @@ public class RegisterShowProposalController {
         return showRequestManagementService.findByCustomer(customer);
     }
 
+    public Iterable<ShowProposal> listShowProposals(ShowRequest showRequest) {
+        return showProposalManagementService.findByShowRequest(showRequest);
+    }
+
     public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber) {
         return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser());
     }

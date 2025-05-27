@@ -1,14 +1,19 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
 import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
+import eapli.base.app.backoffice.presentation.figureManagement.FigurePrinter;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestPrinter;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showProposalManagement.application.RegisterShowProposalController;
+import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showRequestManagement.domain.GenericSelector;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
+import eapli.framework.presentation.console.SelectWidget;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,25 +29,56 @@ public class RegisterShowProposalUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        Iterable<Customer> customers = this.controller.listCustomers();
+        Iterable<Customer> customers = controller.listCustomers();
         if (!customers.iterator().hasNext()) {
-            System.out.println("There are no registered Customers in the system!");
+            System.out.println("\nThere are no registered Customers in the system!\n");
             return false;
         }
-        String headerModel = String.format("Select Customer\n#  %-30s%-30s%-30s%-30s", "NAME", "STATUS", "PHONE NUMBER", "EMAIL");
-        Customer customer = GenericSelector.selectItem(customers, new CustomerPrinter(), headerModel);
+        ShowRequest showRequest = null;
+        String headerModelCustomer = String.format("Select Customer\n#  %-30s%-30s%-30s%-30s", "NAME", "STATUS", "PHONE NUMBER", "EMAIL");
+        String headerModelRequest = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
+        boolean validRequestSelected = false;
+        while (!validRequestSelected) {
+            final SelectWidget<Customer> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerPrinter());
+            selectWidgetCustomer.show();
+            Customer customer = selectWidgetCustomer.selectedElement();
 
-        Iterable<ShowRequest> showRequests = this.controller.listShowRequests(customer);
-        if (!showRequests.iterator().hasNext()) {
-            System.out.println("There are no registered Show Requests associated with this Customer!");
-            return false;
-        }
+            if (customer == null) {
+                return true;
+            }
+            Iterable<ShowRequest> showRequests = this.controller.listShowRequests(customer);
+            if (!showRequests.iterator().hasNext()) {
+                System.out.println("\nThere are no registered Show Requests associated with this Customer!\n");
+                continue;
+            }
+            while (true) {
+                final SelectWidget<ShowRequest> selectWidgetRequest = new SelectWidget<>(headerModelRequest, showRequests, new ShowRequestPrinter());
+                selectWidgetRequest.show();
+                showRequest = selectWidgetRequest.selectedElement();
 
-        headerModel = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
-        ShowRequest showRequest = GenericSelector.selectItem(showRequests, new ShowRequestPrinter(), headerModel);
-        if (showRequest == null) {
-            System.out.println("Show Request cannot be null!");
-            return false;
+                if (showRequest == null) {
+                    break;
+                }
+                boolean exits = false;
+                Iterable<ShowProposal> showProposals = this.controller.listShowProposals(showRequest);
+
+                for (ShowProposal showProposal : showProposals) {
+                    if (showProposal.status().equals(ShowStatus.ACCEPTED)) {
+                        System.out.println("There is already an accepted show proposal associated with this Show Request!\n");
+                        exits = true;
+                        break;
+                    }
+                    if (showProposal.status().equals(ShowStatus.PENDING)) {
+                        System.out.println("\nThere is already a pending show proposal associated with this Show Request!\n");
+                        exits = true;
+                        break;
+                    }
+                }
+                if (!exits) {
+                    validRequestSelected = true;
+                    break;
+                }
+            }
         }
         GeoLocation location = showRequest.location();
         Calendar date = showRequest.date();

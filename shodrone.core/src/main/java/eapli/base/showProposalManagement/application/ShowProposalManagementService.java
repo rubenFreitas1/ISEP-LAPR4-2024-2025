@@ -1,7 +1,6 @@
 package eapli.base.showProposalManagement.application;
 
 import eapli.base.showProposalManagement.domain.ShowProposal;
-import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -21,8 +20,11 @@ public class ShowProposalManagementService {
         long proposalCount = showProposalRepository.countByShowRequest(showRequest);
         int proposalNumber = (int) proposalCount + 1;
 
-        ShowProposal showProposal = new ShowProposal(showRequest, location, date, time, duration, totalDroneNumber, proposalNumber, user, ShowProposalStatus.PENDING);
+        ShowProposal showProposal = new ShowProposal(showRequest, location, date, time, duration, totalDroneNumber, proposalNumber, user);
         return (ShowProposal) this.showProposalRepository.save(showProposal);
     }
 
+    public Iterable<ShowProposal> findByShowRequest(ShowRequest showRequest) {
+        return this.showProposalRepository.findByShowRequest(showRequest);
+    }
 }

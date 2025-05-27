@@ -2,9 +2,9 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.showProposalManagement.domain.ShowProposal;
-import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
@@ -24,12 +24,20 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     }
 
     @Override
-    public Iterable<ShowProposal> findByStatus(ShowProposalStatus status) {
+    public Iterable<ShowProposal> findByShowRequest(ShowRequest showRequest) {
+        return entityManager()
+                .createQuery("SELECT sp FROM ShowProposal sp WHERE sp.showRequest = :showRequest", ShowProposal.class)
+                .setParameter("showRequest", showRequest)
+                .getResultList();
+    }
+
+    @Override
+    public Iterable<ShowProposal> findByStatus(ShowStatus status) {
         return match("e.status = :status", "status", status);
     }
 
     @Override
-    public Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowProposalStatus status) {
+    public Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowStatus status) {
         return entityManager()
                 .createQuery(
                         "SELECT sp FROM ShowProposal sp WHERE sp.status = :status AND SIZE(sp.droneModelList) = 0",

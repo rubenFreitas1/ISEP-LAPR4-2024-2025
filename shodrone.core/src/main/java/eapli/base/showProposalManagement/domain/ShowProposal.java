@@ -3,6 +3,7 @@ package eapli.base.showProposalManagement.domain;
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import jakarta.persistence.*;
@@ -45,14 +46,14 @@ public class ShowProposal implements AggregateRoot<Long> {
     @ManyToOne
     private SystemUser createdBy;
     @Enumerated(EnumType.STRING)
-    private ShowProposalStatus status;
+    private ShowStatus status;
 
     @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
     private List<DroneListItem> droneModelList;
 
     protected ShowProposal() {}
 
-    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, ShowProposalStatus status) {
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
         this.showRequest = showRequest;
         this.location = location;
         this.date = date;
@@ -62,7 +63,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.createdOn = Calendar.getInstance();
         this.proposalNumber = proposalNumber;
         this.createdBy = createdBy;
-        this.status = status;
+        this.status = ShowStatus.PENDING;
         this.droneModelList = new ArrayList<>();
     }
 
@@ -97,7 +98,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         return currentTotal;
     }
 
-    public ShowProposalStatus status(){return  this.status;}
+    public ShowStatus status(){return  this.status;}
 
     public ShowRequest showRequest() { return this.showRequest; }
 

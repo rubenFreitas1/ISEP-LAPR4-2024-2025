@@ -7,8 +7,8 @@ import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showProposalManagement.domain.ProposalService;
 import eapli.base.showProposalManagement.domain.ShowProposal;
-import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.application.UseCaseController;
 
 
@@ -29,7 +29,7 @@ public class AddDronesToProposalController {
     }
 
     public Iterable<ShowProposal> getListShowProposals(){
-        return this.showProposalRepository.findByStatusAndEmptyDroneList(ShowProposalStatus.PENDING);
+        return this.showProposalRepository.findByStatusAndEmptyDroneList(ShowStatus.PENDING);
     }
 
     public boolean addDroneModelToProposal(ShowProposal showProposal,DroneModel droneModel, int quantity){

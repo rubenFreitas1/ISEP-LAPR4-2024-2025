@@ -86,7 +86,7 @@ class DroneListItemTest {
 
         showRequest = new ShowRequest(geoLocation,now,40,40, figures,customer,"aniversario", user);
 
-        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user, ShowProposalStatus.PENDING);
+        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user);
 
     }
 
