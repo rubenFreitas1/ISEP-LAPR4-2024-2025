@@ -5,7 +5,7 @@ actor "CRM Collaborator" as Actor
 participant "AddDronesToProposalAction" as Action <<presentation>>
 participant "AddDronesToProposalUI" as UI <<presentation>>
 participant "AddDronesToProposalController" as Controller <<application>>
-participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "ProposalService" as ProposalService <<domain>>
 participant "ShowProposal" as ShowProposal <<domain>>
 participant "DroneListItem" as DroneListItem <<domain>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
@@ -89,10 +89,10 @@ Actor -> UI: Choose show proposal
     UI -> Controller: addDroneModelToProposal(showProposal ,droneModel, quantity)
     activate Controller
 
-        Controller -> ShowProposalManagementService: addDroneModelToProposal(showProposal, droneModel, quantity)
-        activate ShowProposalManagementService
+        Controller -> ProposalService: addDroneModelToProposal(showProposal, droneModel, quantity)
+        activate ProposalService
 
-        ShowProposalManagementService -> ShowProposal: addDroneToList( droneModel, quantity)
+        ProposalService -> ShowProposal: addDroneToList( droneModel, quantity)
         activate ShowProposal
 
         ShowProposal -> DroneListItem: new DroneListItem(droneModel, showProposal, quantity)
@@ -101,10 +101,10 @@ Actor -> UI: Choose show proposal
         DroneListItem --> ShowProposal
         deactivate DroneListItem
 
-        ShowProposal --> ShowProposalManagementService
+        ShowProposal --> ProposalService
         deactivate ShowProposal
-        ShowProposalManagementService --> Controller
-        deactivate ShowProposalManagementService
+        ProposalService --> Controller
+        deactivate ProposalService
     Controller --> UI
     deactivate Controller
     end

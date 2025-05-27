@@ -1,6 +1,5 @@
 package eapli.base.showProposalManagement.application;
 
-import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -14,7 +13,7 @@ import java.util.Calendar;
 public class ShowProposalManagementService {
     private final ShowProposalRepository showProposalRepository;
 
-    public ShowProposalManagementService(final ShowProposalRepository showProposalRepository) {
+    public ShowProposalManagementService(final ShowProposalRepository showProposalRepository){
         this.showProposalRepository = showProposalRepository;
     }
 
@@ -26,13 +25,4 @@ public class ShowProposalManagementService {
         return (ShowProposal) this.showProposalRepository.save(showProposal);
     }
 
-    public boolean addDroneModelToProposal(ShowProposal showProposal, DroneModel droneModel,int quantity){
-        if(showProposal == null){
-            throw new IllegalArgumentException("Show Proposal cannot be null!");
-        }
-        if(droneModel == null){
-            throw new IllegalArgumentException("Drone Model cannot be null!");
-        }
-        return showProposal.addDroneToList(droneModel, quantity);
-    }
 }

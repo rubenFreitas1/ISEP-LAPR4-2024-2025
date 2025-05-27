@@ -98,13 +98,35 @@ no need to verify if these drones are used in another show on the same date.
 ```
    @Test
     void addDroneModelToProposal_success() {
-        boolean result = service.addDroneModelToProposal(proposal, modelA, 3);
+        Drone drone1 = mock(Drone.class);
+        Drone drone2 = mock(Drone.class);
+        Drone drone3 = mock(Drone.class);
+        when(repo.findByDroneModel(modelA)).thenReturn(List.of(drone1, drone2, drone3));
+        boolean result = service.addDroneModelToProposal(proposal, modelA, 1);
         assertTrue(result);
     }
 
 ````
 
-**Test 4:** *Tests that the service throws an IllegalArgumentException when attempting to add a drone model to a null proposal or when the drone model itself is null.*
+**Test 4:** *Tests that the service throws an IllegalArgumentException when attempting to add a drone model that don't have the quantity of drones registered in the system required.*
+
+```
+   @Test
+    void addDroneModelToProposal_notEnoughDrones_throwsException() {
+        Drone drone1 = mock(Drone.class);
+        when(repo.findByDroneModel(modelA)).thenReturn(List.of(drone1));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+                service.addDroneModelToProposal(proposal, modelA, 3));
+        assertEquals("Not enough Drones with this Drone Model Registered in the System!", ex.getMessage());
+    }
+
+````
+
+
+
+
+**Test 5:** *Tests that the service throws an IllegalArgumentException when attempting to add a drone model to a null proposal or when the drone model itself is null.*
 
 ```
    @Test
@@ -213,11 +235,16 @@ public class AddDronesToProposalUI extends AbstractUI {
 ```java
 @UseCaseController
 public class AddDronesToProposalController {
-    
+
+
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
-    private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository);
+
     private final DroneModelRepository droneModelRepository = PersistenceContext.repositories().droneModels();
-    
+
+    private final DroneRepository droneRepository = PersistenceContext.repositories().drones();
+    private final ProposalService proposalService = new ProposalService(droneRepository);
+
+
     public Iterable<DroneModel> getListDroneModels(){
         return this.droneModelRepository.findByActive(true);
     }
@@ -227,7 +254,7 @@ public class AddDronesToProposalController {
     }
 
     public boolean addDroneModelToProposal(ShowProposal showProposal,DroneModel droneModel, int quantity){
-        return showProposalManagementService.addDroneModelToProposal(showProposal,droneModel, quantity);
+        return proposalService.addDroneModelToProposal(showProposal,droneModel, quantity);
     }
 
     public void save(ShowProposal showProposal){
@@ -242,32 +269,39 @@ public class AddDronesToProposalController {
 
 ```
 
-**ShowProposalManagementService**
+**ProposalService**
 
 ```Java
-public class ShowProposalManagementService {
-    private final ShowProposalRepository showProposalRepository;
+public class ProposalService {
 
-    public ShowProposalManagementService(final ShowProposalRepository showProposalRepository) {
-        this.showProposalRepository = showProposalRepository;
+    private final DroneRepository droneRepository;
+
+    public ProposalService(final DroneRepository droneRepository){
+        this.droneRepository = droneRepository;
     }
 
-    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, SystemUser user) {
-        long proposalCount = showProposalRepository.countByShowRequest(showRequest);
-        int proposalNumber = (int) proposalCount + 1;
-
-        ShowProposal showProposal = new ShowProposal(showRequest, location, date, time, duration, totalDroneNumber, proposalNumber, user, ShowProposalStatus.PENDING);
-        return (ShowProposal) this.showProposalRepository.save(showProposal);
-    }
-
-    public boolean addDroneModelToProposal(ShowProposal showProposal, DroneModel droneModel,int quantity){
+    public boolean addDroneModelToProposal(ShowProposal showProposal, DroneModel droneModel, int quantity){
         if(showProposal == null){
             throw new IllegalArgumentException("Show Proposal cannot be null!");
         }
         if(droneModel == null){
             throw new IllegalArgumentException("Drone Model cannot be null!");
         }
+        if(numberDronesOfDroneModel(droneModel) < quantity){
+            throw new IllegalArgumentException("Not enough Drones with this Drone Model Registered in the System!");
+        }
         return showProposal.addDroneToList(droneModel, quantity);
+    }
+
+
+
+    private int numberDronesOfDroneModel(DroneModel droneModel){
+        int numberOfDrones = 0;
+        Iterable<Drone> drones = this.droneRepository.findByDroneModel(droneModel);
+        for (Drone drone : drones){
+            numberOfDrones++;
+        }
+        return  numberOfDrones;
     }
 }
 ```

@@ -1,20 +1,20 @@
-package eapli.base.showProposalManagement.application;
+package eapli.base.showProposalManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.droneManagement.domain.Drone;
+import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
-import eapli.base.showProposalManagement.domain.ShowProposal;
-import eapli.base.showProposalManagement.domain.ShowProposalStatus;
-import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,15 +23,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalTime;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ShowProposalManagementServiceTest {
+class ProposalServiceTest {
 
     @Mock
-    private ShowProposalRepository repo;
+    private DroneRepository repo;
 
     @InjectMocks
-    private ShowProposalManagementService service;
+    private ProposalService service;
 
     private ShowProposal proposal;
     private DroneModel modelA;
@@ -73,8 +76,39 @@ class ShowProposalManagementServiceTest {
         ShowRequest request = new ShowRequest(location,Calendar.getInstance(),20,30,figures,customer, "Aniversário", user);
         proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, ShowProposalStatus.PENDING);
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
+
     }
 
+    @Test
+    void addDroneModelToProposal_success() {
+        Drone drone1 = mock(Drone.class);
+        Drone drone2 = mock(Drone.class);
+        Drone drone3 = mock(Drone.class);
+        when(repo.findByDroneModel(modelA)).thenReturn(List.of(drone1, drone2, drone3));
+        boolean result = service.addDroneModelToProposal(proposal, modelA, 1);
+        assertTrue(result);
+    }
 
+    @Test
+    void addDroneModelToProposal_notEnoughDrones_throwsException() {
+        Drone drone1 = mock(Drone.class);
+        when(repo.findByDroneModel(modelA)).thenReturn(List.of(drone1));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+                service.addDroneModelToProposal(proposal, modelA, 3));
+        assertEquals("Not enough Drones with this Drone Model Registered in the System!", ex.getMessage());
+    }
+
+    @Test
+    void addDroneModelToProposal_nullProposal_throwsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                service.addDroneModelToProposal(null, modelA, 3));
+    }
+
+    @Test
+    void addDroneModelToProposal_nullDroneModel_throwsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                service.addDroneModelToProposal(proposal, null, 3));
+    }
 
 }

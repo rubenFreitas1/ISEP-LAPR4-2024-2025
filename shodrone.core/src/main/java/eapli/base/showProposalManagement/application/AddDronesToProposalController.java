@@ -1,9 +1,11 @@
 package eapli.base.showProposalManagement.application;
 
 
+import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showProposalManagement.domain.ProposalService;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.domain.ShowProposalStatus;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -16,9 +18,10 @@ public class AddDronesToProposalController {
 
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
 
-    private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository);
-
     private final DroneModelRepository droneModelRepository = PersistenceContext.repositories().droneModels();
+
+    private final DroneRepository droneRepository = PersistenceContext.repositories().drones();
+    private final ProposalService proposalService = new ProposalService(droneRepository);
 
 
     public Iterable<DroneModel> getListDroneModels(){
@@ -30,7 +33,7 @@ public class AddDronesToProposalController {
     }
 
     public boolean addDroneModelToProposal(ShowProposal showProposal,DroneModel droneModel, int quantity){
-        return showProposalManagementService.addDroneModelToProposal(showProposal,droneModel, quantity);
+        return proposalService.addDroneModelToProposal(showProposal,droneModel, quantity);
     }
 
     public void save(ShowProposal showProposal){
