@@ -271,6 +271,12 @@ public class RegisterShowProposalUI extends AbstractUI {
 
         while (eventTime == null) {
             String input = Console.readLine("Enter the event time (HH:mm): ").trim();
+
+            if (input == null || input.isEmpty()) {
+                System.out.println("Time input cannot be empty.");
+                continue;
+            }
+
             try {
                 eventTime = LocalTime.parse(input, timeFormatter);
             } catch (DateTimeParseException e) {

@@ -11,6 +11,7 @@ import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
+import eapli.framework.time.util.CurrentTimeCalendars;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,8 @@ class ShowProposalTest {
     private DroneModel modelA;
     private DroneModel modelB;
     private SystemUser user;
+    private Calendar now;
+    private GeoLocation geoLocation;
 
     private FigureCategory category;
     private DroneWindBehavior behavior;
@@ -49,6 +52,9 @@ class ShowProposalTest {
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles(Roles.ADMIN)
                 .build();
+
+        now = CurrentTimeCalendars.now();
+        geoLocation = new GeoLocation(38.7169, -9.1399, 100);
 
         Name name = Name.valueOf("Alice", "Smith");
         EmailAddress email = EmailAddress.valueOf("alice@mail.com");
@@ -102,5 +108,156 @@ class ShowProposalTest {
     void addDroneToList_Fail_ModelAlreadyAdded() {
         assertTrue(proposal.addDroneToList(modelA, 3));
         assertFalse(proposal.addDroneToList(modelA, 1));
+    }
+    @Test
+    void validateShowRequest_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateShowRequest(null);
+        });
+        assertEquals("ShowRequest cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateShowRequest_Valid_Returns() {
+        ShowRequest validRequest = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", user);
+        assertEquals(validRequest, proposal.validateShowRequest(validRequest));
+    }
+
+    @Test
+    void validateLocation_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateLocation(null);
+        });
+        assertEquals("Location cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateLocation_InvalidAltitude_Throws() {
+        GeoLocation loc = new GeoLocation(0, 0, 0); // altitude <= 0
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateLocation(loc);
+        });
+        assertEquals("Altitude must be a positive number.", ex.getMessage());
+    }
+
+    @Test
+    void validateLocation_Valid_Returns() {
+        GeoLocation loc = new GeoLocation(45, 45, 10);
+        assertEquals(loc, proposal.validateLocation(loc));
+    }
+
+    @Test
+    void validateDate_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateDate(null);
+        });
+        assertEquals("Date cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateDate_PastDate_Throws() {
+        Calendar past = Calendar.getInstance();
+        past.add(Calendar.DAY_OF_MONTH, -1);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateDate(past);
+        });
+        assertEquals("The date cannot be in the past.", ex.getMessage());
+    }
+
+    @Test
+    void validateDate_Valid_Returns() {
+        Calendar todayOrFuture = Calendar.getInstance();
+        todayOrFuture.add(Calendar.DAY_OF_MONTH, 1);
+        assertEquals(todayOrFuture, proposal.validateDate(todayOrFuture));
+    }
+
+    @Test
+    void validateTime_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateTime(null);
+        });
+        assertEquals("Time cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateTime_Valid_Returns() {
+        LocalTime time = LocalTime.now();
+        assertEquals(time, proposal.validateTime(time));
+    }
+
+    @Test
+    void validateDuration_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateDuration(null);
+        });
+        assertEquals("Duration cannot be null.", ex.getMessage());
+    }
+
+    @Test
+    void validateDuration_NonPositive_Throws() {
+        IllegalArgumentException ex0 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateDuration(0);
+        });
+        IllegalArgumentException exNeg = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateDuration(-1);
+        });
+        assertEquals("Duration must be greater than 0.", ex0.getMessage());
+        assertEquals("Duration must be greater than 0.", exNeg.getMessage());
+    }
+
+    @Test
+    void validateDuration_Valid_Returns() {
+        assertEquals(10, proposal.validateDuration(10));
+    }
+
+    @Test
+    void validateTotalDroneNumber_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateTotalDroneNumber(null);
+        });
+        assertEquals("Total drone number cannot be null.", ex.getMessage());
+    }
+
+    @Test
+    void validateTotalDroneNumber_NonPositive_Throws() {
+        IllegalArgumentException ex0 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateTotalDroneNumber(0);
+        });
+        IllegalArgumentException exNeg = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateTotalDroneNumber(-1);
+        });
+        assertEquals("Total drone number must be greater than 0.", ex0.getMessage());
+        assertEquals("Total drone number must be greater than 0.", exNeg.getMessage());
+    }
+
+    @Test
+    void validateTotalDroneNumber_Valid_Returns() {
+        assertEquals(5, proposal.validateTotalDroneNumber(5));
+    }
+
+    @Test
+    void validateProposalNumber_Negative_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateProposalNumber(-1);
+        });
+        assertEquals("Proposal number cannot be negative", ex.getMessage());
+    }
+
+    @Test
+    void validateProposalNumber_Valid_Returns() {
+        assertEquals(3, proposal.validateProposalNumber(3));
+    }
+
+    @Test
+    void validateCreatedBy_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateCreatedBy(null);
+        });
+        assertEquals("CreatedBy (SystemUser) cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateCreatedBy_Valid_Returns() {
+        assertEquals(user, proposal.validateCreatedBy(user));
     }
 }

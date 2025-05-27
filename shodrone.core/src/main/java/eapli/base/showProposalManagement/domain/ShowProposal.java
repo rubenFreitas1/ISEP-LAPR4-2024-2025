@@ -54,15 +54,15 @@ public class ShowProposal implements AggregateRoot<Long> {
     protected ShowProposal() {}
 
     public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
-        this.showRequest = showRequest;
-        this.location = location;
-        this.date = date;
-        this.time = time;
-        this.duration = duration;
-        this.totalDroneNumber = totalDroneNumber;
+        this.showRequest = validateShowRequest(showRequest);
+        this.location = validateLocation(location);
+        this.date = validateDate(date);
+        this.time = validateTime(time);
+        this.duration = validateDuration(duration);
+        this.totalDroneNumber = validateTotalDroneNumber(totalDroneNumber);
+        this.proposalNumber = validateProposalNumber(proposalNumber);
+        this.createdBy = validateCreatedBy(createdBy);
         this.createdOn = Calendar.getInstance();
-        this.proposalNumber = proposalNumber;
-        this.createdBy = createdBy;
         this.status = ShowStatus.PENDING;
         this.droneModelList = new ArrayList<>();
     }
@@ -117,6 +117,97 @@ public class ShowProposal implements AggregateRoot<Long> {
     public SystemUser createdBy() { return this.createdBy; }
 
     public LocalTime time() { return this.time; }
+
+    public ShowRequest validateShowRequest(ShowRequest showRequest) {
+        if (showRequest == null)
+            throw new IllegalArgumentException("ShowRequest cannot be null");
+        return showRequest;
+    }
+
+    public GeoLocation validateLocation(GeoLocation location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location cannot be null");
+        }
+
+        double latitude = location.latitude();
+        double longitude = location.longitude();
+        int altitude = location.altitude();
+
+        if (latitude < -90 || latitude > 90) {
+            throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees.");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees.");
+        }
+
+        if (altitude <= 0) {
+            throw new IllegalArgumentException("Altitude must be a positive number.");
+        }
+        return location;
+    }
+
+    public Calendar validateDate(Calendar date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        Calendar enteredDate = (Calendar) date.clone();
+
+        enteredDate.set(Calendar.HOUR_OF_DAY, 0);
+        enteredDate.set(Calendar.MINUTE, 0);
+        enteredDate.set(Calendar.SECOND, 0);
+        enteredDate.set(Calendar.MILLISECOND, 0);
+
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.set(Calendar.HOUR_OF_DAY, 0);
+        currentDate.set(Calendar.MINUTE, 0);
+        currentDate.set(Calendar.SECOND, 0);
+        currentDate.set(Calendar.MILLISECOND, 0);
+
+        if (enteredDate.before(currentDate)) {
+            throw new IllegalArgumentException("The date cannot be in the past.");
+        }
+        return date;
+    }
+
+    public LocalTime validateTime(LocalTime time) {
+        if (time == null)
+            throw new IllegalArgumentException("Time cannot be null");
+        return time;
+    }
+
+    public int validateDuration(Integer duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("Duration cannot be null.");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be greater than 0.");
+        }
+        return duration;
+    }
+
+    public int validateTotalDroneNumber(Integer totalDroneNumber) {
+        if (totalDroneNumber == null) {
+            throw new IllegalArgumentException("Total drone number cannot be null.");
+        }
+        if (totalDroneNumber <= 0) {
+            throw new IllegalArgumentException("Total drone number must be greater than 0.");
+        }
+        return totalDroneNumber;
+    }
+
+    public int validateProposalNumber(int proposalNumber) {
+        if (proposalNumber < 0)
+            throw new IllegalArgumentException("Proposal number cannot be negative");
+        return proposalNumber;
+    }
+
+    public SystemUser validateCreatedBy(SystemUser createdBy) {
+        if (createdBy == null)
+            throw new IllegalArgumentException("CreatedBy (SystemUser) cannot be null");
+        return createdBy;
+    }
+
 
     @Override
     public boolean sameAs(Object other) {

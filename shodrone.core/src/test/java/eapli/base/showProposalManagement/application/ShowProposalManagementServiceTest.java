@@ -13,14 +13,20 @@ import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -74,6 +80,45 @@ class ShowProposalManagementServiceTest {
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
     }
 
+    @Test
+    void registerShowProposal_success() {
+        when(repo.countByShowRequest(proposal.showRequest())).thenReturn(0L);
+        when(repo.save(any(ShowProposal.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        ShowProposal result = service.registerShowProposal(
+                proposal.showRequest(),
+                proposal.location(),
+                proposal.date(),
+                proposal.time(),
+                proposal.duration(),
+                proposal.totalDroneNumber(),
+                user
+        );
 
+        assertNotNull(result);
+        assertEquals(proposal.showRequest(), result.showRequest());
+        assertEquals(proposal.location(), result.location());
+        assertEquals(proposal.date(), result.date());
+        assertEquals(proposal.time(), result.time());
+        assertEquals(proposal.duration(), result.duration());
+        assertEquals(proposal.totalDroneNumber(), result.totalDroneNumber());
+        assertEquals(1, result.proposalNumber());  // since countByShowRequest returns 0L
+        assertEquals(user, result.createdBy());
+
+        verify(repo).countByShowRequest(proposal.showRequest());
+        verify(repo).save(any(ShowProposal.class));
+    }
+
+    @Test
+    void findByShowRequest_returnsProposals() {
+        List<ShowProposal> expected = List.of(proposal);
+        when(repo.findByShowRequest(proposal.showRequest())).thenReturn(expected);
+
+        Iterable<ShowProposal> result = service.findByShowRequest(proposal.showRequest());
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+
+        verify(repo).findByShowRequest(proposal.showRequest());
+    }
 }
