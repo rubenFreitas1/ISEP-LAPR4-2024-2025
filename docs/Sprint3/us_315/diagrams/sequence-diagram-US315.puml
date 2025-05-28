@@ -1,93 +1,131 @@
 @startuml
-title Sequence Diagram
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
 
-actor "CRM Collaborator" as Actor
-participant "RegisterCustomerUI" as UI <<presentation>>
-participant "RegisterCustomerController" as Controller <<application>>
+actor "CRM Collaborator" as crmCollaborator
+participant "AddVideoProposalAction" as ACTION <<presentation>>
+participant "AddVideoProposalUI" as UI <<presentation>>
+participant "AddVideoController" as CTRL <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
-participant "Customer" as Customer <<domain>>
-participant "Representative" as Representative <<domain>>
+participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "ShowProposal" as ShowProposal <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
-participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
 database "Database" as Database
 
-activate Actor
+title Sequence Diagram - US230
 
-Actor -> UI: show()
+activate crmCollaborator
+
+    crmCollaborator -> ACTION : Asks to add a video of simulation to a show proposal
+    activate ACTION
+
+        ACTION -> UI** : create
+        ACTION -> UI : show()
+        deactivate ACTION
+
+        activate UI
+
+        UI -> CTRL**: create
+        UI -> CTRL : listCustomers()
+        activate CTRL
+
+            CTRL -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR)
+            CTRL -> CustomerManagementService : findAllActiveCustomers()
+            activate CustomerManagementService
+
+                CustomerManagementService -> CustomerRepository : findByActive(true)
+                activate CustomerRepository
+
+                    CustomerRepository -> Database : findByActive(true)
+                    activate Database
+
+                        Database -> CustomerRepository : listOfActiveClients
+                    deactivate Database
+
+                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                deactivate CustomerRepository
+
+                CustomerManagementService -> CTRL : listOfActiveClients
+            deactivate CustomerManagementService
+
+            CTRL -> UI : listOfActiveClients
+        deactivate CTRL
+        UI -> crmCollaborator : displays list of customers
+    deactivate UI
+
+    crmCollaborator -> UI : selects a customer
     activate UI
 
-UI -> Controller** : create()
+        UI -> CTRL : listShowProposals(customer)
+        activate CTRL
 
-UI --> Actor: Request Customer Information (Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-deactivate UI
+            CTRL -> ShowProposalManagementService : findByPendingAndEmptyVideo(customer, status)
+            activate ShowProposalManagementService
 
-Actor -> UI: Insert Customer data
+                ShowProposalManagementService -> ShowProposalRepository : findByPendingAndEmptyVideo(customer, status)
+                activate ShowProposalRepository
 
+                    ShowProposalRepository -> Database : findByPendingAndEmptyVideo(customer, status)
+                    activate Database
 
+                        Database -> ShowProposalRepository : listOfShowProposals
+                    deactivate Database
+
+                    ShowProposalRepository -> ShowProposalManagementService : listOfShowProposals
+                deactivate ShowProposalRepository
+
+                ShowProposalManagementService -> CTRL : listOfShowProposals
+            deactivate ShowProposalManagementService
+
+            CTRL -> UI : listOfShowProposals
+        deactivate CTRL
+
+        UI -> crmCollaborator : displays the list of show proposal of the customer
+    deactivate UI
+
+    crmCollaborator -> UI : selects a show proposal
     activate UI
 
-        UI -> Controller : registerCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-            activate Controller
+        UI -> crmCollaborator : request a video file of the simulation
+    deactivate UI
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+    crmCollaborator -> UI : gives video file
+    activate UI
 
-                deactivate AuthorizationService
+        UI -> CTRL : addVideoToProposal(video, showProposal)
+        activate CTRL
 
-                Controller -> CustomerManagementService : registerNewCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address)
-                activate CustomerManagementService
+            CTRL -> ShowProposal : addVideoToProposal(video, showProposal)
+            activate ShowProposal
 
+                ShowProposal -> CTRL : updatedShowProposal
+            deactivate ShowProposal
 
-                    CustomerManagementService -> Customer : create()
-                    activate Customer
+            CTRL -> ShowProposalManagementService : save(proposal)
+            activate ShowProposalManagementService
 
+                ShowProposalManagementService -> ShowProposalRepository : save(proposal)
+                activate ShowProposalRepository
 
-                    Customer -> CustomerManagementService : newCustomer
+                    ShowProposalRepository -> Database : save()
+                    activate Database
 
-                    deactivate Customer
+                        Database --> ShowProposalRepository :
+                    deactivate Database
 
+                    ShowProposalRepository --> ShowProposalManagementService :
+                deactivate ShowProposalRepository
 
-                    CustomerManagementService -> CustomerRepository : save(newCustomer)
+                ShowProposalManagementService --> CTRL :
+            deactivate ShowProposalManagementService
 
-                    activate CustomerRepository
+            CTRL --> UI :
+        deactivate CTRL
 
-                             CustomerRepository -> Database : save()
-                             activate Database
-
-                                Database --> CustomerRepository
-                             deactivate Database
-
-                             CustomerRepository --> CustomerManagementService
-                    deactivate CustomerRepository
-
-                    CustomerManagementService --> Controller
-                deactivate CustomerManagementService
-
-                Controller -> RepresentativeManagementService : registerNewRepresentative(representativeName, representativeEmail,\n createdOn, representativePassword, representativePhoneNumber,\n associatedCustomer, representativePosition)
-                activate RepresentativeManagementService
-
-                RepresentativeManagementService ->Representative:create()
-                activate Representative
-                Representative -> RepresentativeManagementService : newRepresentative
-                deactivate Representative
-
-                RepresentativeManagementService -> RepresentativeRepository :save(newRepresentative)
-                activate RepresentativeRepository
-                RepresentativeRepository ->Database :save()
-                activate Database
-                Database --> RepresentativeRepository
-                deactivate Database
-                RepresentativeRepository -->RepresentativeManagementService
-                deactivate RepresentativeRepository
-                RepresentativeManagementService --> Controller
-                deactivate RepresentativeManagementService
-
-
-                Controller --> UI
-            deactivate Controller
-        UI --> Actor : Inform operation success
-        deactivate UI
-deactivate Actor
+        UI -> crmCollaborator : displays operation success
+    deactivate UI
 
 @enduml
