@@ -29,15 +29,15 @@ public class RegisterCustomerController {
     private final RepresentativeRepository repo2 = PersistenceContext.repositories().representatives();
 
     private final CustomerManagementService customersvc = new CustomerManagementService(repo, passwordEncoder, passwordPolicy);
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo);
+    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo, passwordEncoder, passwordPolicy);
 
     private final UserManagementService userSvc = AuthzRegistry.userService();
 
 
-    public Customer registerCustomer(final String customerFirstName, final String customerLastName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
+    public Customer registerCustomer(final String customerFirstName, final String customerLastName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeFirstName, final String representativeLastName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.POWER_USER,Roles.CRM_COLLABORATOR);
         Customer newCustomer = customersvc.registerNewCustomer(customerFirstName, customerLastName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, authz.session().get().authenticatedUser());
-        representativesvc.registerNewRepresentative(representativeName, representativeEmail, representativePassword, representativePhoneNumber, newCustomer, representativePosition, authz.session().get().authenticatedUser());
+        representativesvc.registerNewRepresentative(representativeFirstName, representativeLastName, representativeEmail, representativePassword, representativePhoneNumber, newCustomer, representativePosition, authz.session().get().authenticatedUser());
         final Set<Role> customerRoleType = new HashSet<>();
         customerRoleType.add(Roles.CUSTOMER);
         final Set<Role> representativeRoleType = new HashSet<>();

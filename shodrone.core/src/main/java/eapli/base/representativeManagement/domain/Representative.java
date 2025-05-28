@@ -3,11 +3,15 @@ package eapli.base.representativeManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.domain.model.Name;
+import eapli.framework.infrastructure.authz.domain.model.Password;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
+import java.util.Optional;
 
 @Entity
 public class Representative implements AggregateRoot<Long> {
@@ -16,11 +20,11 @@ public class Representative implements AggregateRoot<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long representativeId;
     @Column
-    private String representativeName;
+    private Name representativeName;
     @Column
-    private String representativeEmail;
+    private EmailAddress representativeEmail;
     @Column
-    private String representativePassword;
+    private Password representativePassword;
     @Column
     private String representativePhoneNumber;
 
@@ -44,10 +48,10 @@ public class Representative implements AggregateRoot<Long> {
     protected Representative() {
     }
 
-    public Representative(final String representativeName, final String representativeEmail, final Calendar createdOn, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy) {
+    public Representative(final Name representativeName, final EmailAddress representativeEmail, final Calendar createdOn, final Optional<Password> representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy) {
         this.representativeName = representativeName;
         this.representativeEmail = representativeEmail;
-        this.representativePassword = representativePassword;
+        this.representativePassword = representativePassword.orElse(null);
         this.representativePhoneNumber = representativePhoneNumber;
         this.associatedCustomer = associatedCustomer;
         this.representativePosition = representativePosition;
@@ -57,13 +61,13 @@ public class Representative implements AggregateRoot<Long> {
         this.active = true;
     }
 
-    public String representativeName() {
+    public Name representativeName() {
         return this.representativeName;
     }
-    public String representativeEmail() {
+    public EmailAddress representativeEmail() {
         return this.representativeEmail;
     }
-    public String representativePassword() {
+    public Password representativePassword() {
         return this.representativePassword;
     }
     public String representativePhoneNumber() {
@@ -101,14 +105,14 @@ public class Representative implements AggregateRoot<Long> {
         }
     }
 
-    public void changeName(final String representativeName) {
+    public void changeName(final Name representativeName) {
         this.representativeName = representativeName;
     }
-    public void changeEmail(final String representativeEmail) {
+    public void changeEmail(final EmailAddress representativeEmail) {
         this.representativeEmail = representativeEmail;
     }
-    public void changePassword(final String representativePassword) {
-        this.representativePassword = representativePassword;
+    public void changePassword(final Optional<Password> representativePassword) {
+        this.representativePassword = representativePassword.orElse(null);
     }
     public void changePhoneNumber(final String representativePhoneNumber) {
         this.representativePhoneNumber = representativePhoneNumber;

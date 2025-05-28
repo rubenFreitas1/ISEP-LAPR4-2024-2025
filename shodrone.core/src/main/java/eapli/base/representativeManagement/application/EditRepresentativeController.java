@@ -25,13 +25,13 @@ public class EditRepresentativeController {
 
     private final CustomerRepository customerRepo = PersistenceContext.repositories().customers();
 
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(representativeRepo, customerRepo);
+    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(representativeRepo, customerRepo, passwordEncoder, passwordPolicy);
 
     private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
 
-    public Representative editRepresentative(Representative representative,String representativeName, String representativeEmail, String representativePassword, String representativePhoneNumber, String representativePosition){
+    public Representative editRepresentative(Representative representative,String representativeFirstName, String representativeLastName, String representativeEmail, String representativePassword, String representativePhoneNumber, String representativePosition){
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        representativesvc.editRepresentative(representative, representativeName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
+        representativesvc.editRepresentative(representative, representativeFirstName, representativeLastName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
         return representative;
     }
     public Iterable<Representative> allRepresentatives(Customer customer) {

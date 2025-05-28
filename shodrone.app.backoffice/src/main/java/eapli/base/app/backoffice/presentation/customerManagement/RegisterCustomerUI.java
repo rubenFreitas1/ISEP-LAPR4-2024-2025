@@ -10,14 +10,15 @@ public class RegisterCustomerUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        final String customerFirstName = Console.readLine("Customer Name");
+        final String customerFirstName = Console.readLine("Customer First Name");
         final String customerLastName = Console.readLine("Customer Last Name");
         final String customerAddress = Console.readLine("Customer Address");
         final String customerEmail = Console.readLine("Customer Email");
         final String password = Console.readLine("Password");
         final String customerPhoneNumber = Console.readLine("Customer Phone Number");
         final String customerVatNumber = Console.readLine("Customer VAT Number");
-        final String representativeName = Console.readLine("Representative Name");
+        final String representativeFirstName = Console.readLine("Representative First Name");
+        final String representativeLastName = Console.readLine("Representative Last Name");
         final String representativeEmail = Console.readLine("Representative Email");
         final String representativePassword = Console.readLine("Representative Password");
         final String representativePhoneNumber = Console.readLine("Representative Phone Number");
@@ -26,7 +27,7 @@ public class RegisterCustomerUI extends AbstractUI {
 
         try {
             this.theController.registerCustomer(customerFirstName,customerLastName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber,
-                    representativeName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
+                    representativeFirstName,representativeLastName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }

@@ -78,7 +78,7 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
             if (representative == null) {
                 System.out.println("No representative selected");
             } else {
-                String name = null, email = null, password = null, phoneNumber = null, position = null;
+                String firstName = null, lastName = null, email = null, password = null, phoneNumber = null, position = null;
 
 
                 System.out.println("\nEditing Representative:");
@@ -87,8 +87,20 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
 
                 while (true) {
                     try {
-                        name = Console.readLine("Name |(If you do not desire to change type N)| : ");
-                        if (!name.equalsIgnoreCase("N") && name.trim().isEmpty()) {
+                        firstName = Console.readLine("First Name |(If you do not desire to change type N)| : ");
+                        if (!firstName.equalsIgnoreCase("N") && firstName.trim().isEmpty()) {
+                            throw new IllegalArgumentException("Name cannot be empty.");
+                        }
+                        break;
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+
+                while (true) {
+                    try {
+                        lastName = Console.readLine("Last Name |(If you do not desire to change type N)| : ");
+                        if (!lastName.equalsIgnoreCase("N") && lastName.trim().isEmpty()) {
                             throw new IllegalArgumentException("Name cannot be empty.");
                         }
                         break;
@@ -150,7 +162,7 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 }
 
                 try {
-                    this.theController.editRepresentative(representative, name, email, password, phoneNumber, position);
+                    this.theController.editRepresentative(representative, firstName, lastName, email, password, phoneNumber, position);
                     System.out.println("Representative edited successfully\n");
                 } catch (IllegalArgumentException e) {
                     System.out.println("Unexpected error while editing representative: " + e.getMessage());

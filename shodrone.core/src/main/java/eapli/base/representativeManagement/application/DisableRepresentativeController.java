@@ -21,7 +21,7 @@ public class DisableRepresentativeController {
     private final CustomerRepository customerRepo = PersistenceContext.repositories().customers();
     private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
     private final RepresentativeRepository representativeRepo = PersistenceContext.repositories().representatives();
-    private final RepresentativeManagementService representativeManagementService = new RepresentativeManagementService(representativeRepo, customerRepo);
+    private final RepresentativeManagementService representativeManagementService = new RepresentativeManagementService(representativeRepo, customerRepo, passwordEncoder, passwordPolicy);
 
     public Iterable<Customer> listCustomers() {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);

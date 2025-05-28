@@ -54,11 +54,14 @@ class RepresentativeManagementServiceTest {
         Optional<Password> password = Password.encodedAndValid("VAT123", policy, encoder);
         customer = new Customer(name, "Client Address", email, password, "910000000", "CC123456", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
 
+        Name repName = Name.valueOf("John", "Rep");
+        EmailAddress repEmail = EmailAddress.valueOf("john.rep@email.com");
+        Optional<Password> repPassword = Password.encodedAndValid("securePass", policy, encoder);
         representative = new Representative(
-                "John Rep",
-                "john.rep@email.com",
+                repName,
+                repEmail,
                 Calendar.getInstance(),
-                "securePass",
+                repPassword,
                 "910000001",
                 customer,
                 "Sales",
@@ -106,8 +109,9 @@ class RepresentativeManagementServiceTest {
     void registerNewRepresentative_shouldSaveCustomerWithRepresentative() {
         when(representativeRepository.isEmailUsed("new.rep@email.com")).thenReturn(false);
 
+
         service.registerNewRepresentative(
-                "New Rep",
+                "New","Rep",
                 "new.rep@email.com",
                 "securePass123",
                 "910000002",
@@ -125,7 +129,7 @@ class RepresentativeManagementServiceTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 service.registerNewRepresentative(
-                        "New Rep",
+                        "New"," Rep",
                         "john.rep@email.com",
                         "securePass123",
                         "910000002",
@@ -141,7 +145,7 @@ class RepresentativeManagementServiceTest {
         when(representativeRepository.isEmailUsed("john.new@email.com")).thenReturn(false);
 
         service.editRepresentative(representative,
-                "New Name",
+                "New"," Name",
                 "john.new@email.com",
                 "newPass123",
                 "910000999",
@@ -161,7 +165,7 @@ class RepresentativeManagementServiceTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 service.editRepresentative(representative,
-                        "New Name",
+                        "New"," Name",
                         "existing@email.com",
                         "newPass123",
                         "910000999",

@@ -7,6 +7,7 @@ import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -17,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerTest {
 
+    PasswordPolicy policy = new ExemploPasswordPolicy();
+    PasswordEncoder encoder = new PlainTextEncoder();
     private Customer customer;
     private Calendar now;
     private SystemUser user;
@@ -25,8 +28,6 @@ class CustomerTest {
     void setUp() {
         now = Calendar.getInstance();
 
-        var policy = new ExemploPasswordPolicy();
-        var encoder = new PlainTextEncoder();
         user = new SystemUserBuilder(policy, encoder)
                 .with("john", "StrongPass123", "John", "Doe", "john@email.com")
                 .withRoles(Roles.ADMIN).build();
@@ -59,7 +60,10 @@ class CustomerTest {
 
     @Test
     void addRepresentative_shouldAddSuccessfully() {
-        Representative rep = new Representative("Alice Smith", "alice@email.com", now, "password123", "912345678", customer, "Sales Manager", user);
+        Name repName = Name.valueOf("Alice", "Smith");
+        EmailAddress repEmail = EmailAddress.valueOf("alice@email.com");
+        Optional<Password> repPassword = Password.encodedAndValid("password123", policy, encoder);
+            Representative rep = new Representative(repName, repEmail, now, repPassword, "912345678", customer, "Sales Manager", user);
 
         customer.addRepresentative(rep);
 
@@ -72,7 +76,7 @@ class CustomerTest {
         assertEquals("John Doe", customer.customerName().toString());
         assertEquals("123 Main St", customer.customerAddress());
         assertEquals("john@example.com", customer.customerEmail().toString());
-        assertEquals(Password.encodedAndValid("Password123", new ExemploPasswordPolicy(), new PlainTextEncoder()).get(), customer.customerPassword());
+        assertEquals(Password.encodedAndValid("Password123", policy, encoder).get(), customer.customerPassword());
         assertEquals("912345678", customer.customerPhoneNumber());
         assertEquals("PT123456789", customer.customerVatNumber());
         assertEquals(user, customer.createdBy());

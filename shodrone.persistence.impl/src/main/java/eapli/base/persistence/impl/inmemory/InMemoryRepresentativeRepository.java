@@ -22,7 +22,7 @@ public class InMemoryRepresentativeRepository extends InMemoryDomainRepository<R
 
     @Override
     public boolean isEmailUsed(String representativeEmail) {
-        return matchOne(e -> e.representativeEmail().equalsIgnoreCase(representativeEmail)).isPresent();
+        return matchOne(e -> e.representativeEmail().equals(representativeEmail)).isPresent();
     }
 
     @Override

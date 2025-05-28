@@ -7,6 +7,7 @@ import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -18,30 +19,32 @@ class RepresentativeTest {
     private Calendar now;
     private SystemUser user;
     private Customer customer;
+    private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
+    private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
 
     @BeforeEach
     void setUp() {
         now = Calendar.getInstance();
-
-        var policy = new ExemploPasswordPolicy();
-        var encoder = new PlainTextEncoder();
-        user = new SystemUserBuilder(policy, encoder)
+        user = new SystemUserBuilder( passwordPolicy, passwordEncoder)
                 .with("john", "StrongPass123", "John", "Doe", "john@email.com")
                 .withRoles(Roles.ADMIN).build();
 
         Name name = Name.valueOf("Acme Corp", "Inc.");
         EmailAddress email = EmailAddress.valueOf("acme@email.com");
-        Optional<Password> password = Password.encodedAndValid("VAT123", policy, encoder);
+        Optional<Password> password = Password.encodedAndValid("VAT123", passwordPolicy, passwordEncoder);
         customer = new Customer(name, "Acme Corp", email, password, "911234567", "CC123456", user, Customer.CustomerStatus.CREATED, now);
     }
 
     @Test
     void constructor_shouldCreateRepresentative() {
+        Name name = Name.valueOf("Alice", "Smith");
+        EmailAddress email = EmailAddress.valueOf("alice@email.com");
+        Optional<Password> password = Password.encodedAndValid("password123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Alice Smith",
-                "alice@email.com",
+                name,
+                email,
                 now,
-                "password123",
+                password,
                 "912345678",
                 customer,
                 "Sales Manager",
@@ -62,11 +65,14 @@ class RepresentativeTest {
 
     @Test
     void deactivate_validDate_shouldDeactivateRepresentative() {
+        Name name = Name.valueOf("Bob", "Jones");
+        EmailAddress email = EmailAddress.valueOf("bob@email.com");
+        Optional<Password> password = Password.encodedAndValid("pass123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Bob Jones",
-                "bob@email.com",
+                name,
+                email,
                 now,
-                "pass123",
+                password,
                 "923456789",
                 customer,
                 "Support",
@@ -83,11 +89,14 @@ class RepresentativeTest {
 
     @Test
     void deactivate_withDateBeforeCreatedOn_shouldThrowException() {
+        Name name = Name.valueOf("Carla", "Lima");
+        EmailAddress email = EmailAddress.valueOf("carla@email.com");
+        Optional<Password> password = Password.encodedAndValid("pass123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Carla Lima",
-                "carla@email.com",
+                name,
+                email,
                 now,
-                "pass123",
+                password,
                 "933456789",
                 customer,
                 "Marketing",
@@ -102,11 +111,14 @@ class RepresentativeTest {
 
     @Test
     void deactivate_whenAlreadyInactive_shouldThrowException() {
+        Name name = Name.valueOf("David", "Silva");
+        EmailAddress email = EmailAddress.valueOf("david@email.com");
+        Optional<Password> password = Password.encodedAndValid("pass123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "David Silva",
-                "david@email.com",
+                name,
+                email,
                 now,
-                "pass123",
+                password,
                 "943456789",
                 customer,
                 "IT",
@@ -122,11 +134,14 @@ class RepresentativeTest {
 
     @Test
     void activate_shouldReactivateRepresentative() {
+        Name name = Name.valueOf("Eva", "Costa");
+        EmailAddress email = EmailAddress.valueOf("eva@email.com");
+        Optional<Password> password = Password.encodedAndValid("pass123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Eva Costa",
-                "eva@email.com",
+                name,
+                email,
                 now,
-                "pass123",
+                password,
                 "953456789",
                 customer,
                 "Logistics",
@@ -145,20 +160,26 @@ class RepresentativeTest {
 
     @Test
     void changeMethods_shouldUpdateFieldsCorrectly() {
+        Name name = Name.valueOf("Felipe", "Oliveira");
+        EmailAddress email = EmailAddress.valueOf("felipe@email.com");
+        Optional<Password> password = Password.encodedAndValid("oldpass123", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Felipe",
-                "felipe@email.com",
+                name,
+                email,
                 now,
-                "pass123",
+                password,
                 "963456789",
                 customer,
                 "Analyst",
                 user
         );
 
-        rep.changeName("Felipe Santos");
-        rep.changeEmail("felipe.santos@email.com");
-        rep.changePassword("newpass123");
+        Name newName = Name.valueOf("Felipe", "Santos");
+        EmailAddress newEmail = EmailAddress.valueOf("felipe.santos@email.com");
+        Optional<Password> newPassword = Password.encodedAndValid("newpass123", passwordPolicy, passwordEncoder);
+        rep.changeName(newName);
+        rep.changeEmail(newEmail);
+        rep.changePassword(newPassword);
         rep.changePhoneNumber("964444444");
         rep.changePosition("Senior Analyst");
 
@@ -171,11 +192,14 @@ class RepresentativeTest {
 
     @Test
     void toString_shouldContainRelevantData() {
+        Name name = Name.valueOf("Gustavo", "Martins");
+        EmailAddress email = EmailAddress.valueOf("gustavo@email.com");
+        Optional<Password> password = Password.encodedAndValid("secret", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Gustavo",
-                "gustavo@email.com",
+                name,
+                email,
                 now,
-                "secret",
+                password,
                 "965555555",
                 customer,
                 "Engineer",
@@ -183,18 +207,21 @@ class RepresentativeTest {
         );
 
         String repString = rep.toString();
-        assertTrue(repString.contains("Gustavo"));
+        assertTrue(repString.contains("Gustavo Martins"));
         assertTrue(repString.contains("gustavo@email.com"));
         assertTrue(repString.contains("Engineer"));
     }
 
     @Test
     void changeChangedOn_shouldUpdateChangedOnField() throws InterruptedException {
+    Name name = Name.valueOf("Helena", "Fernandes");
+        EmailAddress email = EmailAddress.valueOf("helena@email.com");
+        Optional<Password> password = Password.encodedAndValid("mypassword", passwordPolicy, passwordEncoder);
         Representative rep = new Representative(
-                "Helena",
-                "helena@email.com",
+                name,
+                email,
                 now,
-                "mypassword",
+                password,
                 "967777777",
                 customer,
                 "Manager",

@@ -17,13 +17,25 @@ public class RegisterRepresentativeUI extends AbstractUI {
         if (selectedCustomer == null) {
             selectCustomer();
         }
-        String name = null,email = null,password = null,phone = null,position = null;
+        String firstName = null, lastName = null,email = null,password = null,phone = null,position = null;
 
         while (true) {
             try {
-                name = Console.readLine("Representative Name: ");
-                if (name.trim().isEmpty()) {
-                    throw new IllegalArgumentException("Name cannot be empty.");
+                firstName = Console.readLine("Representative First Name: ");
+                if (firstName.trim().isEmpty()) {
+                    throw new IllegalArgumentException("First Name cannot be empty.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        while (true) {
+            try {
+                lastName = Console.readLine("Representative Last Name: ");
+                if (lastName.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Last Name cannot be empty.");
                 }
                 break;
             } catch (IllegalArgumentException e) {
@@ -79,7 +91,7 @@ public class RegisterRepresentativeUI extends AbstractUI {
             }
         }
         try{
-            this.theController.registerRepresentative(name, email, password, phone, selectedCustomer, position);
+            this.theController.registerRepresentative(firstName, lastName, email, password, phone, selectedCustomer, position);
         } catch (IllegalArgumentException e){
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }

@@ -4,7 +4,6 @@ import eapli.base.customerManagement.application.CustomerManagementService;
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
@@ -27,12 +26,12 @@ public class RegisterRepresentativeController {
 
     private final CustomerRepository customerRepo = PersistenceContext.repositories().customers();
 
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo);
+    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo, passwordEncoder, passwordPolicy);
 
     private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
 
 
-    public void registerRepresentative(final String representativeName, final String representativeEmail, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition) {
+    public void registerRepresentative(final String representativeFirstName, final String representativeLastName, final String representativeEmail, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
 
         if (associatedCustomer == null) {
@@ -41,7 +40,7 @@ public class RegisterRepresentativeController {
 
         System.out.println("Registering representative for customer: " + associatedCustomer.identity());
 
-        representativesvc.registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, authz.session().get().authenticatedUser());
+        representativesvc.registerNewRepresentative(representativeFirstName,representativeLastName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, authz.session().get().authenticatedUser());
     }
 
     public Iterable<Customer> allCustomers() {

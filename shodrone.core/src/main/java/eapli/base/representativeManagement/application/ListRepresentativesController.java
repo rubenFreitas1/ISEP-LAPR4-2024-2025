@@ -29,7 +29,7 @@ public class ListRepresentativesController {
 
     private final CustomerRepository customerRepo = PersistenceContext.repositories().customers(autoTx);
 
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo);
+    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repreRepo, customerRepo, passwordEncoder, passwordPolicy);
 
     private final CustomerManagementService customersvc = new CustomerManagementService(customerRepo, passwordEncoder, passwordPolicy);
 
