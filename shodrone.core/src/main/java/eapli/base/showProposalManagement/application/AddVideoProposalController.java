@@ -6,10 +6,7 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
-import eapli.base.showRequestManagement.application.ShowRequestManagementService;
-import eapli.base.showRequestManagement.domain.GeoLocation;
-import eapli.base.showRequestManagement.domain.ShowRequest;
-import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -18,17 +15,12 @@ import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
 import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalTime;
-import java.util.Calendar;
-
-public class RegisterShowProposalController {
+public class AddVideoProposalController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
     private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
     private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
     private final CustomerRepository customerRepository = PersistenceContext.repositories().customers();
     private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepository, passwordEncoder, passwordPolicy);
-    private final ShowRequestRepository showRequestRepository = PersistenceContext.repositories().showRequests();
-    private final ShowRequestManagementService showRequestManagementService = new ShowRequestManagementService(showRequestRepository);
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
     private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository);
 
@@ -37,11 +29,14 @@ public class RegisterShowProposalController {
         return customerManagementService.findAllActiveCustomers();
     }
 
-    public Iterable<ShowRequest> listShowRequests(Customer customer) {
-        return showRequestManagementService.findByCustomer(customer);
+    public Iterable<ShowProposal> listShowProposals(Customer customer) {
+        return showProposalManagementService.findByPendingAndEmptyVideo(customer, ShowStatus.PENDING);
     }
 
-    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber) {
-        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser());
+    public ShowProposal addVideoToProposal(String video, ShowProposal showProposal) {
+        if (showProposal.addVideoToProposal(video)) {
+            return this.showProposalRepository.save(showProposal);
+        }
+        return null;
     }
 }

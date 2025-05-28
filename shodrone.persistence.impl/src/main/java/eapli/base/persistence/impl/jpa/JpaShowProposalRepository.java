@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -45,4 +46,19 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
                 .setParameter("status", status)
                 .getResultList();
     }
+
+    @Override
+    public Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status) {
+        return entityManager()
+                .createQuery(
+                        "SELECT sp FROM ShowProposal sp " +
+                                "WHERE sp.status = :status " +
+                                "AND sp.videoLink IS NULL " +
+                                "AND sp.showRequest.customer = :customer",
+                        ShowProposal.class)
+                .setParameter("status", status)
+                .setParameter("customer", customer)
+                .getResultList();
+    }
+
 }

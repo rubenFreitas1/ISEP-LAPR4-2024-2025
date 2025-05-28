@@ -1,9 +1,11 @@
 package eapli.base.showProposalManagement.application;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
 import java.time.LocalTime;
@@ -26,5 +28,9 @@ public class ShowProposalManagementService {
 
     public Iterable<ShowProposal> findByShowRequest(ShowRequest showRequest) {
         return this.showProposalRepository.findByShowRequest(showRequest);
+    }
+
+    public Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status) {
+        return this.showProposalRepository.findByPendingAndEmptyVideo(customer, status);
     }
 }

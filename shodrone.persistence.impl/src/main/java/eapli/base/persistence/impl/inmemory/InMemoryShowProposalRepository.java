@@ -1,5 +1,6 @@
 package eapli.base.persistence.impl.inmemory;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -40,5 +41,20 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     public Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowStatus status) {
         return this.match(e -> e.status().equals(status) && e.allDroneModels_Quantity() == 0);
     }
+
+    @Override
+    public Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status) {
+        List<ShowProposal> result = new ArrayList<>();
+        for (ShowProposal proposal : proposals) {
+            if (proposal.status() == status &&
+                    proposal.videoLink() == null &&
+                    proposal.showRequest() != null &&
+                    proposal.showRequest().customer().equals(customer)) {
+                result.add(proposal);
+            }
+        }
+        return result;
+    }
+
 
 }

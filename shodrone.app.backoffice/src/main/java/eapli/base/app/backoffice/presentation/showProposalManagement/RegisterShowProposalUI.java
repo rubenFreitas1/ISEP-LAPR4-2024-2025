@@ -60,20 +60,7 @@ public class RegisterShowProposalUI extends AbstractUI {
                     break;
                 }
                 boolean exits = false;
-                Iterable<ShowProposal> showProposals = this.controller.listShowProposals(showRequest);
 
-                for (ShowProposal showProposal : showProposals) {
-                    if (showProposal.status().equals(ShowStatus.ACCEPTED)) {
-                        System.out.println("There is already an accepted show proposal associated with this Show Request!\n");
-                        exits = true;
-                        break;
-                    }
-                    if (showProposal.status().equals(ShowStatus.PENDING)) {
-                        System.out.println("\nThere is already a pending show proposal associated with this Show Request!\n");
-                        exits = true;
-                        break;
-                    }
-                }
                 if (!exits) {
                     validRequestSelected = true;
                     break;

@@ -51,6 +51,9 @@ public class ShowProposal implements AggregateRoot<Long> {
     @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
     private List<DroneListItem> droneModelList;
 
+    @Column (nullable = true)
+    private String videoLink;
+
     protected ShowProposal() {}
 
     public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
@@ -98,6 +101,14 @@ public class ShowProposal implements AggregateRoot<Long> {
         return currentTotal;
     }
 
+    public boolean addVideoToProposal(String video) {
+        if (isValidVideoLink(video)) {
+            this.videoLink = video;
+            return true;
+        }
+        return false;
+    }
+
     public ShowStatus status(){return  this.status;}
 
     public ShowRequest showRequest() { return this.showRequest; }
@@ -117,6 +128,8 @@ public class ShowProposal implements AggregateRoot<Long> {
     public SystemUser createdBy() { return this.createdBy; }
 
     public LocalTime time() { return this.time; }
+
+    public String videoLink() { return this.videoLink; }
 
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
         if (showRequest == null)
@@ -206,6 +219,14 @@ public class ShowProposal implements AggregateRoot<Long> {
         if (createdBy == null)
             throw new IllegalArgumentException("CreatedBy (SystemUser) cannot be null");
         return createdBy;
+    }
+
+    public boolean isValidVideoLink(String videoLink) {
+        if (videoLink == null) {
+            throw new IllegalArgumentException("Video link cannot be null");
+        }
+        final String videoLinkPattern = "^(https?://|www\\.)[a-zA-Z0-9][-a-zA-Z0-9&',./_=?%#:~]*$";
+        return videoLink.matches(videoLinkPattern);
     }
 
 

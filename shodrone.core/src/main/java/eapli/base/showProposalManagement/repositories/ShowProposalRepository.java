@@ -1,5 +1,6 @@
 package eapli.base.showProposalManagement.repositories;
 
+import eapli.base.customerManagement.domain.Customer;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
@@ -13,4 +14,6 @@ public interface ShowProposalRepository extends DomainRepository<Long, ShowPropo
     Iterable<ShowProposal> findByStatus(ShowStatus status);
 
     Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowStatus status);
+
+    Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status);
 }
