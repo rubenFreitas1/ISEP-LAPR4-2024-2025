@@ -1,27 +1,26 @@
 
-# US 220
+# US 327 - Register drone usage time
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*This user story is part of the Drone Management System, which is designed to manage various aspects of drone operations, including customer management, drone registration, and flight time tracking. The system aims to provide a comprehensive solution for drone technicians and operators to efficiently manage their fleet and customer interactions.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 327** As a Drone Tech, I want to record the flying/usage time of a given drone.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US327.1 The system must check if the flying/usage time is valid for that drone.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US240, since a drone must exist before it can be registered for usage time.*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
