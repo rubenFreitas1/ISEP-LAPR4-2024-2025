@@ -1,0 +1,30 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US327
+
+== Register drone usage time ==
+activate droneTech
+
+droneTech -> system : asks to register drone usage time
+activate system
+
+system --> droneTech : shows list of drones
+deactivate system
+droneTech -> system : selects drone
+activate system
+system --> droneTech : asks for usage time
+deactivate system
+droneTech -> system : provides usage time
+activate system
+system --> droneTech : confirms registration
+deactivate system
+
+
+
+@enduml

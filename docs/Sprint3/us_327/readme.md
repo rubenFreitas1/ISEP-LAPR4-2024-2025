@@ -23,7 +23,7 @@
 
 ## 3. Analysis
 
-![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
+![System Sequence Diagram ](images/System_Sequence_Diagram_US327.svg)
 
 ## 4. Design
 
