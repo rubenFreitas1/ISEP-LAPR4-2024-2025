@@ -164,22 +164,6 @@ public class ShowProposal implements AggregateRoot<Long> {
         if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }
-        Calendar enteredDate = (Calendar) date.clone();
-
-        enteredDate.set(Calendar.HOUR_OF_DAY, 0);
-        enteredDate.set(Calendar.MINUTE, 0);
-        enteredDate.set(Calendar.SECOND, 0);
-        enteredDate.set(Calendar.MILLISECOND, 0);
-
-        Calendar currentDate = Calendar.getInstance();
-        currentDate.set(Calendar.HOUR_OF_DAY, 0);
-        currentDate.set(Calendar.MINUTE, 0);
-        currentDate.set(Calendar.SECOND, 0);
-        currentDate.set(Calendar.MILLISECOND, 0);
-
-        if (enteredDate.before(currentDate)) {
-            throw new IllegalArgumentException("The date cannot be in the past.");
-        }
         return date;
     }
 

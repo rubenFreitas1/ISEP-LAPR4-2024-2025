@@ -104,23 +104,17 @@ activate crmCollaborator
                 ShowProposal -> CTRL : updatedShowProposal
             deactivate ShowProposal
 
-            CTRL -> ShowProposalManagementService : save(proposal)
-            activate ShowProposalManagementService
+            CTRL -> ShowProposalRepository : save(proposal)
+            activate ShowProposalRepository
 
-                ShowProposalManagementService -> ShowProposalRepository : save(proposal)
-                activate ShowProposalRepository
+                ShowProposalRepository -> Database : save()
+                activate Database
 
-                    ShowProposalRepository -> Database : save()
-                    activate Database
+                    Database --> ShowProposalRepository :
+                deactivate Database
 
-                        Database --> ShowProposalRepository :
-                    deactivate Database
-
-                    ShowProposalRepository --> ShowProposalManagementService :
-                deactivate ShowProposalRepository
-
-                ShowProposalManagementService --> CTRL :
-            deactivate ShowProposalManagementService
+                ShowProposalRepository --> CTRL :
+            deactivate ShowProposalRepository
 
             CTRL --> UI :
         deactivate CTRL

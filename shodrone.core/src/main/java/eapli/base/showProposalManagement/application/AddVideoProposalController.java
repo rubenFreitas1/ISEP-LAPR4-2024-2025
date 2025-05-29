@@ -33,10 +33,11 @@ public class AddVideoProposalController {
         return showProposalManagementService.findByPendingAndEmptyVideo(customer, ShowStatus.PENDING);
     }
 
-    public ShowProposal addVideoToProposal(String video, ShowProposal showProposal) {
+    public boolean addVideoToProposal(String video, ShowProposal showProposal) {
         if (showProposal.addVideoToProposal(video)) {
-            return this.showProposalRepository.save(showProposal);
+            this.showProposalRepository.save(showProposal);
+            return true;
         }
-        return null;
+        return false;
     }
 }

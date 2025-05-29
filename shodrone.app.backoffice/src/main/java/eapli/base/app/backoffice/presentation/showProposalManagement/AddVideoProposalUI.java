@@ -21,7 +21,7 @@ public class AddVideoProposalUI extends AbstractUI {
         }
         ShowProposal showProposal = null;
         String headerModelCustomer = String.format("Select Customer\n#  %-30s%-30s%-30s%-30s", "NAME", "STATUS", "PHONE NUMBER", "EMAIL");
-        String headerModelRequest = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
+        String headerModelRequest = String.format("\nSelect Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION","PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
         boolean validRequestSelected = false;
         while (!validRequestSelected) {
             final SelectWidget<Customer> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerPrinter());
@@ -54,8 +54,11 @@ public class AddVideoProposalUI extends AbstractUI {
         }
         String video = requestVideo();
         try {
-            controller.addVideoToProposal(video, showProposal);
-            System.out.println("Show Proposal video simulation was successfully added!");
+            if(controller.addVideoToProposal(video, showProposal)) {
+                System.out.println("Show Proposal video simulation was successfully added!");
+            } else {
+                System.out.println("Error adding video simulation to Show Proposal!");
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
         }

@@ -10,6 +10,7 @@ import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
@@ -120,5 +121,19 @@ class ShowProposalManagementServiceTest {
         assertEquals(expected, result);
 
         verify(repo).findByShowRequest(proposal.showRequest());
+    }
+
+    @Test
+    void findByPendingAndEmptyVideo_returnsProposals() {
+        ShowStatus status = ShowStatus.PENDING;
+        List<ShowProposal> expected = List.of(proposal);
+
+        when(repo.findByPendingAndEmptyVideo(customer, status)).thenReturn(expected);
+
+        Iterable<ShowProposal> result = service.findByPendingAndEmptyVideo(customer, status);
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(repo).findByPendingAndEmptyVideo(customer, status);
     }
 }

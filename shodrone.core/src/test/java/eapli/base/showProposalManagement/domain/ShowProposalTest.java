@@ -155,16 +155,6 @@ class ShowProposalTest {
     }
 
     @Test
-    void validateDate_PastDate_Throws() {
-        Calendar past = Calendar.getInstance();
-        past.add(Calendar.DAY_OF_MONTH, -1);
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
-            proposal.validateDate(past);
-        });
-        assertEquals("The date cannot be in the past.", ex.getMessage());
-    }
-
-    @Test
     void validateDate_Valid_Returns() {
         Calendar todayOrFuture = Calendar.getInstance();
         todayOrFuture.add(Calendar.DAY_OF_MONTH, 1);
@@ -260,4 +250,44 @@ class ShowProposalTest {
     void validateCreatedBy_Valid_Returns() {
         assertEquals(user, proposal.validateCreatedBy(user));
     }
+
+    @Test
+    void addVideoToProposal_ValidLink_ReturnsTrue() {
+        String validLink = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        boolean result = proposal.addVideoToProposal(validLink);
+        assertTrue(result);
+        assertEquals(validLink, proposal.videoLink());
+    }
+
+    @Test
+    void addVideoToProposal_InvalidLink_ReturnsFalse() {
+        String invalidLink = "htp:/invalid-url";
+        boolean result = proposal.addVideoToProposal(invalidLink);
+        assertFalse(result);
+        assertNull(proposal.videoLink());
+    }
+
+    @Test
+    void isValidVideoLink_ValidUrls_ReturnsTrue() {
+        assertTrue(proposal.isValidVideoLink("https://youtube.com/video123"));
+        assertTrue(proposal.isValidVideoLink("http://example.com"));
+        assertTrue(proposal.isValidVideoLink("www.example.com/test"));
+    }
+
+    @Test
+    void isValidVideoLink_InvalidUrls_ReturnsFalse() {
+        assertFalse(proposal.isValidVideoLink("invalid-url"));
+        assertFalse(proposal.isValidVideoLink("ftp://wrongprotocol.com"));
+        assertFalse(proposal.isValidVideoLink("example..com"));
+        assertFalse(proposal.isValidVideoLink(""));
+    }
+
+    @Test
+    void isValidVideoLink_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.isValidVideoLink(null);
+        });
+        assertEquals("Video link cannot be null", ex.getMessage());
+    }
+
 }
