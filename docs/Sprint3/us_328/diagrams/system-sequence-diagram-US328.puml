@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US328
+
+== List drones needing preventive maintenance ==
+activate droneTech
+
+droneTech -> system : asks for list of drones needing preventive maintenance
+activate system
+system --> droneTech : Request date for search
+deactivate system
+droneTech -> system : Provide date for search
+activate system
+system --> droneTech : List of drones needing preventive maintenance
+deactivate system
+
+
+
+@enduml
