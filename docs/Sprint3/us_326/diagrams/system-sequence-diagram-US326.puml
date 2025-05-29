@@ -1,0 +1,30 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US326
+
+== Add maintenance record to a drone ==
+activate droneTech
+
+droneTech -> system : asks to add a maintenance record to a drone
+activate system
+
+system -> droneTech : shows list of drones
+deactivate system
+droneTech -> system : chooses a drone
+
+activate system
+system --> droneTech : shows list of maintenance types
+deactivate system
+droneTech -> system : selects a maintenance type
+activate system
+system --> droneTech : shows maintenance added successfully
+deactivate system
+
+
+@enduml
