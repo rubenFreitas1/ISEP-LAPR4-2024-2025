@@ -1,27 +1,25 @@
 
-# US 220
+# US 323 - Edit maintenance types
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*This user story is part of the maintenance management module, which allows drone technicians to manage maintenance types for drones. The ability to edit existing maintenance types is crucial for keeping the system up-to-date with the latest maintenance procedures and requirements.*
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 323** As a Drone Tech, I want to edit an existing maintenance type.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
-
+- US323.1 Only maintenance types without stored maintenance records can be edited.
+- 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US321, since the costumer app must have a maintenance type to be able to edit.*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
