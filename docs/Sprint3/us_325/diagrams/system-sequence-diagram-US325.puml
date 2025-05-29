@@ -1,0 +1,27 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US325
+
+== List maintenance history of a drone ==
+activate droneTech
+
+droneTech -> system : asks for maintenance history of a drone
+activate system
+
+system --> droneTech :shows list of drones to select from
+deactivate system
+droneTech -> system : selects a drone
+
+activate system
+system --> droneTech : shows maintenance history of the selected drone
+deactivate system
+
+
+
+@enduml
