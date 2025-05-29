@@ -127,6 +127,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_start; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterStart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitStart(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitStart(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StartContext start() throws RecognitionException {
@@ -180,6 +193,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_version; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterVersion(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitVersion(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitVersion(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VersionContext version() throws RecognitionException {
@@ -230,6 +256,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -321,6 +360,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_beforeBlock; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterBeforeBlock(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitBeforeBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitBeforeBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BeforeBlockContext beforeBlock() throws RecognitionException {
@@ -373,6 +425,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_afterBlock; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterAfterBlock(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitAfterBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitAfterBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AfterBlockContext afterBlock() throws RecognitionException {
@@ -425,6 +490,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -472,6 +550,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterTypeDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitTypeDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitTypeDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final TypeDeclarationContext typeDeclaration() throws RecognitionException {
@@ -512,6 +603,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableAssignment; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterVariableAssignment(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitVariableAssignment(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitVariableAssignment(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VariableAssignmentContext variableAssignment() throws RecognitionException {
@@ -549,6 +653,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variableType; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterVariableType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitVariableType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitVariableType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final VariableTypeContext variableType() throws RecognitionException {
@@ -593,6 +710,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expressionOrCoordinate; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterExpressionOrCoordinate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitExpressionOrCoordinate(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitExpressionOrCoordinate(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionOrCoordinateContext expressionOrCoordinate() throws RecognitionException {
@@ -641,6 +771,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_coordinate; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterCoordinate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitCoordinate(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitCoordinate(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CoordinateContext coordinate() throws RecognitionException {
@@ -689,6 +832,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_objectCreation; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterObjectCreation(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitObjectCreation(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitObjectCreation(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ObjectCreationContext objectCreation() throws RecognitionException {
@@ -728,6 +884,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_shapeType; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterShapeType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitShapeType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitShapeType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ShapeTypeContext shapeType() throws RecognitionException {
@@ -772,6 +941,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_params; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterParams(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitParams(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitParams(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ParamsContext params() throws RecognitionException {
@@ -825,6 +1007,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodCall; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterMethodCall(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitMethodCall(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitMethodCall(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MethodCallContext methodCall() throws RecognitionException {
@@ -874,6 +1069,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodCallTail; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterMethodCallTail(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitMethodCallTail(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitMethodCallTail(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MethodCallTailContext methodCallTail() throws RecognitionException {
@@ -916,6 +1124,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterMethodName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitMethodName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitMethodName(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MethodNameContext methodName() throws RecognitionException {
@@ -963,6 +1184,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_methodParams; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterMethodParams(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitMethodParams(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitMethodParams(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MethodParamsContext methodParams() throws RecognitionException {
@@ -1021,6 +1255,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_coordinateParam; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterCoordinateParam(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitCoordinateParam(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitCoordinateParam(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CoordinateParamContext coordinateParam() throws RecognitionException {
@@ -1073,6 +1320,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expressionParams; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterExpressionParams(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitExpressionParams(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitExpressionParams(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionParamsContext expressionParams() throws RecognitionException {
@@ -1120,6 +1380,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_colorParam; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterColorParam(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitColorParam(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitColorParam(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ColorParamContext colorParam() throws RecognitionException {
@@ -1155,6 +1428,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_groupBlock; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterGroupBlock(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitGroupBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitGroupBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final GroupBlockContext groupBlock() throws RecognitionException {
@@ -1204,6 +1490,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_pauseStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterPauseStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitPauseStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitPauseStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PauseStatementContext pauseStatement() throws RecognitionException {
@@ -1256,6 +1555,19 @@ public class DroneShowDSLParser extends Parser {
 			return getRuleContext(ExpressionContext.class,i);
 		}
 		public MultExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterMultExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitMultExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitMultExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegExprContext extends ExpressionContext {
@@ -1263,6 +1575,19 @@ public class DroneShowDSLParser extends Parser {
 			return getRuleContext(ExpressionContext.class,0);
 		}
 		public NegExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterNegExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitNegExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitNegExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class PrimaryExprContext extends ExpressionContext {
@@ -1270,6 +1595,19 @@ public class DroneShowDSLParser extends Parser {
 			return getRuleContext(PrimaryContext.class,0);
 		}
 		public PrimaryExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterPrimaryExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitPrimaryExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitPrimaryExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AddExprContext extends ExpressionContext {
@@ -1280,6 +1618,19 @@ public class DroneShowDSLParser extends Parser {
 			return getRuleContext(ExpressionContext.class,i);
 		}
 		public AddExprContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterAddExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitAddExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitAddExpr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -1414,6 +1765,19 @@ public class DroneShowDSLParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primary; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).enterPrimary(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DroneShowDSLListener ) ((DroneShowDSLListener)listener).exitPrimary(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof DroneShowDSLVisitor ) return ((DroneShowDSLVisitor<? extends T>)visitor).visitPrimary(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrimaryContext primary() throws RecognitionException {
