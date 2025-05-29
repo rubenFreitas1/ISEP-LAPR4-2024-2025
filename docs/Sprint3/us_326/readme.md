@@ -1,27 +1,25 @@
 
-# US 220
+# US 326 - Add maintenance record to a drone
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
-
+*This user story is part of the Drone Management System, which allows users to manage drones, their maintenance records, and associated operations. The goal of this user story is to enable Drone Technicians to add maintenance records to existing drones, ensuring that the maintenance history is accurately tracked and managed.*
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 326** As a Drone Tech, I want to add a maintenance record to a given drone.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
-
+- US326.1 A maintenance record is of an existing maintenance type.
+- US326.2 Some maintenance operations reset the usage time counter of the drone.
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US325, since there should already exist a maintenance type to be able to register a maintenance record and US 240 because there must also exist a drone*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)

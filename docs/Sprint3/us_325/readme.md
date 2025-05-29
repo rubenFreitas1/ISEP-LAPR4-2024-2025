@@ -3,7 +3,7 @@
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
+*This user story aims to provide a comprehensive solution for managing drone operations, including customer management, drone maintenance, and flight operations. The system is designed to enhance the efficiency and reliability of drone services by providing a user-friendly interface for managing various aspects of drone operations.*
 
 ## 2. Requirements
 
