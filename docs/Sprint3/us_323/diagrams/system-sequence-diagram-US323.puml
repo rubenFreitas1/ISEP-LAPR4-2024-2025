@@ -1,0 +1,31 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Drone Tech" as droneTech
+participant "System" as system
+
+title System Sequence Diagram - US323
+
+== Edit maintenance types ==
+activate droneTech
+
+droneTech -> system : Asks to edit maintenance types
+activate system
+
+system --> droneTech : Sends a list of maintenance types
+deactivate system
+droneTech -> system : Selects a maintenance type to edit
+activate system
+system --> droneTech : asks for the new maintenance type name and description
+deactivate system
+
+droneTech -> system : Provides the new maintenance type name and deactivate
+activate system
+system --> droneTech : Confirms the update of the maintenance type
+deactivate system
+
+
+
+@enduml
