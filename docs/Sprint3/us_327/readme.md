@@ -15,7 +15,7 @@
 
 **Dependencies/References:**
 
-*There is a dependency with US240, since a drone must exist before it can be registered for usage time.*
+*There is a dependency with US241, since a drone must exist before it can be registered for usage time.*
 
 **Forum Insight:**
 

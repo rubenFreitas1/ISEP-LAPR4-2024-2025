@@ -1,27 +1,24 @@
 
-# US 220
+# US 328 - List drones needing preventive maintenance
 
 ## 1. Context
 
-*As a CRM Collaborator, I want to register a customer, and that the system automatically creates a costumer representative for that customer.*
-
+*This user story is part of the Drone Management System, which is designed to manage various aspects of drone operations, including maintenance, customer management, and representative management. The focus of this user story is to allow Drone Technicians to list all drones that require preventive maintenance based on their usage exceeding a defined threshold.*
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 328** As a Drone Tech, I want to list all drones requiring preventive maintenance in a given date.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US328.1 A drone is said to require preventive maintenance when its usage exceeds the maintenance threshold defined for that model.
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
-
+*There is a dependency with US240, since the drone model must exist and US321 since we also need a maintenance type.*
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
