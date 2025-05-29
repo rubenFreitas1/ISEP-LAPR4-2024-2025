@@ -1,5 +1,5 @@
 
-# US 220
+# US 325 - List maintenance history of a drone
 
 ## 1. Context
 
@@ -7,21 +7,22 @@
 
 ## 2. Requirements
 
-**US G220** As CRM, I Want to register a customer.
+**US 325** As a Drone Tech, I want to list a drone’s maintenance history between two dates.
 
 **Acceptance Criteria:**
 
-- US220.1 This must also be achieved by a bootstrap process. The costumer representative will also be a user of the system (Costumer App).
+- US325.1 *The system must make sure that the dates provided are valid and that the start date is before the end date.*
+
 
 **Dependencies/References:**
 
-*There is a dependency with US210, since the costumer app must have an authentication system for each customer.*
+*There is a dependency with US321, since the costumer app must have a maintenance type to be able to check and US241 creation of a drone.*
 
 
 **Forum Insight:**
 
 * Still no questions related to this user story on forum.
-* 
+
 ## 3. Analysis
 
 ![System Sequence Diagram ](images/system-sequence-diagram-US220.svg)
