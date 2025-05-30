@@ -77,6 +77,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRealPersonName(ShowProposalParser.RealPersonNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealPersonName(ShowProposalParser.RealPersonNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPersonNamePlaceholder(ShowProposalParser.PersonNamePlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPersonNamePlaceholder(ShowProposalParser.PersonNamePlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCompany(ShowProposalParser.CompanyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -84,6 +108,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompany(ShowProposalParser.CompanyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRealCompanyName(ShowProposalParser.RealCompanyNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealCompanyName(ShowProposalParser.RealCompanyNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCompanyPlaceHolder(ShowProposalParser.CompanyPlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCompanyPlaceHolder(ShowProposalParser.CompanyPlaceHolderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -101,6 +149,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRealAddress(ShowProposalParser.RealAddressContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealAddress(ShowProposalParser.RealAddressContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAddressPlaceHolder(ShowProposalParser.AddressPlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAddressPlaceHolder(ShowProposalParser.AddressPlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVatNumber(ShowProposalParser.VatNumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -113,6 +185,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRealVatNumber(ShowProposalParser.RealVatNumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealVatNumber(ShowProposalParser.RealVatNumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVatNumberPlaceHolder(ShowProposalParser.VatNumberPlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVatNumberPlaceHolder(ShowProposalParser.VatNumberPlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReference(ShowProposalParser.ReferenceContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -120,6 +216,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitReference(ShowProposalParser.ReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRealReference(ShowProposalParser.RealReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealReference(ShowProposalParser.RealReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReferencePlaceHolder(ShowProposalParser.ReferencePlaceHolderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReferencePlaceHolder(ShowProposalParser.ReferencePlaceHolderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -161,6 +281,54 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNormal_line1(ShowProposalParser.Normal_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNormal_line1(ShowProposalParser.Normal_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVip_line1(ShowProposalParser.Vip_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVip_line1(ShowProposalParser.Vip_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReal_vip_line1(ShowProposalParser.Real_vip_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReal_vip_line1(ShowProposalParser.Real_vip_line1Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVip_line1_Placeholder(ShowProposalParser.Vip_line1_PlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVip_line1_Placeholder(ShowProposalParser.Vip_line1_PlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLine_2(ShowProposalParser.Line_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -185,6 +353,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReal_line3(ShowProposalParser.Real_line3Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReal_line3(ShowProposalParser.Real_line3Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLine3_placeholder(ShowProposalParser.Line3_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLine3_placeholder(ShowProposalParser.Line3_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterClosing(ShowProposalParser.ClosingContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -197,6 +389,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReal_closing(ShowProposalParser.Real_closingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReal_closing(ShowProposalParser.Real_closingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClosing_placeholder(ShowProposalParser.Closing_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClosing_placeholder(ShowProposalParser.Closing_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSignature(ShowProposalParser.SignatureContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -204,6 +420,42 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSignature(ShowProposalParser.SignatureContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCrmManagerName(ShowProposalParser.CrmManagerNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCrmManagerName(ShowProposalParser.CrmManagerNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRealManagerName(ShowProposalParser.RealManagerNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRealManagerName(ShowProposalParser.RealManagerNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterManagerName_Placeholder(ShowProposalParser.ManagerName_PlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitManagerName_Placeholder(ShowProposalParser.ManagerName_PlaceholderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -281,6 +533,42 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAttachment(ShowProposalParser.AttachmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttachment(ShowProposalParser.AttachmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReal_attachment(ShowProposalParser.Real_attachmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReal_attachment(ShowProposalParser.Real_attachmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAttachment_placeholder(ShowProposalParser.Attachment_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAttachment_placeholder(ShowProposalParser.Attachment_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLocation(ShowProposalParser.LocationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -288,6 +576,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLocation(ShowProposalParser.LocationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLocation_real(ShowProposalParser.Location_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocation_real(ShowProposalParser.Location_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLocation_placeholder(ShowProposalParser.Location_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocation_placeholder(ShowProposalParser.Location_placeholderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -305,6 +617,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDate_real(ShowProposalParser.Date_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDate_real(ShowProposalParser.Date_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDate_placeholder(ShowProposalParser.Date_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDate_placeholder(ShowProposalParser.Date_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTime(ShowProposalParser.TimeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -312,6 +648,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTime(ShowProposalParser.TimeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTime_real(ShowProposalParser.Time_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTime_real(ShowProposalParser.Time_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTime_placeholder(ShowProposalParser.Time_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTime_placeholder(ShowProposalParser.Time_placeholderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -329,6 +689,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDuration_real(ShowProposalParser.Duration_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDuration_real(ShowProposalParser.Duration_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDuration_placeholder(ShowProposalParser.Duration_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDuration_placeholder(ShowProposalParser.Duration_placeholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDroneList(ShowProposalParser.DroneListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -341,6 +725,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDroneListReal(ShowProposalParser.DroneListRealContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDroneListReal(ShowProposalParser.DroneListRealContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDroneListPlaceholders(ShowProposalParser.DroneListPlaceholdersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDroneListPlaceholders(ShowProposalParser.DroneListPlaceholdersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFigureList(ShowProposalParser.FigureListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -348,6 +756,30 @@ public class ShowProposalBaseListener implements ShowProposalListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFigureList(ShowProposalParser.FigureListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFigureListReal(ShowProposalParser.FigureListRealContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFigureListReal(ShowProposalParser.FigureListRealContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFigureListPlaceholder(ShowProposalParser.FigureListPlaceholderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFigureListPlaceholder(ShowProposalParser.FigureListPlaceholderContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
