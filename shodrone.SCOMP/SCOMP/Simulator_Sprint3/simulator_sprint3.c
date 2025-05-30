@@ -16,9 +16,10 @@
 
 int myDroneID = 0;
 sem_t *sem_write, *sem_read, *sem_colisions_read,*sem_colisions_write , *sem_barrier, *sem_arrival;
-int fd, fd_1;
+int fd, fd_1, fd_2;
 shared_positions *shared_struct;
 DroneData* shared_struct_list;
+report_info* shared_info_struct;
 pthread_t collision_thread, report_thread;
 int* timestamps;
 DroneData* allData;
@@ -28,6 +29,16 @@ int collisionIndicator = 0;
 int collisions = 0;
 ThreadArgs* threadArgs;
 char str[STR_SIZE];
+int simulationStatus = 1;
+
+int should_log = 0;
+
+char baseName[100];
+char reportFile[150];
+FILE* report;
+
+pthread_mutex_t mutex;
+pthread_cond_t cond;
 
 
 void cleanup() {
@@ -69,7 +80,7 @@ void cleanup() {
     //}
 
     if (shared_struct != NULL) {
-        munmap(shared_struct_list, sizeof(shared_positions));
+        munmap(shared_struct, sizeof(shared_positions));
     }
 
     if (fd != -1) {
@@ -78,15 +89,25 @@ void cleanup() {
     }
     
     if (shared_struct_list != NULL) {
-        munmap(shared_struct_list, sizeof(DroneData)*5);
+        munmap(shared_struct_list, sizeof(DroneData)*totalDrones);
     }
     
-    if (fd != -1) {
-        close(fd);
+    if (fd_1 != -1) {
+        close(fd_1);
         shm_unlink("/shared_struct_list");
     }
     
+    if (shared_info_struct != NULL) {
+        munmap(shared_info_struct, sizeof(report_info));
+    }
+
+    if (fd_2 != -1) {
+        close(fd_2);
+        shm_unlink("/shared_info_struct");
+    }
+    
 	pthread_join(collision_thread,NULL);
+	pthread_join(report_thread, NULL);
     printf("[ROOT] Cleanup completed successfully.\n");
 }
  
@@ -181,6 +202,53 @@ int updateMatrix(MatrixCellInfo matrix[MAX_X][MAX_Y][MAX_Z], DroneData data) {
 	}
 }
 
+//Método para verificar se uma posição é válida
+int isPositionValid(int x, int y, int z) {
+    return x >= 0 && x < MAX_X && y >= 0 && y < MAX_Y && z >= 0 && z < MAX_Z;
+}
+
+
+//Método para encontrar a posição adjacente mais próxima da colisão
+DroneData findFreeAdjacentPosition(MatrixCellInfo tempMatrix[MAX_X][MAX_Y][MAX_Z], DroneData original) {
+    int origX = (int)original.x;
+    int origY = (int)original.y;
+    int origZ = (int)original.z;
+
+    int maxRadius = (MAX_X > MAX_Y ? MAX_X : MAX_Y);
+    if (MAX_Z > maxRadius) maxRadius = MAX_Z;
+
+    for (int radius = 1; radius < maxRadius; radius++) {
+
+        int xPos[2] = {origX + radius, origX - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(xPos[i], origY, origZ) && tempMatrix[xPos[i]][origY][origZ].droneID == 0) {
+                DroneData newData = original;
+                newData.x = xPos[i];
+                return newData;
+            }
+        }
+
+        int yPos[2] = {origY + radius, origY - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(origX, yPos[i], origZ) && tempMatrix[origX][yPos[i]][origZ].droneID == 0) {
+                DroneData newData = original;
+                newData.y = yPos[i];
+                return newData;
+            }
+        }
+
+        int zPos[2] = {origZ + radius, origZ - radius};
+        for (int i = 0; i < 2; i++) {
+            if (isPositionValid(origX, origY, zPos[i]) && tempMatrix[origX][origY][zPos[i]].droneID == 0) {
+                DroneData newData = original;
+                newData.z = zPos[i];
+                return newData;
+            }
+        }
+    }
+    return original;
+}
+
 void* colision_detection_thread(void* arg){	
 	ThreadArgs* args = (ThreadArgs*)arg;
 	int* pidsAux = args->pids;
@@ -188,57 +256,134 @@ void* colision_detection_thread(void* arg){
     int maxCollisions = args->maxCollisions;
 	while(1){
 		sem_wait(sem_colisions_read);
+		
 		snprintf(str, STR_SIZE, "estou dentro do collisions \n");
 		write(STDOUT_FILENO, str, strlen(str));
+		
+		pthread_mutex_lock(&mutex);
+		
 		if (shared_struct->timestamp == -999) {
-			sem_post(sem_colisions_write);
+			pthread_cond_signal(&cond);
+			pthread_mutex_unlock(&mutex);
 			break;
 		}
 		
 		for(int i = 0; i < totalDrones; i++){
 			DroneData position = shared_struct_list[i];
+			
 			snprintf(str, STR_SIZE, "Posiçao deste drone %d : (%f,%f,%f) \n", position.droneID, position.x,position.y,position.z);
 			write(STDOUT_FILENO, str, strlen(str));
+			
 			if(position.timestamp < 0){
 				snprintf(str, STR_SIZE, "Drone %d does not change the position in timestamp %ds!\n",position.droneID, position.timestamp);
 				write(STDOUT_FILENO, str, strlen(str));
 			}else{
 				collisionIndicator = updateMatrix(matrix, position);
+				
 				snprintf(str, STR_SIZE, "resultado update %d \n", collisionIndicator);
 				write(STDOUT_FILENO, str, strlen(str));
+				
 				if(collisionIndicator != 0){
 					kill(pidsAux[i],SIGUSR1);
 					kill(pidsAux[collisionIndicator-1], SIGUSR1);
-					collisions++;
-					if(collisions>=maxCollisions){
 					
+					collisions++;
+					
+					if(collisions>=maxCollisions){
+						simulationStatus = 0;
+						shared_struct->timestamp = -999;
+						
+						pthread_cond_signal(&cond);
+						pthread_mutex_unlock(&mutex);
+						
+						break;
+						
 					}
+					
+					DroneData newPos = findFreeAdjacentPosition(matrix, position);
+					
+					shared_info_struct->hitDroneID = collisionIndicator;
+					shared_info_struct->collisionDrone = position;
+					shared_info_struct->realocatedDrone = newPos;
+					
+					should_log = 1;
+					pthread_cond_signal(&cond);
+					
 				}
 			}
 		}
+		pthread_mutex_unlock(&mutex);
+		
 		snprintf(str, STR_SIZE, "estou a sair do collisions \n");
 		write(STDOUT_FILENO, str, strlen(str));
+		
 		sem_post(sem_colisions_write);
 	}
-	
+	sem_post(sem_colisions_write);
+	snprintf(str, STR_SIZE, "COLLISIONS ACABOU \n");
+	write(STDOUT_FILENO, str, strlen(str));
 	return NULL;
 }
 
 
-void simulator_run(const char* fileName, int maxCollisions) {
-	allData = NULL;
-	//int droneStatus = 1;
-    int totalPositions = readCsv(fileName, &allData, &totalDrones);
-    int timestampCount = 0;
-    timestamps = getAllTimestamps(allData, totalPositions, &timestampCount);
-    struct sigaction act;
-    memset(&act, 0, sizeof(struct sigaction));
-    act.sa_sigaction = signal_handler;
-    act.sa_flags = SA_RESTART;
-    sigaction(SIGUSR1, &act, NULL);
-    pid_t pids[totalDrones];
-    int pidsList[totalDrones];
+void* report_generation_thread (){
+	pthread_mutex_lock(&mutex);	
+	while(1){
+		while (!should_log && shared_struct->timestamp != -999) {
+			pthread_cond_wait(&cond, &mutex);
+		}
+		
+		if(!simulationStatus){
+			//chamar funçao de simulaçao abortada
+		}
+
+		if (shared_struct->timestamp == -999) {
+			pthread_mutex_unlock(&mutex);
+			break;
+		}
+		
+		logCollision(report, shared_info_struct->collisionDrone.timestamp, shared_info_struct->collisionDrone.x, shared_info_struct->collisionDrone.y, shared_info_struct->collisionDrone.z, shared_info_struct->collisionDrone.droneID, shared_info_struct->hitDroneID, shared_info_struct->realocatedDrone.x, shared_info_struct->realocatedDrone.y, shared_info_struct->realocatedDrone.z);
+		
+		should_log = 0;
+	}
+	snprintf(str, STR_SIZE, "REPORT THREAD ACABOU \n");
+	write(STDOUT_FILENO, str, strlen(str));
+	return NULL;
+}
+
+void initialize_semaphores(){
+	if((sem_write = sem_open("/sem_write",O_CREAT,0644,0))==SEM_FAILED){
+        perror("sem_open sem_write");
+        exit(4);
+    }
     
+    if((sem_read = sem_open("/sem_read",O_CREAT,0644,0))==SEM_FAILED){
+        perror("sem_open sem_read");
+        exit(4);
+    }
+    
+    if((sem_colisions_write = sem_open("/sem_colisions_write",O_CREAT,0644,1))==SEM_FAILED){
+        perror("sem_open sem_colisions_write");
+        exit(4);
+    }
+    
+    if((sem_colisions_read = sem_open("/sem_colisions_read",O_CREAT,0644,0))==SEM_FAILED){
+        perror("sem_open sem_colisions_read");
+        exit(4);
+    }
+    
+    if((sem_barrier = sem_open("/sem_barrier", O_CREAT, 0644, 0))==SEM_FAILED){
+		perror("sem_open sem_barrier");
+        exit(4);
+	}
+	
+	if((sem_arrival = sem_open("/sem_arrival", O_CREAT, 0644, 0)) == SEM_FAILED){
+		perror("sem_open sem_arrival");
+		exit(4);
+	}
+}
+
+void initialize_shared_memories(){
 	if((fd = shm_open("/shared_struct", O_CREAT|O_RDWR, S_IRUSR|S_IWUSR)) == -1){
 		perror("shm_open error");
 		exit(1);
@@ -269,36 +414,50 @@ void simulator_run(const char* fileName, int maxCollisions) {
 		exit(3);
 	}
 	
-		
-	if((sem_write = sem_open("/sem_write",O_CREAT,0644,0))==SEM_FAILED){
-        perror("sem_open sem_write");
-        exit(4);
-    }
-    
-    if((sem_read = sem_open("/sem_read",O_CREAT,0644,0))==SEM_FAILED){
-        perror("sem_open sem_read");
-        exit(4);
-    }
-    
-    if((sem_colisions_write = sem_open("/sem_colisions_write",O_CREAT,0644,1))==SEM_FAILED){
-        perror("sem_open sem_colisions_write");
-        exit(4);
-    }
-    
-    if((sem_colisions_read = sem_open("/sem_colisions_read",O_CREAT,0644,0))==SEM_FAILED){
-        perror("sem_open sem_colisions_read");
-        exit(4);
-    }
-    
-    if((sem_barrier = sem_open("/sem_barrier", O_CREAT, 0644, 0))==SEM_FAILED){
-		perror("sem_open sem_barrier");
-        exit(4);
+	if((fd_2 = shm_open("/shared_info_struct", O_CREAT|O_RDWR, S_IRUSR|S_IWUSR)) == -1){
+		perror("shm_open error");
+		exit(1);
 	}
 	
-	if((sem_arrival = sem_open("/sem_arrival", O_CREAT, 0644, 0)) == SEM_FAILED){
-		perror("sem_open sem_arrival");
-		exit(4);
+	if (ftruncate(fd_2, sizeof(report_info)) == -1) {
+		perror("ftruncate error");
+		exit(2);
 	}
+	
+	if((shared_info_struct = (report_info*)mmap(0, sizeof(report_info), PROT_READ|PROT_WRITE, MAP_SHARED, fd_2, 0))== MAP_FAILED){
+		perror("nmaps error");
+		exit(3);
+	}
+}
+
+void simulator_run(const char* fileName, int maxCollisions) {
+	allData = NULL;
+	//int droneStatus = 1;
+    int totalPositions = readCsv(fileName, &allData, &totalDrones);
+    int timestampCount = 0;
+    timestamps = getAllTimestamps(allData, totalPositions, &timestampCount);
+    struct sigaction act;
+    memset(&act, 0, sizeof(struct sigaction));
+    act.sa_sigaction = signal_handler;
+    act.sa_flags = SA_RESTART;
+    sigaction(SIGUSR1, &act, NULL);
+    pid_t pids[totalDrones];
+    int pidsList[totalDrones];
+    
+    getBaseName(fileName, baseName);
+    snprintf(reportFile, sizeof(reportFile), "simulation_report_%s.txt", baseName);
+    report = fopen(reportFile, "w");
+    
+	if (report == NULL) {
+		perror("Error opening report file");
+		exit(EXIT_FAILURE);
+	}
+
+	initialize_shared_memories();
+	initialize_semaphores();
+	
+	shared_info_struct->maxcollisions = maxCollisions;
+	
 	
 	threadArgs = malloc(sizeof(ThreadArgs));
     if (threadArgs == NULL) {
@@ -309,8 +468,17 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	threadArgs->totalDrones = totalDrones;
 	threadArgs->maxCollisions = maxCollisions;
  
+	if (pthread_mutex_init(&mutex, NULL) != 0) {
+		perror("pthread_mutex_init failed");
+		exit(EXIT_FAILURE);
+	}
+	if (pthread_cond_init(&cond, NULL) != 0) {
+		perror("pthread_cond_init failed");
+		exit(EXIT_FAILURE);
+	}
+	
 	pthread_create(&collision_thread, NULL, colision_detection_thread, (void*)threadArgs);
-	//pthread_create(&report_thread, NULL, report_generation_thread, NULL);
+	pthread_create(&report_thread, NULL, report_generation_thread, NULL);
 	
 	for(int i= 0; i < totalDrones; i++){
 		pids[i] = fork();
@@ -358,6 +526,9 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	
 	for (int i = 0; i < timestampCount; i++) {
 		sem_wait(sem_colisions_write);
+		if (!simulationStatus){
+			break;
+		}
 		snprintf(str, STR_SIZE, "NOVO TIMESTAMP \n");
 		write(STDOUT_FILENO, str, strlen(str));
 		memset(matrix, 0, sizeof(matrix));
@@ -386,6 +557,10 @@ void simulator_run(const char* fileName, int maxCollisions) {
 	for (int j = 0; j < totalDrones; j++) {
 		sem_wait(sem_write);
 	}
+	sem_post(sem_colisions_read);
+	sem_wait(sem_colisions_write);
     cleanup();
+    fclose(report);
+
 }
 
