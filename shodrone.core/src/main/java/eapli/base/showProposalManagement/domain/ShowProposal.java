@@ -37,6 +37,9 @@ public class ShowProposal implements AggregateRoot<Long> {
     @Column(nullable = false)
     private int totalDroneNumber;
 
+    @Column(nullable = false)
+    private Long insuranceAmount;
+
     @Temporal(TemporalType.DATE)
     private Calendar createdOn;
 
@@ -101,6 +104,10 @@ public class ShowProposal implements AggregateRoot<Long> {
         return currentTotal;
     }
 
+    public List<DroneListItem> droneListItem (){
+        return this.droneModelList;
+    }
+
     public boolean addVideoToProposal(String video) {
         if (isValidVideoLink(video)) {
             this.videoLink = video;
@@ -130,6 +137,8 @@ public class ShowProposal implements AggregateRoot<Long> {
     public LocalTime time() { return this.time; }
 
     public String videoLink() { return this.videoLink; }
+
+    public Long insuranceAmount() { return this.insuranceAmount; }
 
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
         if (showRequest == null)

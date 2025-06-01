@@ -8,10 +8,19 @@ participant "System" as system
 
 title System Sequence Diagram - US318
 
-== Configure a Show Proposal ==
+== Configure the Show Proposal Template ==
+
 activate crmManager
 
-crmManager -> system : Configure a Show Proposal
+crmManager -> system : Request proposals ready for creation
+activate system
+system -> system : Get all proposals ready for creation
+
+system -> crmManager : Provide proposals ready for creation
+deactivate system
+
+
+crmManager -> system : Provide a show Proposal to configure its Template
 activate system
 
 system ->system: Get all the show proposal templates
@@ -20,10 +29,6 @@ system -> crmManager : Request Show Proposal Template
 deactivate system
 crmManager -> system : Provide Show Proposal Template
 
-activate system
-system -> crmManager : Request new configuration for the show proposal
-deactivate system
-crmManager -> system : Provide new configuration
 activate system
 system -> system : Update the show proposal template
 system -> crmManager : Confirm configuration updated
