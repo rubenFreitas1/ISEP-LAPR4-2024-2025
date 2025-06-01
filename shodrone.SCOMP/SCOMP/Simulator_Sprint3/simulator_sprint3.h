@@ -1,3 +1,4 @@
+
 #ifndef SIMULATOR_SPRINT3_H
 #define SIMULATOR__SPRINT3_H
 #include <stdio.h>
@@ -16,6 +17,12 @@ typedef struct{
 	DroneData* drone_positions;
 }shared_positions;
 
+typedef struct{
+	int hitDroneID;
+	DroneData collisionDrone;
+	DroneData realocatedDrone;
+	int maxcollisions;
+}report_info;
 
 typedef struct {
     int* pids;
