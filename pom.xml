@@ -20,6 +20,7 @@
 		<module>shodrone.util.ci</module>
 		<module>shodrone.LPROG</module>
         <module>shodrone.SCOMP</module>
+        <module>shodrone.server</module>
     </modules>
 	<version>0.1.0</version>
 

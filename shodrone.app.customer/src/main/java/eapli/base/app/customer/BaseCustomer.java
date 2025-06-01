@@ -1,33 +1,44 @@
 package eapli.base.app.customer;
 
 import eapli.base.app.common.console.BaseApp;
-import eapli.base.app.common.console.presentation.authz.LoginUI;
 import eapli.base.app.customer.presentation.menu.MainMenuCustomer;
-import eapli.base.infrastructure.authz.AuthenticationCredentialHandler;
-import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
-import eapli.framework.infrastructure.authz.application.AuthzRegistry;
-import eapli.framework.infrastructure.authz.domain.model.PlainTextEncoder;
 import eapli.framework.infrastructure.pubsub.EventDispatcher;
+import rcomp.client.TcpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class BaseCustomer extends BaseApp {
 
-    private BaseCustomer() {
-    }
+
+
+
 
     public static void main(final String[] args) {
-
-        AuthzRegistry.configure(PersistenceContext.repositories().users(), new ExemploPasswordPolicy(),
-                new PlainTextEncoder());
 
         new BaseCustomer().run(args);
     }
 
     @Override
     protected void doMain(String[] args) {
-        if (new LoginUI(new AuthenticationCredentialHandler()).show()) {
-            final var menu = new MainMenuCustomer();
-            menu.mainLoop();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            System.out.print("Email: ");
+            String email = reader.readLine();
+            System.out.print("Password: ");
+            String password = reader.readLine();
+
+            if (TcpClient.login(email, password)) {
+                System.out.println("Login was successfully!");
+                final var menu = new MainMenuCustomer(email);
+                menu.mainLoop();
+            } else {
+                System.out.println("Login failed!.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error trying to communicate with server: " + e.getMessage());
         }
     }
 
