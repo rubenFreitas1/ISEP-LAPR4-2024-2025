@@ -14,12 +14,12 @@ activate crmCollaborator
 crmCollaborator -> system : Wants to mark show proposal as accepted
 activate system
 
-system -> crmCollaborator : Displays the accepted\n responses received from customers
+system -> crmCollaborator :  Show List of Show Proposals Accepted by the Customer
 deactivate system
-crmCollaborator -> system : Selects the accepted response
+crmCollaborator -> system : Choose Show proposal
 
 activate system
-system -> system: Mark show proposal\n associated to the\n response as accepted
+system -> system: Mark show proposal\n  as accepted
 system -> crmCollaborator : Confirm Show Proposal was accepted
 deactivate system
 

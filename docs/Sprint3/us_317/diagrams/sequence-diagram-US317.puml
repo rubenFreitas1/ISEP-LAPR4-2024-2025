@@ -2,92 +2,65 @@
 title Sequence Diagram
 
 actor "CRM Collaborator" as Actor
-participant "RegisterCustomerUI" as UI <<presentation>>
-participant "RegisterCustomerController" as Controller <<application>>
-participant "AuthorizationService" as AuthorizationService <<auth>>
-participant "CustomerManagementService" as CustomerManagementService <<application>>
-participant "RepresentativeManagementService" as RepresentativeManagementService <<application>>
-participant "Customer" as Customer <<domain>>
-participant "Representative" as Representative <<domain>>
-participant "CustomerRepository" as CustomerRepository <<repository>>
-participant "RepresentativeRepository" as RepresentativeRepository <<repository>>
+participant "MarkShowProposalAction" as Action <<presentation>>
+participant "MarkShowProposalUI" as UI <<presentation>>
+participant "MarkShowProposalController" as Controller <<application>>
+participant "ShowProposal" as ShowProposal <<domain>>
+participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
 database "Database" as Database
 
 activate Actor
 
-Actor -> UI: show()
+Actor -> Action**: Wants to mark show proposal as accepted
+
+activate Action
+
+Action -> UI** : create
+Action -> UI: show()
+
+deactivate Action
     activate UI
 
-UI -> Controller** : create()
+UI -> Controller** : create
+UI -> Controller: getAnsweredShowProposals()
 
-UI --> Actor: Request Customer Information (Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
+    activate Controller
+
+        Controller -> ShowProposalRepository: findByAcceptedProposals()
+
+        activate ShowProposalRepository
+
+        ShowProposalRepository -> Database: findByAcceptedProposals()
+        activate Database
+
+        Database --> ShowProposalRepository: List of Show Proposals Accepted by the Customer
+        deactivate Database
+        ShowProposalRepository --> Controller: List of Show Proposals Accepted by the Customer
+        deactivate ShowProposalRepository
+        Controller --> UI: List of Show Proposals Accepted by the Customer
+    deactivate Controller
+
+UI --> Actor: Show List of Show Proposals Accepted by the Customer
 deactivate UI
 
-Actor -> UI: Insert Customer data
+Actor -> UI: Choose Show proposal
 
 
     activate UI
 
-        UI -> Controller : registerCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address, representativeName, representativeEmail, representativePassword,\n representativePhoneNumber, representativePosition)
-            activate Controller
+        UI -> Controller: markShowProposal(showProposal)
+        activate Controller
 
-                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+        Controller -> ShowProposal: markShowProposal()
+            activate ShowProposal
 
-                deactivate AuthorizationService
+            ShowProposal --> Controller
+            deactivate ShowProposal
+            Controller --> UI:
+        deactivate Controller
+        UI --> Actor: Confirm Show Proposal was accepted
 
-                Controller -> CustomerManagementService : registerNewCustomer(Name, Email,Password, Phone Number,\n VatNumber, Address)
-                activate CustomerManagementService
-
-
-                    CustomerManagementService -> Customer : create()
-                    activate Customer
-
-
-                    Customer -> CustomerManagementService : newCustomer
-
-                    deactivate Customer
-
-
-                    CustomerManagementService -> CustomerRepository : save(newCustomer)
-
-                    activate CustomerRepository
-
-                             CustomerRepository -> Database : save()
-                             activate Database
-
-                                Database --> CustomerRepository
-                             deactivate Database
-
-                             CustomerRepository --> CustomerManagementService
-                    deactivate CustomerRepository
-
-                    CustomerManagementService --> Controller
-                deactivate CustomerManagementService
-
-                Controller -> RepresentativeManagementService : registerNewRepresentative(representativeName, representativeEmail,\n createdOn, representativePassword, representativePhoneNumber,\n associatedCustomer, representativePosition)
-                activate RepresentativeManagementService
-
-                RepresentativeManagementService ->Representative:create()
-                activate Representative
-                Representative -> RepresentativeManagementService : newRepresentative
-                deactivate Representative
-
-                RepresentativeManagementService -> RepresentativeRepository :save(newRepresentative)
-                activate RepresentativeRepository
-                RepresentativeRepository ->Database :save()
-                activate Database
-                Database --> RepresentativeRepository
-                deactivate Database
-                RepresentativeRepository -->RepresentativeManagementService
-                deactivate RepresentativeRepository
-                RepresentativeManagementService --> Controller
-                deactivate RepresentativeManagementService
-
-
-                Controller --> UI
-            deactivate Controller
-        UI --> Actor : Inform operation success
-        deactivate UI
+    deactivate UI
 deactivate Actor
 
 @enduml

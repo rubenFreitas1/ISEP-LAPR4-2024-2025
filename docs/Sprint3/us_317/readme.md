@@ -7,13 +7,11 @@ confirmation email, ensuring that approvals are documented and visible within th
 
 ## 2. Requirements
 
-**US317** As CRM Collaborator, I want to mark the proposal as accepted by the customer by attaching the customer’s acceptance email.
+**US317** As CRM Collaborator, I want to mark the proposal as accepted by the customer after it has been accepted by a Customer Representative in the Customer App
 
 **Acceptance Criteria:**
 
-- US317.1 When marking a proposal as accepted, the system requires the user to upload the customer’s acceptance email
 - US317.2 Once marked as accepted, the proposal status is updated to "Accepted".
-- US317.3 The system prevents marking a proposal as "Accepted" without attaching an acceptance email.
 
 **Dependencies/References:**
 
@@ -35,15 +33,7 @@ confirmation email, ensuring that approvals are documented and visible within th
 ![Sequence Diagram](images/sequence-diagram-US317.svg)
 ### 4.3. Applied Patterns
 
-- Information Expert
-- Creator
-- Controller
-- Low Coupling
-- High Cohesion
-- Polymorphism
-- Pure Fabrication
-- Indirection
-- Protected Variations
+
 
 ### 4.4. Acceptance Tests
 
