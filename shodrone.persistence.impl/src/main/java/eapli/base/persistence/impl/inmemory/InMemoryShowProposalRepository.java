@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.showProposalManagement.domain.ProposalAnswerFeedback;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -26,6 +27,18 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
         List<ShowProposal> result = new ArrayList<>();
         for (ShowProposal proposal : proposals) {
             if (proposal.showRequest().equals(showRequest)) {
+                result.add(proposal);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Iterable<ShowProposal> findByAcceptedProposals() {
+        List<ShowProposal> result = new ArrayList<>();
+        for (ShowProposal proposal : proposals) {
+            var feedback = proposal.proposalAnswerFeedback();
+            if (feedback != null && feedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED) {
                 result.add(proposal);
             }
         }

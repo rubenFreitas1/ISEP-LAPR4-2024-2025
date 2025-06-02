@@ -2,6 +2,7 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.showProposalManagement.domain.ProposalAnswerFeedback;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -29,6 +30,18 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
         return entityManager()
                 .createQuery("SELECT sp FROM ShowProposal sp WHERE sp.showRequest = :showRequest", ShowProposal.class)
                 .setParameter("showRequest", showRequest)
+                .getResultList();
+    }
+
+    @Override
+    public Iterable<ShowProposal> findByAcceptedProposals() {
+        return entityManager()
+                .createQuery(
+                        "SELECT sp FROM ShowProposal sp " +
+                                "WHERE sp.proposalAnswerFeedback IS NOT NULL " +
+                                "AND sp.proposalAnswerFeedback.answer = :answer",
+                        ShowProposal.class)
+                .setParameter("answer", ProposalAnswerFeedback.Answer.ACCEPTED)
                 .getResultList();
     }
 

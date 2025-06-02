@@ -4,5 +4,6 @@ public enum ShowStatus {
     PENDING,
     ACCEPTED,
     DECLINED,
-    SENT
+    SENT,
+    ANSWERED
 }

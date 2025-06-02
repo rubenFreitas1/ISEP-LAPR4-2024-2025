@@ -57,6 +57,9 @@ public class ShowProposal implements AggregateRoot<Long> {
     @Column (nullable = true)
     private String videoLink;
 
+    @Embedded
+    private ProposalAnswerFeedback proposalAnswerFeedback;
+
     protected ShowProposal() {}
 
     public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
@@ -140,6 +143,8 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     public Long insuranceAmount() { return this.insuranceAmount; }
 
+    public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
+
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
         if (showRequest == null)
             throw new IllegalArgumentException("ShowRequest cannot be null");
@@ -222,6 +227,17 @@ public class ShowProposal implements AggregateRoot<Long> {
         return videoLink.matches(videoLinkPattern);
     }
 
+    public void updateProposalAnswer(ProposalAnswerFeedback answer){
+        this.proposalAnswerFeedback = answer;
+    }
+
+    public boolean markShowProposal(){
+        if(proposalAnswerFeedback != null && proposalAnswerFeedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED){
+            status = ShowStatus.ACCEPTED;
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean sameAs(Object other) {
