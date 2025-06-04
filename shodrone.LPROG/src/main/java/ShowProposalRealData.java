@@ -1,17 +1,17 @@
-import genShowProposal.ShowProposalLexer;
-import genShowProposal.ShowProposalParser;
+import genShowProposalRealData.ShowProposalRealDataLexer;
+import genShowProposalRealData.ShowProposalRealDataParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 
-public class ShowProposal {
+public class ShowProposalRealData {
     public static void main(String[] args) throws IOException {
         System.out.println(System.getProperty("user.dir"));
-        ShowProposalLexer lexer = new ShowProposalLexer(CharStreams.fromFileName("filesLPROG/show_proposal_dados_3"));
+        ShowProposalRealDataLexer lexer = new ShowProposalRealDataLexer(CharStreams.fromFileName("filesLPROG/show_proposal_dados_1"));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        ShowProposalParser parser = new ShowProposalParser(tokens);
+        ShowProposalRealDataParser parser = new ShowProposalRealDataParser(tokens);
         ParseTree tree = parser.proposal();
         System.out.println(tree.toStringTree(parser));
         System.out.println("Done!");

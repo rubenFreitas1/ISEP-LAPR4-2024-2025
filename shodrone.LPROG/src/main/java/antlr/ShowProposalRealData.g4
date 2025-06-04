@@ -1,4 +1,4 @@
-grammar ShowProposal;
+grammar ShowProposalRealData;
 
 //Regra principal do programa
 proposal
@@ -37,59 +37,48 @@ companyInfo
     ;
 
 
-//Informações do representante da empresa (aceita o nome do representante ou o placeholder)
+//Informações do representante da empresa (aceita o nome do representante)
 personName
     : realPersonName
-    | personNamePlaceholder
     ;
 
+//Regra para o nome real da pessoa
 realPersonName: PERSON_NAME;
 
-personNamePlaceholder
-    : PERSON_NAME_PLACEHOLDER
-    ;
 
-//Informações da empresa (aceita o nome da empresa ou o placeholder)
+//Informações da empresa (aceita o nome da empresa)
 company
     : realCompanyName
-    | companyPlaceHolder
     ;
 
+//Regra para o nome da empresa
 realCompanyName : WORD ;
 
-companyPlaceHolder: COMPANY_PLACEHOLDER;
-
-
-
-//Informações do endereço da empresa (aceita o endereço ou o placeholder)
+//Informações do endereço da empresa (aceita o endereço)
 address
     : realAddress
-    | addressPlaceHolder
     ;
 
+//Regra para linha do endereço real da empresa
 realAddress: ADDRESS_LINE;
 
-addressPlaceHolder: ADDRESS_PLACEHOLDER;
-
-//Informações do número de contribuinte da empresa (aceita o número de contribuinte ou o placeholder)
+//Informações do número de contribuinte da empresa (aceita o número de contribuinte)
 vatNumber
     : realVatNumber
-    | vatNumberPlaceHolder
     ;
 
+//Regra do número de contribuinte da empresa
 realVatNumber: VAT_NUMBER;
 
-vatNumberPlaceHolder: VAT_NUMBER_PLACEHOLDER;
 
-//Informações da referência da proposta (aceita a referência ou o placeholder)
+//Informações da referência da proposta (aceita a referência)
 reference
-    : (realReference | referencePlaceHolder) NEWLINE titleProposal
+    : realReference NEWLINE titleProposal
     ;
 
-
+//Regra da referencia com dados reais
 realReference: REAL_REFERENCE;
 
-referencePlaceHolder: REFERENCE_PLACEHOLDER;
 
 //Titulos das propostas presentes nos templates do show proposal
 titleProposal
@@ -107,13 +96,14 @@ line_1
     | vip_line1
     ;
 
+//Regra da Primeira linha normal
 normal_line1:LINE_1_FORMAT;
 
-vip_line1: real_vip_line1 | vip_line1_Placeholder;
+//Regra da Primeira linha em que o customer é vip
+vip_line1: real_vip_line1;
 
+//Linha em que o customer é vip (dados reais)
 real_vip_line1: REAL_VIP_LINE1;
-
-vip_line1_Placeholder: VIP_LINE1_PLACEHOLDER;
 
 //Segunda linha do corpo da proposta
 line_2
@@ -123,24 +113,20 @@ line_2
 //Terceira linha do corpo da proposta
 line_3
     : real_line3
-    | line3_placeholder
     ;
 
 //Terceira linha do corpo da proposta com dados reais
 real_line3:REAL_LINE3;
 
-//Terceira linha do corpo da proposta com placeholder
-line3_placeholder:LINE3_PLACEHOLDER;
 
 //Linha que fecha o corpo da proposta
 closing
     : real_closing
-    | closing_placeholder
     ;
 
+//Linha que fecha o corpo da proposta com dados reais
 real_closing: REAL_CLOSING_FORMAT;
 
-closing_placeholder: CLOSING_FORMAT_PLACEHOLDER;
 
 //Regra para aceitar as frases de signature da proposta, e tambem o final da pagina da proposta
 signature
@@ -150,12 +136,11 @@ signature
       NEWLINE 'CRM Manager'
     ;
 
-crmManagerName: realManagerName | managerName_Placeholder;
+//Regra para o nome do crm Manager
+crmManagerName: realManagerName;
 
+//Regra para o crm Manager que será dados reais
 realManagerName:PERSON_NAME;
-
-managerName_Placeholder: CRM_MANAGER_PLACEHOLDER;
-
 
 //Regra para aceitar as diferentes opções de signature da proposta
 signature_option
@@ -195,90 +180,95 @@ showDetails
      figureList
     ;
 
-attachment: real_attachment | attachment_placeholder;
+//Linha do anexo do Proposal // Informação do Show
+attachment: real_attachment;
 
+//Linha do anexo com dados reais
 real_attachment: ATTACHMENT_REAL;
 
-attachment_placeholder: ATTACHMENT_PLACEHOLDER;
-
-//Regra para aceitar as diferentes opções de localização do show (dados como também placeholder)
+//Regra para aceitar as diferentes opções de localização do show (dados reais)
 location
-    : location_real | location_placeholder
+    : location_real
     ;
 
+//Regra para dados reais da localização
 location_real: GPS_LINE_REAL;
 
-location_placeholder: GPS_LINE_PLACEHOLDER;
 
-//Regra para aceitar as diferentes opções de data do show (dados como também placeholder)
+//Regra para aceitar as diferentes opções de data do show (dados reais)
 date
-    :date_real | date_placeholder
+    :date_real
     ;
 
+//Regra para dados reais da data
 date_real:SHOW_DATE_REAL_LINE;
 
-date_placeholder:SHOW_DATE_PLACEHOLDER_LINE;
 
-//Regra para aceitar as diferentes opções de hora do show (dados como também placeholder)
+//Regra para aceitar as diferentes opções de hora do show (dados reais)
 time
-    :time_real | time_placeholder
+    :time_real
     ;
+
+//Regra para dados reais da hora do show
 time_real:TIME_REAL_LINE;
-time_placeholder:TIME_PLACEHOLDER_LINE;
 
-//Regra para aceitar as diferentes opções de duração do show (dados como também placeholder)
+
+//Regra para aceitar as diferentes opções de duração do show (dados reais)
 duration
-    :duration_real | duration_placeholder
+    :duration_real
     ;
 
+//Regra para dados reais da duração do show
 duration_real:DURATION_REAL_LINE;
 
-duration_placeholder:DURATION_PLACEHOLDER_LINE;
 
-//Regra para aceitar a lista de drones (dados como também placeholder)
+//Regra para aceitar a lista de drones (dados reais)
 droneList
     : ('#List of used drones' | '#Lista de drones utilizados') NEWLINE
-      (droneListReal | droneListPlaceholders)
+      droneListReal
     ;
 
+//Regra para linha da lista de drones (dados reais)
 droneListReal
     : DRONE_ITEM_REAL (NEWLINE DRONE_ITEM_REAL)*
     ;
 
-droneListPlaceholders
-    : DRONE_ITEM_PLACEHOLDER (NEWLINE DRONE_ITEM_PLACEHOLDER)*
-    ;
-
-//Regra para aceitar a lista de figuras (dados como também placeholder)
+//Regra para aceitar a lista de figuras (dados reais)
 figureList
     : ('#Lista de figuras' | '#List of figures') NEWLINE
-    (figureListReal | figureListPlaceholder)
+    figureListReal
     ;
 
+//Regra para linha de lista de figuras (dados reais)
 figureListReal
     : FIGURE_ITEM_REAL (NEWLINE FIGURE_ITEM_REAL)*
     ;
 
-figureListPlaceholder
-    : FIGURE_ITEM_PLACEHOLDER (NEWLINE FIGURE_ITEM_PLACEHOLDER)*
-    ;
-
+//Diferentes Greetings aceites
 GREETINGS:'Dear,'
          | 'Dear Sirs,'
          | 'Exmos. Senhores';
 
+
+//Título do Show Proposal
 TITLE_PHRASE:'Show Proposal'
             | 'Proposta de Show';
 
+//Frases possiveis da preferência
 PREFEREMCE_PHRASE:'Being certain that we will be the target of your preference.'
                   | 'Estando certos que seremos alvo da V/ preferência.'
                   ;
 
+//Frases possiveis de subscrição
 SUBSCRIBE_PHRASE:'We subscribe at your disposal.'
                   | 'Subscrevemo-nos ao dispor.'
                   ;
+
+//Ultima frase aceita da primeira pagina do proposal
 LAST_PHRASE:'Looking forward to hearing from you soon.';
 
+
+//Exemplos de Cumprimentos
 REGARDS:'Best regards,'
        | 'Melhores cumprimentos,';
 
@@ -286,9 +276,9 @@ REGARDS:'Best regards,'
 LINE_1_FORMAT: 'A Shodrone tem o prazer de submeter à V/ apreciação uma proposta para execução de um show aéreo com drones, conforme descrição abaixo.'
                | 'Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.';
 
-REAL_VIP_LINE1: WORD ' is a VIP client and Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.';
-
-VIP_LINE1_PLACEHOLDER: COMPANY_PLACEHOLDER ' is a VIP client and Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.';
+//Token da primeira linha do corpo da proposta em que a empresa seja vip com dados reais
+REAL_VIP_LINE1: WORD ' is a VIP client and Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.'
+              | WORD ' é um cliente VIP e a Shodrone tem o prazer de submeter à vossa apreciação uma proposta para a execução de um espetáculo aéreo com drones, tal como descrito abaixo.';
 
 
 //Token da segunda linha do corpo da proposta
@@ -300,113 +290,67 @@ LINE_2_FORMAT: 'Shodrone is a company that prioritizes safety, which is why it u
 REAL_LINE3:'In the link ' LINK ' there is a video with a simulation of the proposed show.'
           |'No link ' LINK ' encontra-se um vídeo com a simulação do show proposto.';
 
-//Token da terceira linha do corpo da proposta // com placeholder
-LINE3_PLACEHOLDER: 'In the link ' LINK_PLACEHOLDER ' there is a video with a simulation of the proposed show.'
-                 |'No link ' LINK_PLACEHOLDER ' encontra-se um vídeo com a simulação do show proposto.';
-
-//Placeholder do link
-LINK_PLACEHOLDER: '[link to show video]';
 
 //Token da linha que fecha o corpo da proposta
 REAL_CLOSING_FORMAT: 'Com a aplicação do AI-Test, um exclusivo da Shodrone, temos a confiança de oferecer um seguro de responsabilidade civil no valor de ' [0-9]+ ' para o show. Os dados detalhados do show são apresentados em anexo.'
                  | 'With the application of AI-Test, a Shodrone exclusive, we are confident in offering liability insurance in the amount of ' [0-9]+ ' for the show. Detailed show data is presented in the attachment.';
 
-CLOSING_FORMAT_PLACEHOLDER:'Com a aplicação do AI-Test, um exclusivo da Shodrone, temos a confiança de oferecer um seguro de responsabilidade civil no valor de ' INSURANCE_AMOUNT_PLACEHOLDER ' para o show. Os dados detalhados do show são apresentados em anexo.'
-                 | 'With the application of AI-Test, a Shodrone exclusive, we are confident in offering liability insurance in the amount of ' INSURANCE_AMOUNT_PLACEHOLDER ' for the show. Detailed show data is presented in the attachment.';
 
-INSURANCE_AMOUNT_PLACEHOLDER: '[valor do seguro]' | '[insurance amount]';
-
-//Token do formato da data do show (aceita placeholder como também dados)
+//Token do formato da data do show
 SHOW_DATE_FORMAT: ('Date - ' | 'Data - ');
 
+//Token do formato da linha da data com dados reais
 SHOW_DATE_REAL_LINE: SHOW_DATE_FORMAT DATE;
 
-SHOW_DATE_PLACEHOLDER_LINE: SHOW_DATE_FORMAT SHOW_DATE_PLACEHOLDER;
 
-SHOW_DATE_PLACEHOLDER:'[date of the event]';
-
-
-
-//Token do formato de cada linha na lista de figuras (aceita placeholders como também dados)
-
+//Token do formato de cada linha na lista de figuras com dados reais
 FIGURE_ITEM_REAL:([1-9][0-9]?' - 'WORD);
-
-FIGURE_ITEM_PLACEHOLDER: FIGURE_POSITION_PLACEHOLDER ' - ' FIGURE_NAME_PLACEHOLDER;
-
-FIGURE_POSITION_PLACEHOLDER:'[position in show]';
-FIGURE_NAME_PLACEHOLDER:'[figure name]';
-
-
-PERSON_NAME_PLACEHOLDER: '[Customer Representative Name]';
-
-CRM_MANAGER_PLACEHOLDER: '[CRM Manager Name]';
-
-COMPANY_PLACEHOLDER: '[Company name]' | '[' 'Company' ' ' 'Name' ']';
-
-ADDRESS_PLACEHOLDER: '[Address with postal code and country]';
-
-VAT_NUMBER_PLACEHOLDER: '[VAT Number]' ;
 
 //Token do formato do link
 LINK: ('http' 's'? '://' | 'www.') (WORD_PART | '/' | '.' | '-' | '_' | '?' | '=' | '&' | '%' | '#' | ':' | '~')+;
 
-//Token do formato de cada linha na lista de drones (aceita placeholders como também dados)
+//Token de unidades da linha drone item
 DRONE_ITEM_FORMAT: (' units.' | ' unidades.');
 
+//Linha da lista de drones com dados reais
 DRONE_ITEM_REAL:(WORD ' - ' [0-9]+) DRONE_ITEM_FORMAT;
 
-DRONE_ITEM_PLACEHOLDER: DRONE_MODEL_PLACEHOLDER ' - ' DRONE_MODEL_QUANTITY_PLACEHOLDER DRONE_ITEM_FORMAT;
-
-DRONE_MODEL_PLACEHOLDER:'[model]';
-
-DRONE_MODEL_QUANTITY_PLACEHOLDER:'[quantity]';
-
-//Token do formato da linha da location (aceita placeholders como também dados)
+//Token da linha da localização
 GPS_LINE:('Location - ' | 'Local de realização - ');
 
+//Linha com dados reais da localização
 GPS_LINE_REAL: GPS_LINE (('-'|'+')?[0-9]+('.'[0-9]+)?', '('-'|'+')?[0-9]+('.'[0-9]+)?) ;
 
-GPS_LINE_PLACEHOLDER: GPS_LINE GPS_PLACEHOLDER;
-
-GPS_PLACEHOLDER: '[GPS coordinates of the location]';
-
-
+//Linha do anexo
 ATTACHMENT_LINE:('Attachment - Show Details ' | 'Anexo - Detalhes do Show ');
 
-//Token do formato do anexo (aceita placeholders como também dados)
+//Linha do anexo com os dados reais do show proposal number
 ATTACHMENT_REAL: ATTACHMENT_LINE [0-9]+ ;
 
-ATTACHMENT_PLACEHOLDER: ATTACHMENT_LINE SHOW_PROPOSAL_PLACEHOLDER;
-
-SHOW_PROPOSAL_PLACEHOLDER: '[show proposal number]';
-
+//Token da referência
 REFERENCE_LINE:('Reference '|'Referência ') ;
 
+//Token da linha completa da referência com dados reais
 REAL_REFERENCE: REFERENCE_LINE [0-9]+ ' / ' DATE;
-
-REFERENCE_PLACEHOLDER: REFERENCE_LINE PROPOSAL_PLACEHOLDER ' / ' DATE_PLACEHOLDER;
-
-PROPOSAL_PLACEHOLDER:'[proposal number]';
-
-DATE_PLACEHOLDER: '[date]';
 
 //Token do formato de uma data
 DATE: ('0'[1-9]|[12][0-9]|'3'[01])'-'('0'[1-9]|'1'[0-2])'-20'[2-9][0-9];
 
-//Token do formato da hora (aceita placeholders como também dados)
+//Token da hora do show
 TIME_LINE: ('Time - ' | 'Hora - ');
+
+//Linha completa da hora do show com dados reais
 TIME_REAL_LINE: TIME_LINE ([0-9][0-9]':'[0-9][0-9]);
-TIME_PLACEHOLDER_LINE:TIME_LINE TIME_PLACEHOLDER;
 
-TIME_PLACEHOLDER:'[time of the event]';
-
-//Token do formato da duração (aceita placeholders como também dados)
+//Token da duração do show
 DURATION_LINE: ('Duration - ' | 'Duração - ');
+
+//Token de minutos
 DURATION_MINUTES:(' minutes' | ' minutos');
 
+//Linha completa da duração do show com dados reais
 DURATION_REAL_LINE: DURATION_LINE ([0-5][0-9]|'60') DURATION_MINUTES;
-DURATION_PLACEHOLDER_LINE: DURATION_LINE DURATION_PLACEHOLDER DURATION_MINUTES;
-DURATION_PLACEHOLDER: '[duration]';
+
 
 //Token de um nome de uma pessoa
 PERSON_NAME: NAME_PART (' ' NAME_PART)+;
@@ -438,8 +382,6 @@ fragment NAME_PART: UPPER LOWER+ ('-' UPPER LOWER+)*;
 //Token para uma palavra que pode conter numeros (utilizado para nome de empresas, drones, figuras, etc)
 fragment WORD_PART: (LETTER | [0-9])+ ([-&',.] (LETTER | [0-9])+)*;
 
-//Token para espaços em branco
-WS: [ \t]+ -> skip;
 
 //Token para a linha de endereço da empresa
 ADDRESS_LINE: (~[\r\n])+;

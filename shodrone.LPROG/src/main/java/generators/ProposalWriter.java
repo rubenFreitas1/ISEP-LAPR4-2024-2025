@@ -2,8 +2,8 @@ package generators;
 
 
 import eapli.base.showProposalManagement.domain.ShowProposal;
-import genShowProposal.ShowProposalLexer;
-import genShowProposal.ShowProposalParser;
+import genShowProposalPlaceholder.ShowProposalPlaceholderLexer;
+import genShowProposalPlaceholder.ShowProposalPlaceholderParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -20,9 +20,9 @@ public class ProposalWriter {
             String template = Files.readString(Paths.get(templatePath));
 
             CharStream input = CharStreams.fromString(template);
-            ShowProposalLexer lexer = new ShowProposalLexer(input);
+            ShowProposalPlaceholderLexer lexer = new ShowProposalPlaceholderLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            ShowProposalParser parser = new ShowProposalParser(tokens);
+            ShowProposalPlaceholderParser parser = new ShowProposalPlaceholderParser(tokens);
             ParseTree tree = parser.proposal();
 
             ProposalGeneratorVisitor visitor = new ProposalGeneratorVisitor(showProposal);
