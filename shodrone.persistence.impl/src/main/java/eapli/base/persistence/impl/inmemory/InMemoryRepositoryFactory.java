@@ -28,6 +28,7 @@ import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
+import eapli.base.showProposalManagement.repositories.TemplateRepository;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.base.usermanagement.domain.UserBuilderHelper;
@@ -103,6 +104,17 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 
 	@Override
 	public ShowProposalRepository showProposals() { return showProposals(null); }
+
+	@Override
+	public TemplateRepository templates(TransactionalContext autoTx) {
+		return new InMemoryTemplateRepository();
+	}
+
+	@Override
+	public TemplateRepository templates() {
+		return templates(null);
+	}
+
 
 	@Override
 	public FigureRepository figures(TransactionalContext autoTx) {

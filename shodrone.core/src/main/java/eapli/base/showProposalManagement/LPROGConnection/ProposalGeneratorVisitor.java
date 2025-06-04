@@ -1,4 +1,4 @@
-package generators;
+package eapli.base.showProposalManagement.LPROGConnection;
 
 import eapli.base.showProposalManagement.domain.DroneListItem;
 import eapli.base.showProposalManagement.domain.ShowProposal;

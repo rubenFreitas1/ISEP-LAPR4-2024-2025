@@ -26,6 +26,12 @@
 			<artifactId>shodrone.infrastructure.application</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>lapr4</groupId>
+            <artifactId>shodrone.LPROG</artifactId>
+            <version>0.1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
 

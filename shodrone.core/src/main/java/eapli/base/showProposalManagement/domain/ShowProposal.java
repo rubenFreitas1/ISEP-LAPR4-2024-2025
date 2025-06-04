@@ -57,6 +57,9 @@ public class ShowProposal implements AggregateRoot<Long> {
     @Column (nullable = true)
     private String videoLink;
 
+    @ManyToOne
+    private Template template;
+
     @Embedded
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
@@ -118,6 +121,8 @@ public class ShowProposal implements AggregateRoot<Long> {
         }
         return false;
     }
+
+    public Template template() {return this.template;}
 
     public ShowStatus status(){return  this.status;}
 

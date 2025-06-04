@@ -1,4 +1,4 @@
-package plugins;
+package eapli.base.showProposalManagement.LPROGConnection.plugins;
 
 import genShowProposalPlaceholder.ShowProposalPlaceholderLexer;
 import genShowProposalPlaceholder.ShowProposalPlaceholderParser;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class ShowProposalValidator {
 
-    public boolean validateShowProposalPlaceholders(String input){
+    public static boolean validateShowProposalPlaceholders(String input){
         ShowProposalPlaceholderLexer lexer = new ShowProposalPlaceholderLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ShowProposalPlaceholderParser parser = new ShowProposalPlaceholderParser(tokens);
