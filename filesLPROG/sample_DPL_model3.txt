@@ -1,0 +1,35 @@
+Autel Robotics EVO Lite Programming Language Version 1.0
+
+Types
+
+Coord       - (x, y, z), with x, y, z as float values in meters
+Direction   - (x, y, z), with x, y, z as float values in meters
+Speed       - float, in meters per second (m/s)
+RotSpeed    - float, in radians per second (rad/s)
+Length      - float, in meters (m)
+Duration    - integer, in milliseconds (ms)
+Color       - string, e.g., "red", "blue", "green"
+
+Variables
+
+<type> <variable_name> = <initial_value>;
+Coord currentPosition = (0.0, 0.0, 1.2);
+Direction flightVector = (1, 0, 0) - (0, 0, 0);
+
+Speed cruiseSpeed = 5.0;
+RotSpeed yawSpeed = PI / 8;
+
+Coord waypoints = ((0, 0, 0), (10, 0, 5), (10, 10, 5), (0, 10, 2));
+
+Instructions
+
+initiateFlight(<target height>, <ascent speed>);
+terminateFlight(<descent speed>);
+navigateTo(<target coord>, <speed>);
+navigateVector(<direction>, <speed>, <duration>);
+followRoute(<array of coords>, <speed>);
+circleFlight(<center coord>, <radius>, <rotational speed>, <duration>);
+hover(<duration>);
+enableLights(<color>);
+disableLights();
+flashLights(<color>, <interval>);
