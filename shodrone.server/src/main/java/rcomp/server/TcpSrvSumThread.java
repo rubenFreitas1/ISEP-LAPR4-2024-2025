@@ -1,5 +1,7 @@
 package rcomp.server;
 
+import eapli.base.showProposalManagement.application.AnalyseProposalController;
+import eapli.base.showProposalManagement.domain.ShowProposal;
 import rcomp.client.HTTPmessage;
 
 import java.io.DataInputStream;
@@ -44,7 +46,11 @@ class TcpSrvSumThread implements Runnable {
                     }
                     break;
 
-                case "/shows":
+                case "/analyseProposal":
+                    String customerEmail = request.getContentAsString().split("=")[1];
+                    AnalyseProposalController controller = new AnalyseProposalController();
+                    Iterable<ShowProposal> proposals = controller.findByEmailAndStatus(customerEmail);
+                    StringBuilder sb = new StringBuilder();
                     response.setResponseStatus("200 OK");
                     response.setContent("lista de shows...", "text/plain");
                     break;

@@ -46,6 +46,38 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     }
 
     @Override
+    public Iterable<ShowProposal> findByEmailAndStatus(String email, ShowStatus status) {
+        List<ShowProposal> result = new ArrayList<>();
+
+        for (ShowProposal proposal : proposals) {
+            var showRequest = proposal.showRequest();
+            var customer = showRequest.customer();
+            String customerEmail = customer.customerEmail().toString();
+
+            boolean emailMatches = false;
+
+            if (customerEmail.equals(email)) {
+                emailMatches = true;
+            } else {
+                var representatives = customer.representatives();
+                if (representatives != null) {
+                    for (var rep : representatives) {
+                        String repEmail = rep.representativeEmail().toString();
+                        if (repEmail.equals(email)) {
+                            emailMatches = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (emailMatches && proposal.status() == status) {
+                result.add(proposal);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public Iterable<ShowProposal> findByStatus(ShowStatus status) {
         return this.match(e -> e.status().equals(status));
     }

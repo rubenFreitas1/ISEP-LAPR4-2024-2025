@@ -1,6 +1,7 @@
 package eapli.base.app.customer.presentation.menu;
 
 import eapli.base.Application;
+import eapli.base.app.customer.presentation.showProposalRequests.AnalyseProposalAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 import eapli.framework.actions.menu.MenuItem;
@@ -87,7 +88,7 @@ public class MainMenuCustomer extends AbstractUI {
 
     private Menu buildShowsMenu() {
         final var menu = new Menu("Shows >");
-        //menu.addItem(ANALYSE_PROPOSAL_OPTION, "Analyse Proposal", );
+        menu.addItem(ANALYSE_PROPOSAL_OPTION, "Analyse Proposal", new AnalyseProposalAction(customerEmail));
         //menu.addItem(ACCEPT_OR_REJECT_SHOW_PROPOSAL_OPTION, "Answer to Show Proposals", );
         //menu.addItem(LIST_SHOWS_OPTION, "List Shows", );
         //menu.addItem(GET_SHOW_INFO_OPTION, "Get Show Info", );

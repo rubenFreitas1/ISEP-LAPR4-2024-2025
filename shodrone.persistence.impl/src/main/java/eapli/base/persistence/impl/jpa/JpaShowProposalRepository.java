@@ -46,6 +46,21 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     }
 
     @Override
+    public Iterable<ShowProposal> findByEmailAndStatus(String email, ShowStatus status) {
+        return entityManager()
+                .createQuery(
+                        "SELECT DISTINCT sp FROM ShowProposal sp " +
+                                "LEFT JOIN sp.showRequest.customer.representatives reps " +
+                                "WHERE (sp.showRequest.customer.customerEmail = :email " +
+                                "OR reps.representativeEmail = :email) " +
+                                "AND sp.status = :status",
+                        ShowProposal.class)
+                .setParameter("email", email)
+                .setParameter("status", status)
+                .getResultList();
+    }
+
+    @Override
     public Iterable<ShowProposal> findByStatus(ShowStatus status) {
         return match("e.status = :status", "status", status);
     }
