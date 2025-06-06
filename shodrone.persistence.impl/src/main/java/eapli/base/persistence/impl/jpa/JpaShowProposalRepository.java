@@ -2,6 +2,7 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ProposalAnswerFeedback;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -9,6 +10,7 @@ import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
+import jakarta.persistence.NoResultException;
 
 public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal, Long, Long> implements ShowProposalRepository {
     public JpaShowProposalRepository(TransactionalContext autoTx) { super(autoTx, "showProposalId"); }
@@ -58,6 +60,18 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
                 .setParameter("email", email)
                 .setParameter("status", status)
                 .getResultList();
+    }
+
+    @Override
+    public Document findDocumentByCode(String code) {
+        try {
+            return entityManager()
+                    .createQuery("SELECT d FROM Document d WHERE d.code = :code", Document.class)
+                    .setParameter("code", code)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

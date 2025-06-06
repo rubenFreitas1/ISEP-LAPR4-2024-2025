@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ProposalAnswerFeedback;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -75,6 +76,16 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
             }
         }
         return result;
+    }
+
+    @Override
+    public Document findDocumentByCode(String code) {
+        for(ShowProposal showProposal: proposals){
+            if(showProposal.document().code().equals(code)){
+                return showProposal.document();
+            }
+        }
+        return null;
     }
 
     @Override

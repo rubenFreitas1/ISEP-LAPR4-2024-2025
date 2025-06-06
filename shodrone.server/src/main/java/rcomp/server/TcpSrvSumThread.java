@@ -1,6 +1,7 @@
 package rcomp.server;
 
 import eapli.base.showProposalManagement.application.AnalyseProposalController;
+import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import rcomp.client.HTTPmessage;
 
@@ -14,6 +15,9 @@ class TcpSrvSumThread implements Runnable {
     private Socket socket;
     private DataOutputStream out;
     private DataInputStream in;
+
+    AnalyseProposalController controller = new AnalyseProposalController();
+
 
     public TcpSrvSumThread(Socket cli_s) {
         socket = cli_s;
@@ -48,12 +52,28 @@ class TcpSrvSumThread implements Runnable {
 
                 case "/analyseProposal":
                     String customerEmail = request.getContentAsString().split("=")[1];
-                    AnalyseProposalController controller = new AnalyseProposalController();
                     Iterable<ShowProposal> proposals = controller.findByEmailAndStatus(customerEmail);
                     StringBuilder sb = new StringBuilder();
+                    for (ShowProposal proposal : proposals) {
+                        String code = proposal.document().code();
+                        sb.append("http://localhost:9999/download?code=").append(code).append("\n");
+                    }
                     response.setResponseStatus("200 OK");
-                    response.setContent("lista de shows...", "text/plain");
+                    response.setContent(sb.toString(), "text/plain");
                     break;
+                case "/download":
+                    String query = request.getURI();
+                    String code = query.substring(query.indexOf("code=") + 5);
+                    Document doc = controller.findDocumentByCode(code);
+                    if (doc != null) {
+                        response.setResponseStatus("200 OK");
+                        response.setContent(doc.finalContent(), "application/pdf");
+                    } else {
+                        response.setResponseStatus("404 Not Found");
+                        response.setContent("Document not found", "text/plain");
+                    }
+                    break;
+
                 default:
                     response.setResponseStatus("404 Not Found");
                     response.setContent("Endpoint unknown", "text/plain");

@@ -5,6 +5,7 @@ package rcomp.client;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TcpClient {
@@ -25,7 +26,7 @@ public class TcpClient {
         }
     }
 
-    public static Iterable<String> analyseProposal(String email) throws IOException{
+    public static List<String> analyseProposal(String email) throws IOException{
         try(Socket socket = new Socket("localhost", 9999)){
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out= new DataOutputStream(socket.getOutputStream());
@@ -37,16 +38,45 @@ public class TcpClient {
 
             HTTPmessage response = new HTTPmessage(in);
             if (response.getStatus().startsWith("200")) {
-                List<String> codes = new ArrayList<>();
                 String body = response.getContentAsString();
-                for (String line : body.split("\n")) {
-                    codes.add(line);
-                }
-                return codes;
+                List<String> links = new ArrayList<>(Arrays.asList(body.split("\n")));
+                return links;
             }else{
                 throw new IOException("Error obtaining Proposals: " + response.getStatus());
             }
         }
+    }
+
+    public static boolean downloadDocument(String code, String filePath) throws IOException{
+        try(Socket socket = new Socket("localhost", 9999)){
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out= new DataOutputStream(socket.getOutputStream());
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("GET");
+            request.setURI("/download?code=" + code);
+            request.send(out);
+
+            HTTPmessage response = new HTTPmessage(in);
+
+            if (!response.getStatus().startsWith("200")) {
+                System.out.println("Error obtaining document: " + response.getStatus());
+                return false;
+            }
+
+            byte[] content = response.getContent();
+            if (content == null || content.length == 0) {
+                System.out.println("Ficheiro vazio ou não encontrado.");
+                return false;
+            }
+
+            FileOutputStream fos = new FileOutputStream(filePath);
+            fos.write(content);
+            fos.close();
+
+            System.out.println("Documento guardado com sucesso em: " + filePath);
+            return true;
+        }
+
     }
 
 

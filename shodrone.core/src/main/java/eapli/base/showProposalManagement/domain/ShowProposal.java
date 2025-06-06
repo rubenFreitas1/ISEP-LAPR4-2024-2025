@@ -60,6 +60,10 @@ public class ShowProposal implements AggregateRoot<Long> {
     @ManyToOne
     private Template template;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_id", referencedColumnName = "documentId")
+    private Document document;
+
     @Embedded
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
@@ -78,6 +82,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.createdOn = Calendar.getInstance();
         this.status = ShowStatus.PENDING;
         this.droneModelList = new ArrayList<>();
+        this.document = null;
     }
 
     public boolean addDroneToList(DroneModel droneModel, int quantity){
@@ -150,6 +155,8 @@ public class ShowProposal implements AggregateRoot<Long> {
     public Long insuranceAmount() { return this.insuranceAmount; }
 
     public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
+
+    public Document document(){return this.document;}
 
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
         if (showRequest == null)
@@ -246,6 +253,14 @@ public class ShowProposal implements AggregateRoot<Long> {
     public boolean markShowProposal(){
         if(proposalAnswerFeedback != null && proposalAnswerFeedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED){
             status = ShowStatus.ACCEPTED;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addDocument(Document document){
+        if(document != null){
+            this.document = document;
             return true;
         }
         return false;
