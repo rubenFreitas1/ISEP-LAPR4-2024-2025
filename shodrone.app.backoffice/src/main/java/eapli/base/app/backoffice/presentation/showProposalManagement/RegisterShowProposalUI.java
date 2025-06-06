@@ -7,6 +7,7 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showProposalManagement.application.RegisterShowProposalController;
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showRequestManagement.domain.GenericSelector;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -20,8 +21,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class RegisterShowProposalUI extends AbstractUI {
     private final RegisterShowProposalController controller = new RegisterShowProposalController();
@@ -67,6 +70,14 @@ public class RegisterShowProposalUI extends AbstractUI {
                 }
             }
         }
+        Iterable<Template> templates = controller.listTemplates();
+        List<Template> list = new ArrayList<>();
+        templates.forEach(list::add);
+        if (list.isEmpty()) {
+            System.out.println("No templates available!");
+            return false;
+        }
+        Template template = requestTemplate(list);
         GeoLocation location = showRequest.location();
         Calendar date = showRequest.date();
         int duration = showRequest.duration();
@@ -113,7 +124,7 @@ public class RegisterShowProposalUI extends AbstractUI {
         LocalTime time = requestTime();
 
         try {
-            controller.registerShowProposal(showRequest, location, date, time, duration, droneNumber);
+            controller.registerShowProposal(showRequest, location, date, time, duration, droneNumber, template);
             System.out.println("Show Proposal successfully registered!");
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
@@ -273,5 +284,26 @@ public class RegisterShowProposalUI extends AbstractUI {
         return eventTime;
     }
 
+    private Template requestTemplate(List<Template> list) {
+        int i = 0;
+        while (true) {
+            Template current = list.get(i);
+            System.out.printf("%nTemplate %d of %d:%n%s%n", i + 1, list.size(), current);
 
+            String cmd = Console.readLine("[y] choose  [n] next  [p] previous : ").trim().toLowerCase();
+
+            switch (cmd) {
+                case "y": case "yes":
+                    return current;
+                case "n": case "next":
+                    i = (i + 1) % list.size();
+                    break;
+                case "p": case "prev": case "previous":
+                    i = (i - 1 + list.size()) % list.size();
+                    break;
+                default:
+                    System.out.println("Unknown option, try again.");
+            }
+        }
+    }
 }

@@ -5,7 +5,9 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
+import eapli.base.showProposalManagement.repositories.TemplateRepository;
 import eapli.base.showRequestManagement.application.ShowRequestManagementService;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -31,6 +33,8 @@ public class RegisterShowProposalController {
     private final ShowRequestManagementService showRequestManagementService = new ShowRequestManagementService(showRequestRepository);
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
     private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository);
+    private final TemplateRepository templateRepository = PersistenceContext.repositories().templates();
+    private final TemplateManagementService templateManagementService = new TemplateManagementService(templateRepository);
 
     public Iterable<Customer> listCustomers() {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
@@ -41,7 +45,11 @@ public class RegisterShowProposalController {
         return showRequestManagementService.findByCustomer(customer);
     }
 
-    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber) {
-        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser());
+    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, Template template) {
+        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser(), template);
+    }
+
+    public Iterable<Template> listTemplates() {
+        return templateManagementService.listAllTemplates();
     }
 }

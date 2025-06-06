@@ -7,6 +7,7 @@ import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
@@ -49,6 +50,7 @@ class ShowProposalManagementServiceTest {
     private Customer customer;
 
     private List<Figure> figures;
+    private Template template;
     @BeforeEach
     void setup() {
         behavior = new DroneWindBehavior();
@@ -77,7 +79,8 @@ class ShowProposalManagementServiceTest {
         figures = new ArrayList<>(List.of(figure));
         GeoLocation location = new GeoLocation(40.0, -8.0, 30);
         ShowRequest request = new ShowRequest(location,Calendar.getInstance(),20,30,figures,customer, "Aniversário", user);
-        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user);
+        template = new Template("template", "content");
+        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, template);
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
     }
 
@@ -93,7 +96,8 @@ class ShowProposalManagementServiceTest {
                 proposal.time(),
                 proposal.duration(),
                 proposal.totalDroneNumber(),
-                user
+                user,
+                proposal.template()
         );
 
         assertNotNull(result);

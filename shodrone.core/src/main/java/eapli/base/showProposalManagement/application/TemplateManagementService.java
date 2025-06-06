@@ -15,4 +15,8 @@ public class TemplateManagementService {
         final Template template = new Template(name, content);
         return this.templateRepository.save(template);
     }
+
+    public Iterable<Template> listAllTemplates() {
+        return this.templateRepository.findAll();
+    }
 }

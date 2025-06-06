@@ -27,6 +27,7 @@ class ShowProposalTest {
     private SystemUser user;
     private Calendar now;
     private GeoLocation geoLocation;
+    private Template template;
 
     private FigureCategory category;
     private DroneWindBehavior behavior;
@@ -67,7 +68,8 @@ class ShowProposalTest {
         figures = new ArrayList<>(List.of(figure));
         GeoLocation location = new GeoLocation(40.0, -8.0, 30);
         ShowRequest request = new ShowRequest(location,Calendar.getInstance(),20,30,figures,customer, "Aniversário", user);
-        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user);
+        template = new Template("template", "content");
+        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, template);
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
         modelB = new DroneModel("Parrot", "Anafi",Calendar.getInstance(), user, behavior);
     }

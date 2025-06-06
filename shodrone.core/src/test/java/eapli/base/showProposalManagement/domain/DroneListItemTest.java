@@ -51,6 +51,7 @@ class DroneListItemTest {
 
     private List<Figure> figures;
 
+    private Template template;
 
     private ShowProposal showProposal;
     @BeforeEach
@@ -83,10 +84,10 @@ class DroneListItemTest {
 
         geoLocation = new GeoLocation(38.7169, -9.1399, 100);
 
-
+        template = new Template("template", "content");
         showRequest = new ShowRequest(geoLocation,now,40,40, figures,customer,"aniversario", user);
 
-        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user);
+        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user, template);
 
     }
 

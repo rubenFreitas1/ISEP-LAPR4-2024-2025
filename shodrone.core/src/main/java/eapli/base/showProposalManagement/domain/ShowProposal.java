@@ -65,7 +65,7 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     protected ShowProposal() {}
 
-    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy) {
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template) {
         this.showRequest = validateShowRequest(showRequest);
         this.location = validateLocation(location);
         this.date = validateDate(date);
@@ -73,6 +73,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.duration = validateDuration(duration);
         this.totalDroneNumber = validateTotalDroneNumber(totalDroneNumber);
         this.proposalNumber = validateProposalNumber(proposalNumber);
+        this.template = validateTemplate(template);
         this.createdBy = validateCreatedBy(createdBy);
         this.createdOn = Calendar.getInstance();
         this.status = ShowStatus.PENDING;
@@ -232,6 +233,12 @@ public class ShowProposal implements AggregateRoot<Long> {
         return videoLink.matches(videoLinkPattern);
     }
 
+    public Template validateTemplate(Template template) {
+        if (template == null) {
+            throw new IllegalArgumentException("Template cannot be null");
+        }
+        return template;
+    }
     public void updateProposalAnswer(ProposalAnswerFeedback answer){
         this.proposalAnswerFeedback = answer;
     }
