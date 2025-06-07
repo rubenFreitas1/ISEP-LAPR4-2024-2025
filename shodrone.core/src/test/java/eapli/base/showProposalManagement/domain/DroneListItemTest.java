@@ -87,7 +87,7 @@ class DroneListItemTest {
         template = new Template("template", "content");
         showRequest = new ShowRequest(geoLocation,now,40,40, figures,customer,"aniversario", user);
 
-        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user, template);
+        showProposal = new ShowProposal(showRequest, geoLocation,now, localTime,50,50,4,user, template, 50);
 
     }
 

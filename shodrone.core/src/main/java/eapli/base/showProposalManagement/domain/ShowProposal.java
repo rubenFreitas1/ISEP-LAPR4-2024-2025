@@ -38,7 +38,7 @@ public class ShowProposal implements AggregateRoot<Long> {
     private int totalDroneNumber;
 
     @Column(nullable = false)
-    private Long insuranceAmount;
+    private double insuranceAmount;
 
     @Temporal(TemporalType.DATE)
     private Calendar createdOn;
@@ -69,7 +69,7 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     protected ShowProposal() {}
 
-    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template) {
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template, double insuranceAmount) {
         this.showRequest = validateShowRequest(showRequest);
         this.location = validateLocation(location);
         this.date = validateDate(date);
@@ -84,6 +84,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.droneModelList = new ArrayList<>();
         this.document = null;
         this.proposalAnswerFeedback = null;
+        this.insuranceAmount = insuranceAmount;
     }
 
     public boolean addDroneToList(DroneModel droneModel, int quantity){
@@ -153,7 +154,7 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     public String videoLink() { return this.videoLink; }
 
-    public Long insuranceAmount() { return this.insuranceAmount; }
+    public double insuranceAmount() { return this.insuranceAmount; }
 
     public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
 

@@ -1,17 +1,12 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
 import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
-import eapli.base.app.backoffice.presentation.figureManagement.FigurePrinter;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestPrinter;
 import eapli.base.customerManagement.domain.Customer;
-import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showProposalManagement.application.RegisterShowProposalController;
-import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.domain.Template;
-import eapli.base.showRequestManagement.domain.GenericSelector;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
-import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -122,9 +117,10 @@ public class RegisterShowProposalUI extends AbstractUI {
             }
         }
         LocalTime time = requestTime();
+        double insurance = requestInsurance();
 
         try {
-            controller.registerShowProposal(showRequest, location, date, time, duration, droneNumber, template);
+            controller.registerShowProposal(showRequest, location, date, time, duration, droneNumber, template, insurance);
             System.out.println("Show Proposal successfully registered!");
         } catch (IllegalArgumentException e) {
             System.out.println("\nERROR: " + e.getMessage() + "\n");
@@ -263,6 +259,23 @@ public class RegisterShowProposalUI extends AbstractUI {
         }
         return droneNumber;
     }
+
+    private double requestInsurance(){
+        double insurance = -1;
+        while(insurance <= 0){
+            try{
+                insurance = Console.readDouble("Enter Insurance Amount:");
+                if(insurance <= 0){
+                    System.out.println("The number must be greater than 0.");
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Invalid input. Please enter a valid double.");
+
+            }
+        }
+        return insurance;
+    }
+
     private LocalTime requestTime() {
         LocalTime eventTime = null;
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");

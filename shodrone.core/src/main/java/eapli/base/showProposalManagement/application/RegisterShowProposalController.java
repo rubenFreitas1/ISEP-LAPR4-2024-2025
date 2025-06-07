@@ -45,8 +45,8 @@ public class RegisterShowProposalController {
         return showRequestManagementService.findByCustomer(customer);
     }
 
-    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, Template template) {
-        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser(), template);
+    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, Template template, double insurance) {
+        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser(), template, insurance);
     }
 
     public Iterable<Template> listTemplates() {

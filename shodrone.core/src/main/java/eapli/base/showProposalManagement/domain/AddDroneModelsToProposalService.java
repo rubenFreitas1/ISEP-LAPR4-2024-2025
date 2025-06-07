@@ -4,11 +4,11 @@ import eapli.base.droneManagement.domain.Drone;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.domain.DroneModel;
 
-public class ProposalService {
+public class AddDroneModelsToProposalService {
 
     private final DroneRepository droneRepository;
 
-    public ProposalService(final DroneRepository droneRepository){
+    public AddDroneModelsToProposalService(final DroneRepository droneRepository){
         this.droneRepository = droneRepository;
     }
 

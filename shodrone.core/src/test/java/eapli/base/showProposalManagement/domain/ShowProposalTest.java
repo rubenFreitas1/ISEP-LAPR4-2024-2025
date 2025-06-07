@@ -71,7 +71,7 @@ class ShowProposalTest {
         GeoLocation location = new GeoLocation(40.0, -8.0, 30);
         ShowRequest request = new ShowRequest(location,Calendar.getInstance(),20,30,figures,customer, "Aniversário", user);
         template = new Template("template", "content");
-        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, template);
+        proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, template, 50);
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
         modelB = new DroneModel("Parrot", "Anafi",Calendar.getInstance(), user, behavior);
     }
