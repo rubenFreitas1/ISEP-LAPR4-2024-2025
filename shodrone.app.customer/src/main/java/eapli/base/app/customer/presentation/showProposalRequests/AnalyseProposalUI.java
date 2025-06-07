@@ -24,10 +24,11 @@ public class AnalyseProposalUI extends AbstractUI {
     protected boolean doShow() {
         try{
             List<String> links = TcpClient.analyseProposal(customerEmail);
-            if(!links.stream().iterator().hasNext()){
+            if(links == null || links.isEmpty()){
                 System.out.println("There are no Show Proposals to Analyse!");
                 return false;
             }
+            System.out.println("Links recebidos: " + links);
             JFrame frame = new JFrame("Available Show Proposals");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(600, 300);

@@ -9,6 +9,7 @@ import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.repositories.TransactionalContext;
+import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 import jakarta.persistence.NoResultException;
 
@@ -48,7 +49,7 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     }
 
     @Override
-    public Iterable<ShowProposal> findByEmailAndStatus(String email, ShowStatus status) {
+    public Iterable<ShowProposal> findByEmailAndStatus(EmailAddress email, ShowStatus status) {
         return entityManager()
                 .createQuery(
                         "SELECT DISTINCT sp FROM ShowProposal sp " +

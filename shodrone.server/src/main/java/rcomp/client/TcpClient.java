@@ -5,7 +5,6 @@ package rcomp.client;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TcpClient {
@@ -39,7 +38,13 @@ public class TcpClient {
             HTTPmessage response = new HTTPmessage(in);
             if (response.getStatus().startsWith("200")) {
                 String body = response.getContentAsString();
-                List<String> links = new ArrayList<>(Arrays.asList(body.split("\n")));
+                List<String> links = new ArrayList<>();
+                for (String line : body.split("\n")) {
+                    String trimmed = line.trim();
+                    if (!trimmed.isEmpty()) {
+                        links.add(trimmed);
+                    }
+                }
                 return links;
             }else{
                 throw new IOException("Error obtaining Proposals: " + response.getStatus());

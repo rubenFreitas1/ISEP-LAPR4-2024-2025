@@ -6,6 +6,7 @@ import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.repositories.DomainRepository;
+import eapli.framework.general.domain.model.EmailAddress;
 
 public interface ShowProposalRepository extends DomainRepository<Long, ShowProposal> {
     long countByShowRequest(ShowRequest showRequest);
@@ -14,7 +15,7 @@ public interface ShowProposalRepository extends DomainRepository<Long, ShowPropo
 
     Iterable<ShowProposal> findByAcceptedProposals();
 
-    Iterable<ShowProposal> findByEmailAndStatus(String email, ShowStatus status);
+    Iterable<ShowProposal> findByEmailAndStatus(EmailAddress email, ShowStatus status);
 
     Document findDocumentByCode(String code);
 

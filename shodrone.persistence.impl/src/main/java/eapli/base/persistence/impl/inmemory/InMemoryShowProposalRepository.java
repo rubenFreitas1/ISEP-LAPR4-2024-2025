@@ -7,6 +7,7 @@ import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
+import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
 
 import java.util.ArrayList;
@@ -47,13 +48,13 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     }
 
     @Override
-    public Iterable<ShowProposal> findByEmailAndStatus(String email, ShowStatus status) {
+    public Iterable<ShowProposal> findByEmailAndStatus(EmailAddress email, ShowStatus status) {
         List<ShowProposal> result = new ArrayList<>();
 
         for (ShowProposal proposal : proposals) {
             var showRequest = proposal.showRequest();
             var customer = showRequest.customer();
-            String customerEmail = customer.customerEmail().toString();
+            EmailAddress customerEmail = customer.customerEmail();
 
             boolean emailMatches = false;
 

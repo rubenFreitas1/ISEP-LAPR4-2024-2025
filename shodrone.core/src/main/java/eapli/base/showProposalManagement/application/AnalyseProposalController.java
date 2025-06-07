@@ -6,6 +6,7 @@ import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.application.UseCaseController;
+import eapli.framework.general.domain.model.EmailAddress;
 
 @UseCaseController
 public class AnalyseProposalController {
@@ -14,7 +15,8 @@ public class AnalyseProposalController {
 
 
     public Iterable<ShowProposal> findByEmailAndStatus(String email){
-        return showProposalRepository.findByEmailAndStatus(email, ShowStatus.SENT);
+        EmailAddress emailAddress = EmailAddress.valueOf(email);
+        return showProposalRepository.findByEmailAndStatus(emailAddress, ShowStatus.SENT);
     }
 
     public Document findDocumentByCode(String code){
