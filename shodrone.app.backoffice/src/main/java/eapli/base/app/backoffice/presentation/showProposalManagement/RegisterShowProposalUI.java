@@ -296,10 +296,18 @@ public class RegisterShowProposalUI extends AbstractUI {
                 case "y": case "yes":
                     return current;
                 case "n": case "next":
-                    i = (i + 1) % list.size();
+                    if (i < list.size() - 1) {
+                        i++;
+                    } else {
+                        System.out.println("No more templates. You are at the last one.");
+                    }
                     break;
                 case "p": case "prev": case "previous":
-                    i = (i - 1 + list.size()) % list.size();
+                    if (i > 0) {
+                        i--;
+                    } else {
+                        System.out.println("No previous templates. You are at the first one.");
+                    }
                     break;
                 default:
                     System.out.println("Unknown option, try again.");

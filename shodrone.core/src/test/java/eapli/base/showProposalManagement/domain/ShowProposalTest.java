@@ -292,4 +292,16 @@ class ShowProposalTest {
         assertEquals("Video link cannot be null", ex.getMessage());
     }
 
+    @Test
+    void validateTemplate_Null_Throws() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.validateTemplate(null);
+        });
+        assertEquals("Template cannot be null", ex.getMessage());
+    }
+
+    @Test
+    void validateTemplate_Valid_Returns() {
+        assertEquals(template, proposal.validateTemplate(template));
+    }
 }
