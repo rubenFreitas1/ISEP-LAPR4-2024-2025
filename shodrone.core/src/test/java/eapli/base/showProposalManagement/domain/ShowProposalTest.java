@@ -8,6 +8,7 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.*;
@@ -21,6 +22,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShowProposalTest {
+
     private ShowProposal proposal;
     private DroneModel modelA;
     private DroneModel modelB;
@@ -303,5 +305,40 @@ class ShowProposalTest {
     @Test
     void validateTemplate_Valid_Returns() {
         assertEquals(template, proposal.validateTemplate(template));
+    }
+
+    @Test
+    void testMarkShowProposalAccepted() {
+        ProposalAnswerFeedback answer = new ProposalAnswerFeedback(ProposalAnswerFeedback.Answer.ACCEPTED, "Approved");
+        proposal.updateProposalAnswer(answer);
+        boolean result = proposal.markShowProposal();
+        assertTrue(result);
+        assertEquals(ShowStatus.ACCEPTED, proposal.status());
+    }
+
+    @Test
+    void testMarkShowProposalFailsWhenAnswerNotAccepted() {
+        ProposalAnswerFeedback answer = new ProposalAnswerFeedback(ProposalAnswerFeedback.Answer.REJECTED, "Not approved");
+        proposal.updateProposalAnswer(answer);
+
+        boolean result = proposal.markShowProposal();
+
+        assertFalse(result);
+        assertNotEquals(ShowStatus.ACCEPTED, proposal.status());
+    }
+
+    @Test
+    void testAddValidDocument() {
+        Document document = new Document("proposal.pdf", "PROP1");
+        boolean result = proposal.addDocument(document);
+
+        assertTrue(result);
+        assertEquals(document, proposal.document());
+    }
+
+    @Test
+    void testAddNullDocumentFails() {
+        boolean result = proposal.addDocument(null);
+        assertFalse(result);
     }
 }

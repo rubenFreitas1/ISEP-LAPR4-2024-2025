@@ -83,6 +83,7 @@ public class ShowProposal implements AggregateRoot<Long> {
         this.status = ShowStatus.PENDING;
         this.droneModelList = new ArrayList<>();
         this.document = null;
+        this.proposalAnswerFeedback = null;
     }
 
     public boolean addDroneToList(DroneModel droneModel, int quantity){
@@ -246,8 +247,12 @@ public class ShowProposal implements AggregateRoot<Long> {
         }
         return template;
     }
-    public void updateProposalAnswer(ProposalAnswerFeedback answer){
-        this.proposalAnswerFeedback = answer;
+    public boolean updateProposalAnswer(ProposalAnswerFeedback answer){
+        if(answer != null & answer.answer() != null){
+            this.proposalAnswerFeedback = answer;
+            return true;
+        }
+        return false;
     }
 
     public boolean markShowProposal(){
