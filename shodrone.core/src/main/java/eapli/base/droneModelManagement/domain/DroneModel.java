@@ -1,7 +1,9 @@
 package eapli.base.droneModelManagement.domain;
 
+import eapli.base.droneModelManagement.dto.DroneModelDTO;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.*;
+import eapli.framework.representations.dto.DTOable;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
@@ -9,7 +11,7 @@ import jakarta.persistence.*;
 import java.util.Calendar;
 
 @Entity
-public class DroneModel implements AggregateRoot<Long> {
+public class DroneModel implements AggregateRoot<Long>, DTOable<DroneModelDTO> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -101,4 +103,8 @@ public class DroneModel implements AggregateRoot<Long> {
     @Override
     public Long identity() {return this.droneModelId;}
 
+    @Override
+    public DroneModelDTO toDTO() {
+        return new DroneModelDTO(droneModelId, modelName, manufacturer, createdOn,active, deactivatedOn, createdBy.name().toString(), windBehavior.identity());
+    }
 }

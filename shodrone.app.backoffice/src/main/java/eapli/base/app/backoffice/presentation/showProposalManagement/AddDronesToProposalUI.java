@@ -1,7 +1,7 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
-import eapli.base.app.backoffice.presentation.droneModelManagement.DroneModelPrinter;
-import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.app.backoffice.presentation.droneModelManagement.DroneModelDTOPrinter;
+import eapli.base.droneModelManagement.dto.DroneModelDTO;
 import eapli.base.showProposalManagement.application.AddDronesToProposalController;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.framework.io.util.Console;
@@ -38,9 +38,9 @@ public class AddDronesToProposalUI extends AbstractUI {
 
 
     public boolean addingDroneModels(ShowProposal showProposal){
-        List<DroneModel> availableDroneModels = new ArrayList<>();
-        Iterable<DroneModel> droneModels = this.controller.getListDroneModels();
-        for (DroneModel model : droneModels) {
+        List<DroneModelDTO> availableDroneModels = new ArrayList<>();
+        Iterable<DroneModelDTO> droneModels = this.controller.getListDroneModels();
+        for (DroneModelDTO model : droneModels) {
             availableDroneModels.add(model);
         }
         while(true){
@@ -55,9 +55,9 @@ public class AddDronesToProposalUI extends AbstractUI {
                 break;
             }
             String headerdroneModel = String.format("Select Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
-            SelectWidget<DroneModel> droneModelSelectWidget = new SelectWidget<>(headerdroneModel, availableDroneModels, new DroneModelPrinter());
+            SelectWidget<DroneModelDTO> droneModelSelectWidget = new SelectWidget<>(headerdroneModel, availableDroneModels, new DroneModelDTOPrinter());
             droneModelSelectWidget.show();
-            DroneModel droneModel = droneModelSelectWidget.selectedElement();
+            DroneModelDTO droneModel = droneModelSelectWidget.selectedElement();
             if(droneModel == null){
                 System.out.println("The Drone Model cannot be null!");
                 break;
@@ -65,7 +65,7 @@ public class AddDronesToProposalUI extends AbstractUI {
             int quantity = Console.readInteger("Quantity:");
             try{
                 if(controller.addDroneModelToProposal(showProposal, droneModel, quantity)){
-                    System.out.printf("\n--- Drone Model: %s added successfully! ---\n", droneModel.modelName());
+                    System.out.printf("\n--- Drone Model: %s added successfully! ---\n", droneModel.getModelName());
                   availableDroneModels.remove(droneModel);
                 }else{
                     System.out.println("Error adding Drone Model!");
