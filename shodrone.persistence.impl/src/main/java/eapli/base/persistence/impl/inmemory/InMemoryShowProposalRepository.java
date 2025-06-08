@@ -12,10 +12,16 @@ import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainR
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class InMemoryShowProposalRepository extends InMemoryDomainRepository<ShowProposal, Long> implements ShowProposalRepository {
 
     private final List<ShowProposal> proposals = new ArrayList<>();
+
+    @Override
+    public Optional<ShowProposal> findById(Long id) {
+        return matchOne(e -> e.identity().equals(id));
+    }
 
     @Override
     public long countByShowRequest(ShowRequest showRequest) {

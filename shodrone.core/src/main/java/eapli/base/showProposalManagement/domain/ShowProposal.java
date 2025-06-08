@@ -1,11 +1,13 @@
 package eapli.base.showProposalManagement.domain;
 
 import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.representations.dto.DTOable;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;
@@ -14,7 +16,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Entity
-public class ShowProposal implements AggregateRoot<Long> {
+public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long showProposalId;
@@ -282,6 +284,13 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     @Override
     public Long identity() {
-        return 0L;
+        return this.showProposalId;
+    }
+
+    @Override
+    public ShowProposalDTO toDTO() {
+        Long docId = document != null ? document.identity() : null;
+        return new ShowProposalDTO(showProposalId,showRequest.identity(),showRequest().customer().customerName().toString(),showRequest.description(), location, date,
+                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), docId, proposalAnswerFeedback);
     }
 }

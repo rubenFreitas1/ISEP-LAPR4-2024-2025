@@ -8,7 +8,11 @@ import eapli.base.showRequestManagement.domain.ShowStatus;
 import eapli.framework.domain.repositories.DomainRepository;
 import eapli.framework.general.domain.model.EmailAddress;
 
+import java.util.Optional;
+
 public interface ShowProposalRepository extends DomainRepository<Long, ShowProposal> {
+
+    Optional<ShowProposal> findById(Long id);
     long countByShowRequest(ShowRequest showRequest);
 
     Iterable<ShowProposal> findByShowRequest(ShowRequest showRequest);

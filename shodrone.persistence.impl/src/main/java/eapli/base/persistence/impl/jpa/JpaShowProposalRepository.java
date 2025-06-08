@@ -13,6 +13,10 @@ import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 import jakarta.persistence.NoResultException;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal, Long, Long> implements ShowProposalRepository {
     public JpaShowProposalRepository(TransactionalContext autoTx) { super(autoTx, "showProposalId"); }
 
@@ -102,6 +106,13 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
                 .setParameter("status", status)
                 .setParameter("customer", customer)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<ShowProposal> findById(final Long id) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        return matchOne("e.showProposalId = :id", params);
     }
 
 }

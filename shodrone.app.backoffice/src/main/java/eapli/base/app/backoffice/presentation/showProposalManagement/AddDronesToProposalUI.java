@@ -3,7 +3,7 @@ package eapli.base.app.backoffice.presentation.showProposalManagement;
 import eapli.base.app.backoffice.presentation.droneModelManagement.DroneModelDTOPrinter;
 import eapli.base.droneModelManagement.dto.DroneModelDTO;
 import eapli.base.showProposalManagement.application.AddDronesToProposalController;
-import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -16,35 +16,39 @@ public class AddDronesToProposalUI extends AbstractUI {
     private final AddDronesToProposalController controller = new AddDronesToProposalController();
     @Override
     protected boolean doShow() {
-        Iterable<ShowProposal> showProposalList = this.controller.getListShowProposals();
+        Iterable<ShowProposalDTO> showProposalList = this.controller.getListShowProposals();
         if (!showProposalList.iterator().hasNext()) {
             System.out.println("There are no registered Show Proposals in the system to add Drone Models!");
             return false;
         }
         String headerModel = String.format("Select Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION","PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
-        SelectWidget<ShowProposal> selectorShowProposal = new SelectWidget<>(headerModel, showProposalList, new ShowProposalPrinter());
+        SelectWidget<ShowProposalDTO> selectorShowProposal = new SelectWidget<>(headerModel, showProposalList, new ShowProposalDTOPrinter());
         selectorShowProposal.show();
-        ShowProposal showProposal = selectorShowProposal.selectedElement();
-        if(showProposal == null){
+        ShowProposalDTO showProposalDTO = selectorShowProposal.selectedElement();
+        if(showProposalDTO == null){
             System.out.println("Show Proposal cannot be null!");
             return false;
         }
-        if(addingDroneModels(showProposal)){
-            this.controller.save(showProposal);
+        if(addingDroneModels(showProposalDTO)){
+            if (this.controller.save(showProposalDTO)){
+                System.out.println("Show Proposal successfully saved with Drone Models!");
+            }else {
+                System.out.println("Show Proposal error saving!");
+            }
         }
 
         return true;
     }
 
 
-    public boolean addingDroneModels(ShowProposal showProposal){
+    public boolean addingDroneModels(ShowProposalDTO showProposal){
         List<DroneModelDTO> availableDroneModels = new ArrayList<>();
         Iterable<DroneModelDTO> droneModels = this.controller.getListDroneModels();
         for (DroneModelDTO model : droneModels) {
             availableDroneModels.add(model);
         }
         while(true){
-            int numberOfDronesLeft = showProposal.totalDroneNumber() - controller.allDronesInDroneList(showProposal);
+            int numberOfDronesLeft = showProposal.getTotalDroneNumber() - controller.allDronesInDroneList(showProposal);
             if(numberOfDronesLeft == 0){
                 System.out.println("\n--- Drone Models Successfully Added! ---\n");
                 return true;

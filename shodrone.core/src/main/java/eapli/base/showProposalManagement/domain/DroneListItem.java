@@ -1,13 +1,15 @@
 package eapli.base.showProposalManagement.domain;
 
 import eapli.base.droneModelManagement.domain.DroneModel;
+import eapli.base.showProposalManagement.dto.DroneListItemDTO;
+import eapli.framework.representations.dto.DTOable;
 import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-public class DroneListItem {
+public class DroneListItem implements DTOable<DroneListItemDTO> {
 
     @EmbeddedId
     private DroneListItemId droneListItemId;
@@ -60,5 +62,10 @@ public class DroneListItem {
     @Override
     public int hashCode() {
         return Objects.hash(showProposal, droneModel);
+    }
+
+    @Override
+    public DroneListItemDTO toDTO() {
+        return new DroneListItemDTO(droneModel.identity(), showProposal.identity(), droneModel.modelName(), numberOfDrones);
     }
 }
