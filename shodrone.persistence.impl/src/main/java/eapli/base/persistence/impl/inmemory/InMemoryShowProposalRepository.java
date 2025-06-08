@@ -42,11 +42,11 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     }
 
     @Override
-    public Iterable<ShowProposal> findByAcceptedProposals() {
+    public Iterable<ShowProposal> findByAcceptedProposals(Customer customer) {
         List<ShowProposal> result = new ArrayList<>();
         for (ShowProposal proposal : proposals) {
             var feedback = proposal.proposalAnswerFeedback();
-            if (feedback != null && feedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED) {
+            if (feedback != null && feedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED && proposal.showRequest().customer() == customer) {
                 result.add(proposal);
             }
         }

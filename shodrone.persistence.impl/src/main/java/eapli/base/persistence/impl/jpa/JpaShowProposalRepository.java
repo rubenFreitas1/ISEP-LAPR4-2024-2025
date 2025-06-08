@@ -41,14 +41,16 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     }
 
     @Override
-    public Iterable<ShowProposal> findByAcceptedProposals() {
+    public Iterable<ShowProposal> findByAcceptedProposals(Customer customer) {
         return entityManager()
                 .createQuery(
                         "SELECT sp FROM ShowProposal sp " +
                                 "WHERE sp.proposalAnswerFeedback IS NOT NULL " +
-                                "AND sp.proposalAnswerFeedback.answer = :answer",
+                                "AND sp.proposalAnswerFeedback.answer = :answer "+
+                                "AND sp.showRequest.customer = :customer",
                         ShowProposal.class)
                 .setParameter("answer", ProposalAnswerFeedback.Answer.ACCEPTED)
+                .setParameter("customer", customer)
                 .getResultList();
     }
 

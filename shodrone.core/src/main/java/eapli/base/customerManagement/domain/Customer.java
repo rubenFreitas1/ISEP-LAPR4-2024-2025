@@ -1,11 +1,13 @@
 package eapli.base.customerManagement.domain;
 
+import eapli.base.customerManagement.dto.CustomerDTO;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.Name;
 import eapli.framework.infrastructure.authz.domain.model.Password;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.representations.dto.DTOable;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import jakarta.persistence.*;
 
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Entity
-public class Customer implements AggregateRoot<Long> {
+public class Customer implements AggregateRoot<Long>, DTOable<CustomerDTO> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,14 +50,15 @@ public class Customer implements AggregateRoot<Long> {
     private CustomerStatus status;
 
 
+
+
     public enum CustomerStatus {
         DELETED,
         INFRINGEMENT,
         CREATED,
         REGULAR,
-        VIP
+        VIP;
     }
-
     protected Customer() {
     }
 
@@ -75,6 +78,7 @@ public class Customer implements AggregateRoot<Long> {
     public Name customerName() {
         return this.customerName;
     }
+
     public String customerAddress() {
         return this.customerAddress;
     }
@@ -96,10 +100,10 @@ public class Customer implements AggregateRoot<Long> {
     public Calendar createdOn() {
         return this.createdOn;
     }
-
     public CustomerStatus status() {
         return this.status;
     }
+
     public void changeStatus(CustomerStatus newStatus) {
         this.status = newStatus;
     }
@@ -109,7 +113,6 @@ public class Customer implements AggregateRoot<Long> {
     public void addRepresentative(Representative representative) {
         this.representatives.add(representative);
     }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -137,5 +140,14 @@ public class Customer implements AggregateRoot<Long> {
     @Override
     public Long identity() {
         return this.customerId;
+    }
+
+    @Override
+    public CustomerDTO toDTO() {
+        List<String> representativesNames = new ArrayList<>();
+        for (Representative rep : representatives()){
+            representativesNames.add(rep.representativeName().toString());
+        }
+        return new CustomerDTO(identity(), customerName.toString(),customerAddress,customerEmail.toString(), customerPhoneNumber, customerVatNumber,representativesNames, createdBy.name().toString(), createdOn, status);
     }
 }
