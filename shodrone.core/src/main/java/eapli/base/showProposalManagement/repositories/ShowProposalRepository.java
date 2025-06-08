@@ -17,7 +17,7 @@ public interface ShowProposalRepository extends DomainRepository<Long, ShowPropo
 
     Iterable<ShowProposal> findByShowRequest(ShowRequest showRequest);
 
-    Iterable<ShowProposal> findByAcceptedProposals();
+    Iterable<ShowProposal> findByAcceptedProposals(Customer customer);
 
     Iterable<ShowProposal> findByEmailAndStatus(EmailAddress email, ShowStatus status);
 

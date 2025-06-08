@@ -5,9 +5,11 @@ actor "CRM Collaborator" as Actor
 participant "AddDronesToProposalAction" as Action <<presentation>>
 participant "AddDronesToProposalUI" as UI <<presentation>>
 participant "AddDronesToProposalController" as Controller <<application>>
-participant "ProposalService" as ProposalService <<domain>>
+participant "AddDroneModelsToProposalService" as ProposalService <<domain>>
 participant "ShowProposal" as ShowProposal <<domain>>
 participant "DroneListItem" as DroneListItem <<domain>>
+participant "ShowProposalDTOParser" as ShowProposalDTOParser <<dto>>
+participant "DroneModelDTOParser" as DroneModelDTOParser <<dto>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
 participant "DroneModelRepository" as DroneModelRepository <<repository>>
 database "Database" as Database
@@ -40,10 +42,17 @@ UI -> Controller: getListShowProposals()
         deactivate Database
         ShowProposalRepository --> Controller: List of Show Proposals
         deactivate ShowProposalRepository
-        Controller --> UI: List of Show Proposals
+
+        Controller -> ShowProposalDTOParser: transformToShowProposalDTOlist(showProposals)
+        activate ShowProposalDTOParser
+
+        ShowProposalDTOParser --> Controller: List of Show Proposals DTO
+        deactivate ShowProposalDTOParser
+
+        Controller --> UI: List of Show Proposals DTO
     deactivate Controller
 
-UI --> Actor: Show list of show proposals
+UI --> Actor: Show list of show proposals DTO
 deactivate UI
 
 Actor -> UI: Choose show proposal
@@ -66,15 +75,21 @@ Actor -> UI: Choose show proposal
                 Database --> DroneModelRepository: List of Active Drone Models
                 deactivate Database
                 DroneModelRepository --> Controller: List of Active Drone Models
-
-
             deactivate DroneModelRepository
-        Controller --> UI: List of Active Drone Models
+
+            Controller -> DroneModelDTOParser: transformToDroneModelDTO(droneModelList)
+            activate DroneModelDTOParser
+
+            DroneModelDTOParser --> Controller: List of Active Drone Models DTO
+            deactivate DroneModelDTOParser
+
+
+        Controller --> UI: List of Active Drone Models DTO
         deactivate Controller
 
     loop While user wants to add drone Models
 
-    UI --> Actor: Show list of drone models
+    UI --> Actor: Show list of drone models DTO
     deactivate UI
 
     Actor -> UI: Choose drone model
@@ -86,8 +101,40 @@ Actor -> UI: Choose show proposal
     Actor -> UI: Provide number of drones
     activate UI
 
-    UI -> Controller: addDroneModelToProposal(showProposal ,droneModel, quantity)
+    UI -> Controller: addDroneModelToProposal(showProposalDTO ,droneModelDTO, quantity)
     activate Controller
+
+        Controller -> DroneModelDTOParser: getDroneModelFromDTO(droneModelDTO)
+        activate DroneModelDTOParser
+
+        DroneModelDTOParser -> DroneModelRepository: findById(droneModelDTOId)
+        activate DroneModelRepository
+
+        DroneModelRepository -> Database: findById(droneModelDTOId)
+        activate Database
+
+        Database --> DroneModelRepository: droneModel
+        deactivate Database
+        DroneModelRepository --> DroneModelDTOParser: droneModel
+        deactivate DroneModelRepository
+        DroneModelDTOParser --> Controller: droneModel
+        deactivate DroneModelDTOParser
+
+        Controller -> ShowProposalDTOParser: getShowProposalfromDTO(showProposalDTO)
+        activate ShowProposalDTOParser
+
+        ShowProposalDTOParser -> ShowProposalRepository: findById(showProposalDTOId)
+        activate ShowProposalRepository
+
+        ShowProposalRepository -> Database: findById(showProposalDTOId)
+        activate Database
+
+        Database --> ShowProposalRepository: showProposal
+        deactivate Database
+        ShowProposalRepository --> ShowProposalDTOParser: showProposal
+        deactivate ShowProposalRepository
+        ShowProposalDTOParser --> Controller: showProposal
+        deactivate ShowProposalDTOParser
 
         Controller -> ProposalService: addDroneModelToProposal(showProposal, droneModel, quantity)
         activate ProposalService
@@ -108,8 +155,24 @@ Actor -> UI: Choose show proposal
     Controller --> UI
     deactivate Controller
     end
-    UI -> Controller: save(showProposal)
+    UI -> Controller: save(showProposalDTO)
     activate Controller
+
+    Controller -> ShowProposalDTOParser: getShowProposalfromDTO(showProposalDTO)
+            activate ShowProposalDTOParser
+
+            ShowProposalDTOParser -> ShowProposalRepository: findById(showProposalDTOId)
+            activate ShowProposalRepository
+
+            ShowProposalRepository -> Database: findById(showProposalDTOId)
+            activate Database
+
+            Database --> ShowProposalRepository: showProposal
+            deactivate Database
+            ShowProposalRepository --> ShowProposalDTOParser: showProposal
+            deactivate ShowProposalRepository
+            ShowProposalDTOParser --> Controller: showProposal
+            deactivate ShowProposalDTOParser
 
     Controller -> ShowProposalRepository: save(showProposal)
     activate ShowProposalRepository

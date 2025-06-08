@@ -14,7 +14,7 @@ activate crmCollaborator
 crmCollaborator -> system : Wants to configure the list of drone models of a show proposal
 activate system
 
-system -> crmCollaborator : Show list of show proposals
+system -> crmCollaborator : Show list of show proposals DTO
 deactivate system
 crmCollaborator -> system : Choose show proposal
 
@@ -22,7 +22,7 @@ activate system
 
 loop While user wants to add drone Models
 
-system -> crmCollaborator : Show list of drone models
+system -> crmCollaborator : Show list of drone models DTO
 deactivate system
 
 crmCollaborator -> system : Choose drone model

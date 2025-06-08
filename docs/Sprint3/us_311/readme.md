@@ -9,8 +9,10 @@ can be selected. At this stage, there is no requirement to verify whether drones
 
 **US311** As a CRM Collaborator, I want to configure the list of drone models (number of drones and model) of
 a show proposal.
-The drones in the proposal must be compatible with the drones in the Shodrone’s inventory. There is
-no need to verify if these drones are used in another show on the same date.
+The drones in the proposal must be compatible with the drones in the Shodrone’s inventory. As such,
+the number of drones of a given type in a proposal cannot exceed the total number of active drones
+of that type in the inventory. There is no need to verify if these drones are used in another show on
+the same date.
 
 **Acceptance Criteria:**
 
@@ -24,7 +26,22 @@ no need to verify if these drones are used in another show on the same date.
 
 **Forum Insight:**
 
-* Still no questions related to this user story on forum.
+>> Uma maneira de configurar a lista de drones num proposal seria, por exemplo, pedir ao utilizador o modelo do drone e em seguida pedir o número de drones para esse mesmo modelo, continuando assim para todos os modelos que ele quiser. Acha correto?
+>
+> Pode ser. Tenha em atenção que "the number of drones of a given type in a proposal cannot exceed the total number of active drones of that type in the inventory."
+
+>> Na US310, é referido que um número total de drones será incluído no show proposal, e que todas as figuras irão utilizar esses drones. Assim, ao configurar a lista de modelos de drones num show proposal, devo ter em atenção que a soma do número de drones de cada modelo não deve ultrapassar o número total de drones associado ao show proposal, correto?
+>
+> Claro...
+
+>> Nesta funcionalidade também é possível remover drone models do proposal?
+>
+> Não tenho nada contra poder remover modelos de drones durante a US311. Mas note que mexer na proposta tem de eliminar o teste e aprovação/validação.
+> Também não pode ser possível, de forma alguma, mexer numa proposta que já foi enviada ao cliente.
+
+>> Na US310, é referido que um número total de drones será incluído no show proposal, e que todas as figuras irão utilizar esses drones. Assim, ao configurar a lista de modelos de drones num show proposal, devo ter em atenção que a soma do número de drones de cada modelo não deve ultrapassar o número total de drones associado ao show proposal, correto?
+>
+> Claro...
 
 
 ## 3. Analysis
@@ -43,6 +60,7 @@ no need to verify if these drones are used in another show on the same date.
 - Creator
 - Polymorphism
 - Indirection
+- DTO
 
 ### 4.4. Acceptance Tests
 
@@ -163,35 +181,39 @@ public class AddDronesToProposalUI extends AbstractUI {
     private final AddDronesToProposalController controller = new AddDronesToProposalController();
     @Override
     protected boolean doShow() {
-        Iterable<ShowProposal> showProposalList = this.controller.getListShowProposals();
+        Iterable<ShowProposalDTO> showProposalList = this.controller.getListShowProposals();
         if (!showProposalList.iterator().hasNext()) {
             System.out.println("There are no registered Show Proposals in the system to add Drone Models!");
             return false;
         }
         String headerModel = String.format("Select Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION","PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
-        SelectWidget<ShowProposal> selectorShowProposal = new SelectWidget<>(headerModel, showProposalList, new ShowProposalPrinter());
+        SelectWidget<ShowProposalDTO> selectorShowProposal = new SelectWidget<>(headerModel, showProposalList, new ShowProposalDTOPrinter());
         selectorShowProposal.show();
-        ShowProposal showProposal = selectorShowProposal.selectedElement();
-        if(showProposal == null){
+        ShowProposalDTO showProposalDTO = selectorShowProposal.selectedElement();
+        if(showProposalDTO == null){
             System.out.println("Show Proposal cannot be null!");
             return false;
         }
-        if(addingDroneModels(showProposal)){
-            this.controller.save(showProposal);
+        if(addingDroneModels(showProposalDTO)){
+            if (this.controller.save(showProposalDTO)){
+                System.out.println("Show Proposal successfully saved with Drone Models!");
+            }else {
+                System.out.println("Show Proposal error saving!");
+            }
         }
 
         return true;
     }
 
 
-    public boolean addingDroneModels(ShowProposal showProposal){
-        List<DroneModel> availableDroneModels = new ArrayList<>();
-        Iterable<DroneModel> droneModels = this.controller.getListDroneModels();
-        for (DroneModel model : droneModels) {
+    public boolean addingDroneModels(ShowProposalDTO showProposal){
+        List<DroneModelDTO> availableDroneModels = new ArrayList<>();
+        Iterable<DroneModelDTO> droneModels = this.controller.getListDroneModels();
+        for (DroneModelDTO model : droneModels) {
             availableDroneModels.add(model);
         }
         while(true){
-            int numberOfDronesLeft = showProposal.totalDroneNumber() - controller.allDronesInDroneList(showProposal);
+            int numberOfDronesLeft = showProposal.getTotalDroneNumber() - controller.allDronesInDroneList(showProposal);
             if(numberOfDronesLeft == 0){
                 System.out.println("\n--- Drone Models Successfully Added! ---\n");
                 return true;
@@ -202,9 +224,9 @@ public class AddDronesToProposalUI extends AbstractUI {
                 break;
             }
             String headerdroneModel = String.format("Select Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
-            SelectWidget<DroneModel> droneModelSelectWidget = new SelectWidget<>(headerdroneModel, availableDroneModels, new DroneModelPrinter());
+            SelectWidget<DroneModelDTO> droneModelSelectWidget = new SelectWidget<>(headerdroneModel, availableDroneModels, new DroneModelDTOPrinter());
             droneModelSelectWidget.show();
-            DroneModel droneModel = droneModelSelectWidget.selectedElement();
+            DroneModelDTO droneModel = droneModelSelectWidget.selectedElement();
             if(droneModel == null){
                 System.out.println("The Drone Model cannot be null!");
                 break;
@@ -212,7 +234,7 @@ public class AddDronesToProposalUI extends AbstractUI {
             int quantity = Console.readInteger("Quantity:");
             try{
                 if(controller.addDroneModelToProposal(showProposal, droneModel, quantity)){
-                    System.out.printf("\n--- Drone Model: %s added successfully! ---\n", droneModel.modelName());
+                    System.out.printf("\n--- Drone Model: %s added successfully! ---\n", droneModel.getModelName());
                     availableDroneModels.remove(droneModel);
                 }else{
                     System.out.println("Error adding Drone Model!");
@@ -242,41 +264,59 @@ public class AddDronesToProposalController {
     private final DroneModelRepository droneModelRepository = PersistenceContext.repositories().droneModels();
 
     private final DroneRepository droneRepository = PersistenceContext.repositories().drones();
-    private final ProposalService proposalService = new ProposalService(droneRepository);
+    private final AddDroneModelsToProposalService addDroneModelsToProposalService = new AddDroneModelsToProposalService(droneRepository);
 
+    private final DroneModelDTOParser droneModelDTOParser = new DroneModelDTOParser();
 
-    public Iterable<DroneModel> getListDroneModels(){
-        return this.droneModelRepository.findByActive(true);
+    private final ShowProposalDTOParser showProposalDTOParser = new ShowProposalDTOParser();
+
+    public Iterable<DroneModelDTO> getListDroneModels(){
+        Iterable<DroneModel> list =  this.droneModelRepository.findByActive(true);
+        return droneModelDTOParser.transformToDroneModelDTO(list);
     }
 
-    public Iterable<ShowProposal> getListShowProposals(){
-        return this.showProposalRepository.findByStatusAndEmptyDroneList(ShowProposalStatus.PENDING);
+    public Iterable<ShowProposalDTO> getListShowProposals(){
+        Iterable<ShowProposal> showProposals = this.showProposalRepository.findByStatusAndEmptyDroneList(ShowStatus.PENDING);
+        return showProposalDTOParser.transformToShowProposalDTOlist(showProposals);
     }
 
-    public boolean addDroneModelToProposal(ShowProposal showProposal,DroneModel droneModel, int quantity){
-        return proposalService.addDroneModelToProposal(showProposal,droneModel, quantity);
+    public boolean addDroneModelToProposal(ShowProposalDTO showProposalDTO,DroneModelDTO droneModelDTO, int quantity){
+        Optional<DroneModel> droneModel = droneModelDTOParser.getDroneModelFromDTO(droneModelDTO);
+        Optional<ShowProposal> showProposal = showProposalDTOParser.getShowProposalfromDTO(showProposalDTO);
+        if(droneModel.isPresent() & showProposal.isPresent()){
+            return addDroneModelsToProposalService.addDroneModelToProposal(showProposal.get(),droneModel.get(), quantity);
+        }
+        return false;
     }
 
-    public void save(ShowProposal showProposal){
-        this.showProposalRepository.save(showProposal);
+    public boolean save(ShowProposalDTO showProposalDTO){
+        Optional<ShowProposal> showProposal = showProposalDTOParser.getShowProposalfromDTO(showProposalDTO);
+        if (showProposal.isPresent()){
+            this.showProposalRepository.save(showProposal.get());
+            return true;
+        }
+        return false;
     }
 
-    public int allDronesInDroneList(ShowProposal showProposal){
-        return showProposal.allDroneModels_Quantity();
+    public int allDronesInDroneList(ShowProposalDTO showProposalDTO){
+        Optional<ShowProposal> showProposal = showProposalDTOParser.getShowProposalfromDTO(showProposalDTO);
+        return showProposal.get().allDroneModels_Quantity();
     }
+
+
 
 }
 
 ```
 
-**ProposalService**
+**AddDroneModelsToProposalService**
 
 ```Java
-public class ProposalService {
+public class AddDroneModelsToProposalService {
 
     private final DroneRepository droneRepository;
 
-    public ProposalService(final DroneRepository droneRepository){
+    public AddDroneModelsToProposalService(final DroneRepository droneRepository){
         this.droneRepository = droneRepository;
     }
 
@@ -309,7 +349,7 @@ public class ProposalService {
 **ShowProposal**
 ```Java
 @Entity
-public class ShowProposal implements AggregateRoot<Long> {
+public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long showProposalId;
@@ -332,6 +372,9 @@ public class ShowProposal implements AggregateRoot<Long> {
     @Column(nullable = false)
     private int totalDroneNumber;
 
+    @Column(nullable = false)
+    private double insuranceAmount;
+
     @Temporal(TemporalType.DATE)
     private Calendar createdOn;
 
@@ -341,25 +384,42 @@ public class ShowProposal implements AggregateRoot<Long> {
     @ManyToOne
     private SystemUser createdBy;
     @Enumerated(EnumType.STRING)
-    private ShowProposalStatus status;
+    private ShowStatus status;
 
     @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
     private List<DroneListItem> droneModelList;
 
+    @Column (nullable = true)
+    private String videoLink;
+
+    @ManyToOne
+    private Template template;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_id", referencedColumnName = "documentId")
+    private Document document;
+
+    @Embedded
+    private ProposalAnswerFeedback proposalAnswerFeedback;
+
     protected ShowProposal() {}
 
-    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, ShowProposalStatus status) {
-        this.showRequest = showRequest;
-        this.location = location;
-        this.date = date;
-        this.time = time;
-        this.duration = duration;
-        this.totalDroneNumber = totalDroneNumber;
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template, double insuranceAmount) {
+        this.showRequest = validateShowRequest(showRequest);
+        this.location = validateLocation(location);
+        this.date = validateDate(date);
+        this.time = validateTime(time);
+        this.duration = validateDuration(duration);
+        this.totalDroneNumber = validateTotalDroneNumber(totalDroneNumber);
+        this.proposalNumber = validateProposalNumber(proposalNumber);
+        this.template = validateTemplate(template);
+        this.createdBy = validateCreatedBy(createdBy);
         this.createdOn = Calendar.getInstance();
-        this.proposalNumber = proposalNumber;
-        this.createdBy = createdBy;
-        this.status = status;
+        this.status = ShowStatus.PENDING;
         this.droneModelList = new ArrayList<>();
+        this.document = null;
+        this.proposalAnswerFeedback = null;
+        this.insuranceAmount = insuranceAmount;
     }
 
     public boolean addDroneToList(DroneModel droneModel, int quantity){
@@ -393,7 +453,21 @@ public class ShowProposal implements AggregateRoot<Long> {
         return currentTotal;
     }
 
-    public ShowProposalStatus status(){return  this.status;}
+    public List<DroneListItem> droneListItem (){
+        return this.droneModelList;
+    }
+
+    public boolean addVideoToProposal(String video) {
+        if (isValidVideoLink(video)) {
+            this.videoLink = video;
+            return true;
+        }
+        return false;
+    }
+
+    public Template template() {return this.template;}
+
+    public ShowStatus status(){return  this.status;}
 
     public ShowRequest showRequest() { return this.showRequest; }
 
@@ -413,6 +487,126 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     public LocalTime time() { return this.time; }
 
+    public String videoLink() { return this.videoLink; }
+
+    public double insuranceAmount() { return this.insuranceAmount; }
+
+    public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
+
+    public Document document(){return this.document;}
+
+    public ShowRequest validateShowRequest(ShowRequest showRequest) {
+        if (showRequest == null)
+            throw new IllegalArgumentException("ShowRequest cannot be null");
+        return showRequest;
+    }
+
+    public GeoLocation validateLocation(GeoLocation location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location cannot be null");
+        }
+
+        double latitude = location.latitude();
+        double longitude = location.longitude();
+        int altitude = location.altitude();
+
+        if (latitude < -90 || latitude > 90) {
+            throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees.");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees.");
+        }
+
+        if (altitude <= 0) {
+            throw new IllegalArgumentException("Altitude must be a positive number.");
+        }
+        return location;
+    }
+
+    public Calendar validateDate(Calendar date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        return date;
+    }
+
+    public LocalTime validateTime(LocalTime time) {
+        if (time == null)
+            throw new IllegalArgumentException("Time cannot be null");
+        return time;
+    }
+
+    public int validateDuration(Integer duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("Duration cannot be null.");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be greater than 0.");
+        }
+        return duration;
+    }
+
+    public int validateTotalDroneNumber(Integer totalDroneNumber) {
+        if (totalDroneNumber == null) {
+            throw new IllegalArgumentException("Total drone number cannot be null.");
+        }
+        if (totalDroneNumber <= 0) {
+            throw new IllegalArgumentException("Total drone number must be greater than 0.");
+        }
+        return totalDroneNumber;
+    }
+
+    public int validateProposalNumber(int proposalNumber) {
+        if (proposalNumber < 0)
+            throw new IllegalArgumentException("Proposal number cannot be negative");
+        return proposalNumber;
+    }
+
+    public SystemUser validateCreatedBy(SystemUser createdBy) {
+        if (createdBy == null)
+            throw new IllegalArgumentException("CreatedBy (SystemUser) cannot be null");
+        return createdBy;
+    }
+
+    public boolean isValidVideoLink(String videoLink) {
+        if (videoLink == null) {
+            throw new IllegalArgumentException("Video link cannot be null");
+        }
+        final String videoLinkPattern = "^(https?://|www\\.)[a-zA-Z0-9][-a-zA-Z0-9&',./_=?%#:~]*$";
+        return videoLink.matches(videoLinkPattern);
+    }
+
+    public Template validateTemplate(Template template) {
+        if (template == null) {
+            throw new IllegalArgumentException("Template cannot be null");
+        }
+        return template;
+    }
+    public boolean updateProposalAnswer(ProposalAnswerFeedback answer){
+        if(answer != null & answer.answer() != null){
+            this.proposalAnswerFeedback = answer;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean markShowProposal(){
+        if(proposalAnswerFeedback != null && proposalAnswerFeedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED){
+            status = ShowStatus.ACCEPTED;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addDocument(Document document){
+        if(document != null){
+            this.document = document;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean sameAs(Object other) {
         if (this == other) return true;
@@ -423,7 +617,14 @@ public class ShowProposal implements AggregateRoot<Long> {
 
     @Override
     public Long identity() {
-        return 0L;
+        return this.showProposalId;
+    }
+
+    @Override
+    public ShowProposalDTO toDTO() {
+        Long docId = document != null ? document.identity() : null;
+        return new ShowProposalDTO(showProposalId,showRequest.identity(),showRequest().customer().customerName().toString(),showRequest.description(), location, date,
+                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), docId, proposalAnswerFeedback);
     }
 }
 ```
@@ -432,7 +633,7 @@ public class ShowProposal implements AggregateRoot<Long> {
 
 ```Java
 @Entity
-public class DroneListItem {
+public class DroneListItem implements DTOable<DroneListItemDTO> {
 
     @EmbeddedId
     private DroneListItemId droneListItemId;
@@ -485,6 +686,11 @@ public class DroneListItem {
     @Override
     public int hashCode() {
         return Objects.hash(showProposal, droneModel);
+    }
+
+    @Override
+    public DroneListItemDTO toDTO() {
+        return new DroneListItemDTO(droneModel.identity(), showProposal.identity(), droneModel.modelName(), numberOfDrones);
     }
 }
 ```
