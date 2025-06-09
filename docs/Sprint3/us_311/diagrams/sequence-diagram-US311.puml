@@ -46,13 +46,13 @@ UI -> Controller: getListShowProposals()
         Controller -> ShowProposalDTOParser: transformToShowProposalDTOlist(showProposals)
         activate ShowProposalDTOParser
 
-        ShowProposalDTOParser --> Controller: List of Show Proposals DTO
+        ShowProposalDTOParser --> Controller: List of Show Proposals (DTO)
         deactivate ShowProposalDTOParser
 
-        Controller --> UI: List of Show Proposals DTO
+        Controller --> UI: List of Show Proposals (DTO)
     deactivate Controller
 
-UI --> Actor: Show list of show proposals DTO
+UI --> Actor: Show list of show proposals (DTO)
 deactivate UI
 
 Actor -> UI: Choose show proposal
@@ -80,16 +80,16 @@ Actor -> UI: Choose show proposal
             Controller -> DroneModelDTOParser: transformToDroneModelDTO(droneModelList)
             activate DroneModelDTOParser
 
-            DroneModelDTOParser --> Controller: List of Active Drone Models DTO
+            DroneModelDTOParser --> Controller: List of Active Drone Models (DTO)
             deactivate DroneModelDTOParser
 
 
-        Controller --> UI: List of Active Drone Models DTO
+        Controller --> UI: List of Active Drone Models (DTO)
         deactivate Controller
 
     loop While user wants to add drone Models
 
-    UI --> Actor: Show list of drone models DTO
+    UI --> Actor: Show list of drone models (DTO)
     deactivate UI
 
     Actor -> UI: Choose drone model

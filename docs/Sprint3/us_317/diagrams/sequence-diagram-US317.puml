@@ -6,7 +6,10 @@ participant "MarkShowProposalAction" as Action <<presentation>>
 participant "MarkShowProposalUI" as UI <<presentation>>
 participant "MarkShowProposalController" as Controller <<application>>
 participant "ShowProposal" as ShowProposal <<domain>>
+participant "ShowProposalDTOParser" as ShowProposalDTOParser <<dto>>
+participant "CustomerDTOParser" as CustomerDTOParser <<dto>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
+participant "CustomerRepository" as CustomerRepository <<repository>>
 database "Database" as Database
 
 activate Actor
@@ -22,25 +25,80 @@ deactivate Action
     activate UI
 
 UI -> Controller** : create
-UI -> Controller: getAnsweredShowProposals()
+
+UI -> Controller: getActiveCustomers()
+    activate Controller
+
+    Controller -> CustomerRepository: findByActive()
+    activate CustomerRepository
+
+    CustomerRepository -> Database: findByActive()
+        activate Database
+
+        Database --> CustomerRepository: List of Active Customers
+        deactivate Database
+    CustomerRepository --> Controller: List of Active Customers
+    deactivate CustomerRepository
+
+    Controller -> CustomerDTOParser: transformToCustomerDTOList(listCustomers)
+        activate CustomerDTOParser
+
+        CustomerDTOParser --> Controller: List Of Active Customers (DTO)
+        deactivate CustomerDTOParser
+
+
+    Controller --> UI: List of Active Customers (DTO)
+    deactivate Controller
+    UI --> Actor: Show list of Active Customers (DTO)
+    deactivate UI
+
+Actor -> UI: Choose Customer
+    activate UI
+
+UI -> Controller: getAnsweredShowProposals(customerDTO)
 
     activate Controller
 
-        Controller -> ShowProposalRepository: findByAcceptedProposals()
+        Controller -> CustomerDTOParser: getCustomerFromDTO(customerDTO)
+            activate CustomerDTOParser
+
+            CustomerDTOParser -> CustomerRepository: findById(customerDTOId)
+                activate CustomerRepository
+
+                CustomerRepository -> Database: findById(customerDTOId)
+                    activate Database
+
+                    Database --> CustomerRepository: customer
+                    deactivate Database
+                CustomerRepository --> CustomerDTOParser: customer
+                deactivate CustomerRepository
+
+            CustomerDTOParser --> Controller: customer
+            deactivate CustomerDTOParser
+
+
+        Controller -> ShowProposalRepository: findByAcceptedProposals(customer)
 
         activate ShowProposalRepository
 
-        ShowProposalRepository -> Database: findByAcceptedProposals()
+        ShowProposalRepository -> Database: findByAcceptedProposals(customer)
         activate Database
 
         Database --> ShowProposalRepository: List of Show Proposals Accepted by the Customer
         deactivate Database
         ShowProposalRepository --> Controller: List of Show Proposals Accepted by the Customer
         deactivate ShowProposalRepository
-        Controller --> UI: List of Show Proposals Accepted by the Customer
+
+        Controller -> ShowProposalDTOParser: transformToShowProposalDTOlist(listShowProposals)
+            activate ShowProposalDTOParser
+
+            ShowProposalDTOParser --> Controller: List of Show Proposals (DTO)
+            deactivate ShowProposalDTOParser
+
+        Controller --> UI: List of Show Proposals Accepted by the Customer (DTO)
     deactivate Controller
 
-UI --> Actor: Show List of Show Proposals Accepted by the Customer
+UI --> Actor: Show List of Show Proposals Accepted by the Customer (DTO)
 deactivate UI
 
 Actor -> UI: Choose Show proposal
@@ -48,14 +106,37 @@ Actor -> UI: Choose Show proposal
 
     activate UI
 
-        UI -> Controller: markShowProposal(showProposal)
+        UI -> Controller: markShowProposal(showProposalDTO)
         activate Controller
+
+        Controller -> ShowProposalDTOParser: getShowProposalfromDTO(showProposalDTO)
+            activate ShowProposalDTOParser
+
+            ShowProposalDTOParser -> ShowProposalRepository: findById(showProposalDTOId)
+                activate ShowProposalRepository
+
+                ShowProposalRepository -> Database: findById(showProposalDTOId)
+                    activate Database
+
+                    Database --> ShowProposalRepository: showProposal
+                    deactivate Database
+                ShowProposalRepository --> ShowProposalDTOParser: showProposal
+                deactivate ShowProposalRepository
+            ShowProposalDTOParser --> Controller: showProposal
+            deactivate ShowProposalDTOParser
+
+
 
         Controller -> ShowProposal: markShowProposal()
             activate ShowProposal
 
             ShowProposal --> Controller
             deactivate ShowProposal
+            Controller -> Database: save(showProposal)
+                activate Database
+
+                Database --> Controller:
+                deactivate Database
             Controller --> UI:
         deactivate Controller
         UI --> Actor: Confirm Show Proposal was accepted

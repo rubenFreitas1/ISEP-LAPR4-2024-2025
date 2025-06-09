@@ -14,7 +14,13 @@ activate crmCollaborator
 crmCollaborator -> system : Wants to mark show proposal as accepted
 activate system
 
-system -> crmCollaborator :  Show List of Show Proposals Accepted by the Customer
+system -> crmCollaborator: Show list of Active Customers (DTO)
+deactivate system
+
+crmCollaborator -> system: Choose Customer
+activate system
+
+system -> crmCollaborator :  Show List of Show Proposals Accepted by the Customer (DTO)
 deactivate system
 crmCollaborator -> system : Choose Show proposal
 
