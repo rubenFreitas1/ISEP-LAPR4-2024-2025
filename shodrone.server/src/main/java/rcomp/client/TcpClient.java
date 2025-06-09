@@ -2,8 +2,14 @@ package rcomp.client;
 
 
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
+
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,5 +90,74 @@ public class TcpClient {
 
     }
 
+    public static List<ShowProposalDTO> listAcceptedShows(String customerEmail) throws IOException {
+        try (Socket s = new Socket("localhost", 9999)) {
+            DataInputStream  in  = new DataInputStream(s.getInputStream());
+            DataOutputStream out = new DataOutputStream(s.getOutputStream());
 
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("POST");
+            request.setURI("/acceptedShows");
+            request.setContent("email=" + customerEmail, "text/plain");
+            request.send(out);
+
+            HTTPmessage resp = new HTTPmessage(in);
+            if (!resp.getStatus().startsWith("200"))
+                throw new IOException("Server error: " + resp.getStatus());
+
+            String json = resp.getContentAsString();
+            Type listType = new TypeToken<List<ShowProposalDTO>>(){}.getType();
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                        @Override
+                        public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                            return LocalTime.parse(json.getAsString());
+                        }
+                    })
+                    .registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
+                        @Override
+                        public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                            return new JsonPrimitive(src.toString());
+                        }
+                    })
+                    .create();
+
+            return gson.fromJson(json, listType);
+        }
+    }
+
+    public static ShowProposalDTO showDetails(long proposalId) throws IOException {
+        try (Socket s = new Socket("localhost", 9999)) {
+            DataInputStream  in  = new DataInputStream(s.getInputStream());
+            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("POST");
+            request.setURI("/getShowInfo");
+            request.setContent("id=" + proposalId, "text/plain");
+            request.send(out);
+
+            HTTPmessage resp = new HTTPmessage(in);
+            if (!resp.getStatus().startsWith("200"))
+                throw new IOException("Server error: " + resp.getStatus());
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                        @Override
+                        public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                            return LocalTime.parse(json.getAsString());
+                        }
+                    })
+                    .registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
+                        @Override
+                        public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                            return new JsonPrimitive(src.toString());
+                        }
+                    })
+                    .create();
+
+            return gson.fromJson(resp.getContentAsString(), ShowProposalDTO.class);
+        }
+    }
 }
