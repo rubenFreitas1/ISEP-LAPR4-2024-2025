@@ -57,8 +57,8 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
     private List<DroneListItem> droneModelList;
 
-    @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
-    private List<FigureListItem> figureListItems;
+    @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FigureListItem> figureListItems = new ArrayList<>();
 
     @Column (nullable = true)
     private String videoLink;

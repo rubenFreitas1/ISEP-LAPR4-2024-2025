@@ -55,7 +55,7 @@ public class AddFiguresToProposalUI extends AbstractUI {
         }
 
         if (!sequence.isEmpty()) {
-            associateFiguresToDroneModel(showProposal, sequence);
+            associateFiguresToDroneModels(showProposal, sequence);
         }
 
         return true;
@@ -99,39 +99,42 @@ public class AddFiguresToProposalUI extends AbstractUI {
     }
 
 
-    private void associateFiguresToDroneModel(ShowProposalDTO showProposal, List<Figure> figures) {
+    private void associateFiguresToDroneModels(ShowProposalDTO showProposal, List<Figure> figures) {
         List<DroneModelDTO> listDroneModels = new ArrayList<>();
         for (DroneListItemDTO droneListItem : showProposal.getListItemDTOS()) {
             listDroneModels.add(droneListItem.getDroneModelDTO());
         }
 
         if (listDroneModels.isEmpty()) {
-            System.out.println("There is no Drone Models linked to this Show Proposal!");
+            System.out.println("Não existem modelos de drones associados a esta proposta de show!");
             return;
         }
 
-        int sequenceNumber = 1;
         for (Figure figure : figures) {
-            boolean associated = false;
-            while (!associated) {
-                System.out.println("Select a drone model to associate with the figure: " + figure.description());
-                String headerModel = String.format("Select Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
+            boolean addMoreDrones = true;
+            int sequenceNumber = 1;
+
+            while (addMoreDrones) {
+                System.out.println("Select a Drone Model to associate to the figure : " + figure.description());
+                String headerModel = String.format("Select a Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
                 SelectWidget<DroneModelDTO> selectorDrone = new SelectWidget<>(headerModel, listDroneModels, new DroneModelDTOPrinter());
                 selectorDrone.show();
                 DroneModelDTO selectedDrone = selectorDrone.selectedElement();
 
                 if (selectedDrone == null) {
-                    System.out.println("Drone Model can't be null! Please select again.");
+                    System.out.println("The Drone Model can't be null please select again.");
                     continue;
                 }
 
-
                 if (this.controller.addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)) {
-                    associated = true;
+                    System.out.println("Figure associated with success to Drone Model : " + selectedDrone.getModelName());
                     sequenceNumber++;
                 } else {
-                    System.out.println("There was an error associating the Figure to the Drone Model! Please try again.");
+                    System.out.println("Failed to associate Figure to Drone Model : " + selectedDrone.getModelName());
                 }
+
+                String response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ");
+                addMoreDrones = "y".equalsIgnoreCase(response);
             }
         }
     }
