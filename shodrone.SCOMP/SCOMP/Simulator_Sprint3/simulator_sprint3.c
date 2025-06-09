@@ -286,6 +286,8 @@ void* colision_detection_thread(void* arg){
 				if(collisionIndicator != 0){
 					kill(pidsAux[i],SIGUSR1);
 					kill(pidsAux[collisionIndicator-1], SIGUSR1);
+					shared_struct_list[i].collisions++;
+					shared_struct_list[collisionIndicator-1].collisions++;
 					
 					collisions++;
 					
@@ -334,7 +336,7 @@ void* report_generation_thread (){
 		}
 		
 		if(!simulationStatus){
-			//chamar funçao de simulaçao abortada
+			logCollision(report, shared_info_struct->collisionDrone.timestamp, shared_info_struct->collisionDrone.x, shared_info_struct->collisionDrone.y, shared_info_struct->collisionDrone.z, shared_info_struct->collisionDrone.droneID, shared_info_struct->hitDroneID, shared_info_struct->realocatedDrone.x, shared_info_struct->realocatedDrone.y, shared_info_struct->realocatedDrone.z);
 		}
 
 		if (shared_struct->timestamp == -999) {
@@ -346,6 +348,9 @@ void* report_generation_thread (){
 		
 		should_log = 0;
 	}
+	writeExecutionStatus(report, collisions, totalDrones, shared_struct_list, simulationStatus); 
+	writeValidationStatus(report, simulationStatus);
+	fflush(report);
 	snprintf(str, STR_SIZE, "REPORT THREAD ACABOU \n");
 	write(STDOUT_FILENO, str, strlen(str));
 	return NULL;
@@ -432,7 +437,6 @@ void initialize_shared_memories(){
 
 void simulator_run(const char* fileName, int maxCollisions) {
 	allData = NULL;
-	//int droneStatus = 1;
     int totalPositions = readCsv(fileName, &allData, &totalDrones);
     int timestampCount = 0;
     timestamps = getAllTimestamps(allData, totalPositions, &timestampCount);
@@ -447,13 +451,17 @@ void simulator_run(const char* fileName, int maxCollisions) {
     getBaseName(fileName, baseName);
     snprintf(reportFile, sizeof(reportFile), "simulation_report_%s.txt", baseName);
     report = fopen(reportFile, "w");
-    
-	if (report == NULL) {
+    if (report == NULL) {
 		perror("Error opening report file");
 		exit(EXIT_FAILURE);
 	}
+	writeHeader(report, totalDrones); 
+	fflush(report);
 
 	initialize_shared_memories();
+	for (int k = 0; k < totalDrones; ++k){
+		shared_struct_list[k].collisions = 0;
+	}
 	initialize_semaphores();
 	
 	shared_info_struct->maxcollisions = maxCollisions;
@@ -484,6 +492,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 		pids[i] = fork();
 		pidsList[i] = pids[i];
 		if(pids[i] == 0){
+			fclose(report);
 			myDroneID = i + 1;
 			int dronePositions = 0;
 			DroneData* droneData = NULL;
@@ -493,7 +502,7 @@ void simulator_run(const char* fileName, int maxCollisions) {
 				sem_wait(sem_read);
 				if (shared_struct->timestamp == -999) {
 					sem_post(sem_write);
-					snprintf(str, STR_SIZE, "AAAAIIIIIIIIII DRONE %d\n",myDroneID);
+					snprintf(str, STR_SIZE, "DRONE %d A SAIR\n",myDroneID);
 					write(STDOUT_FILENO, str, strlen(str));
 					break;
 				}
@@ -504,7 +513,9 @@ void simulator_run(const char* fileName, int maxCollisions) {
 					currentIndex++;
 				}
 				if(currentIndex < dronePositions && droneData[currentIndex].timestamp == shared_struct->timestamp){
+					int prev = shared_struct_list[i].collisions;
 					shared_struct_list[i] = droneData[currentIndex];
+					shared_struct_list[i].collisions = prev;
 					snprintf(str, STR_SIZE, "[DRONE %d] SEND TO ROOT MY POSITION, (%.2f, %.2f, %.2f) ,ON TIMESTAMP (%ds)\n", myDroneID, shared_struct_list[i].x, shared_struct_list[i].y, shared_struct_list[i].z, shared_struct_list[i].timestamp);
 					write(STDOUT_FILENO, str, strlen(str));
 				}else{

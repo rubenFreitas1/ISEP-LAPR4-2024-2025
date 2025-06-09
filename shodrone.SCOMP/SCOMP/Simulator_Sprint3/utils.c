@@ -129,7 +129,7 @@ void writeHeader(FILE* report, int totalDrones) {
 void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2, float x1, float y1, float z1) {
     fprintf(report, "[COLLISION] Timestamp: %ds | Position: (%.2f, %.2f, %.2f) | Drones involved: %d and %d\n",
             timestamp, x, y, z, drone1, drone2);
-    fprintf(report, "\nDrone %d moved to position: (%.2f, %.2f, %.2f)\n", drone1, x1, y1, z1);
+    fprintf(report, "Drone %d moved to position: (%.2f, %.2f, %.2f)\n\n", drone1, x1, y1, z1);
 }
 
 // MÉTODO QUE ESCREVE O RESULTADO FINAL DA SIMULAÇÃO NO RELATÓRIO
@@ -141,15 +141,23 @@ void writeValidationStatus(FILE* report, int passed) {
 
 // MÉTODO QUE ESCREVE O ESTADO FINAL DE EXECUÇÃO DOS DRONES NO RELATÓRIO
 // INDICA SE O EXECUTION STATUS É FINISHED OU ABORTED
-void writeExecutionStatus(FILE* report, int status, int collisions) {
+void writeExecutionStatus(FILE* report, int collisions, int totalDrones, DroneData* shared_struct_list, int passed) {
 	if (collisions == 0) {
 		fprintf(report, "No collisions occurred during the simulation.\n");
 	}
-    fprintf(report, "\n--- Drone Execution Status ---\n");
-    if (status == 1) {
+    fprintf(report, "--- Drone Execution Status ---\n");
+    if (collisions == 0) {
         fprintf(report, "All drones: FINISHED\n");
     } else {
-        fprintf(report, "All drones: ABORTED\n");
+		for (int i = 0; i < totalDrones; i++) {
+			const DroneData *d = &shared_struct_list[i];
+
+			if (d->collisions == 0) {
+				fprintf(report, "Drone %d: %s", d->droneID, passed ? "FINISHED\n" : "ABORTED\n");
+			} else {
+				fprintf(report, "Drone %d: ABORTED – %d collision%s\n", d->droneID, d->collisions, d->collisions == 1 ? "" : "s");
+			}
+		}
     }
 }
 

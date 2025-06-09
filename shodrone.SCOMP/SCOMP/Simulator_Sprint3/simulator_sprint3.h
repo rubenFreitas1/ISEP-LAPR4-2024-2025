@@ -10,6 +10,7 @@ typedef struct {
     float y;
     float z;
     int timestamp;
+    int collisions;
 } DroneData;
 
 typedef struct{
@@ -51,7 +52,7 @@ void int_to_str(int value, char *str);
 void writeHeader(FILE* report, int totalDrones);
 void logCollision(FILE* report, int timestamp, float x, float y, float z, int drone1, int drone2, float x1, float y1, float z1);
 void writeValidationStatus(FILE* report, int passed);
-void writeExecutionStatus(FILE* report, int statuses, int collisions);
+void writeExecutionStatus(FILE* report, int collisions, int totalDrones, DroneData* shared_struct_list, int passed);
 void getBaseName(const char *filePath, char *baseName);
 void intToStr(int num, char* str);
 
