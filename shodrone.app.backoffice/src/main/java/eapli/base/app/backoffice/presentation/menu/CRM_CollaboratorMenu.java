@@ -8,10 +8,7 @@ import eapli.base.app.backoffice.presentation.representativeManagement.DisableRe
 import eapli.base.app.backoffice.presentation.representativeManagement.EditRepresentativeAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.ListRepresentativesAction;
 import eapli.base.app.backoffice.presentation.representativeManagement.RegisterRepresentativeAction;
-import eapli.base.app.backoffice.presentation.showProposalManagement.AddDronesToProposalAction;
-import eapli.base.app.backoffice.presentation.showProposalManagement.AddVideoProposalAction;
-import eapli.base.app.backoffice.presentation.showProposalManagement.MarkShowProposalAction;
-import eapli.base.app.backoffice.presentation.showProposalManagement.RegisterShowProposalAction;
+import eapli.base.app.backoffice.presentation.showProposalManagement.*;
 import eapli.base.app.backoffice.presentation.showRequestManagement.EditShowRequestAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ListShowRequestsAction;
 import eapli.base.app.backoffice.presentation.showRequestManagement.RegisterShowRequestAction;
@@ -47,9 +44,11 @@ public class CRM_CollaboratorMenu {
 
     private static final int ADD_DRONE_MODELS_PROPOSAL = 2;
 
-    private static final int ADD_VIDEO_SIMULATION_PROPOSAL = 3;
+    private static final int ADD_FIGURES_TO_PROPOSAL = 3;
 
-    private static final int MARK_SHOW_PROPOSAL_OPTION = 4;
+    private static final int ADD_VIDEO_SIMULATION_PROPOSAL = 4;
+
+    private static final int MARK_SHOW_PROPOSAL_OPTION = 5;
 
     // FIGURE MENU
 
@@ -86,8 +85,10 @@ public class CRM_CollaboratorMenu {
         final Menu menu = new Menu("Show Proposal >");
         menu.addItem(REGISTER_SHOW_PROPOSAL_OPTION, "Register Show Proposal", new RegisterShowProposalAction());
         menu.addItem(ADD_DRONE_MODELS_PROPOSAL, "Add Drone Models to Proposal", new AddDronesToProposalAction());
+        menu.addItem(ADD_FIGURES_TO_PROPOSAL, "Add Figures to Proposal", new AddFiguresToProposalAction());
         menu.addItem(ADD_VIDEO_SIMULATION_PROPOSAL, "Add Video Simulation to Proposal", new AddVideoProposalAction());
         menu.addItem(MARK_SHOW_PROPOSAL_OPTION, "Mark Show Proposal", new MarkShowProposalAction());
+        menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
         return menu;
     }
 

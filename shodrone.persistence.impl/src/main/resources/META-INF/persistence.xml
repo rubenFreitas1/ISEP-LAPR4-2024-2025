@@ -23,6 +23,7 @@
     <class>eapli.base.customerManagement.domain.Customer</class>
     <class>eapli.base.representativeManagement.domain.Representative</class>
     <class>eapli.base.showProposalManagement.domain.DroneListItem</class>
+    <class>eapli.base.showProposalManagement.domain.FigureListItem</class>
     <class>eapli.base.showProposalManagement.domain.Template</class>
     <class>eapli.base.showProposalManagement.domain.Document</class>
 

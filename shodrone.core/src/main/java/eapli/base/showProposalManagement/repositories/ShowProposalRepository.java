@@ -27,5 +27,7 @@ public interface ShowProposalRepository extends DomainRepository<Long, ShowPropo
 
     Iterable<ShowProposal> findByStatusAndEmptyDroneList(ShowStatus status);
 
+    Iterable<ShowProposal> findByStatusAndFilledDroneList(ShowStatus status);
+
     Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status);
 }

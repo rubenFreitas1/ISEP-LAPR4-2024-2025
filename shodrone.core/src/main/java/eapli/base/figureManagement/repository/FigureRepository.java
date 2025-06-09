@@ -22,4 +22,6 @@ public interface FigureRepository extends DomainRepository<Long, Figure> {
     Iterable<Figure> findByKeywordAndCategory(String keyword, FigureCategory category);
 
     Iterable <Figure> findByExclusivityAndCustomer(boolean exclusive, Customer customer);
+
+
 }

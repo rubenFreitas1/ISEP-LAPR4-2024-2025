@@ -66,6 +66,6 @@ public class DroneListItem implements DTOable<DroneListItemDTO> {
 
     @Override
     public DroneListItemDTO toDTO() {
-        return new DroneListItemDTO(droneModel.identity(), showProposal.identity(), droneModel.modelName(), numberOfDrones);
+        return new DroneListItemDTO(droneModel.identity(), showProposal.identity(), droneModel.modelName(), numberOfDrones, droneModel.toDTO());
     }
 }

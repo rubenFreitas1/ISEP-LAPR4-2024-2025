@@ -37,6 +37,8 @@ public class Figure implements AggregateRoot<Long> {
 
     private boolean active;
 
+    @Version
+    private Long version;
 
     @ManyToOne
     private Customer customer;
@@ -60,6 +62,7 @@ public class Figure implements AggregateRoot<Long> {
         for (String keyword : keywords) {
             this.normalizedKeywords.add(normalize(keyword));
         }
+
     }
 
     public Set<String> keywords(){
