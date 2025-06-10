@@ -1,12 +1,16 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
+import eapli.base.app.backoffice.presentation.customerManagement.CustomerDTOPrinter;
 import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
+import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestDTOPrinter;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestPrinter;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.dto.CustomerDTO;
 import eapli.base.showProposalManagement.application.RegisterShowProposalController;
 import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.dto.ShowRequestDTO;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
@@ -27,30 +31,30 @@ public class RegisterShowProposalUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        Iterable<Customer> customers = controller.listCustomers();
+        Iterable<CustomerDTO> customers = controller.listCustomers();
         if (!customers.iterator().hasNext()) {
             System.out.println("\nThere are no registered Customers in the system!\n");
             return false;
         }
-        ShowRequest showRequest = null;
+        ShowRequestDTO showRequest = null;
         String headerModelCustomer = String.format("Select Customer\n#  %-30s%-30s%-30s%-30s", "NAME", "STATUS", "PHONE NUMBER", "EMAIL");
         String headerModelRequest = String.format("\nSelect a Show Requests\n#  %-80s%-30s%-30s%-30s%-30s", "LOCATION", "DATE", "NUMBER OF DRONES", "DURATION", "CUSTOMER");
         boolean validRequestSelected = false;
         while (!validRequestSelected) {
-            final SelectWidget<Customer> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerPrinter());
+            final SelectWidget<CustomerDTO> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerDTOPrinter());
             selectWidgetCustomer.show();
-            Customer customer = selectWidgetCustomer.selectedElement();
+            CustomerDTO customer = selectWidgetCustomer.selectedElement();
 
             if (customer == null) {
                 return true;
             }
-            Iterable<ShowRequest> showRequests = this.controller.listShowRequests(customer);
+            Iterable<ShowRequestDTO> showRequests = this.controller.listShowRequests(customer);
             if (!showRequests.iterator().hasNext()) {
                 System.out.println("\nThere are no registered Show Requests associated with this Customer!\n");
                 continue;
             }
             while (true) {
-                final SelectWidget<ShowRequest> selectWidgetRequest = new SelectWidget<>(headerModelRequest, showRequests, new ShowRequestPrinter());
+                final SelectWidget<ShowRequestDTO> selectWidgetRequest = new SelectWidget<>(headerModelRequest, showRequests, new ShowRequestDTOPrinter());
                 selectWidgetRequest.show();
                 showRequest = selectWidgetRequest.selectedElement();
 
@@ -73,10 +77,10 @@ public class RegisterShowProposalUI extends AbstractUI {
             return false;
         }
         Template template = requestTemplate(list);
-        GeoLocation location = showRequest.location();
-        Calendar date = showRequest.date();
-        int duration = showRequest.duration();
-        int droneNumber = showRequest.droneNumber();
+        GeoLocation location = showRequest.getLocation();
+        Calendar date = showRequest.getDate();
+        int duration = showRequest.getDuration();
+        int droneNumber = showRequest.getDroneNumber();
         String input;
         while (true) {
             menuAttributes(location, date, duration, droneNumber);

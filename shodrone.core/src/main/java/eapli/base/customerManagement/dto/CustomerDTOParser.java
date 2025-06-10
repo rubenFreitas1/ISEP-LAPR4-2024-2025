@@ -14,7 +14,7 @@ public class CustomerDTOParser {
 
 
     public Iterable<CustomerDTO> transformToCustomerDTOList(final Iterable<Customer> customers){
-        return StreamSupport.stream(customers.spliterator(), true).map(Customer::toDTO).collect(Collectors.toUnmodifiableList());
+        return StreamSupport.stream(customers.spliterator(), false).map(Customer::toDTO).collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<Customer> getCustomerFromDTO(final CustomerDTO customerDTO){

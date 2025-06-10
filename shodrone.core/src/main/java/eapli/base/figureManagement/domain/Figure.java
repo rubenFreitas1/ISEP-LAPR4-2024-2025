@@ -65,6 +65,8 @@ public class Figure implements AggregateRoot<Long> {
 
     }
 
+    public Long figureId() { return figureId; }
+
     public Set<String> keywords(){
         return this.keywords;
     }

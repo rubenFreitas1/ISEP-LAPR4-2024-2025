@@ -2,15 +2,18 @@ package eapli.base.showRequestManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
+import eapli.base.showRequestManagement.dto.ShowRequestDTO;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.representations.dto.DTOable;
 import jakarta.persistence.*;
 
 import java.util.Calendar;
 import java.util.List;
 
 @Entity
-public class ShowRequest implements AggregateRoot<Long> {
+public class ShowRequest implements AggregateRoot<Long>, DTOable<ShowRequestDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long showRequestId;
@@ -168,5 +171,10 @@ public class ShowRequest implements AggregateRoot<Long> {
     @Override
     public Long identity() {
         return showRequestId;
+    }
+
+    @Override
+    public ShowRequestDTO toDTO (){
+        return new ShowRequestDTO(showRequestId, createdOn, editedOn, date, location, description, droneNumber, duration, status, customer, requestedFigures, createdBy.name().toString());
     }
 }

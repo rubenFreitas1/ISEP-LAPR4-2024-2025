@@ -2,6 +2,8 @@ package eapli.base.showProposalManagement.application;
 
 import eapli.base.customerManagement.application.CustomerManagementService;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.dto.CustomerDTO;
+import eapli.base.customerManagement.dto.CustomerDTOParser;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showProposalManagement.domain.ShowProposal;
@@ -11,6 +13,8 @@ import eapli.base.showProposalManagement.repositories.TemplateRepository;
 import eapli.base.showRequestManagement.application.ShowRequestManagementService;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
+import eapli.base.showRequestManagement.dto.ShowRequestDTO;
+import eapli.base.showRequestManagement.dto.ShowRequestDTOParser;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
@@ -22,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Optional;
 
 public class RegisterShowProposalController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
@@ -36,17 +41,24 @@ public class RegisterShowProposalController {
     private final TemplateRepository templateRepository = PersistenceContext.repositories().templates();
     private final TemplateManagementService templateManagementService = new TemplateManagementService(templateRepository);
 
-    public Iterable<Customer> listCustomers() {
+    private final CustomerDTOParser customerDTOParser = new CustomerDTOParser();
+    private final ShowRequestDTOParser showRequestDTOParser = new ShowRequestDTOParser();
+
+    public Iterable<CustomerDTO> listCustomers() {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        return customerManagementService.findAllActiveCustomers();
+        Iterable <Customer> customers = customerManagementService.findAllActiveCustomers();
+        return customerDTOParser.transformToCustomerDTOList(customers);
     }
 
-    public Iterable<ShowRequest> listShowRequests(Customer customer) {
-        return showRequestManagementService.findByCustomer(customer);
+    public Iterable<ShowRequestDTO> listShowRequests(CustomerDTO customerDTO) {
+        Optional<Customer> customer = customerDTOParser.getCustomerFromDTO(customerDTO);
+        Iterable<ShowRequest> showRequests = showRequestManagementService.findByCustomer(customer.get());
+        return showRequestDTOParser.transformToShowRequestDTOlist(showRequests);
     }
 
-    public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, Template template, double insurance) {
-        return showProposalManagementService.registerShowProposal(showRequest, location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser(), template, insurance);
+    public ShowProposal registerShowProposal(ShowRequestDTO showRequestDTO, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, Template template, double insurance) {
+        Optional<ShowRequest> showRequest = showRequestDTOParser.getShowRequestfromDTO(showRequestDTO);
+        return showProposalManagementService.registerShowProposal(showRequest.get(), location, date, time, duration, totalDroneNumber, authz.session().get().authenticatedUser(), template, insurance);
     }
 
     public Iterable<Template> listTemplates() {
