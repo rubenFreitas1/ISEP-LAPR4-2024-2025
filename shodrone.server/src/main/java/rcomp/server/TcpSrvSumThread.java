@@ -3,6 +3,7 @@ package rcomp.server;
 import com.google.gson.*;
 import eapli.base.showProposalManagement.application.AnalyseProposalController;
 import eapli.base.showProposalManagement.application.GetShowInfoController;
+import eapli.base.showProposalManagement.application.ProposalFeedbackController;
 import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.dto.ShowProposalDTO;
@@ -26,6 +27,7 @@ class TcpSrvSumThread implements Runnable {
 
     AnalyseProposalController analyseProposalController = new AnalyseProposalController();
     GetShowInfoController getShowInfoController = new GetShowInfoController();
+    ProposalFeedbackController proposalFeedbackController = new ProposalFeedbackController();
 
     public TcpSrvSumThread(Socket cli_s) {
         socket = cli_s;
@@ -69,6 +71,46 @@ class TcpSrvSumThread implements Runnable {
                     response.setResponseStatus("200 OK");
                     response.setContent(sb.toString(), "text/plain");
                     break;
+
+                case "/completedShows":
+                    String customerEmailCompleted = request.getContentAsString().split("=")[1];
+                    Iterable<ShowProposalDTO> completedProposals = proposalFeedbackController.findBySent(customerEmailCompleted);
+
+                    Gson gsonCompleted = new GsonBuilder()
+                            .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                                @Override
+                                public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                    return LocalTime.parse(json.getAsString());
+                                }
+                            })
+                            .registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
+                                @Override
+                                public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                                    return new JsonPrimitive(src.toString());
+                                }
+                            })
+                            .create();
+
+                    response.setResponseStatus("200 OK");
+                    response.setContent(gsonCompleted.toJson(completedProposals), "application/json");
+                    break;
+
+                case "/proposalFeedback":
+                    String feedbackContent = request.getContentAsString();
+                    String[] feedbackParts = feedbackContent.split("&");
+                    long proposalId = Long.parseLong(feedbackParts[0].split("=")[1]);
+                    String aprroval = feedbackParts[1].split("=")[1];
+                    String feedback = feedbackParts[2].split("=")[1];
+
+
+                    Optional<ShowProposal> proposal = proposalFeedbackController.findById(proposalId);
+                    proposalFeedbackController.updateProposalFeedback(proposal, feedback, aprroval);
+                    response.setResponseStatus("200 OK");
+                    response.setContent("Feedback submitted successfully", "text/plain");
+                    break;
+
+
+
                 case "/download":
                     String query = request.getURI();
                     String code = query.substring(query.indexOf("code=") + 5);

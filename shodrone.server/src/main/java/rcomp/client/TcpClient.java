@@ -58,6 +58,55 @@ public class TcpClient {
         }
     }
 
+    public static List<ShowProposalDTO> listCompletedShows(String email) throws IOException {
+        try(Socket socket = new Socket("localhost", 9999)){
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out= new DataOutputStream(socket.getOutputStream());
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("POST");
+            request.setURI("/completedShows");
+            request.setContent("email=" + email, "text/plain");
+            request.send(out);
+
+            HTTPmessage response = new HTTPmessage(in);
+
+            if (response.getStatus().startsWith("200")) {
+                String json = response.getContentAsString();
+
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                            @Override
+                            public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                return LocalTime.parse(json.getAsString());
+                            }
+                        })
+                        .create();
+
+                Type listType = new TypeToken<List<ShowProposalDTO>>() {}.getType();
+                return gson.fromJson(json, listType);
+            } else {
+                throw new IOException("Error obtaining completed shows: " + response.getStatus());
+            }
+
+        }
+    }
+
+    public static boolean proposalFeedback(ShowProposalDTO proposal, boolean accepted, String feedback) throws IOException {
+        try(Socket socket = new Socket("localhost", 9999)){
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out= new DataOutputStream(socket.getOutputStream());
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("POST");
+            request.setURI("/proposalFeedback");
+            String content = "id=" + proposal.getShowProposalId() + "&accepted=" + accepted + "&feedback=" + feedback;
+            request.setContent(content, "text/plain");
+            request.send(out);
+
+            HTTPmessage response = new HTTPmessage(in);
+            return response.getStatus().startsWith("200");
+        }
+    }
+
     public static boolean downloadDocument(String code, String filePath) throws IOException{
         try(Socket socket = new Socket("localhost", 9999)){
             DataInputStream in = new DataInputStream(socket.getInputStream());
