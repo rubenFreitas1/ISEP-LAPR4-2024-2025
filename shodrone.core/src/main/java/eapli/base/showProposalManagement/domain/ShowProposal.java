@@ -73,7 +73,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @Embedded
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
-    private boolean isCompleted = false;
 
     protected ShowProposal() {}
 
@@ -127,10 +126,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         return currentTotal;
     }
 
-    public List<DroneListItem> droneListItem (){
-        return this.droneModelList;
-    }
-
     public boolean addFigureWithDroneModel(Figure figure, DroneModel droneModel, int sequenceNumber) {
         if (figure == null || droneModel == null) {
             throw new IllegalArgumentException("Figure or DroneModel cannot be null!");
@@ -155,6 +150,12 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         }
         return false;
     }
+
+    public List<DroneListItem> droneListItem (){
+        return this.droneModelList;
+    }
+
+    public List<FigureListItem> figureListItems(){return this.figureListItems;}
 
     public Template template() {return this.template;}
 
@@ -298,13 +299,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         return false;
     }
 
-    public boolean isCompleted() {
-        if (videoLink != null && figureListItems.size() > 0 && droneModelList.size() > 0) {
-            this.isCompleted = true;
-            return true;
-        }
-        return false;
-    }
 
     public void changeStatus(ShowStatus status) {
         if (status == null) {
