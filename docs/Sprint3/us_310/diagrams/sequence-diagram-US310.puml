@@ -11,10 +11,14 @@ participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
 participant "ShowRequestManagementService" as ShowRequestManagementService <<application>>
 participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "TemplateManagementService" as TemplateManagementService <<application>>
+participant "CustomerDTOParser" as CustomerDTOParser <<dto>>
+participant "ShowRequestDTOParser" as ShowRequestDTOParser <<dto>>
 participant "ShowProposal" as ShowProposal <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
 participant "ShowRequestRepository" as ShowRequestRepository <<repository>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
+participant "TemplateRepository" as TemplateRepository <<repository>>
 database "Database" as Database
 
 title Sequence Diagram - US230
@@ -44,16 +48,22 @@ title Sequence Diagram - US230
                     CustomerRepository -> Database : findByActive(true)
                     activate Database
 
-                        Database -> CustomerRepository : listOfActiveClients
+                        Database -> CustomerRepository : customers
                     deactivate Database
 
-                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                    CustomerRepository -> CustomerManagementService : customers
                 deactivate CustomerRepository
 
-                CustomerManagementService -> CTRL : listOfActiveClients
+                CustomerManagementService -> CTRL : customers
             deactivate CustomerManagementService
 
-            CTRL -> UI : listOfActiveClients
+            CTRL -> CustomerDTOParser : transformToCustomerDTOList(customers)
+            activate CustomerDTOParser
+
+                CustomerDTOParser -> CTRL : customersDTO
+            deactivate CustomerDTOParser
+
+            CTRL -> UI : customersDTO
         deactivate CTRL
         UI -> crmCollaborator : displays the list of customers
      deactivate UI
@@ -61,8 +71,14 @@ title Sequence Diagram - US230
      crmCollaborator -> UI : selects the customer
      activate UI
 
-        UI -> CTRL : listShowRequests(customer)
+        UI -> CTRL : listShowRequests(customerDTO)
         activate CTRL
+
+            CTRL -> CustomerDTOParser : getCustomerFromDTO(customerDTO)
+            activate CustomerDTOParser
+
+                CustomerDTOParser -> CTRL : customer
+            deactivate CustomerDTOParser
 
             CTRL -> ShowRequestManagementService : findAllCustomerShowRequests(customer)
             activate ShowRequestManagementService
@@ -73,22 +89,58 @@ title Sequence Diagram - US230
                     ShowRequestRepository -> Database : findByCustomer(customer)
                     activate Database
 
-                        Database -> ShowRequestRepository : listOfShowRequests
+                        Database -> ShowRequestRepository : showRequests
                     deactivate Database
 
-                    ShowRequestRepository -> ShowRequestManagementService : listOfShowRequests
+                    ShowRequestRepository -> ShowRequestManagementService : showRequests
                 deactivate ShowRequestRepository
 
-                ShowRequestManagementService -> CTRL : listOfShowRequests
+                ShowRequestManagementService -> CTRL : showRequests
             deactivate ShowRequestManagementService
 
-            CTRL -> UI : listOfShowRequests
+            CTRL -> ShowRequestDTOParser : transformToShowRequestDTOlist(showRequests)
+            activate ShowRequestDTOParser
+
+                ShowRequestDTOParser -> CTRL : showRequestDTO
+            deactivate ShowRequestDTOParser
+
+            CTRL -> UI : showRequestsDTO
         deactivate CTRL
 
         UI -> crmCollaborator : Displays the list of show request associated to the customer
      deactivate UI
 
      crmCollaborator -> UI : selects a show request
+     activate UI
+
+        UI -> CTRL : listTemplates()
+        activate CTRL
+
+            CTRL -> TemplateManagementService : listAllTemplates()
+            activate TemplateManagementService
+
+                TemplateManagementService -> TemplateRepository : findAll()
+                activate TemplateRepository
+
+                    TemplateRepository -> Database : findAll()
+                    activate Database
+
+                        Database -> TemplateRepository : templates
+                    deactivate Database
+
+                    TemplateRepository -> TemplateManagementService : template
+                deactivate TemplateRepository
+
+                TemplateManagementService -> CTRL : templates
+            deactivate TemplateManagementService
+
+            CTRL -> UI : templates
+        deactivate CTRL
+
+        UI -> crmCollaborator : displays current show proposal templates
+     deactivate UI
+
+     crmCollaborator -> UI : selects a template
      activate UI
 
          UI -> crmCollaborator : displays the current attributes of the show request(location, date, time, duration, \ntotal number of drones) and asks the user if he wants to change the attribute(s)
@@ -105,13 +157,19 @@ title Sequence Diagram - US230
      activate UI
 
         end
-        UI -> CTRL : registerShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+        UI -> CTRL : registerShowProposal(showRequestDTO, location, date, time, duration, totalNumberOfDrones, insurance)
         activate CTRL
 
-            CTRL -> ShowProposalManagementService : registerShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+            CTRL -> ShowRequestDTOParser : getShowRequestfromDTO(showRequestDTO)
+            activate ShowRequestDTOParser
+
+                ShowRequestDTOParser -> CTRL : showRequest
+            deactivate ShowRequestDTOParser
+
+            CTRL -> ShowProposalManagementService : registerShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones, insurance)
             activate ShowProposalManagementService
 
-                ShowProposalManagementService -> ShowProposal : new ShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones)
+                ShowProposalManagementService -> ShowProposal : new ShowProposal(showRequest, location, date, time, duration, totalNumberOfDrones, insurance)
                 activate ShowProposal
 
                     ShowProposal -> ShowProposalManagementService : new ShowProposal
