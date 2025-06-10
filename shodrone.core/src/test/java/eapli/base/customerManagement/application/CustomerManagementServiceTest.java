@@ -95,7 +95,7 @@ class CustomerManagementServiceTest {
         );
 
         assertNotNull(result);
-        assertEquals("Client Name", result.customerName());
+        assertEquals(Name.valueOf("Client", "Name"), result.customerName());
         verify(customerRepository).save(any(Customer.class));
     }
 

@@ -2,11 +2,9 @@ package eapli.base.customerManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.framework.general.domain.model.EmailAddress;
-import eapli.framework.infrastructure.authz.domain.model.Name;
-import eapli.framework.infrastructure.authz.domain.model.Password;
-import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -23,8 +21,8 @@ public class CustomerManagementService {
 
     public CustomerManagementService(final CustomerRepository customerRepository, final PasswordEncoder passwordEncoder, final PasswordPolicy passwordPolicy) {
         this.customerRepository = customerRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.passwordPolicy = passwordPolicy;
+        this.passwordEncoder = new PlainTextEncoder();
+        this.passwordPolicy = new ExemploPasswordPolicy();
     }
 
     public Customer registerNewCustomer(final String customerFirstName,final String customerLastName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final Customer.CustomerStatus status, final Calendar createdOn) {
@@ -34,6 +32,9 @@ public class CustomerManagementService {
             throw new IllegalArgumentException("Customer address cannot be null or empty");
         }
         EmailAddress customerEmailAddress = EmailAddress.valueOf(customerEmail);
+        if (isEmailUsed(customerEmailAddress.toString())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
         Optional<Password> customerPassword = Password.encodedAndValid(password, passwordPolicy, passwordEncoder);
 
         if (customerPassword.isEmpty()) {
