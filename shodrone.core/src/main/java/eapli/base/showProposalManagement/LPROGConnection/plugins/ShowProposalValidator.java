@@ -28,7 +28,7 @@ public class ShowProposalValidator {
     }
 
 
-    public boolean validateShowProposalRealData(String input){
+    public static boolean validateShowProposalRealData(String input){
         ShowProposalRealDataLexer lexer = new ShowProposalRealDataLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ShowProposalRealDataParser parser = new ShowProposalRealDataParser(tokens);

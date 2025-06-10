@@ -29,6 +29,42 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterProposalNewTry(ShowProposalRealDataParser.ProposalNewTryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProposalNewTry(ShowProposalRealDataParser.ProposalNewTryContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProposalWithRep(ShowProposalRealDataParser.ProposalWithRepContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProposalWithRep(ShowProposalRealDataParser.ProposalWithRepContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProposalWithoutRep(ShowProposalRealDataParser.ProposalWithoutRepContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProposalWithoutRep(ShowProposalRealDataParser.ProposalWithoutRepContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHeader(ShowProposalRealDataParser.HeaderContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -65,73 +101,13 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPersonName(ShowProposalRealDataParser.PersonNameContext ctx) { }
+	@Override public void enterCompanyInfoWithoutRep(ShowProposalRealDataParser.CompanyInfoWithoutRepContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPersonName(ShowProposalRealDataParser.PersonNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRealPersonName(ShowProposalRealDataParser.RealPersonNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRealPersonName(ShowProposalRealDataParser.RealPersonNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCompany(ShowProposalRealDataParser.CompanyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCompany(ShowProposalRealDataParser.CompanyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRealCompanyName(ShowProposalRealDataParser.RealCompanyNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRealCompanyName(ShowProposalRealDataParser.RealCompanyNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAddress(ShowProposalRealDataParser.AddressContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAddress(ShowProposalRealDataParser.AddressContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRealAddress(ShowProposalRealDataParser.RealAddressContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRealAddress(ShowProposalRealDataParser.RealAddressContext ctx) { }
+	@Override public void exitCompanyInfoWithoutRep(ShowProposalRealDataParser.CompanyInfoWithoutRepContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -144,18 +120,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVatNumber(ShowProposalRealDataParser.VatNumberContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRealVatNumber(ShowProposalRealDataParser.RealVatNumberContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRealVatNumber(ShowProposalRealDataParser.RealVatNumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -245,18 +209,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReal_vip_line1(ShowProposalRealDataParser.Real_vip_line1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReal_vip_line1(ShowProposalRealDataParser.Real_vip_line1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLine_2(ShowProposalRealDataParser.Line_2Context ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -281,18 +233,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReal_line3(ShowProposalRealDataParser.Real_line3Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReal_line3(ShowProposalRealDataParser.Real_line3Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterClosing(ShowProposalRealDataParser.ClosingContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -305,18 +245,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReal_closing(ShowProposalRealDataParser.Real_closingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReal_closing(ShowProposalRealDataParser.Real_closingContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSignature(ShowProposalRealDataParser.SignatureContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -324,30 +252,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSignature(ShowProposalRealDataParser.SignatureContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCrmManagerName(ShowProposalRealDataParser.CrmManagerNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCrmManagerName(ShowProposalRealDataParser.CrmManagerNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRealManagerName(ShowProposalRealDataParser.RealManagerNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRealManagerName(ShowProposalRealDataParser.RealManagerNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -437,18 +341,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReal_attachment(ShowProposalRealDataParser.Real_attachmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReal_attachment(ShowProposalRealDataParser.Real_attachmentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLocation(ShowProposalRealDataParser.LocationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -456,18 +348,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLocation(ShowProposalRealDataParser.LocationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLocation_real(ShowProposalRealDataParser.Location_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLocation_real(ShowProposalRealDataParser.Location_realContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -485,18 +365,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDate_real(ShowProposalRealDataParser.Date_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDate_real(ShowProposalRealDataParser.Date_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterTime(ShowProposalRealDataParser.TimeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -509,18 +377,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTime_real(ShowProposalRealDataParser.Time_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTime_real(ShowProposalRealDataParser.Time_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDuration(ShowProposalRealDataParser.DurationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -528,18 +384,6 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDuration(ShowProposalRealDataParser.DurationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDuration_real(ShowProposalRealDataParser.Duration_realContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDuration_real(ShowProposalRealDataParser.Duration_realContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -588,6 +432,18 @@ public class ShowProposalRealDataBaseListener implements ShowProposalRealDataLis
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFigureListReal(ShowProposalRealDataParser.FigureListRealContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDescriptionName(ShowProposalRealDataParser.DescriptionNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDescriptionName(ShowProposalRealDataParser.DescriptionNameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

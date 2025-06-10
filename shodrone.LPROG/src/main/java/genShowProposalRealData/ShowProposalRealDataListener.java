@@ -18,6 +18,36 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitProposal(ShowProposalRealDataParser.ProposalContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#proposalNewTry}.
+	 * @param ctx the parse tree
+	 */
+	void enterProposalNewTry(ShowProposalRealDataParser.ProposalNewTryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#proposalNewTry}.
+	 * @param ctx the parse tree
+	 */
+	void exitProposalNewTry(ShowProposalRealDataParser.ProposalNewTryContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#proposalWithRep}.
+	 * @param ctx the parse tree
+	 */
+	void enterProposalWithRep(ShowProposalRealDataParser.ProposalWithRepContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#proposalWithRep}.
+	 * @param ctx the parse tree
+	 */
+	void exitProposalWithRep(ShowProposalRealDataParser.ProposalWithRepContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#proposalWithoutRep}.
+	 * @param ctx the parse tree
+	 */
+	void enterProposalWithoutRep(ShowProposalRealDataParser.ProposalWithoutRepContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#proposalWithoutRep}.
+	 * @param ctx the parse tree
+	 */
+	void exitProposalWithoutRep(ShowProposalRealDataParser.ProposalWithoutRepContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#header}.
 	 * @param ctx the parse tree
 	 */
@@ -48,65 +78,15 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitCompanyInfo(ShowProposalRealDataParser.CompanyInfoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#personName}.
+	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#companyInfoWithoutRep}.
 	 * @param ctx the parse tree
 	 */
-	void enterPersonName(ShowProposalRealDataParser.PersonNameContext ctx);
+	void enterCompanyInfoWithoutRep(ShowProposalRealDataParser.CompanyInfoWithoutRepContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#personName}.
+	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#companyInfoWithoutRep}.
 	 * @param ctx the parse tree
 	 */
-	void exitPersonName(ShowProposalRealDataParser.PersonNameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#realPersonName}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealPersonName(ShowProposalRealDataParser.RealPersonNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#realPersonName}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealPersonName(ShowProposalRealDataParser.RealPersonNameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#company}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompany(ShowProposalRealDataParser.CompanyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#company}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompany(ShowProposalRealDataParser.CompanyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#realCompanyName}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealCompanyName(ShowProposalRealDataParser.RealCompanyNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#realCompanyName}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealCompanyName(ShowProposalRealDataParser.RealCompanyNameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#address}.
-	 * @param ctx the parse tree
-	 */
-	void enterAddress(ShowProposalRealDataParser.AddressContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#address}.
-	 * @param ctx the parse tree
-	 */
-	void exitAddress(ShowProposalRealDataParser.AddressContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#realAddress}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealAddress(ShowProposalRealDataParser.RealAddressContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#realAddress}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealAddress(ShowProposalRealDataParser.RealAddressContext ctx);
+	void exitCompanyInfoWithoutRep(ShowProposalRealDataParser.CompanyInfoWithoutRepContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#vatNumber}.
 	 * @param ctx the parse tree
@@ -117,16 +97,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVatNumber(ShowProposalRealDataParser.VatNumberContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#realVatNumber}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealVatNumber(ShowProposalRealDataParser.RealVatNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#realVatNumber}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealVatNumber(ShowProposalRealDataParser.RealVatNumberContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#reference}.
 	 * @param ctx the parse tree
@@ -198,16 +168,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitVip_line1(ShowProposalRealDataParser.Vip_line1Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#real_vip_line1}.
-	 * @param ctx the parse tree
-	 */
-	void enterReal_vip_line1(ShowProposalRealDataParser.Real_vip_line1Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#real_vip_line1}.
-	 * @param ctx the parse tree
-	 */
-	void exitReal_vip_line1(ShowProposalRealDataParser.Real_vip_line1Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#line_2}.
 	 * @param ctx the parse tree
 	 */
@@ -228,16 +188,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitLine_3(ShowProposalRealDataParser.Line_3Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#real_line3}.
-	 * @param ctx the parse tree
-	 */
-	void enterReal_line3(ShowProposalRealDataParser.Real_line3Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#real_line3}.
-	 * @param ctx the parse tree
-	 */
-	void exitReal_line3(ShowProposalRealDataParser.Real_line3Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#closing}.
 	 * @param ctx the parse tree
 	 */
@@ -248,16 +198,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitClosing(ShowProposalRealDataParser.ClosingContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#real_closing}.
-	 * @param ctx the parse tree
-	 */
-	void enterReal_closing(ShowProposalRealDataParser.Real_closingContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#real_closing}.
-	 * @param ctx the parse tree
-	 */
-	void exitReal_closing(ShowProposalRealDataParser.Real_closingContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#signature}.
 	 * @param ctx the parse tree
 	 */
@@ -267,26 +207,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSignature(ShowProposalRealDataParser.SignatureContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#crmManagerName}.
-	 * @param ctx the parse tree
-	 */
-	void enterCrmManagerName(ShowProposalRealDataParser.CrmManagerNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#crmManagerName}.
-	 * @param ctx the parse tree
-	 */
-	void exitCrmManagerName(ShowProposalRealDataParser.CrmManagerNameContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#realManagerName}.
-	 * @param ctx the parse tree
-	 */
-	void enterRealManagerName(ShowProposalRealDataParser.RealManagerNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#realManagerName}.
-	 * @param ctx the parse tree
-	 */
-	void exitRealManagerName(ShowProposalRealDataParser.RealManagerNameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#signature_option}.
 	 * @param ctx the parse tree
@@ -358,16 +278,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitAttachment(ShowProposalRealDataParser.AttachmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#real_attachment}.
-	 * @param ctx the parse tree
-	 */
-	void enterReal_attachment(ShowProposalRealDataParser.Real_attachmentContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#real_attachment}.
-	 * @param ctx the parse tree
-	 */
-	void exitReal_attachment(ShowProposalRealDataParser.Real_attachmentContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#location}.
 	 * @param ctx the parse tree
 	 */
@@ -377,16 +287,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLocation(ShowProposalRealDataParser.LocationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#location_real}.
-	 * @param ctx the parse tree
-	 */
-	void enterLocation_real(ShowProposalRealDataParser.Location_realContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#location_real}.
-	 * @param ctx the parse tree
-	 */
-	void exitLocation_real(ShowProposalRealDataParser.Location_realContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#date}.
 	 * @param ctx the parse tree
@@ -398,16 +298,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitDate(ShowProposalRealDataParser.DateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#date_real}.
-	 * @param ctx the parse tree
-	 */
-	void enterDate_real(ShowProposalRealDataParser.Date_realContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#date_real}.
-	 * @param ctx the parse tree
-	 */
-	void exitDate_real(ShowProposalRealDataParser.Date_realContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#time}.
 	 * @param ctx the parse tree
 	 */
@@ -418,16 +308,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 */
 	void exitTime(ShowProposalRealDataParser.TimeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#time_real}.
-	 * @param ctx the parse tree
-	 */
-	void enterTime_real(ShowProposalRealDataParser.Time_realContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#time_real}.
-	 * @param ctx the parse tree
-	 */
-	void exitTime_real(ShowProposalRealDataParser.Time_realContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#duration}.
 	 * @param ctx the parse tree
 	 */
@@ -437,16 +317,6 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDuration(ShowProposalRealDataParser.DurationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#duration_real}.
-	 * @param ctx the parse tree
-	 */
-	void enterDuration_real(ShowProposalRealDataParser.Duration_realContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#duration_real}.
-	 * @param ctx the parse tree
-	 */
-	void exitDuration_real(ShowProposalRealDataParser.Duration_realContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#droneList}.
 	 * @param ctx the parse tree
@@ -487,4 +357,14 @@ public interface ShowProposalRealDataListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFigureListReal(ShowProposalRealDataParser.FigureListRealContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ShowProposalRealDataParser#descriptionName}.
+	 * @param ctx the parse tree
+	 */
+	void enterDescriptionName(ShowProposalRealDataParser.DescriptionNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ShowProposalRealDataParser#descriptionName}.
+	 * @param ctx the parse tree
+	 */
+	void exitDescriptionName(ShowProposalRealDataParser.DescriptionNameContext ctx);
 }

@@ -15,62 +15,75 @@ public class ShowProposalRealDataParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, GREETINGS=6, TITLE_PHRASE=7, PREFEREMCE_PHRASE=8, 
-		SUBSCRIBE_PHRASE=9, LAST_PHRASE=10, REGARDS=11, LINE_1_FORMAT=12, REAL_VIP_LINE1=13, 
-		LINE_2_FORMAT=14, REAL_LINE3=15, REAL_CLOSING_FORMAT=16, SHOW_DATE_FORMAT=17, 
-		SHOW_DATE_REAL_LINE=18, FIGURE_ITEM_REAL=19, LINK=20, DRONE_ITEM_FORMAT=21, 
-		DRONE_ITEM_REAL=22, GPS_LINE=23, GPS_LINE_REAL=24, ATTACHMENT_LINE=25, 
-		ATTACHMENT_REAL=26, REFERENCE_LINE=27, REAL_REFERENCE=28, DATE=29, TIME_LINE=30, 
-		TIME_REAL_LINE=31, DURATION_LINE=32, DURATION_MINUTES=33, DURATION_REAL_LINE=34, 
-		PERSON_NAME=35, VAT_NUMBER=36, WORD=37, PAGE_BREAK=38, NEWLINE=39, ADDRESS_LINE=40;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
+		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
+		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
+		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
+		T__38=39, T__39=40, T__40=41, T__41=42, T__42=43, T__43=44, T__44=45, 
+		T__45=46, T__46=47, T__47=48, T__48=49, T__49=50, T__50=51, T__51=52, 
+		T__52=53, GPS=54, DATE=55, TIME=56, VAT_NUMBER=57, NEWLINE=58, INT=59, 
+		DIGIT=60, LINK=61, DASH=62, MESSAGE=63, LETTER=64;
 	public static final int
-		RULE_proposal = 0, RULE_header = 1, RULE_greeting = 2, RULE_companyInfo = 3, 
-		RULE_personName = 4, RULE_realPersonName = 5, RULE_company = 6, RULE_realCompanyName = 7, 
-		RULE_address = 8, RULE_realAddress = 9, RULE_vatNumber = 10, RULE_realVatNumber = 11, 
-		RULE_reference = 12, RULE_realReference = 13, RULE_titleProposal = 14, 
-		RULE_body = 15, RULE_line_1 = 16, RULE_normal_line1 = 17, RULE_vip_line1 = 18, 
-		RULE_real_vip_line1 = 19, RULE_line_2 = 20, RULE_line_3 = 21, RULE_real_line3 = 22, 
-		RULE_closing = 23, RULE_real_closing = 24, RULE_signature = 25, RULE_crmManagerName = 26, 
-		RULE_realManagerName = 27, RULE_signature_option = 28, RULE_preferencePhrase = 29, 
-		RULE_subscribePhrase = 30, RULE_lastPhrase = 31, RULE_regards = 32, RULE_showDetails = 33, 
-		RULE_attachment = 34, RULE_real_attachment = 35, RULE_location = 36, RULE_location_real = 37, 
-		RULE_date = 38, RULE_date_real = 39, RULE_time = 40, RULE_time_real = 41, 
-		RULE_duration = 42, RULE_duration_real = 43, RULE_droneList = 44, RULE_droneListReal = 45, 
-		RULE_figureList = 46, RULE_figureListReal = 47;
+		RULE_proposal = 0, RULE_proposalNewTry = 1, RULE_proposalWithRep = 2, 
+		RULE_proposalWithoutRep = 3, RULE_header = 4, RULE_greeting = 5, RULE_companyInfo = 6, 
+		RULE_companyInfoWithoutRep = 7, RULE_vatNumber = 8, RULE_reference = 9, 
+		RULE_realReference = 10, RULE_titleProposal = 11, RULE_body = 12, RULE_line_1 = 13, 
+		RULE_normal_line1 = 14, RULE_vip_line1 = 15, RULE_line_2 = 16, RULE_line_3 = 17, 
+		RULE_closing = 18, RULE_signature = 19, RULE_signature_option = 20, RULE_preferencePhrase = 21, 
+		RULE_subscribePhrase = 22, RULE_lastPhrase = 23, RULE_regards = 24, RULE_showDetails = 25, 
+		RULE_attachment = 26, RULE_location = 27, RULE_date = 28, RULE_time = 29, 
+		RULE_duration = 30, RULE_droneList = 31, RULE_droneListReal = 32, RULE_figureList = 33, 
+		RULE_figureListReal = 34, RULE_descriptionName = 35;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"proposal", "header", "greeting", "companyInfo", "personName", "realPersonName", 
-			"company", "realCompanyName", "address", "realAddress", "vatNumber", 
-			"realVatNumber", "reference", "realReference", "titleProposal", "body", 
-			"line_1", "normal_line1", "vip_line1", "real_vip_line1", "line_2", "line_3", 
-			"real_line3", "closing", "real_closing", "signature", "crmManagerName", 
-			"realManagerName", "signature_option", "preferencePhrase", "subscribePhrase", 
-			"lastPhrase", "regards", "showDetails", "attachment", "real_attachment", 
-			"location", "location_real", "date", "date_real", "time", "time_real", 
-			"duration", "duration_real", "droneList", "droneListReal", "figureList", 
-			"figureListReal"
+			"proposal", "proposalNewTry", "proposalWithRep", "proposalWithoutRep", 
+			"header", "greeting", "companyInfo", "companyInfoWithoutRep", "vatNumber", 
+			"reference", "realReference", "titleProposal", "body", "line_1", "normal_line1", 
+			"vip_line1", "line_2", "line_3", "closing", "signature", "signature_option", 
+			"preferencePhrase", "subscribePhrase", "lastPhrase", "regards", "showDetails", 
+			"attachment", "location", "date", "time", "duration", "droneList", "droneListReal", 
+			"figureList", "figureListReal", "descriptionName"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'CRM Manager'", "'#List of used drones'", "'#Lista de drones utilizados'", 
-			"'#Lista de figuras'", "'#List of figures'", null, null, null, null, 
-			"'Looking forward to hearing from you soon.'"
+			null, "'[page break]'", "'\\f'", "'Dear Sirs,'", "'Exmos. Senhores'", 
+			"'Dear,'", "'Reference '", "'Refer\\u00EAncia '", "' / '", "'Show Proposal'", 
+			"'Proposta de Show'", "'A Shodrone tem o prazer de submeter \\u00E0 V/ aprecia\\u00E7\\u00E3o uma proposta para execu\\u00E7\\u00E3o de um show a\\u00E9reo com drones, conforme descri\\u00E7\\u00E3o abaixo.'", 
+			"'Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.'", 
+			"' is a VIP client and Shodrone is pleased to submit for your consideration a proposal for the execution of an aerial show with drones, as described below.'", 
+			"' \\u00E9 um cliente VIP e a Shodrone tem o prazer de submeter \\u00E0 vossa aprecia\\u00E7\\u00E3o uma proposta para a execu\\u00E7\\u00E3o de um espet\\u00E1culo a\\u00E9reo com drones, tal como descrito abaixo.'", 
+			"'Shodrone is a company that prioritizes safety, which is why it uses the most advanced AI technology to support the development of its shows, with all shows being previously and carefully tested/simulated with AI-Test technology before being presented to the client.'", 
+			"'A Shodrone \\u00E9 uma empresa que d\\u00E1 prioridade \\u00E0 seguran\\u00E7a, pelo que usa a mais avan\\u00E7ada tecnologia de IA para apoiar o desenvolvimento dos seus shows, sendo que todos os shows s\\u00E3o pr\\u00E9via e cuidadosamente testados/simulados com a tecnologia AI-Test antes de serem apresentados ao cliente.'", 
+			"'In the link '", "' there is a video with a simulation of the proposed show.'", 
+			"'No link '", "' encontra-se um v\\u00EDdeo com a simula\\u00E7\\u00E3o do show proposto.'", 
+			"'Com a aplica\\u00E7\\u00E3o do AI-Test, um exclusivo da Shodrone, temos a confian\\u00E7a de oferecer um seguro de responsabilidade civil no valor de '", 
+			"' para o show. Os dados detalhados do show s\\u00E3o apresentados em anexo.'", 
+			"'With the application of AI-Test, a Shodrone exclusive, we are confident in offering liability insurance in the amount of '", 
+			"' for the show. Detailed show data is presented in the attachment.'", 
+			"'CRM Manager'", "'Being certain that we will be the target of your preference.'", 
+			"'Estando certos que seremos alvo da V/ prefer\\u00EAncia.'", "'We subscribe at your disposal.'", 
+			"'Subscrevemo-nos ao dispor.'", "'Looking forward to hearing from you soon.'", 
+			"'Best regards,'", "'Melhores cumprimentos,'", "'Attachment - Show Details '", 
+			"'Anexo - Detalhes do Show '", "'Location - '", "'Local de realiza\\u00E7\\u00E3o - '", 
+			"'Date - '", "'Data - '", "'Time - '", "'Hora - '", "'Duration - '", 
+			"'Dura\\u00E7\\u00E3o - '", "' minutes'", "' minutos'", "'#List of used drones'", 
+			"'#Lista de drones utilizados'", "'#Lista de figuras'", "'#List of figures'", 
+			"'_'", "','", "'.'", "' '", "':'", null, null, null, null, "'\\n'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, "GREETINGS", "TITLE_PHRASE", "PREFEREMCE_PHRASE", 
-			"SUBSCRIBE_PHRASE", "LAST_PHRASE", "REGARDS", "LINE_1_FORMAT", "REAL_VIP_LINE1", 
-			"LINE_2_FORMAT", "REAL_LINE3", "REAL_CLOSING_FORMAT", "SHOW_DATE_FORMAT", 
-			"SHOW_DATE_REAL_LINE", "FIGURE_ITEM_REAL", "LINK", "DRONE_ITEM_FORMAT", 
-			"DRONE_ITEM_REAL", "GPS_LINE", "GPS_LINE_REAL", "ATTACHMENT_LINE", "ATTACHMENT_REAL", 
-			"REFERENCE_LINE", "REAL_REFERENCE", "DATE", "TIME_LINE", "TIME_REAL_LINE", 
-			"DURATION_LINE", "DURATION_MINUTES", "DURATION_REAL_LINE", "PERSON_NAME", 
-			"VAT_NUMBER", "WORD", "PAGE_BREAK", "NEWLINE", "ADDRESS_LINE"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, "GPS", "DATE", "TIME", "VAT_NUMBER", 
+			"NEWLINE", "INT", "DIGIT", "LINK", "DASH", "MESSAGE", "LETTER"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -145,7 +158,6 @@ public class ShowProposalRealDataParser extends Parser {
 		public SignatureContext signature() {
 			return getRuleContext(SignatureContext.class,0);
 		}
-		public TerminalNode PAGE_BREAK() { return getToken(ShowProposalRealDataParser.PAGE_BREAK, 0); }
 		public ShowDetailsContext showDetails() {
 			return getRuleContext(ShowDetailsContext.class,0);
 		}
@@ -175,44 +187,229 @@ public class ShowProposalRealDataParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(96);
+			setState(72);
 			header();
-			setState(97);
+			setState(73);
 			match(NEWLINE);
-			setState(98);
+			setState(74);
 			reference();
-			setState(99);
+			setState(75);
 			match(NEWLINE);
+			setState(76);
+			match(NEWLINE);
+			setState(77);
+			body();
+			setState(78);
+			match(NEWLINE);
+			setState(79);
+			match(NEWLINE);
+			setState(80);
+			closing();
+			setState(81);
+			match(NEWLINE);
+			setState(82);
+			match(NEWLINE);
+			setState(83);
+			signature();
+			setState(84);
+			match(NEWLINE);
+			setState(85);
+			match(NEWLINE);
+			setState(88);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__0:
+				{
+				setState(86);
+				match(T__0);
+				}
+				break;
+			case T__1:
+				{
+				{
+				setState(87);
+				match(T__1);
+				}
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			setState(90);
+			match(NEWLINE);
+			setState(91);
+			match(NEWLINE);
+			setState(92);
+			showDetails();
+			setState(93);
+			match(EOF);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ProposalNewTryContext extends ParserRuleContext {
+		public ProposalWithRepContext proposalWithRep() {
+			return getRuleContext(ProposalWithRepContext.class,0);
+		}
+		public ProposalWithoutRepContext proposalWithoutRep() {
+			return getRuleContext(ProposalWithoutRepContext.class,0);
+		}
+		public ProposalNewTryContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_proposalNewTry; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterProposalNewTry(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitProposalNewTry(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitProposalNewTry(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ProposalNewTryContext proposalNewTry() throws RecognitionException {
+		ProposalNewTryContext _localctx = new ProposalNewTryContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_proposalNewTry);
+		try {
+			setState(97);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(95);
+				proposalWithRep();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(96);
+				proposalWithoutRep();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ProposalWithRepContext extends ParserRuleContext {
+		public GreetingContext greeting() {
+			return getRuleContext(GreetingContext.class,0);
+		}
+		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
+		public CompanyInfoContext companyInfo() {
+			return getRuleContext(CompanyInfoContext.class,0);
+		}
+		public ProposalWithRepContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_proposalWithRep; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterProposalWithRep(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitProposalWithRep(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitProposalWithRep(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ProposalWithRepContext proposalWithRep() throws RecognitionException {
+		ProposalWithRepContext _localctx = new ProposalWithRepContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_proposalWithRep);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(99);
+			greeting();
 			setState(100);
 			match(NEWLINE);
 			setState(101);
-			body();
-			setState(102);
-			match(NEWLINE);
+			companyInfo();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ProposalWithoutRepContext extends ParserRuleContext {
+		public GreetingContext greeting() {
+			return getRuleContext(GreetingContext.class,0);
+		}
+		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
+		public CompanyInfoWithoutRepContext companyInfoWithoutRep() {
+			return getRuleContext(CompanyInfoWithoutRepContext.class,0);
+		}
+		public ProposalWithoutRepContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_proposalWithoutRep; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterProposalWithoutRep(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitProposalWithoutRep(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitProposalWithoutRep(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ProposalWithoutRepContext proposalWithoutRep() throws RecognitionException {
+		ProposalWithoutRepContext _localctx = new ProposalWithoutRepContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_proposalWithoutRep);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
 			setState(103);
-			match(NEWLINE);
+			greeting();
 			setState(104);
-			closing();
+			match(NEWLINE);
 			setState(105);
-			match(NEWLINE);
-			setState(106);
-			match(NEWLINE);
-			setState(107);
-			signature();
-			setState(108);
-			match(NEWLINE);
-			setState(109);
-			match(NEWLINE);
-			setState(110);
-			match(PAGE_BREAK);
-			setState(111);
-			match(NEWLINE);
-			setState(112);
-			match(NEWLINE);
-			setState(113);
-			showDetails();
-			setState(114);
-			match(EOF);
+			companyInfoWithoutRep();
 			}
 		}
 		catch (RecognitionException re) {
@@ -235,6 +432,9 @@ public class ShowProposalRealDataParser extends Parser {
 		public CompanyInfoContext companyInfo() {
 			return getRuleContext(CompanyInfoContext.class,0);
 		}
+		public CompanyInfoWithoutRepContext companyInfoWithoutRep() {
+			return getRuleContext(CompanyInfoWithoutRepContext.class,0);
+		}
 		public HeaderContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -256,16 +456,30 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final HeaderContext header() throws RecognitionException {
 		HeaderContext _localctx = new HeaderContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_header);
+		enterRule(_localctx, 8, RULE_header);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(116);
+			setState(107);
 			greeting();
-			setState(117);
+			setState(108);
 			match(NEWLINE);
-			setState(118);
-			companyInfo();
+			setState(111);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				{
+				setState(109);
+				companyInfo();
+				}
+				break;
+			case 2:
+				{
+				setState(110);
+				companyInfoWithoutRep();
+				}
+				break;
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -281,7 +495,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class GreetingContext extends ParserRuleContext {
-		public TerminalNode GREETINGS() { return getToken(ShowProposalRealDataParser.GREETINGS, 0); }
 		public GreetingContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -303,12 +516,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final GreetingContext greeting() throws RecognitionException {
 		GreetingContext _localctx = new GreetingContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_greeting);
+		enterRule(_localctx, 10, RULE_greeting);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(120);
-			match(GREETINGS);
+			setState(113);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 56L) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -324,21 +546,18 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class CompanyInfoContext extends ParserRuleContext {
-		public CompanyContext company() {
-			return getRuleContext(CompanyContext.class,0);
+		public List<DescriptionNameContext> descriptionName() {
+			return getRuleContexts(DescriptionNameContext.class);
+		}
+		public DescriptionNameContext descriptionName(int i) {
+			return getRuleContext(DescriptionNameContext.class,i);
 		}
 		public List<TerminalNode> NEWLINE() { return getTokens(ShowProposalRealDataParser.NEWLINE); }
 		public TerminalNode NEWLINE(int i) {
 			return getToken(ShowProposalRealDataParser.NEWLINE, i);
 		}
-		public AddressContext address() {
-			return getRuleContext(AddressContext.class,0);
-		}
 		public VatNumberContext vatNumber() {
 			return getRuleContext(VatNumberContext.class,0);
-		}
-		public PersonNameContext personName() {
-			return getRuleContext(PersonNameContext.class,0);
 		}
 		public CompanyInfoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -361,34 +580,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final CompanyInfoContext companyInfo() throws RecognitionException {
 		CompanyInfoContext _localctx = new CompanyInfoContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_companyInfo);
-		int _la;
+		enterRule(_localctx, 12, RULE_companyInfo);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(125);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==PERSON_NAME) {
-				{
-				setState(122);
-				personName();
-				setState(123);
-				match(NEWLINE);
-				}
-			}
-
-			setState(127);
-			company();
-			setState(128);
+			setState(115);
+			descriptionName();
+			setState(116);
 			match(NEWLINE);
-			setState(129);
-			address();
-			setState(130);
+			setState(117);
+			descriptionName();
+			setState(118);
 			match(NEWLINE);
-			setState(131);
+			setState(119);
 			vatNumber();
-			setState(132);
+			setState(120);
 			match(NEWLINE);
 			}
 		}
@@ -404,256 +610,61 @@ public class ShowProposalRealDataParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class PersonNameContext extends ParserRuleContext {
-		public RealPersonNameContext realPersonName() {
-			return getRuleContext(RealPersonNameContext.class,0);
+	public static class CompanyInfoWithoutRepContext extends ParserRuleContext {
+		public List<DescriptionNameContext> descriptionName() {
+			return getRuleContexts(DescriptionNameContext.class);
 		}
-		public PersonNameContext(ParserRuleContext parent, int invokingState) {
+		public DescriptionNameContext descriptionName(int i) {
+			return getRuleContext(DescriptionNameContext.class,i);
+		}
+		public List<TerminalNode> NEWLINE() { return getTokens(ShowProposalRealDataParser.NEWLINE); }
+		public TerminalNode NEWLINE(int i) {
+			return getToken(ShowProposalRealDataParser.NEWLINE, i);
+		}
+		public VatNumberContext vatNumber() {
+			return getRuleContext(VatNumberContext.class,0);
+		}
+		public CompanyInfoWithoutRepContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_personName; }
+		@Override public int getRuleIndex() { return RULE_companyInfoWithoutRep; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterPersonName(this);
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterCompanyInfoWithoutRep(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitPersonName(this);
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitCompanyInfoWithoutRep(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitPersonName(this);
+			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitCompanyInfoWithoutRep(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final PersonNameContext personName() throws RecognitionException {
-		PersonNameContext _localctx = new PersonNameContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_personName);
+	public final CompanyInfoWithoutRepContext companyInfoWithoutRep() throws RecognitionException {
+		CompanyInfoWithoutRepContext _localctx = new CompanyInfoWithoutRepContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_companyInfoWithoutRep);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(134);
-			realPersonName();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealPersonNameContext extends ParserRuleContext {
-		public TerminalNode PERSON_NAME() { return getToken(ShowProposalRealDataParser.PERSON_NAME, 0); }
-		public RealPersonNameContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_realPersonName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterRealPersonName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitRealPersonName(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitRealPersonName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RealPersonNameContext realPersonName() throws RecognitionException {
-		RealPersonNameContext _localctx = new RealPersonNameContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_realPersonName);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(136);
-			match(PERSON_NAME);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class CompanyContext extends ParserRuleContext {
-		public RealCompanyNameContext realCompanyName() {
-			return getRuleContext(RealCompanyNameContext.class,0);
-		}
-		public CompanyContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_company; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterCompany(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitCompany(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitCompany(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final CompanyContext company() throws RecognitionException {
-		CompanyContext _localctx = new CompanyContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_company);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(138);
-			realCompanyName();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealCompanyNameContext extends ParserRuleContext {
-		public TerminalNode WORD() { return getToken(ShowProposalRealDataParser.WORD, 0); }
-		public RealCompanyNameContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_realCompanyName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterRealCompanyName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitRealCompanyName(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitRealCompanyName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RealCompanyNameContext realCompanyName() throws RecognitionException {
-		RealCompanyNameContext _localctx = new RealCompanyNameContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_realCompanyName);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(140);
-			match(WORD);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class AddressContext extends ParserRuleContext {
-		public RealAddressContext realAddress() {
-			return getRuleContext(RealAddressContext.class,0);
-		}
-		public AddressContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_address; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterAddress(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitAddress(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitAddress(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AddressContext address() throws RecognitionException {
-		AddressContext _localctx = new AddressContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_address);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(142);
-			realAddress();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealAddressContext extends ParserRuleContext {
-		public TerminalNode ADDRESS_LINE() { return getToken(ShowProposalRealDataParser.ADDRESS_LINE, 0); }
-		public RealAddressContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_realAddress; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterRealAddress(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitRealAddress(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitRealAddress(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RealAddressContext realAddress() throws RecognitionException {
-		RealAddressContext _localctx = new RealAddressContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_realAddress);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(144);
-			match(ADDRESS_LINE);
+			setState(122);
+			descriptionName();
+			setState(123);
+			match(NEWLINE);
+			setState(124);
+			descriptionName();
+			setState(125);
+			match(NEWLINE);
+			setState(126);
+			descriptionName();
+			setState(127);
+			match(NEWLINE);
+			setState(128);
+			vatNumber();
+			setState(129);
+			match(NEWLINE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -669,9 +680,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class VatNumberContext extends ParserRuleContext {
-		public RealVatNumberContext realVatNumber() {
-			return getRuleContext(RealVatNumberContext.class,0);
-		}
+		public TerminalNode VAT_NUMBER() { return getToken(ShowProposalRealDataParser.VAT_NUMBER, 0); }
 		public VatNumberContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -693,54 +702,11 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final VatNumberContext vatNumber() throws RecognitionException {
 		VatNumberContext _localctx = new VatNumberContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_vatNumber);
+		enterRule(_localctx, 16, RULE_vatNumber);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(146);
-			realVatNumber();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealVatNumberContext extends ParserRuleContext {
-		public TerminalNode VAT_NUMBER() { return getToken(ShowProposalRealDataParser.VAT_NUMBER, 0); }
-		public RealVatNumberContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_realVatNumber; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterRealVatNumber(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitRealVatNumber(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitRealVatNumber(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RealVatNumberContext realVatNumber() throws RecognitionException {
-		RealVatNumberContext _localctx = new RealVatNumberContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_realVatNumber);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(148);
+			setState(131);
 			match(VAT_NUMBER);
 			}
 		}
@@ -785,15 +751,15 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final ReferenceContext reference() throws RecognitionException {
 		ReferenceContext _localctx = new ReferenceContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_reference);
+		enterRule(_localctx, 18, RULE_reference);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(150);
+			setState(133);
 			realReference();
-			setState(151);
+			setState(134);
 			match(NEWLINE);
-			setState(152);
+			setState(135);
 			titleProposal();
 			}
 		}
@@ -810,7 +776,8 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RealReferenceContext extends ParserRuleContext {
-		public TerminalNode REAL_REFERENCE() { return getToken(ShowProposalRealDataParser.REAL_REFERENCE, 0); }
+		public TerminalNode INT() { return getToken(ShowProposalRealDataParser.INT, 0); }
+		public TerminalNode DATE() { return getToken(ShowProposalRealDataParser.DATE, 0); }
 		public RealReferenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -832,12 +799,27 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final RealReferenceContext realReference() throws RecognitionException {
 		RealReferenceContext _localctx = new RealReferenceContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_realReference);
+		enterRule(_localctx, 20, RULE_realReference);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(154);
-			match(REAL_REFERENCE);
+			setState(137);
+			_la = _input.LA(1);
+			if ( !(_la==T__5 || _la==T__6) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(138);
+			match(INT);
+			setState(139);
+			match(T__7);
+			setState(140);
+			match(DATE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -853,7 +835,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class TitleProposalContext extends ParserRuleContext {
-		public TerminalNode TITLE_PHRASE() { return getToken(ShowProposalRealDataParser.TITLE_PHRASE, 0); }
 		public TitleProposalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -875,12 +856,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final TitleProposalContext titleProposal() throws RecognitionException {
 		TitleProposalContext _localctx = new TitleProposalContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_titleProposal);
+		enterRule(_localctx, 22, RULE_titleProposal);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(156);
-			match(TITLE_PHRASE);
+			setState(142);
+			_la = _input.LA(1);
+			if ( !(_la==T__8 || _la==T__9) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -930,19 +920,19 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final BodyContext body() throws RecognitionException {
 		BodyContext _localctx = new BodyContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_body);
+		enterRule(_localctx, 24, RULE_body);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(158);
+			setState(144);
 			line_1();
-			setState(159);
+			setState(145);
 			match(NEWLINE);
-			setState(160);
+			setState(146);
 			line_2();
-			setState(161);
+			setState(147);
 			match(NEWLINE);
-			setState(162);
+			setState(148);
 			line_3();
 			}
 		}
@@ -986,22 +976,31 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Line_1Context line_1() throws RecognitionException {
 		Line_1Context _localctx = new Line_1Context(_ctx, getState());
-		enterRule(_localctx, 32, RULE_line_1);
+		enterRule(_localctx, 26, RULE_line_1);
 		try {
-			setState(166);
+			setState(152);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case LINE_1_FORMAT:
+			case T__10:
+			case T__11:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(164);
+				setState(150);
 				normal_line1();
 				}
 				break;
-			case REAL_VIP_LINE1:
+			case T__48:
+			case T__49:
+			case T__50:
+			case T__51:
+			case T__52:
+			case INT:
+			case DIGIT:
+			case DASH:
+			case MESSAGE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(165);
+				setState(151);
 				vip_line1();
 				}
 				break;
@@ -1022,7 +1021,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class Normal_line1Context extends ParserRuleContext {
-		public TerminalNode LINE_1_FORMAT() { return getToken(ShowProposalRealDataParser.LINE_1_FORMAT, 0); }
 		public Normal_line1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1044,12 +1042,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Normal_line1Context normal_line1() throws RecognitionException {
 		Normal_line1Context _localctx = new Normal_line1Context(_ctx, getState());
-		enterRule(_localctx, 34, RULE_normal_line1);
+		enterRule(_localctx, 28, RULE_normal_line1);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(168);
-			match(LINE_1_FORMAT);
+			setState(154);
+			_la = _input.LA(1);
+			if ( !(_la==T__10 || _la==T__11) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1065,8 +1072,8 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class Vip_line1Context extends ParserRuleContext {
-		public Real_vip_line1Context real_vip_line1() {
-			return getRuleContext(Real_vip_line1Context.class,0);
+		public DescriptionNameContext descriptionName() {
+			return getRuleContext(DescriptionNameContext.class,0);
 		}
 		public Vip_line1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1089,55 +1096,29 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Vip_line1Context vip_line1() throws RecognitionException {
 		Vip_line1Context _localctx = new Vip_line1Context(_ctx, getState());
-		enterRule(_localctx, 36, RULE_vip_line1);
+		enterRule(_localctx, 30, RULE_vip_line1);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(170);
-			real_vip_line1();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Real_vip_line1Context extends ParserRuleContext {
-		public TerminalNode REAL_VIP_LINE1() { return getToken(ShowProposalRealDataParser.REAL_VIP_LINE1, 0); }
-		public Real_vip_line1Context(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_real_vip_line1; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterReal_vip_line1(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitReal_vip_line1(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitReal_vip_line1(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Real_vip_line1Context real_vip_line1() throws RecognitionException {
-		Real_vip_line1Context _localctx = new Real_vip_line1Context(_ctx, getState());
-		enterRule(_localctx, 38, RULE_real_vip_line1);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(172);
-			match(REAL_VIP_LINE1);
+			setState(162);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(156);
+				descriptionName();
+				setState(157);
+				match(T__12);
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(159);
+				descriptionName();
+				setState(160);
+				match(T__13);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1153,7 +1134,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class Line_2Context extends ParserRuleContext {
-		public TerminalNode LINE_2_FORMAT() { return getToken(ShowProposalRealDataParser.LINE_2_FORMAT, 0); }
 		public Line_2Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1175,12 +1155,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Line_2Context line_2() throws RecognitionException {
 		Line_2Context _localctx = new Line_2Context(_ctx, getState());
-		enterRule(_localctx, 40, RULE_line_2);
+		enterRule(_localctx, 32, RULE_line_2);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(174);
-			match(LINE_2_FORMAT);
+			setState(164);
+			_la = _input.LA(1);
+			if ( !(_la==T__14 || _la==T__15) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1196,9 +1185,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class Line_3Context extends ParserRuleContext {
-		public Real_line3Context real_line3() {
-			return getRuleContext(Real_line3Context.class,0);
-		}
+		public TerminalNode LINK() { return getToken(ShowProposalRealDataParser.LINK, 0); }
 		public Line_3Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1220,55 +1207,35 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Line_3Context line_3() throws RecognitionException {
 		Line_3Context _localctx = new Line_3Context(_ctx, getState());
-		enterRule(_localctx, 42, RULE_line_3);
+		enterRule(_localctx, 34, RULE_line_3);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(176);
-			real_line3();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Real_line3Context extends ParserRuleContext {
-		public TerminalNode REAL_LINE3() { return getToken(ShowProposalRealDataParser.REAL_LINE3, 0); }
-		public Real_line3Context(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_real_line3; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterReal_line3(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitReal_line3(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitReal_line3(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Real_line3Context real_line3() throws RecognitionException {
-		Real_line3Context _localctx = new Real_line3Context(_ctx, getState());
-		enterRule(_localctx, 44, RULE_real_line3);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(178);
-			match(REAL_LINE3);
+			setState(172);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__16:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(166);
+				match(T__16);
+				setState(167);
+				match(LINK);
+				setState(168);
+				match(T__17);
+				}
+				break;
+			case T__18:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(169);
+				match(T__18);
+				setState(170);
+				match(LINK);
+				setState(171);
+				match(T__19);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1284,9 +1251,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ClosingContext extends ParserRuleContext {
-		public Real_closingContext real_closing() {
-			return getRuleContext(Real_closingContext.class,0);
-		}
+		public TerminalNode INT() { return getToken(ShowProposalRealDataParser.INT, 0); }
 		public ClosingContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1308,55 +1273,35 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final ClosingContext closing() throws RecognitionException {
 		ClosingContext _localctx = new ClosingContext(_ctx, getState());
-		enterRule(_localctx, 46, RULE_closing);
+		enterRule(_localctx, 36, RULE_closing);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
 			setState(180);
-			real_closing();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Real_closingContext extends ParserRuleContext {
-		public TerminalNode REAL_CLOSING_FORMAT() { return getToken(ShowProposalRealDataParser.REAL_CLOSING_FORMAT, 0); }
-		public Real_closingContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_real_closing; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterReal_closing(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitReal_closing(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitReal_closing(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Real_closingContext real_closing() throws RecognitionException {
-		Real_closingContext _localctx = new Real_closingContext(_ctx, getState());
-		enterRule(_localctx, 48, RULE_real_closing);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(182);
-			match(REAL_CLOSING_FORMAT);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__20:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(174);
+				match(T__20);
+				setState(175);
+				match(INT);
+				setState(176);
+				match(T__21);
+				}
+				break;
+			case T__22:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(177);
+				match(T__22);
+				setState(178);
+				match(INT);
+				setState(179);
+				match(T__23);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1382,8 +1327,8 @@ public class ShowProposalRealDataParser extends Parser {
 		public RegardsContext regards() {
 			return getRuleContext(RegardsContext.class,0);
 		}
-		public CrmManagerNameContext crmManagerName() {
-			return getRuleContext(CrmManagerNameContext.class,0);
+		public DescriptionNameContext descriptionName() {
+			return getRuleContext(DescriptionNameContext.class,0);
 		}
 		public SignatureContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1406,114 +1351,26 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final SignatureContext signature() throws RecognitionException {
 		SignatureContext _localctx = new SignatureContext(_ctx, getState());
-		enterRule(_localctx, 50, RULE_signature);
+		enterRule(_localctx, 38, RULE_signature);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(184);
+			setState(182);
 			signature_option();
+			setState(183);
+			match(NEWLINE);
+			setState(184);
+			regards();
 			setState(185);
 			match(NEWLINE);
 			setState(186);
-			regards();
-			setState(187);
 			match(NEWLINE);
+			setState(187);
+			descriptionName();
 			setState(188);
 			match(NEWLINE);
 			setState(189);
-			crmManagerName();
-			setState(190);
-			match(NEWLINE);
-			setState(191);
-			match(T__0);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class CrmManagerNameContext extends ParserRuleContext {
-		public RealManagerNameContext realManagerName() {
-			return getRuleContext(RealManagerNameContext.class,0);
-		}
-		public CrmManagerNameContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_crmManagerName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterCrmManagerName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitCrmManagerName(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitCrmManagerName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final CrmManagerNameContext crmManagerName() throws RecognitionException {
-		CrmManagerNameContext _localctx = new CrmManagerNameContext(_ctx, getState());
-		enterRule(_localctx, 52, RULE_crmManagerName);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(193);
-			realManagerName();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class RealManagerNameContext extends ParserRuleContext {
-		public TerminalNode PERSON_NAME() { return getToken(ShowProposalRealDataParser.PERSON_NAME, 0); }
-		public RealManagerNameContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_realManagerName; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterRealManagerName(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitRealManagerName(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitRealManagerName(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final RealManagerNameContext realManagerName() throws RecognitionException {
-		RealManagerNameContext _localctx = new RealManagerNameContext(_ctx, getState());
-		enterRule(_localctx, 54, RULE_realManagerName);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(195);
-			match(PERSON_NAME);
+			match(T__24);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1563,34 +1420,35 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final Signature_optionContext signature_option() throws RecognitionException {
 		Signature_optionContext _localctx = new Signature_optionContext(_ctx, getState());
-		enterRule(_localctx, 56, RULE_signature_option);
+		enterRule(_localctx, 40, RULE_signature_option);
 		try {
-			setState(206);
+			setState(200);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case PREFEREMCE_PHRASE:
+			case T__25:
+			case T__26:
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				setState(197);
+				setState(191);
 				preferencePhrase();
-				setState(198);
+				setState(192);
 				match(NEWLINE);
-				setState(199);
+				setState(193);
 				match(NEWLINE);
-				setState(200);
+				setState(194);
 				subscribePhrase();
-				setState(201);
+				setState(195);
 				match(NEWLINE);
 				}
 				}
 				break;
-			case LAST_PHRASE:
+			case T__29:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(203);
+				setState(197);
 				lastPhrase();
-				setState(204);
+				setState(198);
 				match(NEWLINE);
 				}
 				break;
@@ -1611,7 +1469,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class PreferencePhraseContext extends ParserRuleContext {
-		public TerminalNode PREFEREMCE_PHRASE() { return getToken(ShowProposalRealDataParser.PREFEREMCE_PHRASE, 0); }
 		public PreferencePhraseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1633,12 +1490,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final PreferencePhraseContext preferencePhrase() throws RecognitionException {
 		PreferencePhraseContext _localctx = new PreferencePhraseContext(_ctx, getState());
-		enterRule(_localctx, 58, RULE_preferencePhrase);
+		enterRule(_localctx, 42, RULE_preferencePhrase);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(208);
-			match(PREFEREMCE_PHRASE);
+			setState(202);
+			_la = _input.LA(1);
+			if ( !(_la==T__25 || _la==T__26) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1654,7 +1520,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class SubscribePhraseContext extends ParserRuleContext {
-		public TerminalNode SUBSCRIBE_PHRASE() { return getToken(ShowProposalRealDataParser.SUBSCRIBE_PHRASE, 0); }
 		public SubscribePhraseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1676,12 +1541,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final SubscribePhraseContext subscribePhrase() throws RecognitionException {
 		SubscribePhraseContext _localctx = new SubscribePhraseContext(_ctx, getState());
-		enterRule(_localctx, 60, RULE_subscribePhrase);
+		enterRule(_localctx, 44, RULE_subscribePhrase);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(210);
-			match(SUBSCRIBE_PHRASE);
+			setState(204);
+			_la = _input.LA(1);
+			if ( !(_la==T__27 || _la==T__28) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1697,7 +1571,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LastPhraseContext extends ParserRuleContext {
-		public TerminalNode LAST_PHRASE() { return getToken(ShowProposalRealDataParser.LAST_PHRASE, 0); }
 		public LastPhraseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1719,12 +1592,12 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final LastPhraseContext lastPhrase() throws RecognitionException {
 		LastPhraseContext _localctx = new LastPhraseContext(_ctx, getState());
-		enterRule(_localctx, 62, RULE_lastPhrase);
+		enterRule(_localctx, 46, RULE_lastPhrase);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(212);
-			match(LAST_PHRASE);
+			setState(206);
+			match(T__29);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1740,7 +1613,6 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class RegardsContext extends ParserRuleContext {
-		public TerminalNode REGARDS() { return getToken(ShowProposalRealDataParser.REGARDS, 0); }
 		public RegardsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1762,12 +1634,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final RegardsContext regards() throws RecognitionException {
 		RegardsContext _localctx = new RegardsContext(_ctx, getState());
-		enterRule(_localctx, 64, RULE_regards);
+		enterRule(_localctx, 48, RULE_regards);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(214);
-			match(REGARDS);
+			setState(208);
+			_la = _input.LA(1);
+			if ( !(_la==T__30 || _la==T__31) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1829,41 +1710,41 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final ShowDetailsContext showDetails() throws RecognitionException {
 		ShowDetailsContext _localctx = new ShowDetailsContext(_ctx, getState());
-		enterRule(_localctx, 66, RULE_showDetails);
+		enterRule(_localctx, 50, RULE_showDetails);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(216);
+			setState(210);
 			attachment();
-			setState(217);
+			setState(211);
 			match(NEWLINE);
+			setState(212);
+			match(NEWLINE);
+			setState(213);
+			location();
+			setState(214);
+			match(NEWLINE);
+			setState(215);
+			date();
+			setState(216);
+			match(NEWLINE);
+			setState(217);
+			time();
 			setState(218);
 			match(NEWLINE);
 			setState(219);
-			location();
+			duration();
 			setState(220);
 			match(NEWLINE);
 			setState(221);
-			date();
-			setState(222);
 			match(NEWLINE);
+			setState(222);
+			droneList();
 			setState(223);
-			time();
+			match(NEWLINE);
 			setState(224);
 			match(NEWLINE);
 			setState(225);
-			duration();
-			setState(226);
-			match(NEWLINE);
-			setState(227);
-			match(NEWLINE);
-			setState(228);
-			droneList();
-			setState(229);
-			match(NEWLINE);
-			setState(230);
-			match(NEWLINE);
-			setState(231);
 			figureList();
 			}
 		}
@@ -1880,9 +1761,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AttachmentContext extends ParserRuleContext {
-		public Real_attachmentContext real_attachment() {
-			return getRuleContext(Real_attachmentContext.class,0);
-		}
+		public TerminalNode INT() { return getToken(ShowProposalRealDataParser.INT, 0); }
 		public AttachmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1904,55 +1783,23 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final AttachmentContext attachment() throws RecognitionException {
 		AttachmentContext _localctx = new AttachmentContext(_ctx, getState());
-		enterRule(_localctx, 68, RULE_attachment);
+		enterRule(_localctx, 52, RULE_attachment);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(233);
-			real_attachment();
+			setState(227);
+			_la = _input.LA(1);
+			if ( !(_la==T__32 || _la==T__33) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Real_attachmentContext extends ParserRuleContext {
-		public TerminalNode ATTACHMENT_REAL() { return getToken(ShowProposalRealDataParser.ATTACHMENT_REAL, 0); }
-		public Real_attachmentContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_real_attachment; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterReal_attachment(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitReal_attachment(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitReal_attachment(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Real_attachmentContext real_attachment() throws RecognitionException {
-		Real_attachmentContext _localctx = new Real_attachmentContext(_ctx, getState());
-		enterRule(_localctx, 70, RULE_real_attachment);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(235);
-			match(ATTACHMENT_REAL);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(228);
+			match(INT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1968,9 +1815,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class LocationContext extends ParserRuleContext {
-		public Location_realContext location_real() {
-			return getRuleContext(Location_realContext.class,0);
-		}
+		public TerminalNode GPS() { return getToken(ShowProposalRealDataParser.GPS, 0); }
 		public LocationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1992,55 +1837,23 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final LocationContext location() throws RecognitionException {
 		LocationContext _localctx = new LocationContext(_ctx, getState());
-		enterRule(_localctx, 72, RULE_location);
+		enterRule(_localctx, 54, RULE_location);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(237);
-			location_real();
+			setState(230);
+			_la = _input.LA(1);
+			if ( !(_la==T__34 || _la==T__35) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Location_realContext extends ParserRuleContext {
-		public TerminalNode GPS_LINE_REAL() { return getToken(ShowProposalRealDataParser.GPS_LINE_REAL, 0); }
-		public Location_realContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_location_real; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterLocation_real(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitLocation_real(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitLocation_real(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Location_realContext location_real() throws RecognitionException {
-		Location_realContext _localctx = new Location_realContext(_ctx, getState());
-		enterRule(_localctx, 74, RULE_location_real);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(239);
-			match(GPS_LINE_REAL);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(231);
+			match(GPS);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2056,9 +1869,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class DateContext extends ParserRuleContext {
-		public Date_realContext date_real() {
-			return getRuleContext(Date_realContext.class,0);
-		}
+		public TerminalNode DATE() { return getToken(ShowProposalRealDataParser.DATE, 0); }
 		public DateContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2080,55 +1891,23 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final DateContext date() throws RecognitionException {
 		DateContext _localctx = new DateContext(_ctx, getState());
-		enterRule(_localctx, 76, RULE_date);
+		enterRule(_localctx, 56, RULE_date);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(241);
-			date_real();
+			setState(233);
+			_la = _input.LA(1);
+			if ( !(_la==T__36 || _la==T__37) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Date_realContext extends ParserRuleContext {
-		public TerminalNode SHOW_DATE_REAL_LINE() { return getToken(ShowProposalRealDataParser.SHOW_DATE_REAL_LINE, 0); }
-		public Date_realContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_date_real; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterDate_real(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitDate_real(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitDate_real(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Date_realContext date_real() throws RecognitionException {
-		Date_realContext _localctx = new Date_realContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_date_real);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(243);
-			match(SHOW_DATE_REAL_LINE);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(234);
+			match(DATE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2144,9 +1923,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class TimeContext extends ParserRuleContext {
-		public Time_realContext time_real() {
-			return getRuleContext(Time_realContext.class,0);
-		}
+		public TerminalNode TIME() { return getToken(ShowProposalRealDataParser.TIME, 0); }
 		public TimeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2168,55 +1945,23 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final TimeContext time() throws RecognitionException {
 		TimeContext _localctx = new TimeContext(_ctx, getState());
-		enterRule(_localctx, 80, RULE_time);
+		enterRule(_localctx, 58, RULE_time);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(245);
-			time_real();
+			setState(236);
+			_la = _input.LA(1);
+			if ( !(_la==T__38 || _la==T__39) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Time_realContext extends ParserRuleContext {
-		public TerminalNode TIME_REAL_LINE() { return getToken(ShowProposalRealDataParser.TIME_REAL_LINE, 0); }
-		public Time_realContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_time_real; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterTime_real(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitTime_real(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitTime_real(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Time_realContext time_real() throws RecognitionException {
-		Time_realContext _localctx = new Time_realContext(_ctx, getState());
-		enterRule(_localctx, 82, RULE_time_real);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(247);
-			match(TIME_REAL_LINE);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(237);
+			match(TIME);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2232,9 +1977,7 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class DurationContext extends ParserRuleContext {
-		public Duration_realContext duration_real() {
-			return getRuleContext(Duration_realContext.class,0);
-		}
+		public TerminalNode INT() { return getToken(ShowProposalRealDataParser.INT, 0); }
 		public DurationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2256,55 +1999,33 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final DurationContext duration() throws RecognitionException {
 		DurationContext _localctx = new DurationContext(_ctx, getState());
-		enterRule(_localctx, 84, RULE_duration);
+		enterRule(_localctx, 60, RULE_duration);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(249);
-			duration_real();
+			setState(239);
+			_la = _input.LA(1);
+			if ( !(_la==T__40 || _la==T__41) ) {
+			_errHandler.recoverInline(this);
 			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Duration_realContext extends ParserRuleContext {
-		public TerminalNode DURATION_REAL_LINE() { return getToken(ShowProposalRealDataParser.DURATION_REAL_LINE, 0); }
-		public Duration_realContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_duration_real; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterDuration_real(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitDuration_real(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitDuration_real(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Duration_realContext duration_real() throws RecognitionException {
-		Duration_realContext _localctx = new Duration_realContext(_ctx, getState());
-		enterRule(_localctx, 86, RULE_duration_real);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(251);
-			match(DURATION_REAL_LINE);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(240);
+			match(INT);
+			setState(241);
+			_la = _input.LA(1);
+			if ( !(_la==T__42 || _la==T__43) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -2321,8 +2042,11 @@ public class ShowProposalRealDataParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class DroneListContext extends ParserRuleContext {
 		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
-		public DroneListRealContext droneListReal() {
-			return getRuleContext(DroneListRealContext.class,0);
+		public List<DroneListRealContext> droneListReal() {
+			return getRuleContexts(DroneListRealContext.class);
+		}
+		public DroneListRealContext droneListReal(int i) {
+			return getRuleContext(DroneListRealContext.class,i);
 		}
 		public DroneListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2345,14 +2069,14 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final DroneListContext droneList() throws RecognitionException {
 		DroneListContext _localctx = new DroneListContext(_ctx, getState());
-		enterRule(_localctx, 88, RULE_droneList);
+		enterRule(_localctx, 62, RULE_droneList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(253);
+			setState(243);
 			_la = _input.LA(1);
-			if ( !(_la==T__1 || _la==T__2) ) {
+			if ( !(_la==T__44 || _la==T__45) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -2360,10 +2084,22 @@ public class ShowProposalRealDataParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(254);
+			setState(244);
 			match(NEWLINE);
-			setState(255);
-			droneListReal();
+			setState(246); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(245);
+				droneListReal();
+				}
+				}
+				setState(248); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & -2864852312961056768L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -2379,14 +2115,10 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class DroneListRealContext extends ParserRuleContext {
-		public List<TerminalNode> DRONE_ITEM_REAL() { return getTokens(ShowProposalRealDataParser.DRONE_ITEM_REAL); }
-		public TerminalNode DRONE_ITEM_REAL(int i) {
-			return getToken(ShowProposalRealDataParser.DRONE_ITEM_REAL, i);
+		public DescriptionNameContext descriptionName() {
+			return getRuleContext(DescriptionNameContext.class,0);
 		}
-		public List<TerminalNode> NEWLINE() { return getTokens(ShowProposalRealDataParser.NEWLINE); }
-		public TerminalNode NEWLINE(int i) {
-			return getToken(ShowProposalRealDataParser.NEWLINE, i);
-		}
+		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
 		public DroneListRealContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2408,30 +2140,21 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final DroneListRealContext droneListReal() throws RecognitionException {
 		DroneListRealContext _localctx = new DroneListRealContext(_ctx, getState());
-		enterRule(_localctx, 90, RULE_droneListReal);
+		enterRule(_localctx, 64, RULE_droneListReal);
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(257);
-			match(DRONE_ITEM_REAL);
-			setState(262);
+			setState(250);
+			descriptionName();
+			setState(252);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(258);
-					match(NEWLINE);
-					setState(259);
-					match(DRONE_ITEM_REAL);
-					}
-					} 
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			case 1:
+				{
+				setState(251);
+				match(NEWLINE);
 				}
-				setState(264);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+				break;
 			}
 			}
 		}
@@ -2449,8 +2172,11 @@ public class ShowProposalRealDataParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class FigureListContext extends ParserRuleContext {
 		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
-		public FigureListRealContext figureListReal() {
-			return getRuleContext(FigureListRealContext.class,0);
+		public List<FigureListRealContext> figureListReal() {
+			return getRuleContexts(FigureListRealContext.class);
+		}
+		public FigureListRealContext figureListReal(int i) {
+			return getRuleContext(FigureListRealContext.class,i);
 		}
 		public FigureListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2473,14 +2199,14 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final FigureListContext figureList() throws RecognitionException {
 		FigureListContext _localctx = new FigureListContext(_ctx, getState());
-		enterRule(_localctx, 92, RULE_figureList);
+		enterRule(_localctx, 66, RULE_figureList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(265);
+			setState(254);
 			_la = _input.LA(1);
-			if ( !(_la==T__3 || _la==T__4) ) {
+			if ( !(_la==T__46 || _la==T__47) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -2488,10 +2214,22 @@ public class ShowProposalRealDataParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(266);
+			setState(255);
 			match(NEWLINE);
-			setState(267);
-			figureListReal();
+			setState(257); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(256);
+				figureListReal();
+				}
+				}
+				setState(259); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & -2864852312961056768L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -2507,14 +2245,10 @@ public class ShowProposalRealDataParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class FigureListRealContext extends ParserRuleContext {
-		public List<TerminalNode> FIGURE_ITEM_REAL() { return getTokens(ShowProposalRealDataParser.FIGURE_ITEM_REAL); }
-		public TerminalNode FIGURE_ITEM_REAL(int i) {
-			return getToken(ShowProposalRealDataParser.FIGURE_ITEM_REAL, i);
+		public DescriptionNameContext descriptionName() {
+			return getRuleContext(DescriptionNameContext.class,0);
 		}
-		public List<TerminalNode> NEWLINE() { return getTokens(ShowProposalRealDataParser.NEWLINE); }
-		public TerminalNode NEWLINE(int i) {
-			return getToken(ShowProposalRealDataParser.NEWLINE, i);
-		}
+		public TerminalNode NEWLINE() { return getToken(ShowProposalRealDataParser.NEWLINE, 0); }
 		public FigureListRealContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2536,29 +2270,109 @@ public class ShowProposalRealDataParser extends Parser {
 
 	public final FigureListRealContext figureListReal() throws RecognitionException {
 		FigureListRealContext _localctx = new FigureListRealContext(_ctx, getState());
-		enterRule(_localctx, 94, RULE_figureListReal);
+		enterRule(_localctx, 68, RULE_figureListReal);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(269);
-			match(FIGURE_ITEM_REAL);
-			setState(274);
+			setState(261);
+			descriptionName();
+			setState(263);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==NEWLINE) {
+			if (_la==NEWLINE) {
 				{
-				{
-				setState(270);
+				setState(262);
 				match(NEWLINE);
-				setState(271);
-				match(FIGURE_ITEM_REAL);
 				}
-				}
-				setState(276);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
 			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class DescriptionNameContext extends ParserRuleContext {
+		public List<TerminalNode> MESSAGE() { return getTokens(ShowProposalRealDataParser.MESSAGE); }
+		public TerminalNode MESSAGE(int i) {
+			return getToken(ShowProposalRealDataParser.MESSAGE, i);
+		}
+		public List<TerminalNode> INT() { return getTokens(ShowProposalRealDataParser.INT); }
+		public TerminalNode INT(int i) {
+			return getToken(ShowProposalRealDataParser.INT, i);
+		}
+		public List<TerminalNode> DIGIT() { return getTokens(ShowProposalRealDataParser.DIGIT); }
+		public TerminalNode DIGIT(int i) {
+			return getToken(ShowProposalRealDataParser.DIGIT, i);
+		}
+		public List<TerminalNode> DASH() { return getTokens(ShowProposalRealDataParser.DASH); }
+		public TerminalNode DASH(int i) {
+			return getToken(ShowProposalRealDataParser.DASH, i);
+		}
+		public DescriptionNameContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_descriptionName; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).enterDescriptionName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ShowProposalRealDataListener ) ((ShowProposalRealDataListener)listener).exitDescriptionName(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ShowProposalRealDataVisitor ) return ((ShowProposalRealDataVisitor<? extends T>)visitor).visitDescriptionName(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final DescriptionNameContext descriptionName() throws RecognitionException {
+		DescriptionNameContext _localctx = new DescriptionNameContext(_ctx, getState());
+		enterRule(_localctx, 70, RULE_descriptionName);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(266); 
+			_errHandler.sync(this);
+			_alt = 1;
+			do {
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(265);
+					_la = _input.LA(1);
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & -2864852312961056768L) != 0)) ) {
+					_errHandler.recoverInline(this);
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
+						consume();
+					}
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				setState(268); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
 		catch (RecognitionException re) {
@@ -2573,7 +2387,7 @@ public class ShowProposalRealDataParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001(\u0116\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001@\u010f\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -2584,139 +2398,149 @@ public class ShowProposalRealDataParser extends Parser {
 		"\u0002\u0019\u0007\u0019\u0002\u001a\u0007\u001a\u0002\u001b\u0007\u001b"+
 		"\u0002\u001c\u0007\u001c\u0002\u001d\u0007\u001d\u0002\u001e\u0007\u001e"+
 		"\u0002\u001f\u0007\u001f\u0002 \u0007 \u0002!\u0007!\u0002\"\u0007\"\u0002"+
-		"#\u0007#\u0002$\u0007$\u0002%\u0007%\u0002&\u0007&\u0002\'\u0007\'\u0002"+
-		"(\u0007(\u0002)\u0007)\u0002*\u0007*\u0002+\u0007+\u0002,\u0007,\u0002"+
-		"-\u0007-\u0002.\u0007.\u0002/\u0007/\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0003\u0003~\b\u0003\u0001\u0003\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004"+
-		"\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0007"+
-		"\u0001\u0007\u0001\b\u0001\b\u0001\t\u0001\t\u0001\n\u0001\n\u0001\u000b"+
-		"\u0001\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\r\u0001\r\u0001\u000e"+
-		"\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f"+
-		"\u0001\u000f\u0001\u0010\u0001\u0010\u0003\u0010\u00a7\b\u0010\u0001\u0011"+
-		"\u0001\u0011\u0001\u0012\u0001\u0012\u0001\u0013\u0001\u0013\u0001\u0014"+
-		"\u0001\u0014\u0001\u0015\u0001\u0015\u0001\u0016\u0001\u0016\u0001\u0017"+
-		"\u0001\u0017\u0001\u0018\u0001\u0018\u0001\u0019\u0001\u0019\u0001\u0019"+
-		"\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019"+
-		"\u0001\u001a\u0001\u001a\u0001\u001b\u0001\u001b\u0001\u001c\u0001\u001c"+
-		"\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c\u0001\u001c"+
-		"\u0001\u001c\u0003\u001c\u00cf\b\u001c\u0001\u001d\u0001\u001d\u0001\u001e"+
-		"\u0001\u001e\u0001\u001f\u0001\u001f\u0001 \u0001 \u0001!\u0001!\u0001"+
-		"!\u0001!\u0001!\u0001!\u0001!\u0001!\u0001!\u0001!\u0001!\u0001!\u0001"+
-		"!\u0001!\u0001!\u0001!\u0001!\u0001\"\u0001\"\u0001#\u0001#\u0001$\u0001"+
-		"$\u0001%\u0001%\u0001&\u0001&\u0001\'\u0001\'\u0001(\u0001(\u0001)\u0001"+
-		")\u0001*\u0001*\u0001+\u0001+\u0001,\u0001,\u0001,\u0001,\u0001-\u0001"+
-		"-\u0001-\u0005-\u0105\b-\n-\f-\u0108\t-\u0001.\u0001.\u0001.\u0001.\u0001"+
-		"/\u0001/\u0001/\u0005/\u0111\b/\n/\f/\u0114\t/\u0001/\u0000\u00000\u0000"+
-		"\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c"+
-		"\u001e \"$&(*,.02468:<>@BDFHJLNPRTVXZ\\^\u0000\u0002\u0001\u0000\u0002"+
-		"\u0003\u0001\u0000\u0004\u0005\u00ea\u0000`\u0001\u0000\u0000\u0000\u0002"+
-		"t\u0001\u0000\u0000\u0000\u0004x\u0001\u0000\u0000\u0000\u0006}\u0001"+
-		"\u0000\u0000\u0000\b\u0086\u0001\u0000\u0000\u0000\n\u0088\u0001\u0000"+
-		"\u0000\u0000\f\u008a\u0001\u0000\u0000\u0000\u000e\u008c\u0001\u0000\u0000"+
-		"\u0000\u0010\u008e\u0001\u0000\u0000\u0000\u0012\u0090\u0001\u0000\u0000"+
-		"\u0000\u0014\u0092\u0001\u0000\u0000\u0000\u0016\u0094\u0001\u0000\u0000"+
-		"\u0000\u0018\u0096\u0001\u0000\u0000\u0000\u001a\u009a\u0001\u0000\u0000"+
-		"\u0000\u001c\u009c\u0001\u0000\u0000\u0000\u001e\u009e\u0001\u0000\u0000"+
-		"\u0000 \u00a6\u0001\u0000\u0000\u0000\"\u00a8\u0001\u0000\u0000\u0000"+
-		"$\u00aa\u0001\u0000\u0000\u0000&\u00ac\u0001\u0000\u0000\u0000(\u00ae"+
-		"\u0001\u0000\u0000\u0000*\u00b0\u0001\u0000\u0000\u0000,\u00b2\u0001\u0000"+
-		"\u0000\u0000.\u00b4\u0001\u0000\u0000\u00000\u00b6\u0001\u0000\u0000\u0000"+
-		"2\u00b8\u0001\u0000\u0000\u00004\u00c1\u0001\u0000\u0000\u00006\u00c3"+
-		"\u0001\u0000\u0000\u00008\u00ce\u0001\u0000\u0000\u0000:\u00d0\u0001\u0000"+
-		"\u0000\u0000<\u00d2\u0001\u0000\u0000\u0000>\u00d4\u0001\u0000\u0000\u0000"+
-		"@\u00d6\u0001\u0000\u0000\u0000B\u00d8\u0001\u0000\u0000\u0000D\u00e9"+
-		"\u0001\u0000\u0000\u0000F\u00eb\u0001\u0000\u0000\u0000H\u00ed\u0001\u0000"+
-		"\u0000\u0000J\u00ef\u0001\u0000\u0000\u0000L\u00f1\u0001\u0000\u0000\u0000"+
-		"N\u00f3\u0001\u0000\u0000\u0000P\u00f5\u0001\u0000\u0000\u0000R\u00f7"+
-		"\u0001\u0000\u0000\u0000T\u00f9\u0001\u0000\u0000\u0000V\u00fb\u0001\u0000"+
-		"\u0000\u0000X\u00fd\u0001\u0000\u0000\u0000Z\u0101\u0001\u0000\u0000\u0000"+
-		"\\\u0109\u0001\u0000\u0000\u0000^\u010d\u0001\u0000\u0000\u0000`a\u0003"+
-		"\u0002\u0001\u0000ab\u0005\'\u0000\u0000bc\u0003\u0018\f\u0000cd\u0005"+
-		"\'\u0000\u0000de\u0005\'\u0000\u0000ef\u0003\u001e\u000f\u0000fg\u0005"+
-		"\'\u0000\u0000gh\u0005\'\u0000\u0000hi\u0003.\u0017\u0000ij\u0005\'\u0000"+
-		"\u0000jk\u0005\'\u0000\u0000kl\u00032\u0019\u0000lm\u0005\'\u0000\u0000"+
-		"mn\u0005\'\u0000\u0000no\u0005&\u0000\u0000op\u0005\'\u0000\u0000pq\u0005"+
-		"\'\u0000\u0000qr\u0003B!\u0000rs\u0005\u0000\u0000\u0001s\u0001\u0001"+
-		"\u0000\u0000\u0000tu\u0003\u0004\u0002\u0000uv\u0005\'\u0000\u0000vw\u0003"+
-		"\u0006\u0003\u0000w\u0003\u0001\u0000\u0000\u0000xy\u0005\u0006\u0000"+
-		"\u0000y\u0005\u0001\u0000\u0000\u0000z{\u0003\b\u0004\u0000{|\u0005\'"+
-		"\u0000\u0000|~\u0001\u0000\u0000\u0000}z\u0001\u0000\u0000\u0000}~\u0001"+
-		"\u0000\u0000\u0000~\u007f\u0001\u0000\u0000\u0000\u007f\u0080\u0003\f"+
-		"\u0006\u0000\u0080\u0081\u0005\'\u0000\u0000\u0081\u0082\u0003\u0010\b"+
-		"\u0000\u0082\u0083\u0005\'\u0000\u0000\u0083\u0084\u0003\u0014\n\u0000"+
-		"\u0084\u0085\u0005\'\u0000\u0000\u0085\u0007\u0001\u0000\u0000\u0000\u0086"+
-		"\u0087\u0003\n\u0005\u0000\u0087\t\u0001\u0000\u0000\u0000\u0088\u0089"+
-		"\u0005#\u0000\u0000\u0089\u000b\u0001\u0000\u0000\u0000\u008a\u008b\u0003"+
-		"\u000e\u0007\u0000\u008b\r\u0001\u0000\u0000\u0000\u008c\u008d\u0005%"+
-		"\u0000\u0000\u008d\u000f\u0001\u0000\u0000\u0000\u008e\u008f\u0003\u0012"+
-		"\t\u0000\u008f\u0011\u0001\u0000\u0000\u0000\u0090\u0091\u0005(\u0000"+
-		"\u0000\u0091\u0013\u0001\u0000\u0000\u0000\u0092\u0093\u0003\u0016\u000b"+
-		"\u0000\u0093\u0015\u0001\u0000\u0000\u0000\u0094\u0095\u0005$\u0000\u0000"+
-		"\u0095\u0017\u0001\u0000\u0000\u0000\u0096\u0097\u0003\u001a\r\u0000\u0097"+
-		"\u0098\u0005\'\u0000\u0000\u0098\u0099\u0003\u001c\u000e\u0000\u0099\u0019"+
-		"\u0001\u0000\u0000\u0000\u009a\u009b\u0005\u001c\u0000\u0000\u009b\u001b"+
-		"\u0001\u0000\u0000\u0000\u009c\u009d\u0005\u0007\u0000\u0000\u009d\u001d"+
-		"\u0001\u0000\u0000\u0000\u009e\u009f\u0003 \u0010\u0000\u009f\u00a0\u0005"+
-		"\'\u0000\u0000\u00a0\u00a1\u0003(\u0014\u0000\u00a1\u00a2\u0005\'\u0000"+
-		"\u0000\u00a2\u00a3\u0003*\u0015\u0000\u00a3\u001f\u0001\u0000\u0000\u0000"+
-		"\u00a4\u00a7\u0003\"\u0011\u0000\u00a5\u00a7\u0003$\u0012\u0000\u00a6"+
-		"\u00a4\u0001\u0000\u0000\u0000\u00a6\u00a5\u0001\u0000\u0000\u0000\u00a7"+
-		"!\u0001\u0000\u0000\u0000\u00a8\u00a9\u0005\f\u0000\u0000\u00a9#\u0001"+
-		"\u0000\u0000\u0000\u00aa\u00ab\u0003&\u0013\u0000\u00ab%\u0001\u0000\u0000"+
-		"\u0000\u00ac\u00ad\u0005\r\u0000\u0000\u00ad\'\u0001\u0000\u0000\u0000"+
-		"\u00ae\u00af\u0005\u000e\u0000\u0000\u00af)\u0001\u0000\u0000\u0000\u00b0"+
-		"\u00b1\u0003,\u0016\u0000\u00b1+\u0001\u0000\u0000\u0000\u00b2\u00b3\u0005"+
-		"\u000f\u0000\u0000\u00b3-\u0001\u0000\u0000\u0000\u00b4\u00b5\u00030\u0018"+
-		"\u0000\u00b5/\u0001\u0000\u0000\u0000\u00b6\u00b7\u0005\u0010\u0000\u0000"+
-		"\u00b71\u0001\u0000\u0000\u0000\u00b8\u00b9\u00038\u001c\u0000\u00b9\u00ba"+
-		"\u0005\'\u0000\u0000\u00ba\u00bb\u0003@ \u0000\u00bb\u00bc\u0005\'\u0000"+
-		"\u0000\u00bc\u00bd\u0005\'\u0000\u0000\u00bd\u00be\u00034\u001a\u0000"+
-		"\u00be\u00bf\u0005\'\u0000\u0000\u00bf\u00c0\u0005\u0001\u0000\u0000\u00c0"+
-		"3\u0001\u0000\u0000\u0000\u00c1\u00c2\u00036\u001b\u0000\u00c25\u0001"+
-		"\u0000\u0000\u0000\u00c3\u00c4\u0005#\u0000\u0000\u00c47\u0001\u0000\u0000"+
-		"\u0000\u00c5\u00c6\u0003:\u001d\u0000\u00c6\u00c7\u0005\'\u0000\u0000"+
-		"\u00c7\u00c8\u0005\'\u0000\u0000\u00c8\u00c9\u0003<\u001e\u0000\u00c9"+
-		"\u00ca\u0005\'\u0000\u0000\u00ca\u00cf\u0001\u0000\u0000\u0000\u00cb\u00cc"+
-		"\u0003>\u001f\u0000\u00cc\u00cd\u0005\'\u0000\u0000\u00cd\u00cf\u0001"+
-		"\u0000\u0000\u0000\u00ce\u00c5\u0001\u0000\u0000\u0000\u00ce\u00cb\u0001"+
-		"\u0000\u0000\u0000\u00cf9\u0001\u0000\u0000\u0000\u00d0\u00d1\u0005\b"+
-		"\u0000\u0000\u00d1;\u0001\u0000\u0000\u0000\u00d2\u00d3\u0005\t\u0000"+
-		"\u0000\u00d3=\u0001\u0000\u0000\u0000\u00d4\u00d5\u0005\n\u0000\u0000"+
-		"\u00d5?\u0001\u0000\u0000\u0000\u00d6\u00d7\u0005\u000b\u0000\u0000\u00d7"+
-		"A\u0001\u0000\u0000\u0000\u00d8\u00d9\u0003D\"\u0000\u00d9\u00da\u0005"+
-		"\'\u0000\u0000\u00da\u00db\u0005\'\u0000\u0000\u00db\u00dc\u0003H$\u0000"+
-		"\u00dc\u00dd\u0005\'\u0000\u0000\u00dd\u00de\u0003L&\u0000\u00de\u00df"+
-		"\u0005\'\u0000\u0000\u00df\u00e0\u0003P(\u0000\u00e0\u00e1\u0005\'\u0000"+
-		"\u0000\u00e1\u00e2\u0003T*\u0000\u00e2\u00e3\u0005\'\u0000\u0000\u00e3"+
-		"\u00e4\u0005\'\u0000\u0000\u00e4\u00e5\u0003X,\u0000\u00e5\u00e6\u0005"+
-		"\'\u0000\u0000\u00e6\u00e7\u0005\'\u0000\u0000\u00e7\u00e8\u0003\\.\u0000"+
-		"\u00e8C\u0001\u0000\u0000\u0000\u00e9\u00ea\u0003F#\u0000\u00eaE\u0001"+
-		"\u0000\u0000\u0000\u00eb\u00ec\u0005\u001a\u0000\u0000\u00ecG\u0001\u0000"+
-		"\u0000\u0000\u00ed\u00ee\u0003J%\u0000\u00eeI\u0001\u0000\u0000\u0000"+
-		"\u00ef\u00f0\u0005\u0018\u0000\u0000\u00f0K\u0001\u0000\u0000\u0000\u00f1"+
-		"\u00f2\u0003N\'\u0000\u00f2M\u0001\u0000\u0000\u0000\u00f3\u00f4\u0005"+
-		"\u0012\u0000\u0000\u00f4O\u0001\u0000\u0000\u0000\u00f5\u00f6\u0003R)"+
-		"\u0000\u00f6Q\u0001\u0000\u0000\u0000\u00f7\u00f8\u0005\u001f\u0000\u0000"+
-		"\u00f8S\u0001\u0000\u0000\u0000\u00f9\u00fa\u0003V+\u0000\u00faU\u0001"+
-		"\u0000\u0000\u0000\u00fb\u00fc\u0005\"\u0000\u0000\u00fcW\u0001\u0000"+
-		"\u0000\u0000\u00fd\u00fe\u0007\u0000\u0000\u0000\u00fe\u00ff\u0005\'\u0000"+
-		"\u0000\u00ff\u0100\u0003Z-\u0000\u0100Y\u0001\u0000\u0000\u0000\u0101"+
-		"\u0106\u0005\u0016\u0000\u0000\u0102\u0103\u0005\'\u0000\u0000\u0103\u0105"+
-		"\u0005\u0016\u0000\u0000\u0104\u0102\u0001\u0000\u0000\u0000\u0105\u0108"+
-		"\u0001\u0000\u0000\u0000\u0106\u0104\u0001\u0000\u0000\u0000\u0106\u0107"+
-		"\u0001\u0000\u0000\u0000\u0107[\u0001\u0000\u0000\u0000\u0108\u0106\u0001"+
-		"\u0000\u0000\u0000\u0109\u010a\u0007\u0001\u0000\u0000\u010a\u010b\u0005"+
-		"\'\u0000\u0000\u010b\u010c\u0003^/\u0000\u010c]\u0001\u0000\u0000\u0000"+
-		"\u010d\u0112\u0005\u0013\u0000\u0000\u010e\u010f\u0005\'\u0000\u0000\u010f"+
-		"\u0111\u0005\u0013\u0000\u0000\u0110\u010e\u0001\u0000\u0000\u0000\u0111"+
-		"\u0114\u0001\u0000\u0000\u0000\u0112\u0110\u0001\u0000\u0000\u0000\u0112"+
-		"\u0113\u0001\u0000\u0000\u0000\u0113_\u0001\u0000\u0000\u0000\u0114\u0112"+
-		"\u0001\u0000\u0000\u0000\u0005}\u00a6\u00ce\u0106\u0112";
+		"#\u0007#\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0003\u0000Y\b"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
+		"\u0001\u0001\u0001\u0003\u0001b\b\u0001\u0001\u0002\u0001\u0002\u0001"+
+		"\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001"+
+		"\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0003\u0004p\b\u0004\u0001"+
+		"\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001"+
+		"\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\n\u0001"+
+		"\n\u0001\n\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001"+
+		"\f\u0001\f\u0001\r\u0001\r\u0003\r\u0099\b\r\u0001\u000e\u0001\u000e\u0001"+
+		"\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0003"+
+		"\u000f\u00a3\b\u000f\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011\u0001"+
+		"\u0011\u0001\u0011\u0001\u0011\u0001\u0011\u0003\u0011\u00ad\b\u0011\u0001"+
+		"\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0003"+
+		"\u0012\u00b5\b\u0012\u0001\u0013\u0001\u0013\u0001\u0013\u0001\u0013\u0001"+
+		"\u0013\u0001\u0013\u0001\u0013\u0001\u0013\u0001\u0013\u0001\u0014\u0001"+
+		"\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0001\u0014\u0001"+
+		"\u0014\u0001\u0014\u0003\u0014\u00c9\b\u0014\u0001\u0015\u0001\u0015\u0001"+
+		"\u0016\u0001\u0016\u0001\u0017\u0001\u0017\u0001\u0018\u0001\u0018\u0001"+
+		"\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001"+
+		"\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001"+
+		"\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u0019\u0001\u001a\u0001"+
+		"\u001a\u0001\u001a\u0001\u001b\u0001\u001b\u0001\u001b\u0001\u001c\u0001"+
+		"\u001c\u0001\u001c\u0001\u001d\u0001\u001d\u0001\u001d\u0001\u001e\u0001"+
+		"\u001e\u0001\u001e\u0001\u001e\u0001\u001f\u0001\u001f\u0001\u001f\u0004"+
+		"\u001f\u00f7\b\u001f\u000b\u001f\f\u001f\u00f8\u0001 \u0001 \u0003 \u00fd"+
+		"\b \u0001!\u0001!\u0001!\u0004!\u0102\b!\u000b!\f!\u0103\u0001\"\u0001"+
+		"\"\u0003\"\u0108\b\"\u0001#\u0004#\u010b\b#\u000b#\f#\u010c\u0001#\u0000"+
+		"\u0000$\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
+		"\u001a\u001c\u001e \"$&(*,.02468:<>@BDF\u0000\u0011\u0001\u0000\u0003"+
+		"\u0005\u0001\u0000\u0006\u0007\u0001\u0000\t\n\u0001\u0000\u000b\f\u0001"+
+		"\u0000\u000f\u0010\u0001\u0000\u001a\u001b\u0001\u0000\u001c\u001d\u0001"+
+		"\u0000\u001f \u0001\u0000!\"\u0001\u0000#$\u0001\u0000%&\u0001\u0000\'"+
+		"(\u0001\u0000)*\u0001\u0000+,\u0001\u0000-.\u0001\u0000/0\u0003\u0000"+
+		"15;<>?\u00f7\u0000H\u0001\u0000\u0000\u0000\u0002a\u0001\u0000\u0000\u0000"+
+		"\u0004c\u0001\u0000\u0000\u0000\u0006g\u0001\u0000\u0000\u0000\bk\u0001"+
+		"\u0000\u0000\u0000\nq\u0001\u0000\u0000\u0000\fs\u0001\u0000\u0000\u0000"+
+		"\u000ez\u0001\u0000\u0000\u0000\u0010\u0083\u0001\u0000\u0000\u0000\u0012"+
+		"\u0085\u0001\u0000\u0000\u0000\u0014\u0089\u0001\u0000\u0000\u0000\u0016"+
+		"\u008e\u0001\u0000\u0000\u0000\u0018\u0090\u0001\u0000\u0000\u0000\u001a"+
+		"\u0098\u0001\u0000\u0000\u0000\u001c\u009a\u0001\u0000\u0000\u0000\u001e"+
+		"\u00a2\u0001\u0000\u0000\u0000 \u00a4\u0001\u0000\u0000\u0000\"\u00ac"+
+		"\u0001\u0000\u0000\u0000$\u00b4\u0001\u0000\u0000\u0000&\u00b6\u0001\u0000"+
+		"\u0000\u0000(\u00c8\u0001\u0000\u0000\u0000*\u00ca\u0001\u0000\u0000\u0000"+
+		",\u00cc\u0001\u0000\u0000\u0000.\u00ce\u0001\u0000\u0000\u00000\u00d0"+
+		"\u0001\u0000\u0000\u00002\u00d2\u0001\u0000\u0000\u00004\u00e3\u0001\u0000"+
+		"\u0000\u00006\u00e6\u0001\u0000\u0000\u00008\u00e9\u0001\u0000\u0000\u0000"+
+		":\u00ec\u0001\u0000\u0000\u0000<\u00ef\u0001\u0000\u0000\u0000>\u00f3"+
+		"\u0001\u0000\u0000\u0000@\u00fa\u0001\u0000\u0000\u0000B\u00fe\u0001\u0000"+
+		"\u0000\u0000D\u0105\u0001\u0000\u0000\u0000F\u010a\u0001\u0000\u0000\u0000"+
+		"HI\u0003\b\u0004\u0000IJ\u0005:\u0000\u0000JK\u0003\u0012\t\u0000KL\u0005"+
+		":\u0000\u0000LM\u0005:\u0000\u0000MN\u0003\u0018\f\u0000NO\u0005:\u0000"+
+		"\u0000OP\u0005:\u0000\u0000PQ\u0003$\u0012\u0000QR\u0005:\u0000\u0000"+
+		"RS\u0005:\u0000\u0000ST\u0003&\u0013\u0000TU\u0005:\u0000\u0000UX\u0005"+
+		":\u0000\u0000VY\u0005\u0001\u0000\u0000WY\u0005\u0002\u0000\u0000XV\u0001"+
+		"\u0000\u0000\u0000XW\u0001\u0000\u0000\u0000YZ\u0001\u0000\u0000\u0000"+
+		"Z[\u0005:\u0000\u0000[\\\u0005:\u0000\u0000\\]\u00032\u0019\u0000]^\u0005"+
+		"\u0000\u0000\u0001^\u0001\u0001\u0000\u0000\u0000_b\u0003\u0004\u0002"+
+		"\u0000`b\u0003\u0006\u0003\u0000a_\u0001\u0000\u0000\u0000a`\u0001\u0000"+
+		"\u0000\u0000b\u0003\u0001\u0000\u0000\u0000cd\u0003\n\u0005\u0000de\u0005"+
+		":\u0000\u0000ef\u0003\f\u0006\u0000f\u0005\u0001\u0000\u0000\u0000gh\u0003"+
+		"\n\u0005\u0000hi\u0005:\u0000\u0000ij\u0003\u000e\u0007\u0000j\u0007\u0001"+
+		"\u0000\u0000\u0000kl\u0003\n\u0005\u0000lo\u0005:\u0000\u0000mp\u0003"+
+		"\f\u0006\u0000np\u0003\u000e\u0007\u0000om\u0001\u0000\u0000\u0000on\u0001"+
+		"\u0000\u0000\u0000p\t\u0001\u0000\u0000\u0000qr\u0007\u0000\u0000\u0000"+
+		"r\u000b\u0001\u0000\u0000\u0000st\u0003F#\u0000tu\u0005:\u0000\u0000u"+
+		"v\u0003F#\u0000vw\u0005:\u0000\u0000wx\u0003\u0010\b\u0000xy\u0005:\u0000"+
+		"\u0000y\r\u0001\u0000\u0000\u0000z{\u0003F#\u0000{|\u0005:\u0000\u0000"+
+		"|}\u0003F#\u0000}~\u0005:\u0000\u0000~\u007f\u0003F#\u0000\u007f\u0080"+
+		"\u0005:\u0000\u0000\u0080\u0081\u0003\u0010\b\u0000\u0081\u0082\u0005"+
+		":\u0000\u0000\u0082\u000f\u0001\u0000\u0000\u0000\u0083\u0084\u00059\u0000"+
+		"\u0000\u0084\u0011\u0001\u0000\u0000\u0000\u0085\u0086\u0003\u0014\n\u0000"+
+		"\u0086\u0087\u0005:\u0000\u0000\u0087\u0088\u0003\u0016\u000b\u0000\u0088"+
+		"\u0013\u0001\u0000\u0000\u0000\u0089\u008a\u0007\u0001\u0000\u0000\u008a"+
+		"\u008b\u0005;\u0000\u0000\u008b\u008c\u0005\b\u0000\u0000\u008c\u008d"+
+		"\u00057\u0000\u0000\u008d\u0015\u0001\u0000\u0000\u0000\u008e\u008f\u0007"+
+		"\u0002\u0000\u0000\u008f\u0017\u0001\u0000\u0000\u0000\u0090\u0091\u0003"+
+		"\u001a\r\u0000\u0091\u0092\u0005:\u0000\u0000\u0092\u0093\u0003 \u0010"+
+		"\u0000\u0093\u0094\u0005:\u0000\u0000\u0094\u0095\u0003\"\u0011\u0000"+
+		"\u0095\u0019\u0001\u0000\u0000\u0000\u0096\u0099\u0003\u001c\u000e\u0000"+
+		"\u0097\u0099\u0003\u001e\u000f\u0000\u0098\u0096\u0001\u0000\u0000\u0000"+
+		"\u0098\u0097\u0001\u0000\u0000\u0000\u0099\u001b\u0001\u0000\u0000\u0000"+
+		"\u009a\u009b\u0007\u0003\u0000\u0000\u009b\u001d\u0001\u0000\u0000\u0000"+
+		"\u009c\u009d\u0003F#\u0000\u009d\u009e\u0005\r\u0000\u0000\u009e\u00a3"+
+		"\u0001\u0000\u0000\u0000\u009f\u00a0\u0003F#\u0000\u00a0\u00a1\u0005\u000e"+
+		"\u0000\u0000\u00a1\u00a3\u0001\u0000\u0000\u0000\u00a2\u009c\u0001\u0000"+
+		"\u0000\u0000\u00a2\u009f\u0001\u0000\u0000\u0000\u00a3\u001f\u0001\u0000"+
+		"\u0000\u0000\u00a4\u00a5\u0007\u0004\u0000\u0000\u00a5!\u0001\u0000\u0000"+
+		"\u0000\u00a6\u00a7\u0005\u0011\u0000\u0000\u00a7\u00a8\u0005=\u0000\u0000"+
+		"\u00a8\u00ad\u0005\u0012\u0000\u0000\u00a9\u00aa\u0005\u0013\u0000\u0000"+
+		"\u00aa\u00ab\u0005=\u0000\u0000\u00ab\u00ad\u0005\u0014\u0000\u0000\u00ac"+
+		"\u00a6\u0001\u0000\u0000\u0000\u00ac\u00a9\u0001\u0000\u0000\u0000\u00ad"+
+		"#\u0001\u0000\u0000\u0000\u00ae\u00af\u0005\u0015\u0000\u0000\u00af\u00b0"+
+		"\u0005;\u0000\u0000\u00b0\u00b5\u0005\u0016\u0000\u0000\u00b1\u00b2\u0005"+
+		"\u0017\u0000\u0000\u00b2\u00b3\u0005;\u0000\u0000\u00b3\u00b5\u0005\u0018"+
+		"\u0000\u0000\u00b4\u00ae\u0001\u0000\u0000\u0000\u00b4\u00b1\u0001\u0000"+
+		"\u0000\u0000\u00b5%\u0001\u0000\u0000\u0000\u00b6\u00b7\u0003(\u0014\u0000"+
+		"\u00b7\u00b8\u0005:\u0000\u0000\u00b8\u00b9\u00030\u0018\u0000\u00b9\u00ba"+
+		"\u0005:\u0000\u0000\u00ba\u00bb\u0005:\u0000\u0000\u00bb\u00bc\u0003F"+
+		"#\u0000\u00bc\u00bd\u0005:\u0000\u0000\u00bd\u00be\u0005\u0019\u0000\u0000"+
+		"\u00be\'\u0001\u0000\u0000\u0000\u00bf\u00c0\u0003*\u0015\u0000\u00c0"+
+		"\u00c1\u0005:\u0000\u0000\u00c1\u00c2\u0005:\u0000\u0000\u00c2\u00c3\u0003"+
+		",\u0016\u0000\u00c3\u00c4\u0005:\u0000\u0000\u00c4\u00c9\u0001\u0000\u0000"+
+		"\u0000\u00c5\u00c6\u0003.\u0017\u0000\u00c6\u00c7\u0005:\u0000\u0000\u00c7"+
+		"\u00c9\u0001\u0000\u0000\u0000\u00c8\u00bf\u0001\u0000\u0000\u0000\u00c8"+
+		"\u00c5\u0001\u0000\u0000\u0000\u00c9)\u0001\u0000\u0000\u0000\u00ca\u00cb"+
+		"\u0007\u0005\u0000\u0000\u00cb+\u0001\u0000\u0000\u0000\u00cc\u00cd\u0007"+
+		"\u0006\u0000\u0000\u00cd-\u0001\u0000\u0000\u0000\u00ce\u00cf\u0005\u001e"+
+		"\u0000\u0000\u00cf/\u0001\u0000\u0000\u0000\u00d0\u00d1\u0007\u0007\u0000"+
+		"\u0000\u00d11\u0001\u0000\u0000\u0000\u00d2\u00d3\u00034\u001a\u0000\u00d3"+
+		"\u00d4\u0005:\u0000\u0000\u00d4\u00d5\u0005:\u0000\u0000\u00d5\u00d6\u0003"+
+		"6\u001b\u0000\u00d6\u00d7\u0005:\u0000\u0000\u00d7\u00d8\u00038\u001c"+
+		"\u0000\u00d8\u00d9\u0005:\u0000\u0000\u00d9\u00da\u0003:\u001d\u0000\u00da"+
+		"\u00db\u0005:\u0000\u0000\u00db\u00dc\u0003<\u001e\u0000\u00dc\u00dd\u0005"+
+		":\u0000\u0000\u00dd\u00de\u0005:\u0000\u0000\u00de\u00df\u0003>\u001f"+
+		"\u0000\u00df\u00e0\u0005:\u0000\u0000\u00e0\u00e1\u0005:\u0000\u0000\u00e1"+
+		"\u00e2\u0003B!\u0000\u00e23\u0001\u0000\u0000\u0000\u00e3\u00e4\u0007"+
+		"\b\u0000\u0000\u00e4\u00e5\u0005;\u0000\u0000\u00e55\u0001\u0000\u0000"+
+		"\u0000\u00e6\u00e7\u0007\t\u0000\u0000\u00e7\u00e8\u00056\u0000\u0000"+
+		"\u00e87\u0001\u0000\u0000\u0000\u00e9\u00ea\u0007\n\u0000\u0000\u00ea"+
+		"\u00eb\u00057\u0000\u0000\u00eb9\u0001\u0000\u0000\u0000\u00ec\u00ed\u0007"+
+		"\u000b\u0000\u0000\u00ed\u00ee\u00058\u0000\u0000\u00ee;\u0001\u0000\u0000"+
+		"\u0000\u00ef\u00f0\u0007\f\u0000\u0000\u00f0\u00f1\u0005;\u0000\u0000"+
+		"\u00f1\u00f2\u0007\r\u0000\u0000\u00f2=\u0001\u0000\u0000\u0000\u00f3"+
+		"\u00f4\u0007\u000e\u0000\u0000\u00f4\u00f6\u0005:\u0000\u0000\u00f5\u00f7"+
+		"\u0003@ \u0000\u00f6\u00f5\u0001\u0000\u0000\u0000\u00f7\u00f8\u0001\u0000"+
+		"\u0000\u0000\u00f8\u00f6\u0001\u0000\u0000\u0000\u00f8\u00f9\u0001\u0000"+
+		"\u0000\u0000\u00f9?\u0001\u0000\u0000\u0000\u00fa\u00fc\u0003F#\u0000"+
+		"\u00fb\u00fd\u0005:\u0000\u0000\u00fc\u00fb\u0001\u0000\u0000\u0000\u00fc"+
+		"\u00fd\u0001\u0000\u0000\u0000\u00fdA\u0001\u0000\u0000\u0000\u00fe\u00ff"+
+		"\u0007\u000f\u0000\u0000\u00ff\u0101\u0005:\u0000\u0000\u0100\u0102\u0003"+
+		"D\"\u0000\u0101\u0100\u0001\u0000\u0000\u0000\u0102\u0103\u0001\u0000"+
+		"\u0000\u0000\u0103\u0101\u0001\u0000\u0000\u0000\u0103\u0104\u0001\u0000"+
+		"\u0000\u0000\u0104C\u0001\u0000\u0000\u0000\u0105\u0107\u0003F#\u0000"+
+		"\u0106\u0108\u0005:\u0000\u0000\u0107\u0106\u0001\u0000\u0000\u0000\u0107"+
+		"\u0108\u0001\u0000\u0000\u0000\u0108E\u0001\u0000\u0000\u0000\u0109\u010b"+
+		"\u0007\u0010\u0000\u0000\u010a\u0109\u0001\u0000\u0000\u0000\u010b\u010c"+
+		"\u0001\u0000\u0000\u0000\u010c\u010a\u0001\u0000\u0000\u0000\u010c\u010d"+
+		"\u0001\u0000\u0000\u0000\u010dG\u0001\u0000\u0000\u0000\rXao\u0098\u00a2"+
+		"\u00ac\u00b4\u00c8\u00f8\u00fc\u0103\u0107\u010c";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
