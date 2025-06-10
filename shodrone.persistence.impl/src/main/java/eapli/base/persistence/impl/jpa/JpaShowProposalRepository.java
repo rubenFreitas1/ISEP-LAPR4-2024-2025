@@ -127,4 +127,13 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
         return matchOne("e.showProposalId = :id", params);
     }
 
+    @Override
+    public Iterable<ShowProposal> findByCompletedProposal() {
+        return entityManager()
+                .createQuery(
+                        "SELECT sp FROM ShowProposal sp WHERE sp.isCompleted = true",
+                        ShowProposal.class)
+                .getResultList();
+    }
+
 }

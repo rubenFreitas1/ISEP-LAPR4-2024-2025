@@ -1,6 +1,8 @@
 package eapli.base.showProposalManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.showProposalManagement.LPROGConnection.ProposalWriter;
+import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -33,5 +35,27 @@ public class ShowProposalManagementService {
 
     public Iterable<ShowProposal> findByPendingAndEmptyVideo(Customer customer, ShowStatus status) {
         return this.showProposalRepository.findByPendingAndEmptyVideo(customer, status);
+    }
+
+    public Iterable<ShowProposal> findByCompletedProposal () {
+        return this.showProposalRepository.findByCompletedProposal();
+    }
+
+    public boolean sendShowProposal (ShowProposal showProposal) {
+        try {
+
+            ProposalWriter proposalWriter = new ProposalWriter();
+            String content = proposalWriter.proposalWriter(showProposal, showProposal.template());
+            String code = String.valueOf(showProposal.proposalNumber());
+            Document document = new Document(content, code);
+            showProposal.addDocument(document);
+            showProposal.changeStatus(ShowStatus.SENT);
+            this.showProposalRepository.save(showProposal);
+            return true;
+
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }

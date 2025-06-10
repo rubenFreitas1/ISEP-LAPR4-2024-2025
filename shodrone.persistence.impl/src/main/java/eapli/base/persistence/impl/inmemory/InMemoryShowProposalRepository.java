@@ -124,5 +124,15 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
         return result;
     }
 
+    @Override
+    public Iterable<ShowProposal> findByCompletedProposal() {
+        List<ShowProposal> result = new ArrayList<>();
+        for (ShowProposal proposal : proposals) {
+            if (proposal.isCompleted()) {
+                result.add(proposal);
+            }
+        }
+        return result;
+    }
 
 }

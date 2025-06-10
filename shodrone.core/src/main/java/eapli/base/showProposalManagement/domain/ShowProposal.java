@@ -73,6 +73,8 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @Embedded
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
+    private boolean isCompleted = false;
+
     protected ShowProposal() {}
 
     public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template, double insuranceAmount) {
@@ -294,6 +296,21 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
             return true;
         }
         return false;
+    }
+
+    public boolean isCompleted() {
+        if (videoLink != null && figureListItems.size() > 0 && droneModelList.size() > 0) {
+            this.isCompleted = true;
+            return true;
+        }
+        return false;
+    }
+
+    public void changeStatus(ShowStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status cannot be null");
+        }
+        this.status = status;
     }
 
     @Override

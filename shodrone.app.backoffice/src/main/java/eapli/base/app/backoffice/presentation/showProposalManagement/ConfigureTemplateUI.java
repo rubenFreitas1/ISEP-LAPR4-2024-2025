@@ -13,6 +13,7 @@ public class ConfigureTemplateUI extends AbstractUI {
     @Override
     protected boolean doShow() {
         String templateName = Console.readLine("Enter the name of the template: ");
+
         String templateContent = Console.readLine("Enter the path to the content of the template: ");
 
         try {

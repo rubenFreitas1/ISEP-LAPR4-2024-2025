@@ -2,6 +2,7 @@ package eapli.base.showProposalManagement.LPROGConnection;
 
 
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.domain.Template;
 import genShowProposalPlaceholder.ShowProposalPlaceholderLexer;
 import genShowProposalPlaceholder.ShowProposalPlaceholderParser;
 import org.antlr.v4.runtime.CharStream;
@@ -15,10 +16,9 @@ import java.nio.file.Paths;
 
 public class ProposalWriter {
 
-        public String proposalWriter (ShowProposal showProposal, String templatePath) throws IOException {
-            String template = Files.readString(Paths.get(templatePath));
+        public String proposalWriter (ShowProposal showProposal, Template template){
 
-            CharStream input = CharStreams.fromString(template);
+            CharStream input = CharStreams.fromString(template.content());
             ShowProposalPlaceholderLexer lexer = new ShowProposalPlaceholderLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             ShowProposalPlaceholderParser parser = new ShowProposalPlaceholderParser(tokens);
