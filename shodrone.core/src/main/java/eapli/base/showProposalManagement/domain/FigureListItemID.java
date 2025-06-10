@@ -36,6 +36,8 @@ public class FigureListItemID implements Serializable {
         return showProposalId;
     }
 
+    public int sequenceNumber(){return this.sequenceNumber;}
+
 
 
     @Override

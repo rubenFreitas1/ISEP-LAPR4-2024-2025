@@ -72,10 +72,12 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     @Override
     public Document findDocumentByCode(String code) {
         try {
-            return entityManager()
-                    .createQuery("SELECT d FROM Document d WHERE d.code = :code", Document.class)
+            ShowProposal proposal = entityManager()
+                    .createQuery("SELECT d FROM ShowProposal d WHERE d.document.code = :code", ShowProposal.class)
                     .setParameter("code", code)
                     .getSingleResult();
+
+            return proposal.document();
         } catch (NoResultException e) {
             return null;
         }
@@ -131,7 +133,10 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     public Iterable<ShowProposal> findByCompletedProposal() {
         return entityManager()
                 .createQuery(
-                        "SELECT sp FROM ShowProposal sp WHERE sp.isCompleted = true",
+                        "SELECT sp FROM ShowProposal sp " +
+                                "WHERE SIZE(sp.droneModelList) > 0 " +
+                                "AND sp.videoLink IS NOT NULL " +
+                                "AND SIZE(sp.figureListItems) > 0",
                         ShowProposal.class)
                 .getResultList();
     }

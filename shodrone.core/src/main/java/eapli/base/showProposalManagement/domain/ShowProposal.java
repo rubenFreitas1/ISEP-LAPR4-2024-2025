@@ -66,8 +66,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @ManyToOne
     private Template template;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "document_id", referencedColumnName = "documentId")
     private Document document;
 
     @Embedded
@@ -322,8 +320,9 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
     @Override
     public ShowProposalDTO toDTO() {
-        Long docId = document != null ? document.identity() : null;
+        String finalContent = (document != null) ? document.finalContent() : null;
+        String code = (document != null) ? document.code() : null;
         return new ShowProposalDTO(showProposalId,showRequest.identity(),showRequest().customer().customerName().toString(),showRequest.description(), location, date,
-                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), docId, proposalAnswerFeedback);
+                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), finalContent, code, proposalAnswerFeedback);
     }
 }

@@ -46,6 +46,8 @@ public class FigureListItem {
         return droneModel;
     }
 
+    public FigureListItemID figureListItemID(){return this.figureListItemID;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,16 +1,14 @@
 package eapli.base.showProposalManagement.domain;
 
 
-import eapli.framework.domain.model.DomainEntity;
+import eapli.framework.domain.model.ValueObject;
 import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
-@Entity
-public class Document implements DomainEntity<Long>{
+import java.io.Serializable;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long documentId;
+@Embeddable
+public class Document implements ValueObject, Serializable {
 
     @Column( length = 5000, unique = true)
     private String finalContent;
@@ -34,22 +32,8 @@ public class Document implements DomainEntity<Long>{
     @Override
     public String toString() {
         return "Document{" +
-                "documentId=" + documentId +
-                ", finalContent='" + finalContent + '\'' +
+                "finalContent='" + finalContent + '\'' +
                 ", code='" + code + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean sameAs(Object other) {
-        if (this == other) return true;
-        if (!(other instanceof Document)) return false;
-        Document that = (Document) other;
-        return documentId != null && documentId.equals(that.documentId);
-    }
-
-    @Override
-    public Long identity() {
-        return this.documentId;
     }
 }

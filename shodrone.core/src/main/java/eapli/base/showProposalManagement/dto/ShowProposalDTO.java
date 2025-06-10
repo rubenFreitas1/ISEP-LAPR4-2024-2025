@@ -32,12 +32,13 @@ public class ShowProposalDTO{
 
     private List<DroneListItemDTO> listItemDTOS;
     private String templateName;
-    private Long documentId;
+    private String documentContent;
+    private String documentCode;
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
     public ShowProposalDTO(){}
 
-    public ShowProposalDTO(Long showProposalId, Long showRequestId, String customerName, String showRequestDescription, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, double insuranceAmount, Calendar createdOn, int proposalNumber, String createdBy, ShowStatus status, String videoLink, List<DroneListItem> listDroneModels, String templateName, Long documentId, ProposalAnswerFeedback proposalAnswerFeedback) {
+    public ShowProposalDTO(Long showProposalId, Long showRequestId, String customerName, String showRequestDescription, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, double insuranceAmount, Calendar createdOn, int proposalNumber, String createdBy, ShowStatus status, String videoLink, List<DroneListItem> listDroneModels, String templateName, String documentContent, String documentCode, ProposalAnswerFeedback proposalAnswerFeedback) {
         this.showProposalId = showProposalId;
         this.showRequestId = showRequestId;
         this.customerName = customerName;
@@ -55,7 +56,8 @@ public class ShowProposalDTO{
         this.videoLink = videoLink;
         this.listItemDTOS = convertDroneItemsToDTO(listDroneModels);
         this.templateName = templateName;
-        this.documentId = documentId;
+        this.documentContent = documentContent;
+        this.documentCode = documentCode;
         this.proposalAnswerFeedback = proposalAnswerFeedback;
     }
 
@@ -127,8 +129,12 @@ public class ShowProposalDTO{
         return templateName;
     }
 
-    public Long getDocumentId() {
-        return documentId;
+    public String getDocumentContent() {
+        return documentContent;
+    }
+
+    public String getDocumentCode() {
+        return documentCode;
     }
 
     public ProposalAnswerFeedback getProposalAnswerFeedback() {
