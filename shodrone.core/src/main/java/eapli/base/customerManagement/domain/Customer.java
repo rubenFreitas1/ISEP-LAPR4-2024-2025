@@ -23,12 +23,12 @@ public class Customer implements AggregateRoot<Long>, DTOable<CustomerDTO> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long customerId;
 
-    @Column( unique = true, nullable = false)
+    @Column
     private Name customerName;
 
     @Column
     private String customerAddress;
-    @Column
+    @Column( unique = true, nullable = false )
     private EmailAddress customerEmail;
     @Column
     private Password customerPassword;
@@ -63,6 +63,7 @@ public class Customer implements AggregateRoot<Long>, DTOable<CustomerDTO> {
     }
 
     public Customer(final Name customerName, final String customerAddress, final EmailAddress customerEmail, final Optional<Password> password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status, final Calendar createdOn) {
+
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerEmail = customerEmail;

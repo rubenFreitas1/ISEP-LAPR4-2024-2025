@@ -51,7 +51,17 @@ Actor -> UI: Insert Show Proposal
                 Controller -> ShowProposalManagementService : sendShowProposal()
                 activate ShowProposalManagementService
 
+                ShowProposalManagementService -> ShowProposal: addDocument()
 
+                activate ShowProposal
+                ShowProposal -> ShowProposalRepository: save()
+                activate ShowProposalRepository
+                ShowProposalRepository --> ShowProposal
+                deactivate ShowProposalRepository
+                ShowProposal --> ShowProposalManagementService
+                deactivate ShowProposal
+                ShowProposalManagementService --> Controller
+                deactivate ShowProposalManagementService
 
                 Controller --> UI
             deactivate Controller
