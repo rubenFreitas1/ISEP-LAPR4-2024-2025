@@ -1,10 +1,13 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
+import eapli.base.app.backoffice.presentation.customerManagement.CustomerDTOPrinter;
 import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
 import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestPrinter;
 import eapli.base.customerManagement.domain.Customer;
+import eapli.base.customerManagement.dto.CustomerDTO;
 import eapli.base.showProposalManagement.application.AddVideoProposalController;
 import eapli.base.showProposalManagement.domain.ShowProposal;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
@@ -14,30 +17,30 @@ public class AddVideoProposalUI extends AbstractUI {
     private final AddVideoProposalController controller = new AddVideoProposalController();
     @Override
     protected boolean doShow() {
-        Iterable<Customer> customers = controller.listCustomers();
+        Iterable<CustomerDTO> customers = controller.listCustomers();
         if (!customers.iterator().hasNext()) {
             System.out.println("\nThere are no registered Customers in the system!\n");
             return false;
         }
-        ShowProposal showProposal = null;
+        ShowProposalDTO showProposal = null;
         String headerModelCustomer = String.format("Select Customer\n#  %-30s%-30s%-30s%-30s", "NAME", "STATUS", "PHONE NUMBER", "EMAIL");
         String headerModelRequest = String.format("\nSelect Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION","PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
         boolean validRequestSelected = false;
         while (!validRequestSelected) {
-            final SelectWidget<Customer> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerPrinter());
+            final SelectWidget<CustomerDTO> selectWidgetCustomer = new SelectWidget<>(headerModelCustomer, customers, new CustomerDTOPrinter());
             selectWidgetCustomer.show();
-            Customer customer = selectWidgetCustomer.selectedElement();
+            CustomerDTO customer = selectWidgetCustomer.selectedElement();
 
             if (customer == null) {
                 return true;
             }
-            Iterable<ShowProposal> showProposals = this.controller.listShowProposals(customer);
+            Iterable<ShowProposalDTO> showProposals = this.controller.listShowProposals(customer);
             if (!showProposals.iterator().hasNext()) {
                 System.out.println("\nThere are no Show Proposals without a video simulation!\n");
                 continue;
             }
             while (true) {
-                final SelectWidget<ShowProposal> selectWidgetProposal = new SelectWidget<>(headerModelRequest, showProposals, new ShowProposalPrinter());
+                final SelectWidget<ShowProposalDTO> selectWidgetProposal = new SelectWidget<>(headerModelRequest, showProposals, new ShowProposalDTOPrinter());
                 selectWidgetProposal.show();
                 showProposal = selectWidgetProposal.selectedElement();
 
