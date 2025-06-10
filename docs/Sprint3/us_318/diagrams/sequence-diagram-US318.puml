@@ -1,0 +1,65 @@
+@startuml
+title Sequence Diagram
+
+actor "CRM Manager" as Actor
+participant "ConfigureTemplateUI" as UI <<presentation>>
+participant "ConfigureTemplateController" as Controller <<application>>
+participant "AuthorizationService" as AuthorizationService <<auth>>
+participant "TemplateManagementService" as TemplateManagementService <<application>>
+participant "Template" as Template <<domain>>
+participant "TemplateRepository" as TemplateRepository <<repository>>
+
+
+activate Actor
+
+Actor -> UI: show()
+    activate UI
+
+UI -> Controller** : create()
+
+UI --> Actor: Request Template name and Content
+deactivate UI
+
+Actor -> UI: Insert Template data
+
+
+    activate UI
+
+        UI -> Controller : registerTemplate(Name, Content)
+            activate Controller
+
+                Controller -> AuthorizationService** : ensureAuthenticatedUserHasAnyOf()
+
+                deactivate AuthorizationService
+
+                Controller -> TemplateManagementService : registerTemplate(Name, Content)
+                activate TemplateManagementService
+
+
+                    TemplateManagementService -> Template : create()
+                    activate Template
+
+
+                    Template --> TemplateManagementService
+
+                    deactivate Template
+
+
+                    TemplateManagementService -> TemplateRepository : save(newTemplate)
+
+                    activate TemplateRepository
+
+                             TemplateRepository --> TemplateManagementService
+                    deactivate TemplateRepository
+
+                    TemplateManagementService --> Controller
+                deactivate TemplateManagementService
+
+
+                Controller --> UI
+            deactivate Controller
+        UI --> Actor : Inform operation success
+        deactivate UI
+deactivate Actor
+
+@enduml

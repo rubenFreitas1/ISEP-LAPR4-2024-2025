@@ -8,7 +8,6 @@ participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
 participant "ShowProposal" as ShowProposal <<domain>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
-database "Database" as Database
 
 activate Actor
 
@@ -23,10 +22,6 @@ Controller -> ShowProposalManagementService: getAllCompleteProposals()
 activate ShowProposalManagementService
 ShowProposalManagementService ->ShowProposalRepository : getAllCompleteProposals()
 activate ShowProposalRepository
-ShowProposalRepository ->Database:getAllCompleteProposals()
-activate Database
-Database --> ShowProposalRepository: List of all complete proposals
-deactivate Database
 ShowProposalRepository --> ShowProposalManagementService: List of all complete proposals
 deactivate ShowProposalRepository
 ShowProposalManagementService --> Controller: List of all complete proposals

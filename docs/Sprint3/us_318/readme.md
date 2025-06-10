@@ -29,18 +29,14 @@
 
 ### 4.1. Sequence Diagram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
+![Sequence Diagram](images/sequence-diagram-US318.svg)
 ### 4.3. Applied Patterns
 
-- Information Expert
-- Creator
 - Controller
-- Low Coupling
-- High Cohesion
+- Creator
 - Polymorphism
-- Pure Fabrication
 - Indirection
-- Protected Variations
+- DTO
 
 ### 4.4. Acceptance Tests
 
