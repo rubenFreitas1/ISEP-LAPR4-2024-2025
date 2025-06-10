@@ -4,6 +4,7 @@ import eapli.base.Application;
 import eapli.base.app.customer.presentation.showProposalRequests.AnalyseProposalAction;
 import eapli.base.app.customer.presentation.showProposalRequests.GetShowInfoAction;
 import eapli.base.app.customer.presentation.showProposalRequests.ProposalFeedbackAction;
+import eapli.base.app.customer.presentation.showProposalRequests.ScheduledShowsAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 import eapli.framework.actions.menu.MenuItem;
@@ -92,7 +93,7 @@ public class MainMenuCustomer extends AbstractUI {
         final var menu = new Menu("Shows >");
         menu.addItem(ANALYSE_PROPOSAL_OPTION, "Analyse Proposal", new AnalyseProposalAction(customerEmail));
         menu.addItem(ACCEPT_OR_REJECT_SHOW_PROPOSAL_OPTION, "Answer to Show Proposals", new ProposalFeedbackAction(customerEmail));
-        //menu.addItem(LIST_SHOWS_OPTION, "List Shows", );
+        menu.addItem(LIST_SHOWS_OPTION, "List of schedule Shows", new ScheduledShowsAction(customerEmail));
         menu.addItem(GET_SHOW_INFO_OPTION, "Get Show Info", new GetShowInfoAction(customerEmail));
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
         return menu;

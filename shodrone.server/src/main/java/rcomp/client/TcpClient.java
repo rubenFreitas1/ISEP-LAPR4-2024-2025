@@ -209,4 +209,39 @@ public class TcpClient {
             return gson.fromJson(resp.getContentAsString(), ShowProposalDTO.class);
         }
     }
+
+    public static List<ShowProposalDTO> listScheduledShows(String customerEmail) throws IOException {
+        try (Socket socket = new Socket("localhost", 9999)) {
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+
+            HTTPmessage request = new HTTPmessage();
+            request.setRequestMethod("POST");
+            request.setURI("/scheduledShows");
+            request.setContent("email=" + customerEmail, "text/plain");
+            request.send(out);
+
+
+            HTTPmessage response = new HTTPmessage(in);
+            if (!response.getStatus().startsWith("200")) {
+                throw new IOException("Error while trying to get scheduled shows: " + response.getStatus());
+            }
+
+            String json = response.getContentAsString();
+            Type listType = new TypeToken<List<ShowProposalDTO>>() {}.getType();
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                        @Override
+                        public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                            return LocalTime.parse(json.getAsString());
+                        }
+                    })
+                    .create();
+
+            return gson.fromJson(json, listType);
+        }
+    }
+
 }
