@@ -10,6 +10,8 @@ participant "AddVideoController" as CTRL <<application>>
 participant "AuthorizationService" as AuthorizationService <<auth>>
 participant "CustomerManagementService" as CustomerManagementService <<application>>
 participant "ShowProposalManagementService" as ShowProposalManagementService <<application>>
+participant "CustomerDTOParser" as CustomerDTOParser <<dto>>
+participant "ShowProposalDTOParser" as ShowProposalDTOParser <<dto>>
 participant "ShowProposal" as ShowProposal <<domain>>
 participant "CustomerRepository" as CustomerRepository <<repository>>
 participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
@@ -42,16 +44,22 @@ activate crmCollaborator
                     CustomerRepository -> Database : findByActive(true)
                     activate Database
 
-                        Database -> CustomerRepository : listOfActiveClients
+                        Database -> CustomerRepository : customers
                     deactivate Database
 
-                    CustomerRepository -> CustomerManagementService : listOfActiveClients
+                    CustomerRepository -> CustomerManagementService : customers
                 deactivate CustomerRepository
 
-                CustomerManagementService -> CTRL : listOfActiveClients
+                CustomerManagementService -> CTRL : customers
             deactivate CustomerManagementService
 
-            CTRL -> UI : listOfActiveClients
+            CTRL -> CustomerDTOParser : transformToCustomerDTOList(customers)
+            activate CustomerDTOParser
+
+                CustomerDTOParser -> CTRL : customersDTO
+            deactivate CustomerDTOParser
+
+            CTRL -> UI : customersDTO
         deactivate CTRL
         UI -> crmCollaborator : displays list of customers
     deactivate UI
@@ -59,8 +67,14 @@ activate crmCollaborator
     crmCollaborator -> UI : selects a customer
     activate UI
 
-        UI -> CTRL : listShowProposals(customer)
+        UI -> CTRL : listShowProposals(customerDTO)
         activate CTRL
+
+            CTRL -> CustomerDTOParser : getCustomerFromDTO(customerDTO)
+            activate CustomerDTOParser
+
+                CustomerDTOParser -> CTRL : customer
+            deactivate CustomerDTOParser
 
             CTRL -> ShowProposalManagementService : findByPendingAndEmptyVideo(customer, status)
             activate ShowProposalManagementService
@@ -71,16 +85,22 @@ activate crmCollaborator
                     ShowProposalRepository -> Database : findByPendingAndEmptyVideo(customer, status)
                     activate Database
 
-                        Database -> ShowProposalRepository : listOfShowProposals
+                        Database -> ShowProposalRepository : showProposals
                     deactivate Database
 
-                    ShowProposalRepository -> ShowProposalManagementService : listOfShowProposals
+                    ShowProposalRepository -> ShowProposalManagementService : showProposals
                 deactivate ShowProposalRepository
 
-                ShowProposalManagementService -> CTRL : listOfShowProposals
+                ShowProposalManagementService -> CTRL : showProposals
             deactivate ShowProposalManagementService
 
-            CTRL -> UI : listOfShowProposals
+            CTRL -> ShowProposalDTOParser : transformToShowProposalDTOlist(showProposals)
+            activate ShowProposalDTOParser
+
+                ShowProposalDTOParser -> CTRL : showProposalsDTO
+            deactivate ShowProposalDTOParser
+
+            CTRL -> UI : showProposalsDTO
         deactivate CTRL
 
         UI -> crmCollaborator : displays the list of show proposal of the customer
@@ -95,8 +115,14 @@ activate crmCollaborator
     crmCollaborator -> UI : gives video file
     activate UI
 
-        UI -> CTRL : addVideoToProposal(video, showProposal)
+        UI -> CTRL : addVideoToProposal(video, showProposalDTO)
         activate CTRL
+
+            CTRL -> ShowProposalDTOParser : getShowProposalfromDTO(showProposalDTO)
+            activate ShowProposalDTOParser
+
+                ShowProposalDTOParser -> CTRL : showProposal
+            deactivate ShowProposalDTOParser
 
             CTRL -> ShowProposal : addVideoToProposal(video, showProposal)
             activate ShowProposal
