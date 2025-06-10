@@ -6,6 +6,7 @@ import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.domain.ShowStatus;
@@ -341,4 +342,33 @@ class ShowProposalTest {
         boolean result = proposal.addDocument(null);
         assertFalse(result);
     }
+
+    @Test
+    void addFigureWithDroneModel_Succeed() {
+        Figure figure = figures.get(0);
+        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 1);
+        assertTrue(result);
+    }
+
+    @Test
+    void addFigureWithDroneModel_Fail_NullFigureOrDroneModel() {
+        IllegalArgumentException ex1 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.addFigureWithDroneModel(null, modelA, 1);
+        });
+        assertEquals("Figure or DroneModel cannot be null!", ex1.getMessage());
+
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.addFigureWithDroneModel(figures.get(0), null, 1);
+        });
+        assertEquals("Figure or DroneModel cannot be null!", ex2.getMessage());
+    }
+
+    @Test
+    void addFigureWithDroneModel_Fail_AlreadyAssociated() {
+        Figure figure = figures.get(0);
+        proposal.addFigureWithDroneModel(figure, modelA, 1);
+        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 2);
+        assertFalse(result);
+    }
+
 }
