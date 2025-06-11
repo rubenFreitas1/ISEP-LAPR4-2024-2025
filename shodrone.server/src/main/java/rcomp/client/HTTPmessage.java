@@ -118,6 +118,11 @@ public class HTTPmessage {
         contentType=cType;
     }
 
+    public void setContent(byte[] cnt, String cType) {
+        content = cnt;
+        contentType = cType;
+    }
+
     public void setRequestMethod(String m) {
         isRequest=true;
         method=m;

@@ -34,3 +34,5 @@ replay_pid*
 /db.properties
 .properties
 db
+shodrone.app.customer/src/downloads/
+shodrone.app.customer/src/downloads

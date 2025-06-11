@@ -36,14 +36,14 @@ class TcpSrvSumThread implements Runnable {
     public void run() {
         InetAddress clientIP;
         clientIP = socket.getInetAddress();
-        System.out.println("New client connection from " + clientIP.getHostAddress() +
-                ", port number " + socket.getPort());
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
             HTTPmessage request = new HTTPmessage(in);
             HTTPmessage response = new HTTPmessage();
+
+            System.out.printf("IP: %-15s | PORT NUMBER: %-5d | REQUEST: %s%n", clientIP.getHostAddress(), socket.getPort(), request.getURI());
 
             switch (request.getURI()) {
                 case "/login":
@@ -66,10 +66,26 @@ class TcpSrvSumThread implements Runnable {
                     StringBuilder sb = new StringBuilder();
                     for (ShowProposal proposal : proposals) {
                         String code = proposal.document().code();
-                        sb.append("http://localhost:9999/download?code=").append(code).append("\n");
+                        sb.append(code).append("\n");
                     }
                     response.setResponseStatus("200 OK");
                     response.setContent(sb.toString(), "text/plain");
+                    break;
+                case "/download":
+                    String body = request.getContentAsString(); // Ou método equivalente
+                    String code = null;
+                    if (body != null && body.startsWith("code=")) {
+                        code = body.substring(5);
+                    }
+                    Document doc = analyseProposalController.findDocumentByCode(code);
+                    if (doc != null) {
+                        byte[] pdfBytes = PDFGenerator.createPdfFromText(doc.finalContent());
+                        response.setResponseStatus("200 OK");
+                        response.setContent(pdfBytes, "application/pdf");
+                    } else {
+                        response.setResponseStatus("404 Not Found");
+                        response.setContent("Document not found", "text/plain");
+                    }
                     break;
 
                 case "/completedShows":
@@ -94,7 +110,6 @@ class TcpSrvSumThread implements Runnable {
                     response.setResponseStatus("200 OK");
                     response.setContent(gsonCompleted.toJson(completedProposals), "application/json");
                     break;
-
                 case "/proposalFeedback":
                     String feedbackContent = request.getContentAsString();
                     String[] feedbackParts = feedbackContent.split("&");
@@ -107,21 +122,6 @@ class TcpSrvSumThread implements Runnable {
                     proposalFeedbackController.updateProposalFeedback(proposal, feedback, aprroval);
                     response.setResponseStatus("200 OK");
                     response.setContent("Feedback submitted successfully", "text/plain");
-                    break;
-
-
-
-                case "/download":
-                    String query = request.getURI();
-                    String code = query.substring(query.indexOf("code=") + 5);
-                    Document doc = analyseProposalController.findDocumentByCode(code);
-                    if (doc != null) {
-                        response.setResponseStatus("200 OK");
-                        response.setContent(doc.finalContent(), "application/pdf");
-                    } else {
-                        response.setResponseStatus("404 Not Found");
-                        response.setContent("Document not found", "text/plain");
-                    }
                     break;
                 case "/acceptedShows":
                     String customerEmail1 = request.getContentAsString().split("=")[1];

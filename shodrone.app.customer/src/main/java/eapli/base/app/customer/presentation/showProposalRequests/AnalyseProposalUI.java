@@ -7,9 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class AnalyseProposalUI extends AbstractUI {
 
@@ -23,25 +26,27 @@ public class AnalyseProposalUI extends AbstractUI {
     @Override
     protected boolean doShow() {
         try{
-            List<String> links = TcpClient.analyseProposal(customerEmail);
-            if(links == null || links.isEmpty()){
+            List<String> codes = TcpClient.analyseProposal(customerEmail);
+            if(codes == null || codes.isEmpty()){
                 System.out.println("There are no Show Proposals to Analyse!");
                 return false;
             }
-            System.out.println("Links recebidos: " + links);
-            JFrame frame = new JFrame("Available Show Proposals");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(600, 300);
-            frame.setLayout(new GridLayout(links.size(), 1));
+            System.out.println("Links recebidos: " + codes);
 
-            for (String link : links) {
-                JLabel label = new JLabel("<html><a href='" + link + "'>" + link + "</a></html>");
+            CountDownLatch latch = new CountDownLatch(1);
+
+            JFrame frame = new JFrame("Available Show Proposals");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(600, 300);
+            frame.setLayout(new GridLayout(codes.size(), 1));
+
+            for (String code : codes) {
+                JLabel label = new JLabel("<html><a href='#'>" + code + "</a></html>");
                 label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 label.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         try {
-                            String code = extractCodeFromLink(link);
                             String fullPath = filePath + File.separator + code + ".pdf";
                             boolean success = TcpClient.downloadDocument(code, fullPath);
                             if(success){
@@ -58,17 +63,20 @@ public class AnalyseProposalUI extends AbstractUI {
                 frame.add(label);
             }
             frame.setVisible(true);
-        }catch (IOException e){
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    latch.countDown();
+                }
+            });
+            frame.setVisible(true);
+            latch.await();
+        }catch (IOException | InterruptedException e){
             System.out.println(e.getMessage());
         }
         return false;
     }
-
-    private String extractCodeFromLink(String link) {
-        int start = link.indexOf("code=") + 5;
-        return link.substring(start);
-    }
-
 
     @Override
     public String headline() {
