@@ -12,9 +12,10 @@ public class Template implements AggregateRoot<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long templateId;
 
+    @Column(unique = true)
     private String name;
 
-    @Column(name = "CONTENT", length = 5000)
+    @Column(name = "CONTENT", length = 5000, unique = true)
     private String content;
 
     protected Template() {

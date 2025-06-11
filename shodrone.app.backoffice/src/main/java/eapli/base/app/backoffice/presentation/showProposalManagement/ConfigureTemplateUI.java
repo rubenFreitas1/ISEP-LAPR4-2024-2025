@@ -12,12 +12,34 @@ public class ConfigureTemplateUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        String templateName = Console.readLine("Enter the name of the template: ");
 
-        String templateContent = Console.readLine("Enter the path to the content of the template: ");
+        String name = null, content = null;
+
+        while (true) {
+            try {
+                name = Console.readLine("Enter the name of the template: ");
+                if (name.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Name of the template cannot be empty.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+        while (true) {
+            try {
+                content = Console.readLine("Enter the path to the content of the template: ");
+                if (content.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Content of the template cannot be empty.");
+                }
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
 
         try {
-            if (controller.registerTemplate(templateName, templateContent)) {
+            if (controller.registerTemplate(name, content)) {
                 System.out.println("Template configured successfully!");
                 return true;
             } else {
