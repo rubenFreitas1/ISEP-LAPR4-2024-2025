@@ -48,9 +48,10 @@ public class CRM_CollaboratorMenu {
 
     private static final int ADD_VIDEO_SIMULATION_PROPOSAL = 4;
 
-    private static final int MARK_SHOW_PROPOSAL_OPTION = 5;
+    private static final int SEND_SHOW_PROPOSAL = 5;
 
-    private static final int SEND_SHOW_PROPOSAL = 6;
+    private static final int MARK_SHOW_PROPOSAL_OPTION = 6;
+
 
     // FIGURE MENU
 
@@ -89,8 +90,8 @@ public class CRM_CollaboratorMenu {
         menu.addItem(ADD_DRONE_MODELS_PROPOSAL, "Add Drone Models to Proposal", new AddDronesToProposalAction());
         menu.addItem(ADD_FIGURES_TO_PROPOSAL, "Add Figures to Proposal", new AddFiguresToProposalAction());
         menu.addItem(ADD_VIDEO_SIMULATION_PROPOSAL, "Add Video Simulation to Proposal", new AddVideoProposalAction());
-        menu.addItem(MARK_SHOW_PROPOSAL_OPTION, "Mark Show Proposal", new MarkShowProposalAction());
         menu.addItem(SEND_SHOW_PROPOSAL, "Send Show Proposal", new SendShowProposalAction());
+        menu.addItem(MARK_SHOW_PROPOSAL_OPTION, "Mark Show Proposal", new MarkShowProposalAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
         return menu;
     }

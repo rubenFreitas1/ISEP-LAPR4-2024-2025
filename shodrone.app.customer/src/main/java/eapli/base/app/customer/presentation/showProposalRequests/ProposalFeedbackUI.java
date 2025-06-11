@@ -42,7 +42,10 @@ public class ProposalFeedbackUI extends AbstractUI {
             if (aprooval.equalsIgnoreCase("yes")) {
                 proposalAccepted = true;
             }
-            feedback = Console.readLine("Please provide your feedback on the Show Proposal. If you do not desire to just press enter:");
+            feedback = Console.readLine("Please provide your feedback on the Show Proposal. If you do not desire to just type n:");
+            if (feedback.equalsIgnoreCase("n")) {
+                feedback = "No feedback provided.";
+            }
 
             if (TcpClient.proposalFeedback(selectedProposal, proposalAccepted, feedback)) {
                 System.out.println("Feedback successfully submitted!");
