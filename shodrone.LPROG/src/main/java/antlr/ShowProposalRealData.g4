@@ -223,14 +223,14 @@ TIME: ([0-9][0-9]':'[0-9][0-9]);
 //Token de um número de contribuinte português
 VAT_NUMBER: 'PT' INT;
 
-NEWLINE: '\n';
+NEWLINE: '\r'? '\n';
 
 INT: [0-9]+(('.'|',')[0-9]+)?;
 DIGIT: [0-9];
 
 
 //Token do formato do link
-LINK: ('http' | 'https') '://' ~[ \t\r\n]+;
+LINK: (('http' | 'https') '://' | 'www.') ~[ \t\r\n]+;
 
 DASH: '–' | '-';
 

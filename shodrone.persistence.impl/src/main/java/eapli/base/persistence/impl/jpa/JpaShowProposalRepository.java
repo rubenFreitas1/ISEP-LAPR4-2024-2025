@@ -136,8 +136,10 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
                         "SELECT sp FROM ShowProposal sp " +
                                 "WHERE SIZE(sp.droneModelList) > 0 " +
                                 "AND sp.videoLink IS NOT NULL " +
-                                "AND SIZE(sp.figureListItems) > 0",
+                                "AND SIZE(sp.figureListItems) > 0" +
+                                "AND sp.status = :status",
                         ShowProposal.class)
+                .setParameter("status", ShowStatus.PENDING)
                 .getResultList();
     }
 

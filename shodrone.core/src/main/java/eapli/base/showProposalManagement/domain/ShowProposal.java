@@ -66,6 +66,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @ManyToOne
     private Template template;
 
+    @Embedded
     private Document document;
 
     @Embedded

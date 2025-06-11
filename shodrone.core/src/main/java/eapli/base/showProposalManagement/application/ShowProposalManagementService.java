@@ -52,12 +52,14 @@ public class ShowProposalManagementService {
                 return false;
             }
             String code = generateUniqueCode();
-            System.out.println(content);
             if (!ShowProposalValidator.validateShowProposalRealData(content)) {
                 System.out.println("ERROR: Document Content invalid!");
                 return false;
             }
             Document document = new Document(content, code);
+            System.out.println("\n");
+            System.out.println(document.finalContent());
+            System.out.println("\n");
             showProposal.addDocument(document);
             showProposal.changeStatus(ShowStatus.SENT);
             this.showProposalRepository.save(showProposal);

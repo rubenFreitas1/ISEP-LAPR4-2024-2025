@@ -128,7 +128,7 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     public Iterable<ShowProposal> findByCompletedProposal() {
         List<ShowProposal> result = new ArrayList<>();
         for (ShowProposal proposal : proposals) {
-            if (!proposal.droneListItem().isEmpty() && proposal.videoLink() != null && !proposal.figureListItems().isEmpty()) {
+            if (!proposal.droneListItem().isEmpty() && proposal.videoLink() != null && !proposal.figureListItems().isEmpty() && proposal.status() == ShowStatus.PENDING) {
                 result.add(proposal);
             }
         }

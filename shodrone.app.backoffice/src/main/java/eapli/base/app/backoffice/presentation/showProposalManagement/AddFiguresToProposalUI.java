@@ -110,9 +110,9 @@ public class AddFiguresToProposalUI extends AbstractUI {
             return;
         }
 
+        int sequenceNumber = 1;
         for (Figure figure : figures) {
             boolean addMoreDrones = true;
-            int sequenceNumber = 1;
 
             while (addMoreDrones) {
                 System.out.println("Select a Drone Model to associate to the figure : " + figure.description());
@@ -128,7 +128,6 @@ public class AddFiguresToProposalUI extends AbstractUI {
 
                 if (this.controller.addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)) {
                     System.out.println("Figure associated with success to Drone Model : " + selectedDrone.getModelName());
-                    sequenceNumber++;
                 } else {
                     System.out.println("Failed to associate Figure to Drone Model : " + selectedDrone.getModelName());
                 }
@@ -136,6 +135,7 @@ public class AddFiguresToProposalUI extends AbstractUI {
                 String response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ");
                 addMoreDrones = "y".equalsIgnoreCase(response);
             }
+            sequenceNumber++;
         }
     }
 

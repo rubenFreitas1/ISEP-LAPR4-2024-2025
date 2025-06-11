@@ -9,6 +9,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProposalGeneratorVisitor extends ShowProposalPlaceholderBaseVisitor<String> {
 
@@ -66,7 +68,7 @@ public class ProposalGeneratorVisitor extends ShowProposalPlaceholderBaseVisitor
     @Override
     public String visitVip_line1_Placeholder(ShowProposalPlaceholderParser.Vip_line1_PlaceholderContext ctx) {
         String originalText = ctx.getText();
-        return originalText.replace("[Company name]", proposal.showRequest().customer().customerName().toString());
+        return originalText.replace("[Company Name]", proposal.showRequest().customer().customerName().toString());
     }
 
     @Override
@@ -126,29 +128,46 @@ public class ProposalGeneratorVisitor extends ShowProposalPlaceholderBaseVisitor
     @Override
     public String visitDroneListPlaceholders(ShowProposalPlaceholderParser.DroneListPlaceholdersContext ctx) {
         StringBuilder droneList = new StringBuilder();
+
+        String templateLine = ctx.getText().trim();
+
         for (DroneListItem drone : proposal.droneListItem()) {
             if (droneList.length() > 0) {
                 droneList.append("\n");
             }
-            droneList.append(drone.droneModel().modelName())
-                    .append(" - ")
-                    .append(drone.numberOfDrones())
-                    .append(" units.");
+
+            String droneItemLine = templateLine
+                    .replace("[model]", drone.droneModel().modelName())
+                    .replace("[quantity]", String.valueOf(drone.numberOfDrones()));
+
+            droneList.append(droneItemLine);
         }
+
         return droneList.toString();
     }
 
     @Override
     public String visitFigureListPlaceholder(ShowProposalPlaceholderParser.FigureListPlaceholderContext ctx) {
         StringBuilder figureList = new StringBuilder();
-        for (FigureListItem figure : proposal.figureListItems()) {
-            if (figureList.length() > 0) {
-                figureList.append("\n");
+
+        String templateLine = ctx.getText().trim();
+        Set<Integer> printedSequence = new HashSet<>();
+
+        for (FigureListItem figureListItem : proposal.figureListItems()) {
+
+            if (printedSequence.add(figureListItem.figureListItemID().sequenceNumber())) {
+                if (figureList.length() > 0) {
+                    figureList.append("\n");
+                }
+
+                String figureItemLine = templateLine
+                        .replace("[position in show]", String.valueOf(figureListItem.figureListItemID().sequenceNumber()))
+                        .replace("[figure name]", figureListItem.figure().description());
+
+                figureList.append(figureItemLine);
             }
-            figureList.append(figure.figureListItemID().sequenceNumber())
-                    .append(" - ")
-                    .append(figure.figure().description());
         }
+
         return figureList.toString();
     }
 
@@ -291,19 +310,5 @@ public class ProposalGeneratorVisitor extends ShowProposalPlaceholderBaseVisitor
         return result;
     }
 
-    @Override
-    public String visitDroneList(ShowProposalPlaceholderParser.DroneListContext ctx) {
-        String result = "#List of used drones" +
-                "\n" +
-                visit(ctx.droneListPlaceholders());
-        return result;
-    }
 
-    @Override
-    public String visitFigureList(ShowProposalPlaceholderParser.FigureListContext ctx) {
-        String result = "#List of figures" +
-                "\n" +
-                visit(ctx.figureListPlaceholder());
-        return result;
-    }
 }

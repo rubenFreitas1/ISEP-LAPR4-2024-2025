@@ -3,6 +3,7 @@ package genShowProposalRealData;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ShowProposalRealDataParser extends Parser {
 			"'Date - '", "'Data - '", "'Time - '", "'Hora - '", "'Duration - '", 
 			"'Dura\\u00E7\\u00E3o - '", "' minutes'", "' minutos'", "'#List of used drones'", 
 			"'#Lista de drones utilizados'", "'#Lista de figuras'", "'#List of figures'", 
-			"'_'", "','", "'.'", "' '", "':'", null, null, null, null, "'\\n'"
+			"'_'", "','", "'.'", "' '", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
