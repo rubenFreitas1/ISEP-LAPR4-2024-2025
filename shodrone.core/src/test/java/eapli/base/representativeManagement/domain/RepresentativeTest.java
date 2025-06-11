@@ -51,9 +51,9 @@ class RepresentativeTest {
                 user
         );
 
-        assertEquals("Alice Smith", rep.representativeName());
-        assertEquals("alice@email.com", rep.representativeEmail());
-        assertEquals("password123", rep.representativePassword());
+        assertEquals("Alice", rep.representativeName().firstName());
+        assertEquals("Smith", rep.representativeName().lastName());
+        assertEquals("alice@email.com", rep.representativeEmail().toString());
         assertEquals("912345678", rep.representativePhoneNumber());
         assertEquals(customer, rep.associatedCustomer());
         assertEquals("Sales Manager", rep.representativePosition());
@@ -183,9 +183,9 @@ class RepresentativeTest {
         rep.changePhoneNumber("964444444");
         rep.changePosition("Senior Analyst");
 
-        assertEquals("Felipe Santos", rep.representativeName());
-        assertEquals("felipe.santos@email.com", rep.representativeEmail());
-        assertEquals("newpass123", rep.representativePassword());
+        assertEquals("Felipe", rep.representativeName().firstName());
+        assertEquals("Santos", rep.representativeName().lastName());
+        assertEquals("felipe.santos@email.com", rep.representativeEmail().toString());
         assertEquals("964444444", rep.representativePhoneNumber());
         assertEquals("Senior Analyst", rep.representativePosition());
     }

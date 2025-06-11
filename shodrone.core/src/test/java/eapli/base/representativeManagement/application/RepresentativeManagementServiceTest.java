@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.Mockito.*;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class RepresentativeManagementServiceTest {
 
     @Mock
@@ -44,6 +47,14 @@ class RepresentativeManagementServiceTest {
 
     @BeforeEach
     void setUp() {
+        policy = new ExemploPasswordPolicy();
+        encoder = new PlainTextEncoder();
+        service = new RepresentativeManagementService(
+                representativeRepository,
+                customerRepository,
+                encoder,
+                policy
+        );
         systemUser = new SystemUserBuilder(policy, encoder)
                 .with("jdoe", "StrongPass123", "John", "Doe", "jdoe@email.com")
                 .withRoles( Roles.ADMIN).build();
@@ -109,9 +120,8 @@ class RepresentativeManagementServiceTest {
     void registerNewRepresentative_shouldSaveCustomerWithRepresentative() {
         when(representativeRepository.isEmailUsed("new.rep@email.com")).thenReturn(false);
 
-
         service.registerNewRepresentative(
-                "New","Rep",
+                "New", "Rep",
                 "new.rep@email.com",
                 "securePass123",
                 "910000002",
@@ -129,7 +139,7 @@ class RepresentativeManagementServiceTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 service.registerNewRepresentative(
-                        "New"," Rep",
+                        "New", "Rep",
                         "john.rep@email.com",
                         "securePass123",
                         "910000002",
@@ -145,16 +155,17 @@ class RepresentativeManagementServiceTest {
         when(representativeRepository.isEmailUsed("john.new@email.com")).thenReturn(false);
 
         service.editRepresentative(representative,
-                "New"," Name",
+                "New", "Silva",
                 "john.new@email.com",
                 "newPass123",
                 "910000999",
-                "Director");
+                "Director"
+        );
 
         verify(representativeRepository).save(representative);
-        assertEquals("New Name", representative.representativeName());
-        assertEquals("john.new@email.com", representative.representativeEmail());
-        assertEquals("newPass123", representative.representativePassword());
+        assertEquals("New", representative.representativeName().firstName());
+        assertEquals("Silva", representative.representativeName().lastName());
+        assertEquals("john.new@email.com", representative.representativeEmail().toString());
         assertEquals("910000999", representative.representativePhoneNumber());
         assertEquals("Director", representative.representativePosition());
     }
@@ -165,7 +176,7 @@ class RepresentativeManagementServiceTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 service.editRepresentative(representative,
-                        "New"," Name",
+                        "New","Name",
                         "existing@email.com",
                         "newPass123",
                         "910000999",

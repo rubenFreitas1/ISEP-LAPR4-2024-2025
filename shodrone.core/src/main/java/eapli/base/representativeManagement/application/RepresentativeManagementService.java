@@ -36,6 +36,9 @@ public class RepresentativeManagementService {
         Name representativeName = Name.valueOf(representativeFirstName, representativeLastName);
 
         EmailAddress representativeEmailAddress = EmailAddress.valueOf(representativeEmail);
+        if (isEmailUsed(representativeEmailAddress.toString())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
         Optional<Password> representativePassword = Password.encodedAndValid(password, passwordPolicy, passwordEncoder);
 
         if(representativePassword.isEmpty()){
@@ -81,9 +84,11 @@ public class RepresentativeManagementService {
             Name newRepresentativeName = Name.valueOf(previousFirstName, newLastName);
             representative.changeName(newRepresentativeName);
         }
-        if(newEmail == null || newEmail.isEmpty() || isEmailUsed(newEmail) || isEmailUsed(newEmail)){
-            throw new IllegalArgumentException("Representative Email is already in use. (Also it cannot be null or empty!)");
-        }else if(!newEmail.equals("N")){
+        if(newEmail == null || newEmail.isEmpty()){
+            throw new IllegalArgumentException("Representative Email cannot be null or empty!");
+        } else if(!newEmail.equals("N") && !newEmail.equals(representative.representativeEmail().toString()) && isEmailUsed(newEmail)){
+            throw new IllegalArgumentException("Representative Email is already in use!");
+        } else if(!newEmail.equals("N")){
             edited = true;
             EmailAddress representativeEmailAddress = EmailAddress.valueOf(newEmail);
             representative.changeEmail(representativeEmailAddress);
