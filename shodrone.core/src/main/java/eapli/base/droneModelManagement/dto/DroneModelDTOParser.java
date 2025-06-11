@@ -13,7 +13,7 @@ public class DroneModelDTOParser {
     private final DroneModelRepository droneModelRepository = PersistenceContext.repositories().droneModels();
 
     public Iterable<DroneModelDTO> transformToDroneModelDTO(final Iterable<DroneModel> droneModels){
-        return StreamSupport.stream(droneModels.spliterator(), true).map(DroneModel::toDTO).collect(Collectors.toUnmodifiableList());
+        return StreamSupport.stream(droneModels.spliterator(), false).map(DroneModel::toDTO).collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<DroneModel> getDroneModelFromDTO(final DroneModelDTO droneModel){

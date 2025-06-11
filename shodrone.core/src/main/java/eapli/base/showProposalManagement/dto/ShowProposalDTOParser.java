@@ -13,7 +13,7 @@ public class ShowProposalDTOParser {
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
 
     public Iterable<ShowProposalDTO> transformToShowProposalDTOlist(final Iterable<ShowProposal> showProposals){
-        return StreamSupport.stream(showProposals.spliterator(), true).map(ShowProposal::toDTO).collect(Collectors.toUnmodifiableList());
+        return StreamSupport.stream(showProposals.spliterator(), false).map(ShowProposal::toDTO).collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<ShowProposal> getShowProposalfromDTO(ShowProposalDTO showProposalDTO){

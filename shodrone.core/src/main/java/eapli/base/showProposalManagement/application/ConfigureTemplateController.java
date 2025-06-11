@@ -27,4 +27,12 @@ public class ConfigureTemplateController {
         }
         throw new IllegalArgumentException("Template content does not contain the required placeholders.");
     }
+
+    public boolean isNameUsed(String name) {
+        return templateManagementSvc.isNameUsed(name);
+    }
+
+    public boolean isContentUsed(String content) {
+        return templateManagementSvc.isContentUsed(content);
+    }
 }

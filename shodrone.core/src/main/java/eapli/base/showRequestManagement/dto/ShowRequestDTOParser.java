@@ -13,7 +13,7 @@ public class ShowRequestDTOParser {
     private final ShowRequestRepository showRequestRepository = PersistenceContext.repositories().showRequests();
 
     public Iterable<ShowRequestDTO> transformToShowRequestDTOlist(final Iterable<ShowRequest> showRequests){
-        return StreamSupport.stream(showRequests.spliterator(), true).map(ShowRequest::toDTO).collect(Collectors.toUnmodifiableList());
+        return StreamSupport.stream(showRequests.spliterator(), false).map(ShowRequest::toDTO).collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<ShowRequest> getShowRequestfromDTO(ShowRequestDTO showRequestDTO){
