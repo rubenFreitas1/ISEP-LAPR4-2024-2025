@@ -1,5 +1,6 @@
 package eapli.base.app.customer.presentation.showProposalRequests;
 
+import eapli.base.app.backoffice.presentation.showProposalManagement.ShowProposalDTOPrinter;
 import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
@@ -28,14 +29,15 @@ public class ProposalFeedbackUI extends AbstractUI {
                 return false;
             }
             System.out.println("Available Show Proposals for Feedback:");
-            final SelectWidget<ShowProposalDTO> selector = new SelectWidget<>(headline(), showProposalList, ShowProposalDTO::toString);
+            ShowProposalDTOPrinter showProposalPrinter = new ShowProposalDTOPrinter();
+            final SelectWidget<ShowProposalDTO> selector = new SelectWidget<>(headline(), showProposalList, showProposalPrinter);
             selector.show();
             final ShowProposalDTO selectedProposal = selector.selectedElement();
             if (selectedProposal == null) {
                 System.out.println("No Show Proposal selected.");
                 return false;
             }
-            System.out.println("Selected Show Proposal: " + selectedProposal);
+            System.out.println("Selected Show Proposal: " + selectedProposal.getShowRequestDescription());
             aprooval = Console.readLine("Do you accept this Show Proposal? (yes/no)");
             if (aprooval.equalsIgnoreCase("yes")) {
                 proposalAccepted = true;

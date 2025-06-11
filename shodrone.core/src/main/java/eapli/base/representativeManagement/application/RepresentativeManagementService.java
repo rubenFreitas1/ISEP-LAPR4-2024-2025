@@ -36,9 +36,9 @@ public class RepresentativeManagementService {
         Name representativeName = Name.valueOf(representativeFirstName, representativeLastName);
 
         EmailAddress representativeEmailAddress = EmailAddress.valueOf(representativeEmail);
-        if (isEmailUsed(representativeEmailAddress.toString())) {
-            throw new IllegalArgumentException("Email already in use");
-        }
+        //if (isEmailUsed(representativeEmailAddress.toString())) {
+          //  throw new IllegalArgumentException("Email already in use");
+        //}
         Optional<Password> representativePassword = Password.encodedAndValid(password, passwordPolicy, passwordEncoder);
 
         if(representativePassword.isEmpty()){

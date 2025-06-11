@@ -114,12 +114,13 @@ class TcpSrvSumThread implements Runnable {
                     String feedbackContent = request.getContentAsString();
                     String[] feedbackParts = feedbackContent.split("&");
                     long proposalId = Long.parseLong(feedbackParts[0].split("=")[1]);
-                    String aprroval = feedbackParts[1].split("=")[1];
+                    String approvalStr = feedbackParts[1].split("=")[1];
                     String feedback = feedbackParts[2].split("=")[1];
 
+                    boolean approval = "true".equalsIgnoreCase(approvalStr) || "yes".equalsIgnoreCase(approvalStr);
 
                     Optional<ShowProposal> proposal = proposalFeedbackController.findById(proposalId);
-                    proposalFeedbackController.updateProposalFeedback(proposal, feedback, aprroval);
+                    proposalFeedbackController.updateProposalFeedback(proposal, approval, feedback);
                     response.setResponseStatus("200 OK");
                     response.setContent("Feedback submitted successfully", "text/plain");
                     break;

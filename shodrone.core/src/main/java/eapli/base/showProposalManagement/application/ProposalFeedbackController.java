@@ -28,15 +28,14 @@ public class ProposalFeedbackController {
        return showProposalRepository.findById(id);
    }
 
-   public void updateProposalFeedback(Optional<ShowProposal> proposal, String aprooval, String feedback) {
-        ProposalAnswerFeedback.Answer answer = null;
-        if(aprooval.equalsIgnoreCase("yes")){
+   public void updateProposalFeedback(Optional<ShowProposal> proposal, Boolean approval, String feedback) {
+        ProposalAnswerFeedback.Answer answer = ProposalAnswerFeedback.Answer.REJECTED;
+        if(approval){
             answer = ProposalAnswerFeedback.Answer.ACCEPTED;
-        } else if(aprooval.equalsIgnoreCase("no")) {
-            answer = ProposalAnswerFeedback.Answer.REJECTED;
         }
         ProposalAnswerFeedback proposalAnswerFeedback = new ProposalAnswerFeedback(answer, feedback);
         proposal.get().updateProposalAnswer(proposalAnswerFeedback);
+        proposal.get().changeStatus(ShowStatus.ANSWERED);
         showProposalRepository.save(proposal.get());
    }
 }

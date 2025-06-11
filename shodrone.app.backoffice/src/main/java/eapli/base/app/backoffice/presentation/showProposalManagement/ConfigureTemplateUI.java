@@ -21,6 +21,9 @@ public class ConfigureTemplateUI extends AbstractUI {
                 if (name.trim().isEmpty()) {
                     throw new IllegalArgumentException("Name of the template cannot be empty.");
                 }
+                if (controller.isNameUsed(name)) {
+                    throw new IllegalArgumentException("Name of the template is already in use.");
+                }
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -31,6 +34,9 @@ public class ConfigureTemplateUI extends AbstractUI {
                 content = Console.readLine("Enter the path to the content of the template: ");
                 if (content.trim().isEmpty()) {
                     throw new IllegalArgumentException("Content of the template cannot be empty.");
+                }
+                if (controller.isContentUsed(content)) {
+                    throw new IllegalArgumentException("Content of the template is already in use.");
                 }
                 break;
             } catch (IllegalArgumentException e) {
@@ -46,9 +52,10 @@ public class ConfigureTemplateUI extends AbstractUI {
                 System.out.println("Error configuring template.");
                 return false;
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException | IOException e) {
+            System.out.println("\nERROR: " + e.getMessage() + "\n");
         }
+        return false;
     }
 
     @Override
