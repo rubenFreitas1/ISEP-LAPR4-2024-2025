@@ -30,7 +30,8 @@ public class ProposalFeedbackUI extends AbstractUI {
             }
             System.out.println("Available Show Proposals for Feedback:");
             ShowProposalDTOPrinter showProposalPrinter = new ShowProposalDTOPrinter();
-            final SelectWidget<ShowProposalDTO> selector = new SelectWidget<>(headline(), showProposalList, showProposalPrinter);
+            String headerModel = String.format("Select Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION","PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
+            final SelectWidget<ShowProposalDTO> selector = new SelectWidget<>(headerModel, showProposalList, showProposalPrinter);
             selector.show();
             final ShowProposalDTO selectedProposal = selector.selectedElement();
             if (selectedProposal == null) {
