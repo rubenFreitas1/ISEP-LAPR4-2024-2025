@@ -497,4 +497,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
 ## 6. Integration/Demonstration
 
+**Marking the Proposal as Accepted**
 
+![Marking-the-Proposal-as-Accepted](images/demonstration/marking-show-proposal.png)

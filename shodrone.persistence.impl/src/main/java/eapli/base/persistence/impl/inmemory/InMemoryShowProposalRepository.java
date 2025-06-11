@@ -46,7 +46,7 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
         List<ShowProposal> result = new ArrayList<>();
         for (ShowProposal proposal : proposals) {
             var feedback = proposal.proposalAnswerFeedback();
-            if (feedback != null && feedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED && proposal.showRequest().customer() == customer) {
+            if (feedback != null && feedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED && proposal.showRequest().customer() == customer && proposal.status() == ShowStatus.ANSWERED) {
                 result.add(proposal);
             }
         }
