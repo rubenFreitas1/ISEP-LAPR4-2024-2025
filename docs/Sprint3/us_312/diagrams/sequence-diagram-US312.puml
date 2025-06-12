@@ -1,0 +1,178 @@
+@startuml
+title Sequence Diagram US 312 - Add a figure to a show proposal
+
+actor "crmCollaborator" as User
+participant "AddFiguresToProposalAction" as Action <<presentation>>
+participant "AddFiguresToProposalUI" as UI <<presentation>>
+participant "AddFiguresToProposalController" as Controller <<application>>
+participant "AddFigureService" as ProposalService <<domain>>
+participant "ShowProposal" as ShowProposal <<domain>>
+participant "FigureListItem" as FigureListItem <<domain>>
+participant "ShowProposalDTOParser" as ShowProposalDTOParser <<dto>>
+participant "DroneModelDTOParser" as DroneModelDTOParser <<dto>>
+participant "ShowProposalRepository" as ShowProposalRepository <<repository>>
+participant "DroneModelRepository" as DroneModelRepository <<repository>>
+participant "FigureRepository" as FigureRepository <<repository>>
+database "Database" as Database
+
+activate User
+
+User -> Action**: Wants to add figures to a show proposal
+activate Action
+
+Action -> UI**: create
+Action -> UI: show()
+deactivate Action
+activate UI
+
+UI -> Controller**: create
+UI -> Controller: getListShowProposals()
+activate Controller
+
+Controller -> ShowProposalRepository: findByStatus(ShowProposalStatus.PENDING)
+activate ShowProposalRepository
+ShowProposalRepository -> Database: findByStatus(ShowProposalStatus.PENDING)
+activate Database
+Database --> ShowProposalRepository: List of show proposals
+deactivate Database
+ShowProposalRepository --> Controller: List of show proposals
+deactivate ShowProposalRepository
+Controller -> ShowProposalDTOParser: transformToShowProposalDTOlist(showProposals)
+activate ShowProposalDTOParser
+ShowProposalDTOParser --> Controller: List of show proposals (DTO)
+deactivate ShowProposalDTOParser
+
+Controller --> UI: List of show proposals (DTO)
+deactivate Controller
+
+UI --> User: Shows List of show proposals (DTO)
+deactivate UI
+
+User -> UI: Selects a show proposal
+activate UI
+UI -> Controller: selectExistingFigures(showProposal)
+activate Controller
+Controller -> ShowProposalRepository: findById(showProposal.id)
+activate ShowProposalRepository
+ShowProposalRepository -> Database: findById(showProposal.id)
+activate Database
+Database --> ShowProposalRepository: ShowProposal
+deactivate Database
+ShowProposalRepository --> Controller: ShowProposal
+deactivate ShowProposalRepository
+Controller -> ShowProposalDTOParser: transformToShowProposalDTO(showProposal)
+activate ShowProposalDTOParser
+ShowProposalDTOParser --> Controller: Shows the sequence associated with the proposal selected (DTO)
+deactivate ShowProposalDTOParser
+Controller --> UI: Shows the sequence associated with the proposal selected (DTO)
+deactivate Controller
+
+UI --> User: Asks if the user wants to create a new figure sequence
+deactivate UI
+
+loop While adding figures
+User -> UI: Selects "Yes" to add figures
+activate UI
+UI -> Controller: getListFigures()
+activate Controller
+
+Controller -> FigureRepository: findByStatusAndFilledDroneList(ShowStatus.PENDING)
+activate FigureRepository
+
+FigureRepository -> Database: findByStatusAndFilledDroneList(ShowStatus.PENDING)
+activate Database
+
+Database --> FigureRepository: List of Figures
+deactivate Database
+FigureRepository --> Controller: List of Figures
+deactivate FigureRepository
+
+Controller --> UI: List of Figures
+deactivate Controller
+
+UI --> User: Shows list of figures
+deactivate UI
+
+
+User -> UI: Selects a Figure
+activate UI
+
+
+UI -> UI: createNewSequence(figureList)
+
+
+UI --> User: Confirms success
+deactivate UI
+end
+
+User -> UI: Assign figure to a drone model
+activate UI
+UI -> Controller: addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)
+activate Controller
+Controller -> ShowProposalDTOParser: getShowProposalfromDTO(showProposaldto)
+activate ShowProposalDTOParser
+ShowProposalDTOParser -> Database: getShowProposalfromDTO(showProposaldto)
+activate Database
+Database --> ShowProposalDTOParser: ShowProposal
+deactivate Database
+ShowProposalDTOParser --> Controller: ShowProposal
+deactivate ShowProposalDTOParser
+Controller -> DroneModelDTOParser : getDroneModelFromDTO(droneModel)
+activate DroneModelDTOParser
+DroneModelDTOParser -> Database: getDroneModelFromDTO(droneModel)
+activate Database
+Database --> DroneModelDTOParser: List of DroneModels
+deactivate Database
+DroneModelDTOParser --> Controller: List of DroneModels
+deactivate DroneModelDTOParser
+Controller -> ProposalService: addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)
+activate ProposalService
+ProposalService -> ShowProposalRepository: findById(showProposal.id)
+activate ShowProposalRepository
+ShowProposalRepository -> Database: findById(showProposal.id)
+activate Database
+Database --> ShowProposalRepository: ShowProposal
+deactivate Database
+ShowProposalRepository --> ProposalService: ShowProposal
+deactivate ShowProposalRepository
+ProposalService -> DroneModelRepository: findById(selectedDrone.id)
+activate DroneModelRepository
+DroneModelRepository -> Database: findById(selectedDrone.id)
+activate Database
+Database --> DroneModelRepository: DroneModel
+deactivate Database
+DroneModelRepository --> ProposalService: DroneModel
+deactivate DroneModelRepository
+ProposalService -> FigureRepository: findById(figure.id)
+activate FigureRepository
+FigureRepository -> Database: findById(figure.id)
+activate Database
+Database --> FigureRepository: Figures
+deactivate Database
+FigureRepository --> ProposalService: Figures
+deactivate FigureRepository
+ProposalService -> ShowProposal: addFigureWithDroneModel(figure, droneModel, sequenceNumber)
+activate ShowProposal
+ShowProposal -> FigureListItem: create FigureListItem(figure, droneModel, showproposal, sequenceNumber);
+activate FigureListItem
+FigureListItem --> ShowProposal: true
+deactivate FigureListItem
+ShowProposal --> ProposalService: true
+deactivate ShowProposal
+ProposalService --> Controller: true
+deactivate ProposalService
+
+Controller -> ShowProposalRepository: save(showProposal)
+activate ShowProposalRepository
+ShowProposalRepository -> Database: ShowProposal
+activate Database
+Database --> ShowProposalRepository: Confirms success
+deactivate Database
+ShowProposalRepository --> Controller: Confirms success
+deactivate ShowProposalRepository
+Controller --> UI: Confirms success
+deactivate Controller
+UI --> User: Confirms success
+deactivate User
+
+@enduml

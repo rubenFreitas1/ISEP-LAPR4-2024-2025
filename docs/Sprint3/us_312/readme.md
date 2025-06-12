@@ -30,608 +30,733 @@ I also want to make sure that the figure is compatible with the drone models in 
 
 ## 4. Design
 
-### 4.1. Sequence Diagram
+### 4.1. Sequence Diag
+ram
 
-![Sequence Diagram](images/sequence-diagram-US220.svg)
-### 4.3. Applied Patterns
+![Sequence Diagram](images/sequence-diagram-US312.svg)
+### 4.2. Applied Patterns
 
 - Information Expert
-- Creator
 - Controller
 - Low Coupling
 - High Cohesion
-- Polymorphism
 - Pure Fabrication
 - Indirection
 - Protected Variations
 
-### 4.4. Acceptance Tests
+### 4.3. Acceptance Tests
 
-**Test 1:** *Verifies that a customer is created correctly*
+**Test 1:** *Verifies that a Figure is associated correctly*
 
 ```
     @Test
-    void registerNewCustomer_shouldRegisterSuccessfully() {
-        when(customerRepository.isEmailUsed("client@email.com")).thenReturn(false);
-        when(customerRepository.isVatNumberUsed("CC123456")).thenReturn(false);
-        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
-
-        Customer result = service.registerNewCustomer(
-                "Client Name",
-                "Client Address",
-                "client@email.com",
-                "VAT123",
-                "910000000",
-                "CC123456",
-                systemUser
-        );
-
-        assertNotNull(result);
-        assertEquals("Client Name", result.customerName());
-        verify(customerRepository).save(any(Customer.class));
+    void addFigureWithDroneModel_Succeed() {
+        Figure figure = figures.get(0);
+        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 1);
+        assertTrue(result);
     }
-
 ````
 
-**Test 2:** *Verifies that the representative is created along with the customer*
+**Test 2:** *Verifies that the Figure fails association*
 
 ```
+ @Test
+    void addFigureWithDroneModel_Fail_NullFigureOrDroneModel() {
+        IllegalArgumentException ex1 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.addFigureWithDroneModel(null, modelA, 1);
+        });
+        assertEquals("Figure or DroneModel cannot be null!", ex1.getMessage());
 
-@Test
-    void addRepresentative_shouldAddSuccessfully() {
-        Representative rep = new Representative("Alice Smith", "alice@email.com", now, "password123", "912345678", customer, "Sales Manager", user);
-
-        customer.addRepresentative(rep);
-
-        assertEquals(1, customer.representatives().size());
-        assertTrue(customer.representatives().contains(rep));
+        IllegalArgumentException ex2 = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.addFigureWithDroneModel(figures.get(0), null, 1);
+        });
+        assertEquals("Figure or DroneModel cannot be null!", ex2.getMessage());
     }
-
 ````
+
+**Test 3:** *Verifies that the same Figure cannot be added twice with the same DroneModel*
+
+```
+ @Test
+    void addFigureWithDroneModel_Fail_AlreadyAssociated() {
+        Figure figure = figures.get(0);
+        proposal.addFigureWithDroneModel(figure, modelA, 1);
+        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 2);
+        assertFalse(result);
+    }
+```
 ## 5. Implementation
 
-**RegisterCustomerAction**
-
+**AddFiguresToProposalAction**
 ```java
-package eapli.base.app.backoffice.presentation.customerManagement;
-
-import eapli.framework.actions.Action;
-
-public class RegisterCustomerAction implements Action {
-
+public class AddFiguresToProposalAction implements Action {
     @Override
     public boolean execute() {
-        return new RegisterCustomerUI().show();
+        return new AddFiguresToProposalUI().show();
     }
 }
-
 ```
-**RegisterCustomerUI**
-```java
-public class RegisterCustomerUI extends AbstractUI {
 
-    private final RegisterCustomerController theController = new RegisterCustomerController();
+**AddFiguresToProposalUI**
+```java
+public class AddFiguresToProposalUI extends AbstractUI {
+
+    private final AddFiguresToProposalController controller = new AddFiguresToProposalController();
 
     @Override
     protected boolean doShow() {
-        final String customerName = Console.readLine("Customer Name");
-        final String customerAddress = Console.readLine("Customer Address");
-        final String customerEmail = Console.readLine("Customer Email");
-        final String password = Console.readLine("Password");
-        final String customerPhoneNumber = Console.readLine("Customer Phone Number");
-        final String customerVatNumber = Console.readLine("Customer VAT Number");
-        final String representativeName = Console.readLine("Representative Name");
-        final String representativeEmail = Console.readLine("Representative Email");
-        final String representativePassword = Console.readLine("Representative Password");
-        final String representativePhoneNumber = Console.readLine("Representative Phone Number");
-        final String representativePosition = Console.readLine("Representative Position");
-
-
-        try {
-            this.theController.registerCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber,
-                    representativeName, representativeEmail, representativePassword, representativePhoneNumber, representativePosition);
-        } catch (IllegalArgumentException e) {
-            System.out.println("\nERROR: " + e.getMessage() + "\n");
+        Iterable<ShowProposalDTO> showProposalList = this.controller.getListShowProposals();
+        if (!showProposalList.iterator().hasNext()) {
+            System.out.println("There are no registered Show Proposals in the system to add Figures!");
+            return false;
+        }
+        String headerModel = String.format("Select Show Proposal\n#  %-30s%-30s%-30s%-30s%-30s", "DESCRIPTION", "PROPOSAL NUMBER", "CUSTOMER NAME", "DATE", "DURATION");
+        SelectWidget<ShowProposalDTO> selectorShowProposal = new SelectWidget<>(headerModel, showProposalList, new ShowProposalDTOPrinter());
+        selectorShowProposal.show();
+        ShowProposalDTO showProposal = selectorShowProposal.selectedElement();
+        if (showProposal == null) {
+            System.out.println("Operation canceled by collaborator!");
+            return false;
+        }
+        if (addingFigures(showProposal)) {
+            this.controller.save(showProposal);
         }
         return true;
     }
 
-    @Override
-    public String headline() {return "Register Customer";}
-
-}
-```
-
-**RegisterCustomerController**
-```java
-public class RegisterCustomerController {
-    private final AuthorizationService authz = AuthzRegistry.authorizationService();
-
-    private final CustomerRepository repo = PersistenceContext.repositories().customers();
-    private final RepresentativeRepository repo2 = PersistenceContext.repositories().representatives();
-
-    private final CustomerManagementService customersvc = new CustomerManagementService(repo);
-    private final RepresentativeManagementService representativesvc = new RepresentativeManagementService(repo2, repo);
-
-    public Customer registerCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final String representativeName, final String representativeEmail, final String representativePassword,  final String representativePhoneNumber,final String representativePosition) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        Customer newCustomer = customersvc.registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, authz.session().get().authenticatedUser());
-        representativesvc.registerNewRepresentative(representativeName, representativeEmail, representativePassword, representativePhoneNumber, newCustomer, representativePosition, authz.session().get().authenticatedUser());
-        return newCustomer;
-    }
-}
-
-
-```
-**CustomerManagementService**
-```Java
-public class CustomerManagementService {
-
-    private final CustomerRepository customerRepository;
-
-    public CustomerManagementService(final CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
-    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final Customer.CustomerStatus status, final Calendar createdOn) {
-        if (customerName == null || customerName.isEmpty()) {
-            throw new IllegalArgumentException("Customer name cannot be null or empty");
+    private boolean addingFigures(ShowProposalDTO showProposal) {
+        Iterable<Figure> existingSequence = this.controller.selectExistingFigures(showProposal);
+        System.out.println("This is the sequence from the associated ShowRequest:");
+        for (Figure figure : existingSequence) {
+            System.out.print(figure.description() + " > ");
         }
-        if (customerAddress == null || customerAddress.isEmpty()) {
-            throw new IllegalArgumentException("Customer address cannot be null or empty");
-        }
-        if (customerEmail == null || customerEmail.isEmpty() || isEmailUsed(customerEmail)) {
-            throw new IllegalArgumentException("Customer email cannot be null or empty");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("Customer password cannot be null or empty");
-        }
-        if (customerPhoneNumber == null || customerPhoneNumber.isEmpty()) {
-            throw new IllegalArgumentException("Customer phone number cannot be null or empty");
-        }
-        if (customerVatNumber == null || customerVatNumber.isEmpty() || isVatNumberUsed(customerVatNumber)) {
-            throw new IllegalArgumentException("Customer VAT number cannot be null or empty");
-        }
-        if (createdBy == null) {
-            throw new IllegalArgumentException("Created by cannot be null");
-        }
-        if (status == null) {
-            throw new IllegalArgumentException("Customer status cannot be null");
-        }
-        Customer newCustomer = new Customer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, createdBy, status, createdOn);
-        return (Customer) this.customerRepository.save(newCustomer);
-    }
+        System.out.println();
 
-    public Customer registerNewCustomer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy) {
-        return registerNewCustomer(customerName, customerAddress, customerEmail, password, customerPhoneNumber, customerVatNumber, createdBy, Customer.CustomerStatus.CREATED, CurrentTimeCalendars.now());
-    }
-
-    public Optional<Customer> findCustomerById(final Long id) {
-        return this.customerRepository.findById(id);
-    }
-
-    public Iterable<Customer> findAllActiveCustomers() {
-        return this.customerRepository.findByActive();
-    }
-
-    public Iterable<Customer> findAllCustomers() {
-        return this.customerRepository.findAll();
-    }
-
-    public Customer changeCustomerStatus(final Customer customer, final Customer.CustomerStatus status) {
-        customer.changeStatus(status);
-        return (Customer) this.customerRepository.save(customer);
-    }
-
-
-    public boolean isEmailUsed(String customerEmail) {
-        return this.customerRepository.isEmailUsed(customerEmail);
-    }
-
-    public boolean isVatNumberUsed(String customerVatNumber) {
-        return this.customerRepository.isVatNumberUsed(customerVatNumber);
-    }
-}
-
-
-
-```
-**RepresentativeManagementService**
-```Java
-public class RepresentativeManagementService {
-
-    private final RepresentativeRepository representativeRepository;
-    private final CustomerRepository customerRepository;
-
-    public RepresentativeManagementService(final RepresentativeRepository representativeRepository, final CustomerRepository customerRepository) {
-        this.representativeRepository = representativeRepository;
-        this.customerRepository = customerRepository;
-    }
-
-    public void registerNewRepresentative(final String representativeName, final String representativeEmail, final Calendar createdOn, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
-        if(representativeName == null || representativeName.isEmpty()){
-            throw new IllegalArgumentException("Representative Name cannot be null or empty!");
-        }
-        if(representativeEmail == null || representativeEmail.isEmpty() || isEmailUsed(representativeEmail)){
-            throw new IllegalArgumentException("Representative Email is already in use. (Also it cannot be null or empty!)");
-        }
-        if(representativePassword == null || representativePassword.isEmpty()){
-            throw new IllegalArgumentException("Representative Password cannot be null or empty!");
-        }
-        if(representativePhoneNumber == null || representativePhoneNumber.isEmpty()){
-            throw new IllegalArgumentException("Representative Phone Number cannot be null or empty!");
-        }
-        if(associatedCustomer == null){
-            throw new IllegalArgumentException("Associated Customer cannot be null!");
-        }
-        if(representativePosition == null || representativePosition.isEmpty()){
-            throw new IllegalArgumentException("Representative Position cannot be null or empty!");
-        }
-        if(createdBy == null){
-            throw new IllegalArgumentException("Created By cannot be null!");
+        Iterable<Figure> figureList = this.controller.getListFigures(showProposal);
+        if (!figureList.iterator().hasNext()) {
+            System.out.println("There is no available Figures!");
+            return false;
         }
 
-        Representative newRepresentative = new Representative(representativeName, representativeEmail, createdOn, representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
-        associatedCustomer.addRepresentative(newRepresentative);
-        this.customerRepository.save(associatedCustomer);
-    }
-
-    public void registerNewRepresentative(final String representativeName, final String representativeEmail,final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
-        registerNewRepresentative(representativeName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
-    }
-
-    public void editRepresentative(final Representative representative, final String newName, final String newEmail, final String newPassword, final String newPhoneNumber, final String newPosition){
-        boolean edited = false;
-        if(newName == null || newName.isEmpty()){
-            throw new IllegalArgumentException("Representative Name cannot be null or empty!");
-        }else if(!newName.equals("N")){
-            edited = true;
-            representative.changeName(newName);
-        }
-        if(newEmail == null || newEmail.isEmpty() || isEmailUsed(newEmail) || isEmailUsed(newEmail)){
-            throw new IllegalArgumentException("Representative Email is already in use. (Also it cannot be null or empty!)");
-        }else if(!newEmail.equals("N")){
-            edited = true;
-            representative.changeEmail(newEmail);
-        }
-        if(newPassword == null || newPassword.isEmpty()){
-            throw new IllegalArgumentException("Representative Password cannot be null or empty!");
-        }else if(!newPassword.equals("N")){
-            edited = true;
-            representative.changePassword(newPassword);
-        }
-        if(newPhoneNumber == null || newPhoneNumber.isEmpty()){
-            throw new IllegalArgumentException("Representative Phone Number cannot be null or empty!");
-        }else if(!newPhoneNumber.equals("N")){
-            edited = true;
-            representative.changePhoneNumber(newPhoneNumber);
-        }
-        if(newPosition == null || newPosition.isEmpty()){
-            throw new IllegalArgumentException("Representative Position cannot be null or empty!");
-        }else if(!newPosition.equals("N")){
-            edited = true;
-            representative.changePosition(newPosition);
-        }
-
-        if (edited) {
-            representative.changeChangedOn();
-            this.representativeRepository.save(representative);
-        }
-    }
-
-    public boolean isEmailUsed(String representativeEmail) {
-        return this.representativeRepository.isEmailUsed(representativeEmail);
-    }
-
-    public boolean isPhoneNumberUsed(String representativePhoneNumber) {
-        return this.representativeRepository.isPhoneNumberUsed(representativePhoneNumber);
-    }
-
-    public Optional<Representative> findById(final Long id){
-        return this.representativeRepository.findById(id);
-    }
-    public Iterable<Representative> findByActive(final boolean active){
-        return this.representativeRepository.findByActive(active);
-    }
-    public Iterable<Representative> findAll(){
-        return this.representativeRepository.findAll();
-    }
-    public Iterable<Representative> findByAssociatedCustomer(final Customer associatedCustomer){
-        return this.representativeRepository.findByAssociatedCustomer(associatedCustomer);
-    }
-
-    public Representative deactivateCustomerRepresentative(final Representative representative) {
-        representative.deactivate(CurrentTimeCalendars.now());
-        return (Representative) this.representativeRepository.save(representative);
-    }
-    public Representative activateRepresentative(final Representative representative) {
-        representative.activate();
-        return (Representative) this.representativeRepository.save(representative);
-    }
-}
-
-```
-**Customer**
-```Java
-public class Customer implements AggregateRoot<Long> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long customerId;
-
-    @Column( unique = true, nullable = false)
-    private String customerName;
-
-    @Column
-    private String customerAddress;
-    @Column
-    private String customerEmail;
-    @Column
-    private String customerPassword;
-    @Column
-    private String customerPhoneNumber;
-    @Column
-    private String customerVatNumber;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Representative> representatives;
-
-    @ManyToOne
-    private SystemUser createdBy;
-    @Temporal(TemporalType.DATE)
-    private Calendar createdOn;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CustomerStatus status;
-
-
-    public enum CustomerStatus {
-        DELETED,
-        INFRINGEMENT,
-        CREATED,
-        REGULAR,
-        VIP
-    }
-
-    protected Customer() {
-    }
-
-    public Customer(final String customerName, final String customerAddress, final String customerEmail, final String password, final String customerPhoneNumber, final String customerVatNumber, final SystemUser createdBy, final CustomerStatus status, final Calendar createdOn) {
-        this.customerName = customerName;
-        this.customerAddress = customerAddress;
-        this.customerEmail = customerEmail;
-        this.customerPassword = password;
-        this.customerPhoneNumber = customerPhoneNumber;
-        this.customerVatNumber = customerVatNumber;
-        this.createdBy = createdBy;
-        this.status = status;
-        this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
-        this.representatives = new ArrayList<>();
-    }
-
-    public String customerName() {
-        return this.customerName;
-    }
-    public String customerAddress() {
-        return this.customerAddress;
-    }
-    public String customerEmail() {
-        return this.customerEmail;
-    }
-    public String customerPassword() {
-        return this.customerPassword;
-    }
-    public String customerPhoneNumber() {
-        return this.customerPhoneNumber;
-    }
-    public String customerVatNumber() {
-        return this.customerVatNumber;
-    }
-    public SystemUser createdBy() {
-        return this.createdBy;
-    }
-    public Calendar createdOn() {
-        return this.createdOn;
-    }
-
-    public CustomerStatus status() {
-        return this.status;
-    }
-    public void changeStatus(CustomerStatus newStatus) {
-        this.status = newStatus;
-    }
-    public List<Representative> representatives() {
-        return this.representatives;
-    }
-    public void addRepresentative(Representative representative) {
-        this.representatives.add(representative);
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerName='" + customerName + '\'' +
-                ", customerAddress='" + customerAddress + '\'' +
-                ", customerEmail='" + customerEmail + '\'' +
-                ", CustomerPassword='" + customerPassword + '\'' +
-                ", customerPhoneNumber='" + customerPhoneNumber + '\'' +
-                ", customerVatNumber='" + customerVatNumber + '\'' +
-                ", status=" + status + '\'' +
-                ", createdBy=" + createdBy + '\'' +
-                ", createdOn=" + createdOn + '\'' +
-                ", representatives=" + representatives +
-                '}';
-    }
-
-    @Override
-    public boolean sameAs(final Object other) {
-        if (this == other) return true;
-        if (!(other instanceof Customer)) return false;
-        Customer that = (Customer) other;
-        return customerId != null && customerId.equals(that.customerId);
-    }
-
-    @Override
-    public Long identity() {
-        return this.customerId;
-    }
-}
-```
-**Representative**
-
-```Java
-public class Representative implements AggregateRoot<Long> {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long representativeId;
-    @Column
-    private String representativeName;
-    @Column
-    private String representativeEmail;
-    @Column
-    private String representativePassword;
-    @Column
-    private String representativePhoneNumber;
-
-    @ManyToOne
-    private Customer associatedCustomer;
-    @Column
-    private String representativePosition;
-
-    private boolean active;
-    @Temporal(TemporalType.DATE)
-    private Calendar deactivatedOn;
-
-    @Temporal(TemporalType.DATE)
-    private Calendar createdOn;
-
-    @Temporal(TemporalType.DATE)
-    private Calendar changedOn;
-    @ManyToOne
-    private SystemUser createdBy;
-
-    protected Representative() {
-    }
-
-    public Representative(final String representativeName, final String representativeEmail, final Calendar createdOn, final String representativePassword, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy) {
-        this.representativeName = representativeName;
-        this.representativeEmail = representativeEmail;
-        this.representativePassword = representativePassword;
-        this.representativePhoneNumber = representativePhoneNumber;
-        this.associatedCustomer = associatedCustomer;
-        this.representativePosition = representativePosition;
-        this.createdBy = createdBy;
-        this.createdOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
-        this.changedOn = createdOn == null ? CurrentTimeCalendars.now() : createdOn;
-        this.active = true;
-    }
-
-    public String representativeName() {
-        return this.representativeName;
-    }
-    public String representativeEmail() {
-        return this.representativeEmail;
-    }
-    public String representativePassword() {
-        return this.representativePassword;
-    }
-    public String representativePhoneNumber() {
-        return this.representativePhoneNumber;
-    }
-    public Customer associatedCustomer() {
-        return this.associatedCustomer;
-    }
-    public String representativePosition() {
-        return this.representativePosition;
-    }
-    public SystemUser createdBy() {
-        return this.createdBy;
-    }
-    public Calendar createdOn() {
-        return this.createdOn;
-    }
-    public Calendar changedOn() {return this.changedOn;}
-    public boolean isActive() {
-        return this.active;
-    }
-    public Calendar deactivatedOn(){
-        return this.deactivatedOn;
-    }
-    public void deactivate(final Calendar deactivatedOn) {
-        if (deactivatedOn != null && !deactivatedOn.before(this.createdOn)) {
-            if (!this.active) {
-                throw new IllegalStateException("Cannot deactivate an inactive Drone Model!");
-            } else {
-                this.active = false;
-                this.deactivatedOn = deactivatedOn;
-            }
+        List<Figure> sequence = new ArrayList<>();
+        String response = Console.readLine("Do you wish to create a new sequence? (y/n): ");
+        if ("y".equalsIgnoreCase(response)) {
+            sequence = createNewSequence(figureList);
         } else {
-            throw new IllegalArgumentException();
+            sequence = this.controller.selectExistingFigures(showProposal);
         }
+
+        if (!sequence.isEmpty()) {
+            associateFiguresToDroneModels(showProposal, sequence);
+        }
+
+        return true;
     }
 
-    public void changeName(final String representativeName) {
-        this.representativeName = representativeName;
-    }
-    public void changeEmail(final String representativeEmail) {
-        this.representativeEmail = representativeEmail;
-    }
-    public void changePassword(final String representativePassword) {
-        this.representativePassword = representativePassword;
-    }
-    public void changePhoneNumber(final String representativePhoneNumber) {
-        this.representativePhoneNumber = representativePhoneNumber;
-    }
-    public void changePosition(final String representativePosition) {
-        this.representativePosition = representativePosition;
-    }
-    public void changeChangedOn() {
-        this.changedOn = Calendar.getInstance();
+    private List<Figure> createNewSequence(Iterable<Figure> figureList) {
+        List<Figure> sequence = new ArrayList<>();
+        Figure previousFigure = null;
+
+        while (true) {
+            String headerModel = String.format("Select a Figure\n#  %-30s%-30s%-30s%-30s", "DESCRIPTION", "CATEGORY", "ACTIVE", "EXCLUSIVE");
+            SelectWidget<Figure> selectorFigure = new SelectWidget<>(headerModel, figureList, new FigurePrinter());
+            selectorFigure.show();
+            Figure selectedFigure = selectorFigure.selectedElement();
+
+            if (selectedFigure == null) {
+                System.out.println("Figure can't be null!");
+                continue;
+            }
+
+            if (selectedFigure.equals(previousFigure)) {
+                System.out.println("You can't repeat the same Figure twice!");
+                continue;
+            }
+
+            sequence.add(selectedFigure);
+            previousFigure = selectedFigure;
+
+            for (Figure figure : sequence) {
+                System.out.print(figure.description() + " > ");
+            }
+            System.out.println();
+
+            String addMore = Console.readLine("Do you wish to add more Figures? (y/n): ");
+            if (!"y".equalsIgnoreCase(addMore)) {
+                break;
+            }
+        }
+
+        return sequence;
     }
 
-    public void activate() {
-        if (!this.isActive()) {
-            this.active = true;
-            this.deactivatedOn = null;
+
+    private void associateFiguresToDroneModels(ShowProposalDTO showProposal, List<Figure> figures) {
+        List<DroneModelDTO> listDroneModels = new ArrayList<>();
+        for (DroneListItemDTO droneListItem : showProposal.getListItemDTOS()) {
+            listDroneModels.add(droneListItem.getDroneModelDTO());
         }
+
+        if (listDroneModels.isEmpty()) {
+            System.out.println("There is no Drone Models associated with this proposal!");
+            return;
+        }
+
+        List<String> results = new ArrayList<>();
+        int sequenceNumber = 1;
+        for (Figure figure : figures) {
+            boolean addMoreDrones = true;
+
+            while (addMoreDrones) {
+                System.out.println("Select a Drone Model to associate to the figure : " + figure.description());
+                String headerModel = String.format("Select a Drone Model\n#  %-30s%-30s%-30s%-30s", "MODEL NAME", "MANUFACTURER", "STATUS", "CREATED BY");
+                SelectWidget<DroneModelDTO> selectorDrone = new SelectWidget<>(headerModel, listDroneModels, new DroneModelDTOPrinter());
+                selectorDrone.show();
+                DroneModelDTO selectedDrone = selectorDrone.selectedElement();
+
+                if (selectedDrone == null) {
+                    System.out.println("The Drone Model can't be null please select again.");
+                    continue;
+                }
+
+                if (this.controller.addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)) {
+                    results.add("Success: Figure '" + figure.description() + "' associated with Drone Model '" + selectedDrone.getModelName() + "'.");
+                } else {
+                    results.add("Error: Failed to associate Figure '" + figure.description() + "' with Drone Model '" + selectedDrone.getModelName() + "'.");
+                }
+
+                String response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ");
+                addMoreDrones = "y".equalsIgnoreCase(response);
+            }
+            sequenceNumber++;
+        }
+
+
+        System.out.println("\nResults of Figure-Drone Model Associations:");
+        results.forEach(System.out::println);
     }
+
     @Override
-    public boolean sameAs(final Object other) {
-        if (this == other) return true;
-        if (!(other instanceof Representative)) return false;
-        Representative that = (Representative) other;
-        return representativeId != null && representativeId.equals(that.representativeId);
+    public String headline() {
+        return "Add Figures to Show Proposal";
     }
-    @Override
-    public String toString() {
-        return "Representative{" +
-                "representativeName='" + representativeName + '\'' +
-                ", representativeEmail='" + representativeEmail + '\'' +
-                ", representativePassword='" + representativePassword + '\'' +
-                ", representativePhoneNumber='" + representativePhoneNumber + '\'' +
-                ", associatedCustomer=" + associatedCustomer +
-                ", representativePosition='" + representativePosition + '\'' +
-                ", active=" + active +
-                '}';
+}
+
+```
+
+**AddFiguresToProposalController**
+```java
+@UseCaseController
+public class AddFiguresToProposalController {
+
+    private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
+
+    private final FigureRepository figureRepository = PersistenceContext.repositories().figures();
+
+    private final AddFigureService proposalService = new AddFigureService(figureRepository);
+
+    private final ShowProposalDTOParser showProposalDTOParser = new ShowProposalDTOParser();
+    private final DroneModelDTOParser droneModelDTOParser = new DroneModelDTOParser();
+
+    public Iterable<Figure> getListFigures(ShowProposalDTO showProposalDTO) {
+        Optional<ShowProposal> showProposal = showProposalDTOParser.getShowProposalfromDTO(showProposalDTO);
+        return this.figureRepository.findByExclusivityAndCustomer(true, showProposal.get().showRequest().customer());
     }
-    @Override
-    public Long identity() {
-        return this.representativeId;
+
+    public Iterable<ShowProposalDTO> getListShowProposals() {
+        Iterable<ShowProposal> showProposals = this.showProposalRepository.findByStatusAndFilledDroneList(ShowStatus.PENDING);
+        return showProposalDTOParser.transformToShowProposalDTOlist(showProposals);
+     }
+
+    public boolean addFigureWithDroneModel(ShowProposalDTO showProposaldto, Figure figure, DroneModelDTO droneModel, int sequenceNumber) {
+        Optional<ShowProposal> showProposalOpt = showProposalDTOParser.getShowProposalfromDTO(showProposaldto);
+        Optional<DroneModel> droneModelOpt = droneModelDTOParser.getDroneModelFromDTO(droneModel);
+        if (proposalService.addFigureWithDroneModel(showProposalOpt.get(), figure, droneModelOpt.get(), sequenceNumber)) {
+            this.showProposalRepository.save(showProposalOpt.get());
+            return true;
+        }
+        return false;
+    }
+
+    public List<Figure> selectExistingFigures(ShowProposalDTO showProposal) {
+        Optional<ShowProposal> proposal = showProposalDTOParser.getShowProposalfromDTO(showProposal);
+        List<Figure> requestedFigures = new ArrayList<>();
+        requestedFigures.addAll(proposal.get().showRequest().requestedFigures());
+
+        return requestedFigures;
+    }
+
+    public void save(ShowProposalDTO showProposal) {
+        Optional<ShowProposal> proposal = showProposalDTOParser.getShowProposalfromDTO(showProposal);
+        showProposalRepository.save(proposal.get());
+    }
+}
+```
+**AddFigureService**
+```java
+public class AddFigureService {
+
+    private final FigureRepository figureRepository;
+
+    public AddFigureService(final FigureRepository figureRepository) {
+        this.figureRepository = figureRepository;
+    }
+
+    public boolean addFigureWithDroneModel(ShowProposal showProposal, Figure figure, DroneModel droneModel, int sequenceNumber) {
+        if (showProposal == null || figure == null || droneModel == null) {
+            throw new IllegalArgumentException("ShowProposal, Figure, or DroneModel cannot be null!");
+        }
+        if (!figureRepository.findById(figure.identity()).isPresent()) {
+            throw new IllegalArgumentException("Figure does not exist in the system!");
+        }
+
+        return showProposal.addFigureWithDroneModel(figure, droneModel, sequenceNumber);
     }
 }
 ```
 
+**ShowProposal**
+```java
+@Entity
+public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDTO> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long showProposalId;
+
+    @ManyToOne
+    private ShowRequest showRequest;
+
+    @Column(nullable = false)
+    private GeoLocation location;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar date;
+
+    @Column(nullable = false)
+    private LocalTime time;
+
+    @Column(nullable = false)
+    private int duration;
+
+    @Column(nullable = false)
+    private int totalDroneNumber;
+
+    @Column(nullable = false)
+    private double insuranceAmount;
+
+    @Temporal(TemporalType.DATE)
+    private Calendar createdOn;
+
+    @Column(nullable = false)
+    private int proposalNumber;
+
+    @ManyToOne
+    private SystemUser createdBy;
+    @Enumerated(EnumType.STRING)
+    private ShowStatus status;
+
+    @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL)
+    private List<DroneListItem> droneModelList;
+
+    @OneToMany(mappedBy = "showProposal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FigureListItem> figureListItems = new ArrayList<>();
+
+    @Column (nullable = true)
+    private String videoLink;
+
+    @ManyToOne
+    private Template template;
+
+    @Embedded
+    private Document document;
+
+    @Embedded
+    private ProposalAnswerFeedback proposalAnswerFeedback;
+
+
+    protected ShowProposal() {}
+
+    public ShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, int proposalNumber, SystemUser createdBy, Template template, double insuranceAmount) {
+        this.showRequest = validateShowRequest(showRequest);
+        this.location = validateLocation(location);
+        this.date = validateDate(date);
+        this.time = validateTime(time);
+        this.duration = validateDuration(duration);
+        this.totalDroneNumber = validateTotalDroneNumber(totalDroneNumber);
+        this.proposalNumber = validateProposalNumber(proposalNumber);
+        this.template = validateTemplate(template);
+        this.createdBy = validateCreatedBy(createdBy);
+        this.createdOn = Calendar.getInstance();
+        this.status = ShowStatus.PENDING;
+        this.droneModelList = new ArrayList<>();
+        this.figureListItems = new ArrayList<>();
+        this.document = null;
+        this.proposalAnswerFeedback = null;
+        this.insuranceAmount = insuranceAmount;
+    }
+
+    public boolean addDroneToList(DroneModel droneModel, int quantity){
+        if (droneModel == null || quantity <= 0) return false;
+
+        int currentTotal = 0;
+        for (DroneListItem item : droneModelList) {
+            currentTotal += item.numberOfDrones();
+        }
+
+        if (currentTotal + quantity > totalDroneNumber) {
+            return false;
+        }
+
+        for (DroneListItem item : droneModelList) {
+            if (item.droneModel().equals(droneModel)) {
+                return false;
+            }
+        }
+
+        DroneListItem newItem = new DroneListItem(droneModel, this, quantity);
+        droneModelList.add(newItem);
+        return true;
+    }
+
+    public int allDroneModels_Quantity(){
+        int currentTotal = 0;
+        for (DroneListItem item : droneModelList) {
+            currentTotal += item.numberOfDrones();
+        }
+        return currentTotal;
+    }
+
+    public boolean addFigureWithDroneModel(Figure figure, DroneModel droneModel, int sequenceNumber) {
+        if (figure == null || droneModel == null) {
+            throw new IllegalArgumentException("Figure or DroneModel cannot be null!");
+        }
+        for (FigureListItem item : figureListItems) {
+            if (item.figure().equals(figure) && item.droneModel().equals(droneModel)) {
+                System.out.println("This Figure is already associated with the selected DroneModel!");
+                return false;
+            }
+        }
+
+        FigureListItem newItem = new FigureListItem(figure, droneModel, this, sequenceNumber);
+        figureListItems.add(newItem);
+        return true;
+    }
+
+
+    public boolean addVideoToProposal(String video) {
+        if (isValidVideoLink(video)) {
+            this.videoLink = video;
+            return true;
+        }
+        return false;
+    }
+
+    public List<DroneListItem> droneListItem (){
+        return this.droneModelList;
+    }
+
+    public List<FigureListItem> figureListItems(){return this.figureListItems;}
+
+    public Template template() {return this.template;}
+
+    public ShowStatus status(){return  this.status;}
+
+    public ShowRequest showRequest() { return this.showRequest; }
+
+    public Calendar createdOn() { return this.createdOn; }
+
+    public GeoLocation location() { return this.location; }
+
+    public Calendar date() { return this.date; }
+
+    public int totalDroneNumber() { return this.totalDroneNumber; }
+
+    public int duration() { return this.duration; }
+
+    public int proposalNumber() { return this.proposalNumber; }
+
+    public SystemUser createdBy() { return this.createdBy; }
+
+    public LocalTime time() { return this.time; }
+
+    public String videoLink() { return this.videoLink; }
+
+    public double insuranceAmount() { return this.insuranceAmount; }
+
+    public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
+
+    public Document document(){return this.document;}
+
+    public ShowRequest validateShowRequest(ShowRequest showRequest) {
+        if (showRequest == null)
+            throw new IllegalArgumentException("ShowRequest cannot be null");
+        return showRequest;
+    }
+
+    public GeoLocation validateLocation(GeoLocation location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location cannot be null");
+        }
+
+        double latitude = location.latitude();
+        double longitude = location.longitude();
+        int altitude = location.altitude();
+
+        if (latitude < -90 || latitude > 90) {
+            throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees.");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees.");
+        }
+
+        if (altitude <= 0) {
+            throw new IllegalArgumentException("Altitude must be a positive number.");
+        }
+        return location;
+    }
+
+    public Calendar validateDate(Calendar date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        return date;
+    }
+
+    public LocalTime validateTime(LocalTime time) {
+        if (time == null)
+            throw new IllegalArgumentException("Time cannot be null");
+        return time;
+    }
+
+    public int validateDuration(Integer duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("Duration cannot be null.");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration must be greater than 0.");
+        }
+        return duration;
+    }
+
+    public int validateTotalDroneNumber(Integer totalDroneNumber) {
+        if (totalDroneNumber == null) {
+            throw new IllegalArgumentException("Total drone number cannot be null.");
+        }
+        if (totalDroneNumber <= 0) {
+            throw new IllegalArgumentException("Total drone number must be greater than 0.");
+        }
+        return totalDroneNumber;
+    }
+
+    public int validateProposalNumber(int proposalNumber) {
+        if (proposalNumber < 0)
+            throw new IllegalArgumentException("Proposal number cannot be negative");
+        return proposalNumber;
+    }
+
+    public SystemUser validateCreatedBy(SystemUser createdBy) {
+        if (createdBy == null)
+            throw new IllegalArgumentException("CreatedBy (SystemUser) cannot be null");
+        return createdBy;
+    }
+
+    public boolean isValidVideoLink(String videoLink) {
+        if (videoLink == null) {
+            throw new IllegalArgumentException("Video link cannot be null");
+        }
+        final String videoLinkPattern = "^(https?://|www\\.)[a-zA-Z0-9][-a-zA-Z0-9&',./_=?%#:~]*$";
+        return videoLink.matches(videoLinkPattern);
+    }
+
+    public Template validateTemplate(Template template) {
+        if (template == null) {
+            throw new IllegalArgumentException("Template cannot be null");
+        }
+        return template;
+    }
+    public boolean updateProposalAnswer(ProposalAnswerFeedback answer){
+        if(answer != null & answer.answer() != null){
+            this.proposalAnswerFeedback = answer;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean markShowProposal(){
+        if(proposalAnswerFeedback != null && proposalAnswerFeedback.answer() == ProposalAnswerFeedback.Answer.ACCEPTED){
+            status = ShowStatus.ACCEPTED;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addDocument(Document document){
+        if(document != null){
+            this.document = document;
+            return true;
+        }
+        return false;
+    }
+
+
+    public void changeStatus(ShowStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status cannot be null");
+        }
+        this.status = status;
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof ShowProposal)) return false;
+        ShowProposal that = (ShowProposal) other;
+        return showProposalId != null && showProposalId.equals(that.showProposalId);
+    }
+
+    @Override
+    public Long identity() {
+        return this.showProposalId;
+    }
+
+    @Override
+    public ShowProposalDTO toDTO() {
+        String finalContent = (document != null) ? document.finalContent() : null;
+        String code = (document != null) ? document.code() : null;
+        return new ShowProposalDTO(showProposalId,showRequest.identity(),showRequest().customer().customerName().toString(),showRequest.description(), location, date,
+                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), finalContent, code, proposalAnswerFeedback);
+    }
+}
+```
+
+**FigureListItem**
+```java
+@Entity
+public class FigureListItem {
+
+    @EmbeddedId
+    private FigureListItemID figureListItemID;
+
+    @ManyToOne
+    @MapsId("showProposalId")
+    private ShowProposal showProposal;
+
+    @ManyToOne
+    @MapsId("figureId")
+    private Figure figure;
+
+    @ManyToOne
+    @MapsId("droneModelId")
+    private DroneModel droneModel;
+
+
+    protected FigureListItem() {
+    }
+
+    public FigureListItem(Figure figure, DroneModel droneModel, ShowProposal showProposal, int sequenceNumber) {
+        this.figure = figure;
+        this.droneModel = droneModel;
+        this.showProposal = showProposal;
+        this.figureListItemID = new FigureListItemID(figure.identity(), droneModel.identity(), showProposal.identity(), sequenceNumber);
+    }
+
+    public ShowProposal showProposal() {
+        return showProposal;
+    }
+
+    public Figure figure() {
+        return figure;
+    }
+
+    public DroneModel droneModel() {
+        return droneModel;
+    }
+
+    public FigureListItemID figureListItemID(){return this.figureListItemID;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FigureListItem that = (FigureListItem) o;
+        return Objects.equals(showProposal, that.showProposal) && Objects.equals(droneModel, that.droneModel) && Objects.equals(figure, that.figure);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(showProposal, droneModel, figure);
+    }
+}
+```
+
+**FigureListItemID**
+```java
+@Embeddable
+public class FigureListItemID implements Serializable {
+
+    private Long figureId;
+    private Long droneModelId;
+    private Long showProposalId;
+    private int sequenceNumber;
+
+    protected FigureListItemID() {
+
+    }
+
+    public FigureListItemID(Long figureId, Long droneModelId, Long showProposalId, int sequenceNumber) {
+        this.figureId = figureId;
+        this.droneModelId = droneModelId;
+        this.showProposalId = showProposalId;
+        this.sequenceNumber = sequenceNumber;
+    }
+
+
+    public Long figureId() {
+        return figureId;
+    }
+
+    public Long droneModelId() {
+        return droneModelId;
+    }
+
+    public Long showProposalId() {
+        return showProposalId;
+    }
+
+    public int sequenceNumber(){return this.sequenceNumber;}
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FigureListItemID that = (FigureListItemID) o;
+        return Objects.equals(figureId, that.figureId) &&
+                Objects.equals(droneModelId, that.droneModelId) &&
+                Objects.equals(showProposalId, that.showProposalId) &&
+                Objects.equals(sequenceNumber, that.sequenceNumber);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(figureId, droneModelId, showProposalId, sequenceNumber);
+    }
+}
+```
 
 ## 6. Integration/Demonstration
 
-**Registering Customer**
+**Creating a new Sequence**
 
-![Registering-customer](images/demonstration/menu.png)
+![Create-a-new-sequence](images/demonstration/create_a_new_sequence.png)
 
-![Registering-customer](images/demonstration/registerCustomer.png)
+**Associating a Drone Model to a Figure**
+
+![Associate-a-DroneModel](images/demonstration/associate_figure_to_drone.png)
 
 **Database Result**
 
-![Database](images/demonstration/database.png)
+![Database](images/demonstration/bddad_figure_drone.png)

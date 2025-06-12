@@ -104,7 +104,7 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     public Iterable<ShowProposal> findByStatusAndFilledDroneList(ShowStatus status) {
         return entityManager()
                 .createQuery(
-                        "SELECT sp FROM ShowProposal sp WHERE sp.status = :status AND SIZE(sp.droneModelList) > 0",
+                        "SELECT sp FROM ShowProposal sp WHERE sp.status = :status AND SIZE(sp.droneModelList) > 0 AND  SIZE(sp.figureListItems) = 0",
                         ShowProposal.class)
                 .setParameter("status", status)
                 .getResultList();

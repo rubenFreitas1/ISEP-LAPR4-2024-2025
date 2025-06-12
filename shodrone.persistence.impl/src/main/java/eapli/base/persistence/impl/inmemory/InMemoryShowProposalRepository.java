@@ -107,7 +107,7 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
 
     @Override
     public Iterable<ShowProposal> findByStatusAndFilledDroneList(ShowStatus status) {
-        return this.match(e -> e.status().equals(status) && e.allDroneModels_Quantity() > 0);
+        return this.match(e -> e.status().equals(status) && e.allDroneModels_Quantity() > 0 && e.figureListItems().isEmpty());
     }
 
     @Override

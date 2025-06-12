@@ -30,7 +30,7 @@ public class AddFiguresToProposalUI extends AbstractUI {
         selectorShowProposal.show();
         ShowProposalDTO showProposal = selectorShowProposal.selectedElement();
         if (showProposal == null) {
-            System.out.println("Show Proposal cannot be null!");
+            System.out.println("Operation canceled by collaborator!");
             return false;
         }
         if (addingFigures(showProposal)) {
@@ -40,6 +40,13 @@ public class AddFiguresToProposalUI extends AbstractUI {
     }
 
     private boolean addingFigures(ShowProposalDTO showProposal) {
+        Iterable<Figure> existingSequence = this.controller.selectExistingFigures(showProposal);
+        System.out.println("This is the sequence from the associated ShowRequest:");
+        for (Figure figure : existingSequence) {
+            System.out.print(figure.description() + " > ");
+        }
+        System.out.println();
+
         Iterable<Figure> figureList = this.controller.getListFigures(showProposal);
         if (!figureList.iterator().hasNext()) {
             System.out.println("There is no available Figures!");
@@ -106,10 +113,11 @@ public class AddFiguresToProposalUI extends AbstractUI {
         }
 
         if (listDroneModels.isEmpty()) {
-            System.out.println("Não existem modelos de drones associados a esta proposta de show!");
+            System.out.println("There is no Drone Models associated with this proposal!");
             return;
         }
 
+        List<String> results = new ArrayList<>();
         int sequenceNumber = 1;
         for (Figure figure : figures) {
             boolean addMoreDrones = true;
@@ -127,9 +135,9 @@ public class AddFiguresToProposalUI extends AbstractUI {
                 }
 
                 if (this.controller.addFigureWithDroneModel(showProposal, figure, selectedDrone, sequenceNumber)) {
-                    System.out.println("Figure associated with success to Drone Model : " + selectedDrone.getModelName());
+                    results.add("Success: Figure '" + figure.description() + "' associated with Drone Model '" + selectedDrone.getModelName() + "'.");
                 } else {
-                    System.out.println("Failed to associate Figure to Drone Model : " + selectedDrone.getModelName());
+                    results.add("Error: Failed to associate Figure '" + figure.description() + "' with Drone Model '" + selectedDrone.getModelName() + "'.");
                 }
 
                 String response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ");
@@ -137,6 +145,10 @@ public class AddFiguresToProposalUI extends AbstractUI {
             }
             sequenceNumber++;
         }
+
+
+        System.out.println("\nResults of Figure-Drone Model Associations:");
+        results.forEach(System.out::println);
     }
 
     @Override

@@ -6,26 +6,38 @@ skinparam shadowing false
 actor "CRM Collaborator" as crmCollaborator
 participant "System" as system
 
-title System Sequence Diagram - US312
+title System Sequence Diagram - Add figures to a proposal
 
 == Add figures to a proposal ==
 activate crmCollaborator
 
-crmCollaborator -> system : Selects proposal to edit
+crmCollaborator -> system : Wants to add figures to a show proposal
 activate system
-system --> crmCollaborator : Returns list of proposals
-deactivate system
-crmCollaborator -> system : Wants to add a figure to a proposal
-activate system
-
-system --> crmCollaborator :Shows list of active figures
-deactivate system
-crmCollaborator -> system : Selects figure/s to add
-
-activate system
-system --> crmCollaborator : Confirm Customer Added figure/s
+system --> crmCollaborator : Shows list of pending show proposals
 deactivate system
 
+crmCollaborator -> system : Selects a show proposal
+activate system
+system --> crmCollaborator : Do you want to create a new figure sequence? (y/n)
+deactivate system
 
+crmCollaborator -> system : Responds (y/n)
+activate system
+
+alt User chooses 'y'
+    loop While user wants to add figures
+        system --> crmCollaborator : Shows list of figures
+        deactivate system
+
+        crmCollaborator -> system : Selects figure(s) to add
+        activate system
+    end
+else User chooses 'n'
+    system --> crmCollaborator : Assign figure to a drone model
+crmCollaborator -> system : Selects drone model
+end
+
+system --> crmCollaborator : Confirmation of operation
+deactivate system
 
 @enduml

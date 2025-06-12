@@ -130,7 +130,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
             throw new IllegalArgumentException("Figure or DroneModel cannot be null!");
         }
         for (FigureListItem item : figureListItems) {
-            if (item.figure().equals(figure) && item.droneModel().equals(droneModel)) {
+            if (item.figure().equals(figure) && item.droneModel().equals(droneModel) &&  item.figureListItemID().sequenceNumber() == sequenceNumber) {
                 System.out.println("This Figure is already associated with the selected DroneModel!");
                 return false;
             }
