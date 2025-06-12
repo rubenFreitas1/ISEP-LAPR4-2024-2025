@@ -76,22 +76,16 @@ package "**«Aggregate» Drone**" #DDDDDD {
 
         entity "Drone" as entity_drone <<entity root>> {
         }
-
         class "SerialNumber" as vObject_serialNumber <<id>> <<(V, #7E84F7)>> {
         }
         class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
         }
-
         class "DroneStatus" as vObject_droneStatus <<(V, #7E84F7)>> {
             Active
             Inactive
         }
 
-
-
-
         entity_drone *--down vObject_droneStatus
-
         entity_drone *--down vObject_dslCode
         entity_drone *--down vObject_serialNumber
 }
@@ -100,30 +94,22 @@ package "**«Aggregate» DroneModel**" #DDDDDD {
 
     entity "DroneModel" as entity_droneModel  <<entity root>> {
     }
-
     entity "DroneWindBehavior" as entity_windBehavior {
     }
-
     entity "Wind Interval" as entity_windInterval {
     }
-
     class "ModelName" as vObject_modelName  <<(V, #7E84F7)>> {
     }
-
     class "Manufacturer" as vObject_manufacturer <<(V, #7E84F7)>> {
     }
-
     class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
                         True
                         False
     }
-
     class "Max" as vObject_max <<(V, #7E84F7)>> {
     }
-
     class "Min" as vObject_min <<(V, #7E84F7)>> {
     }
-
     class "Tolerance" as vObject_tolerance <<(V, #7E84F7)>> {
     }
 
@@ -138,14 +124,84 @@ package "**«Aggregate» DroneModel**" #DDDDDD {
 
 }
 
+package "**«Aggregate» ShowProposal**" #DDDDDD {
+
+    entity "ShowProposal" as entity_showProposal  <<entity root>> {
+    }
+    class "Document" as vObject_document <<(V, #7E84F7)>> {
+    }
+    class "DroneListItem" as entity_droneListItem {
+    }
+    class "FigureListItem" as entity_figureListItem {
+    }
+    class "ProposalAnswerFeedback" as vObject_proposalFeedback <<(V, #7E84F7)>>{
+    }
+    class "GeoLocation" as vObject_geoLocation <<(V, #7E84F7)>> {
+    }
+    class "Date" as vObject_date <<(V, #7E84F7)>> {
+    }
+    class "Time" as vObject_time <<(V, #7E84F7)>> {
+    }
+    class "Duration" as vObject_duration <<(V, #7E84F7)>> {
+    }
+    class "NumberOfDrones" as vObject_numberOfDrones <<(V, #7E84F7)>> {
+    }
+    class "ProposalNumber" as vObject_proposalNumber <<(V, #7E84F7)>> {
+    }
+    class "InsuranceAmount" as vObject_insuranceAmount <<(V, #7E84F7)>> {
+    }
+    class "ShowStatus" as vObject_showStatus <<(V, #7E84F7)>> {
+        Accepted
+        Declined
+        Pending
+        Sent
+        Answered
+    }
+    class "videoLink" as vObject_videoLink <<(V, #7E84F7)>> {
+    }
+    class "Sequence" as vObject_sequence <<(V, #7E84F7)>> {
+    }
+    class "quantityDroneModel" as vObject_quantityDroneModel <<(V, #7E84F7)>> {
+    }
+
+    entity_showProposal *-- vObject_date
+    entity_showProposal *-- vObject_duration
+    entity_showProposal *-- vObject_insuranceAmount
+    entity_showProposal *-- vObject_proposalNumber
+    entity_showProposal *-- vObject_numberOfDrones
+    entity_showProposal *-- vObject_document
+    entity_showProposal *-- vObject_time
+    entity_showProposal *-- vObject_showStatus
+    entity_showProposal *-- vObject_videoLink
+    entity_showProposal *-- vObject_geoLocation
+    entity_showProposal *-- vObject_proposalFeedback
+
+    entity_showProposal "1"-->"1" entity_figureListItem: contains
+    entity_showProposal "1"-->"1" entity_droneListItem: contains
+
+    entity_figureListItem *-- vObject_sequence
+    entity_droneListItem *-- vObject_quantityDroneModel
+
+}
+
+package "**«Aggregate» Template**" #DDDDDD {
+    entity "Template" as entity_template  <<entity root>> {
+    }
+    class "Name" as vObject_templateName <<(V, #7E84F7)>> {
+    }
+    class "Content" as vObject_content <<(V, #7E84F7)>> {
+    }
+
+    entity_template *-- vObject_templateName
+    entity_template *-- vObject_content
+
+}
 
 
 package "**«Aggregate» ShowRequest**" #DDDDDD {
 
     entity "ShowRequest" as entity_showRequest  <<entity root>> {
     }
-
-
     class "RequestDate" as vObject_requestDate <<(V, #7E84F7)>> {
     }
     class "Place" as vObject_showPlace <<(V, #7E84F7)>> {
@@ -156,54 +212,18 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
     }
     class "RequestedDuration" as vObject_requestedDuration <<(V, #7E84F7)>> {
     }
-
     class "RequestStatus" as vObject_requestStatus <<(V, #7E84F7)>> {
         Accepted
         Declined
         Pending
     }
-    entity "ShowProposal" as entity_showProposal{
-    }
-    class "ProposedNumberDrones" as vObject_proposedNumberDrones <<(V, #7E84F7)>> {
-    }
-    class "ProposedDuration" as vObject_proposedDuration <<(V, #7E84F7)>> {
-    }
-
-    class "AcceptanceDate" as vObject_acceptanceDate <<(V, #7E84F7)>> {
-    }
-
-    entity "ProposedFigures" as entity_proposedFigures{
-        }
-
-    class "ProposalStatus" as vObject_proposalStatus <<(V, #7E84F7)>> {
-        Accepted
-        Declined
-        Pending
-        Testing
-    }
-
-    entity "ShowSchedule" as entity_showSchedule  {
-    }
-
-    class "ShowDate" as vObject_showDate <<(V, #7E84F7)>> {
-    }
-    class "IsTested" as vObject_isTested <<(V, #7E84F7)>> {
-    }
-
     entity "RequestedFigures" as entity_requestedFigures{
     }
     class "Sequence" as vObject_sequence <<(V, #7E84F7)>> {
     }
 
-    class "ProposedSequence" as vObject_proposedSequence <<(V, #7E84F7)>> {
-    }
-
 
     entity_showRequest "1"-->"1" entity_requestedFigures: "contains"
-
-    entity_showProposal "1"-->"1" entity_proposedFigures: "contains"
-    entity_showProposal *--down vObject_acceptanceDate
-    entity_showProposal *--down vObject_proposalStatus
 
     entity_showRequest *--down vObject_showPlace
     entity_showRequest *--down vObject_requestedShowDate
@@ -211,17 +231,6 @@ package "**«Aggregate» ShowRequest**" #DDDDDD {
     entity_showRequest *--down vObject_requestedDuration
     entity_showRequest *--down vObject_requestStatus
     entity_showRequest *--down vObject_requestDate
-
-    entity_showRequest "1"<--"1..*" entity_showProposal: "responds to"
-
-    entity_showProposal *--down vObject_proposedDuration
-    entity_showProposal *--down vObject_proposedNumberDrones
-    entity_proposedFigures *--down vObject_proposedSequence
-
-    entity_showSchedule *--down vObject_showDate
-    entity_showSchedule *--down vObject_isTested
-
-    entity_showProposal "1"<-- "1" entity_showSchedule: "comes from"
 
     entity_requestedFigures *--down vObject_sequence
 }
@@ -237,18 +246,14 @@ package "**«Aggregate» Figure**" #DDDDDD {
         }
         class "CreatedBy" as vObject_createdBy <<(V, #7E84F7)>> {
         }
-
         class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
         }
-
         class "Keywords" as vObject_keywords <<(V, #7E84F7)>> {
         }
-
         class "Exclusive" as vObject_exclusive <<(V, #7E84F7)>> {
             True
             False
         }
-
         class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
                     True
                     False
@@ -268,13 +273,10 @@ package FigureCategory #DDDDDD {
 
         entity "FigureCategory" as entity_figureCategory  <<entity root>> {
         }
-
         class "Description" as vObject_description <<(V, #7E84F7)>> {
         }
-
         class "Name" as vObject_name <<(V, #7E84F7)>> {
         }
-
         class "isActive" as vObject_isActive <<(V, #7E84F7)>> {
             True
             False
@@ -284,25 +286,17 @@ package FigureCategory #DDDDDD {
         entity_figureCategory *--down vObject_name
         entity_figureCategory *--down vObject_isActive
 
-
 }
 
-
-
-entity_requestedFigures "*" -->"1..*" entity_figure:"contains"
-entity_proposedFigures "*" -->"1..*" entity_figure:"contains"
-
-entity_figure "*"-->"1" entity_customer: "created by"
-
-entity_drone "1..*"-->"*" entity_figure: "used in"
-
+entity_showRequest "1"<-down---"1..*" entity_showProposal: "responds to"
 entity_customer "1"-down>"1..*" entity_showRequest: "requests"
-
-
-
-entity_droneModel "1"<-up"*" entity_drone: "contains"
-
-
-entity_figureCategory "1"<--- "*" entity_figure: "can be"
+entity_figure "*"-->"1" entity_customer: "created by"
+entity_figureListItem "*" --down> "1..*" entity_figure:"contains"
+entity_requestedFigures "*" -->"1..*" entity_figure:"contains"
+entity_figureCategory "1"<--down- "*" entity_figure: "can be"
+entity_droneListItem "*" --up-> "1..*" entity_droneModel: "contains"
+entity_drone "1..*"-->"*" entity_figure: "used in"
+entity_droneModel "1"<--up "*" entity_drone: "contains"
+entity_template "1" <-up--- "*" entity_showProposal: "contains"
 
 @enduml
