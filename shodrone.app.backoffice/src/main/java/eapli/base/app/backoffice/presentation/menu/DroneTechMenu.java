@@ -5,7 +5,7 @@ import eapli.base.app.backoffice.presentation.droneManagement.ListActiveDronesAc
 import eapli.base.app.backoffice.presentation.droneManagement.RemoveDroneAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.AddDroneModelAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.ListDroneModelsAction;
-import eapli.base.app.backoffice.presentation.figureManagement.DeployPluginAction;
+import eapli.base.app.backoffice.presentation.pluginManagement.DeployPluginAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 

@@ -1,4 +1,4 @@
-package eapli.base.app.backoffice.presentation.figureManagement;
+package eapli.base.app.backoffice.presentation.pluginManagement;
 
 import eapli.framework.actions.Action;
 

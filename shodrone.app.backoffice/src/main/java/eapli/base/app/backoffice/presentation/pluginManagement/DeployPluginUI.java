@@ -1,4 +1,4 @@
-package eapli.base.app.backoffice.presentation.figureManagement;
+package eapli.base.app.backoffice.presentation.pluginManagement;
 
 import eapli.base.pluginManagementService.application.DeployPluginController;
 import eapli.base.pluginManagementService.domain.PluginType;
@@ -21,9 +21,9 @@ public class DeployPluginUI extends AbstractUI {
     private String requestPluginName() {
         String description;
         do {
-            description = Console.readLine("Enter a description for the show:");
+            description = Console.readLine("Enter a name for the plugin:");
             if (description.trim().isEmpty()) {
-                System.out.println("Description cannot be empty. Please enter a valid description.");
+                System.out.println("Name cannot be empty. Please enter a valid name.");
             }
         } while (description.trim().isEmpty());
 
@@ -33,7 +33,7 @@ public class DeployPluginUI extends AbstractUI {
     private String requestPluginDescription() {
         String description;
         do {
-            description = Console.readLine("Enter a description for the show:");
+            description = Console.readLine("Enter a description for the plugin:");
             if (description.trim().isEmpty()) {
                 System.out.println("Description cannot be empty. Please enter a valid description.");
             }
