@@ -1,14 +1,9 @@
 package eapli.base.app.backoffice.presentation.showProposalManagement;
 
 import eapli.base.app.backoffice.presentation.customerManagement.CustomerDTOPrinter;
-import eapli.base.app.backoffice.presentation.customerManagement.CustomerPrinter;
-import eapli.base.app.backoffice.presentation.showRequestManagement.ShowRequestPrinter;
-import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.dto.CustomerDTO;
 import eapli.base.showProposalManagement.application.AddVideoProposalController;
-import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.dto.ShowProposalDTO;
-import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
