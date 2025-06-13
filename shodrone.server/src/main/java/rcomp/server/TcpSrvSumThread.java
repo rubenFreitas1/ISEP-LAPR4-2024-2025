@@ -160,8 +160,22 @@ class TcpSrvSumThread implements Runnable {
                     }
 
                     ShowProposalDTO dto = opt.get().toDTO();
+                    Gson gson1 = new GsonBuilder()
+                            .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                                @Override
+                                public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                    return LocalTime.parse(json.getAsString());
+                                }
+                            })
+                            .registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
+                                @Override
+                                public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                                    return new JsonPrimitive(src.toString());
+                                }
+                            })
+                            .create();
                     response.setResponseStatus("200 OK");
-                    response.setContent(new Gson().toJson(dto), "application/json");
+                    response.setContent(gson1.toJson(dto), "application/json");
                     break;
                 default:
                     response.setResponseStatus("404 Not Found");

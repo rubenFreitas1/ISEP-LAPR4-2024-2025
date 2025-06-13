@@ -182,10 +182,11 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
     public double insuranceAmount() { return this.insuranceAmount; }
 
+    public  Long showProposalId() { return this.showProposalId; }
+
     public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
 
     public Document document(){return this.document;}
-
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
         if (showRequest == null)
             throw new IllegalArgumentException("ShowRequest cannot be null");
@@ -324,6 +325,6 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         String finalContent = (document != null) ? document.finalContent() : null;
         String code = (document != null) ? document.code() : null;
         return new ShowProposalDTO(showProposalId,showRequest.identity(),showRequest().customer().customerName().toString(),showRequest.description(), location, date,
-                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList,template.name(), finalContent, code, proposalAnswerFeedback);
+                time,duration,totalDroneNumber,insuranceAmount,createdOn,proposalNumber,createdBy.name().toString(), status,videoLink,droneModelList, figureListItems, template.name(), finalContent, code, proposalAnswerFeedback);
     }
 }

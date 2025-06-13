@@ -1,6 +1,7 @@
 package eapli.base.showProposalManagement.dto;
 
 import eapli.base.showProposalManagement.domain.DroneListItem;
+import eapli.base.showProposalManagement.domain.FigureListItem;
 import eapli.base.showProposalManagement.domain.ProposalAnswerFeedback;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowStatus;
@@ -31,6 +32,7 @@ public class ShowProposalDTO{
     private String videoLink;
 
     private List<DroneListItemDTO> listItemDTOS;
+    private List<FigureListItemDTO> listFigureDTOS;
     private String templateName;
     private String documentContent;
     private String documentCode;
@@ -38,7 +40,7 @@ public class ShowProposalDTO{
 
     public ShowProposalDTO(){}
 
-    public ShowProposalDTO(Long showProposalId, Long showRequestId, String customerName, String showRequestDescription, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, double insuranceAmount, Calendar createdOn, int proposalNumber, String createdBy, ShowStatus status, String videoLink, List<DroneListItem> listDroneModels, String templateName, String documentContent, String documentCode, ProposalAnswerFeedback proposalAnswerFeedback) {
+    public ShowProposalDTO(Long showProposalId, Long showRequestId, String customerName, String showRequestDescription, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, double insuranceAmount, Calendar createdOn, int proposalNumber, String createdBy, ShowStatus status, String videoLink, List<DroneListItem> listDroneModels, List<FigureListItem> listFigures, String templateName, String documentContent, String documentCode, ProposalAnswerFeedback proposalAnswerFeedback) {
         this.showProposalId = showProposalId;
         this.showRequestId = showRequestId;
         this.customerName = customerName;
@@ -55,6 +57,7 @@ public class ShowProposalDTO{
         this.status = status;
         this.videoLink = videoLink;
         this.listItemDTOS = convertDroneItemsToDTO(listDroneModels);
+        this.listFigureDTOS = convertFiguresToDTO(listFigures);
         this.templateName = templateName;
         this.documentContent = documentContent;
         this.documentCode = documentCode;
@@ -141,7 +144,12 @@ public class ShowProposalDTO{
         return proposalAnswerFeedback;
     }
 
+    public List<FigureListItemDTO> getListFigureDTOS() { return this.listFigureDTOS; }
+
     private List<DroneListItemDTO> convertDroneItemsToDTO(List<DroneListItem> droneModelList){
         return  droneModelList.stream().map(DroneListItem::toDTO).collect(Collectors.toList());
+    }
+    private List<FigureListItemDTO> convertFiguresToDTO(List<FigureListItem> figureList){
+        return figureList.stream().map(FigureListItem::toDTO).collect(Collectors.toList());
     }
 }

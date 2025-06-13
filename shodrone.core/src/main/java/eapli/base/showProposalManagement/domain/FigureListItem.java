@@ -2,11 +2,13 @@ package eapli.base.showProposalManagement.domain;
 
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showProposalManagement.dto.FigureListItemDTO;
+import eapli.framework.representations.dto.DTOable;
 import jakarta.persistence.*;
 
 import java.util.Objects;
  @Entity
-public class FigureListItem {
+public class FigureListItem implements DTOable<FigureListItemDTO> {
 
     @EmbeddedId
     private FigureListItemID figureListItemID;
@@ -60,4 +62,10 @@ public class FigureListItem {
     public int hashCode() {
         return Objects.hash(showProposal, droneModel, figure);
     }
-}
+
+
+     @Override
+     public FigureListItemDTO toDTO() {
+         return new FigureListItemDTO(figure.figureId(), showProposal.showProposalId(), figure.description());
+     }
+ }
