@@ -6,6 +6,8 @@ import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.showProposalManagement.LPROGConnection.ProposalWriter;
+import eapli.base.showProposalManagement.domain.Document;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.domain.Template;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
@@ -24,6 +26,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -39,6 +44,8 @@ class ShowProposalManagementServiceTest {
 
     @InjectMocks
     private ShowProposalManagementService service;
+
+    private TemplateManagementService templateService;
 
     private ShowProposal proposal;
     private DroneModel modelA;
@@ -82,6 +89,7 @@ class ShowProposalManagementServiceTest {
         template = new Template("template", "content");
         proposal = new ShowProposal(request, location, Calendar.getInstance(), LocalTime.now(),30, 5,1, user, template, 50);
         modelA = new DroneModel("DJI", "Phantom 4", Calendar.getInstance(), user,behavior);
+
     }
 
     @Test
@@ -140,5 +148,41 @@ class ShowProposalManagementServiceTest {
         assertNotNull(result);
         assertEquals(expected, result);
         verify(repo).findByPendingAndEmptyVideo(customer, status);
+    }
+
+    @Test
+    void findByCompletedProposal_returnsCompletedProposals() {
+        List<ShowProposal> expected = List.of(proposal);
+        when(repo.findByCompletedProposal()).thenReturn(expected);
+
+        Iterable<ShowProposal> result = service.findByCompletedProposal();
+
+        assertNotNull(result);
+        assertEquals(expected, result);
+        verify(repo).findByCompletedProposal();
+    }
+
+
+    @Test
+    void sendShowProposal_failsWhenProposalWriterReturnsNull() {
+        Template invalidTemplate = new Template("invalid", "");
+        ShowProposal invalidProposal = new ShowProposal(
+                proposal.showRequest(),
+                proposal.location(),
+                proposal.date(),
+                proposal.time(),
+                proposal.duration(),
+                proposal.totalDroneNumber(),
+                proposal.proposalNumber(),
+                user,
+                invalidTemplate,
+                proposal.insuranceAmount()
+        );
+
+        boolean result = service.sendShowProposal(invalidProposal);
+
+        assertFalse(result);
+        assertNotEquals(ShowStatus.SENT, invalidProposal.status());
+        verify(repo, never()).save(any(ShowProposal.class));
     }
 }

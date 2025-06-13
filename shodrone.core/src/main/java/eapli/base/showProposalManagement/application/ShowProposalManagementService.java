@@ -75,7 +75,7 @@ public class ShowProposalManagementService {
         }
     }
 
-    private String generateUniqueCode() {
+    public String generateUniqueCode() {
         Random random = new Random();
         String code;
 
