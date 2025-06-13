@@ -1,84 +1,34 @@
 grammar DroneProgramingLanguage;
 
-// Parser Rules
-program: item* EOF;
+start: drone_version type_section variables_section instructions_section EOF;
 
-item: variableDeclaration
-    | instruction
-    | textLine
-    ;
+drone_version: (WORDS | DECIMAL)+ 'programming language version' DECIMAL NEWLINE*;
 
-textLine: token* NEWLINE;
+type_section: 'Types' NEWLINE* type_declaration*;
+type_declaration: WORDS+ '-' type_value NEWLINE*;
+type_value: tuple | DECIMAL | WORDS;
 
-token: IDENTIFIER
-     | INTEGER
-     | FLOAT
-     | STRING
-     | PI
-     | PUNCT
-     | SPECIAL
-     ;
+variables_section: 'Variables' NEWLINE* variable_declaration*;
+variable_declaration: WORDS+ (WORDS+)? '=' expression ';' NEWLINE*;
 
-variableDeclaration: dataType IDENTIFIER '=' value ';';
+instructions_section: 'Instructions' NEWLINE* instruction*;
+instruction: WORDS+ '(' argument_list? ')' ';' NEWLINE*;
 
-instruction: IDENTIFIER '(' parameterList? ')' ';';
+argument_list: argument (', ' argument)*;
+argument: expression | placeholder | tuple | array;
 
-parameterList: parameter (',' parameter)*;
+placeholder: '<' WORDS+ '>';
 
-parameter: value;
+expression: term (op term)*;
+term: DECIMAL | WORDS | 'PI' | tuple | array;
 
-value: coordinate
-     | coordinateArray
-     | vectorExpression
-     | numericValue
-     | stringValue
-     | IDENTIFIER
-     ;
+tuple: '(' DECIMAL (', ' DECIMAL)* ')';
+array: '(' tuple (', ' tuple)* ')';
 
-coordinate: '(' numericValue ',' numericValue ',' numericValue ')';
+op: '+' | '-' | '*' | '/';
 
-coordinateArray: '(' '(' coordinateList ')' ')';
-
-coordinateList: coordinate (',' coordinate)*;
-
-vectorExpression: coordinate '-' coordinate;
-
-numericValue: mathExpression;
-
-mathExpression: mathTerm (('+'|'-') mathTerm)*;
-
-mathTerm: mathFactor (('*'|'/') mathFactor)*;
-
-mathFactor: FLOAT
-          | INTEGER
-          | PI
-          | IDENTIFIER
-          | '(' mathExpression ')'
-          ;
-
-stringValue: STRING;
-
-dataType: 'Coord' | 'Point' | 'Position'
-        | 'Vector' | 'Direction'
-        | 'Speed' | 'LinearVelocity'
-        | 'RotSpeed' | 'AngularVelocity'
-        | 'Duration' | 'Time'
-        | 'Length' | 'Distance'
-        | 'Color'
-        ;
-
-// Lexer Rules
-IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-FLOAT: '-'? [0-9]+ '.' [0-9]+;
-INTEGER: '-'? [0-9]+;
-STRING: '"' (~["\r\n])* '"';
-PI: 'PI';
-
-// Special characters commonly found in documentation
-SPECIAL: [<>];
-PUNCT: [.,;:()\-/=];
-
-NEWLINE: '\r'? '\n';
-
-// Whitespace
+DECIMAL: [\-]?[0-9]+ ('.' [0-9]+)?;
+WORDS: [a-zA-Z_][a-zA-Z_0-9]*;
+NEWLINE: [\r\n]+;
 WS: [ \t]+ -> skip;
+COMMENT: '//' ~[\r\n]* -> skip;

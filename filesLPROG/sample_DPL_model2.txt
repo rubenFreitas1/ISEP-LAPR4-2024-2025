@@ -2,18 +2,17 @@ Yuneec Typhoon H programming language version 0.666
 
 Types
 
-Point - (x, y, z), so that x, y and z are floating point numbers in meters
-Vector - (x, y, z), so that x, y and z are floating point numbers in meters
-LinearVelocity - floating point number in m/s
-AngularVelocity - floating point number in rad/s
-Distance - floating point number in m
-Time - integer number in ms
+Point - (2, 2, 2)
+Vector - (20, 10, 5)
+LinearVelocity - 2.5
+AngularVelocity - 3.4
+Distance - 20.5
+Time - 200
 
 Variables
 
-<type> <variable name> = <initial value>;
 Point aPoint = (0, 1, 1.5);
-Vector aDirection = (0,0,1)-(0,1,0);
+Vector aDirection = (0, 0, 1)-(0, 1, 0);
 
 LinearVelocity aVelocity = 6.2;
 AngularVelocity rotVelocity = PI/10;
@@ -22,14 +21,14 @@ Point arrayOfPoints =((0, 0, 0), (0, 0, 20), (0, 20, 20), (0, 30, 20), (-10, 50,
 
 Instructions
 
-takeOff(<height>, <velocity>);
-land(<velocity>);
-move(<final position>, <velocity>);
-move(<direction vector>, <velocity>, <duration>);
-movePath(<array of points>, <velocity>);
-moveCircle(<center point>, <angle>, <angular velocity>);
-moveCircle(<center point>, <duration>, <angular velocity>);
-hoover(<time>);
+takeOff(5, 2.5);
+land(0.5);
+move((0, 0, 20), 2.5);
+move(<direction vector>, 2.5, 30);
+movePath((0, 0, 0), (0, 0, 20), (0, 20, 20), (0, 30, 20), (-10, 50, 25), 2.5);
+moveCircle((0, 0, 0), 30, 3.4);
+moveCircle((0, 30, 20), 10, 3.4);
+hoover(25);
 
-lightsOn(<color>);
+lightsOn(YELLOW);
 lightsOff();

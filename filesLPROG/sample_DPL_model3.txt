@@ -1,35 +1,34 @@
-Autel Robotics EVO Lite Programming Language Version 1.0
+Autel Robotics EVO Lite programming language version 1.0
 
 Types
 
-Coord       - (x, y, z), with x, y, z as float values in meters
-Direction   - (x, y, z), with x, y, z as float values in meters
-Speed       - float, in meters per second (m/s)
-RotSpeed    - float, in radians per second (rad/s)
-Length      - float, in meters (m)
-Duration    - integer, in milliseconds (ms)
-Color       - string, e.g., "red", "blue", "green"
+Coord       - (1, 1, 1)
+Direction   - (10, 20, 30)
+Speed       - 1.5
+RotSpeed    - 3.2
+Length      - 15
+Duration    - 120
+Color       - BLUE
 
 Variables
 
-<type> <variable_name> = <initial_value>;
-Coord currentPosition = (0.0, 0.0, 1.2);
-Direction flightVector = (1, 0, 0) - (0, 0, 0);
+Coord aCoord = (0.0, 0.0, 1.2);
+Direction aDirection = (1, 0, 0) - (0, 0, 0);
 
-Speed cruiseSpeed = 5.0;
-RotSpeed yawSpeed = PI / 8;
+Speed aSpeed = 5.0;
+RotSpeed rotVelocity = PI/8;
 
-Coord waypoints = ((0, 0, 0), (10, 0, 5), (10, 10, 5), (0, 10, 2));
+Coord arrayOfWaypoints = ((0, 0, 0), (10, 0, 5), (10, 10, 5), (0, 10, 2));
 
 Instructions
 
-initiateFlight(<target height>, <ascent speed>);
-terminateFlight(<descent speed>);
-navigateTo(<target coord>, <speed>);
-navigateVector(<direction>, <speed>, <duration>);
-followRoute(<array of coords>, <speed>);
-circleFlight(<center coord>, <radius>, <rotational speed>, <duration>);
-hover(<duration>);
-enableLights(<color>);
+initiateFlight(10, 3.2);
+terminateFlight(1.5);
+navigateTo((10, 0, 5), 3.2);
+navigateVector((10, 20, 30), 3.2, 60);
+followRoute(((0, 0, 0), (10, 0, 5), (10, 10, 5), (0, 10, 2)), 3.2);
+circleFlight((1, 1, 1), 0.5, 3.2, 20);
+hover(20);
+enableLights(BLACK);
 disableLights();
-flashLights(<color>, <interval>);
+flashLights(WHITE, 2);
