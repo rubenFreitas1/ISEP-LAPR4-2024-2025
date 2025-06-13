@@ -1200,12 +1200,14 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
 ## 6. Integration/Demonstration
 
-**Registering Customer**
+**Registering Show Proposal**
 
-![Registering-customer](images/demonstration/menu.png)
+![Registering-show-proposal](images/demonstration/register-show-proposals.png)
 
-![Registering-customer](images/demonstration/registerCustomer.png)
+![Registering-show-proposal](images/demonstration/register-show-proposals(2).png)
+
+![Registering-show-proposal](images/demonstration/register-show-proposals(3).png)
 
 **Database Result**
 
-![Database](images/demonstration/database.png)
+![Database](images/demonstration/show_proposal_database.png)
