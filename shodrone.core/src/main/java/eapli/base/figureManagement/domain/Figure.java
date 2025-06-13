@@ -37,6 +37,8 @@ public class Figure implements AggregateRoot<Long> {
 
     private boolean active;
 
+    private DSL dsl;
+
     @Version
     private Long version;
 

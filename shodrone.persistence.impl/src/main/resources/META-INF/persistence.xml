@@ -26,7 +26,7 @@
     <class>eapli.base.showProposalManagement.domain.FigureListItem</class>
     <class>eapli.base.showProposalManagement.domain.Template</class>
     <class>eapli.base.showProposalManagement.domain.Document</class>
-
+    <class>eapli.base.pluginManagementService.domain.Plugin</class>
 
     <properties>
       <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
