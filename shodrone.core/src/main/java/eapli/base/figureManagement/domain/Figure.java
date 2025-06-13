@@ -42,6 +42,8 @@ public class Figure implements AggregateRoot<Long> {
     @Version
     private Long version;
 
+    private String dslBody;
+
     @ManyToOne
     private Customer customer;
 
@@ -51,7 +53,7 @@ public class Figure implements AggregateRoot<Long> {
     protected Figure(){
     }
 
-    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy) {
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy, String dslbody) {
         Preconditions.noneNull(new Object[] {keywords, figureCategory, createdBy});
         this.keywords = new HashSet<>(keywords);
         this.description = description;
@@ -64,7 +66,7 @@ public class Figure implements AggregateRoot<Long> {
         for (String keyword : keywords) {
             this.normalizedKeywords.add(normalize(keyword));
         }
-
+        this.dslBody = dslbody;
     }
 
     public Long figureId() { return figureId; }
