@@ -5,6 +5,7 @@ import eapli.base.app.backoffice.presentation.droneManagement.ListActiveDronesAc
 import eapli.base.app.backoffice.presentation.droneManagement.RemoveDroneAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.AddDroneModelAction;
 import eapli.base.app.backoffice.presentation.droneModelManagement.ListDroneModelsAction;
+import eapli.base.app.backoffice.presentation.figureManagement.DeployPluginAction;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
 
@@ -23,6 +24,8 @@ public class DroneTechMenu {
     private static final int REMOVE_DRONE_OPTION = 4;
     private static final int LIST_DRONES_OPTION = 5;
 
+    private static final int DEPLOY_PLUGIN = 6;
+
 
     public Menu buildDroneMenu() {
         final Menu menu = new Menu("Drone >");
@@ -31,6 +34,7 @@ public class DroneTechMenu {
         menu.addItem(ADD_DRONE_OPTION, "Add Drone to Inventory", new AddDroneAction());
         menu.addItem(REMOVE_DRONE_OPTION, "Remove Drone from Inventory", new RemoveDroneAction());
         menu.addItem(LIST_DRONES_OPTION, "List Active Drones", new ListActiveDronesAction());
+        menu.addItem(DEPLOY_PLUGIN, "Deploy Plugin", new DeployPluginAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);
 
         return menu;

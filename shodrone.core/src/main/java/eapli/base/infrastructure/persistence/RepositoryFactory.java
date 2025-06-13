@@ -25,6 +25,7 @@ import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.base.pluginManagementService.repository.PluginRepository;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.showProposalManagement.repositories.TemplateRepository;
@@ -80,6 +81,10 @@ public interface RepositoryFactory {
     CustomerRepository customers();
 
     CustomerRepository customers(TransactionalContext autoTx);
+
+    PluginRepository plugins();
+
+    PluginRepository plugins(TransactionalContext autoTx);
 
     RepresentativeRepository representatives();
 

@@ -3,27 +3,32 @@ package eapli.base.pluginManagementService.domain;
 import eapli.framework.domain.model.AggregateRoot;
 import jakarta.persistence.*;
 
-public class Plugin implements AggregateRoot<Long> {
+@Entity
+public class Plugin implements AggregateRoot<PluginName> {
 
     @Version
-    private String version;
+    private long version;
 
-    @Column(nullable = false)
-    private String pluginName;
+    @EmbeddedId
+    private PluginName pluginName;
 
     @Column(nullable = false)
     private String pluginDescription;
+
+    @Enumerated(EnumType.STRING)
+    private PluginType pluginType;
 
     public Plugin() {
 
     }
 
-    public Plugin(String pluginName, String pluginDescription) {
+    public Plugin(PluginName pluginName, String pluginDescription, PluginType pluginType) {
         this.pluginName = pluginName;
         this.pluginDescription = pluginDescription;
+        this.pluginType = pluginType;
     }
 
-    public String pluginName() { return this.pluginName; }
+    public PluginName pluginName() { return this.pluginName; }
 
     public String pluginDescription() { return this.pluginDescription; }
 
@@ -33,7 +38,7 @@ public class Plugin implements AggregateRoot<Long> {
     }
 
     @Override
-    public Long identity() {
-        return 0L;
+    public PluginName identity() {
+        return pluginName;
     }
 }
