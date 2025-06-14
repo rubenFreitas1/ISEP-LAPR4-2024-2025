@@ -1,10 +1,9 @@
 package rcomp.client;
 
-
-
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import eapli.base.showProposalManagement.dto.ShowProposalDTO;
+import rcomp.utils.HTTPmessage;
 
 import java.io.*;
 import java.lang.reflect.Type;

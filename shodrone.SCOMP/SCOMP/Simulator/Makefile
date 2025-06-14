@@ -1,17 +1,21 @@
-projeto: ui.o simulator.o utils.o
-	gcc ui.o simulator.o utils.o -o projeto
+CC = gcc
+CFLAGS = -g -Wall -Wextra
+OBJS = ui.o simulator.o utils.o
+
+projeto: $(OBJS)
+	$(CC) $(OBJS) -o projeto
 
 ui.o: ui.c simulator.h
-	gcc -g -Wall -Wextra -fanalyzer -c ui.c -o ui.o
+	$(CC) $(CFLAGS) -c ui.c
 
-simulator.o: simulator.c simulator.h 
-	gcc -g -Wall -Wextra -fanalyzer -c simulator.c -o simulator.o
+simulator.o: simulator.c simulator.h
+	$(CC) $(CFLAGS) -c simulator.c
 
-utils.o : utils.c simulator.h
-	gcc -g -Wall -Wextra -fanalyzer -c utils.c -o utils.o
-	
-clean:
-	rm -f *.o projeto
+utils.o: utils.c
+	$(CC) $(CFLAGS) -c utils.c
 
 run: projeto
-	./projeto
+	./projeto exemplo1.csv 5
+
+clean:
+	rm -f *.o projeto

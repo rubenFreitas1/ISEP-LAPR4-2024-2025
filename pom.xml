@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>shodrone.app.customer</module>
-		<module>shodrone.app2</module>
+		<module>shodrone.testing</module>
 		<module>shodrone.app.backoffice</module>
 		<module>shodrone.app.common.console</module>
 		<module>shodrone.app.bootstrap</module>

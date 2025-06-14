@@ -32,7 +32,7 @@
         <dependency>
             <version>0.1.0</version>
             <groupId>lapr4</groupId>
-            <artifactId>shodrone.app2</artifactId>
+            <artifactId>testing</artifactId>
         </dependency>
     </dependencies>
 
