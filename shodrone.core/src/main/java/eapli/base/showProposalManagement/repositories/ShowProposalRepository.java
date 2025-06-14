@@ -21,6 +21,8 @@ public interface ShowProposalRepository extends DomainRepository<Long, ShowPropo
 
     Iterable<ShowProposal> findByEmailAndStatus(EmailAddress email, ShowStatus status);
 
+    Iterable<ShowProposal> findScheduledShowsByEmail(EmailAddress email);
+
     Document findDocumentByCode(String code);
 
     Iterable<ShowProposal> findByStatus(ShowStatus status);

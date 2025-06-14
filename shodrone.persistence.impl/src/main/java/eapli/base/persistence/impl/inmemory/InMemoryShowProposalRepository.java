@@ -86,6 +86,39 @@ public class InMemoryShowProposalRepository extends InMemoryDomainRepository<Sho
     }
 
     @Override
+    public Iterable<ShowProposal> findScheduledShowsByEmail(EmailAddress email) {
+        List<ShowProposal> result = new ArrayList<>();
+
+        for (ShowProposal proposal : proposals) {
+            var showRequest = proposal.showRequest();
+            var customer = showRequest.customer();
+            EmailAddress customerEmail = customer.customerEmail();
+
+            boolean emailMatches = false;
+
+            if (customerEmail.equals(email)) {
+                emailMatches = true;
+            } else {
+                var representatives = customer.representatives();
+                if (representatives != null) {
+                    for (var rep : representatives) {
+                        String repEmail = rep.representativeEmail().toString();
+                        if (repEmail.equals(email)) {
+                            emailMatches = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (emailMatches && proposal.status() == ShowStatus.ACCEPTED && proposal.date().getClass().equals(java.util.Date.class) && proposal.date().after(new java.util.Date())) {
+                result.add(proposal);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public Document findDocumentByCode(String code) {
         for(ShowProposal showProposal: proposals){
             if(showProposal.document().code().equals(code)){

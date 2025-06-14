@@ -72,6 +72,21 @@ public class JpaShowProposalRepository extends JpaAutoTxRepository<ShowProposal,
     }
 
     @Override
+    public Iterable<ShowProposal> findScheduledShowsByEmail(EmailAddress email) {
+        return entityManager()
+                .createQuery(
+                        "SELECT DISTINCT sp FROM ShowProposal sp " +
+                                "LEFT JOIN sp.showRequest.customer.representatives reps " +
+                                "WHERE (sp.showRequest.customer.customerEmail = :email " +
+                                "OR reps.representativeEmail = :email) " +
+                                "AND sp.status = :status AND sp.date >= CURRENT_DATE",
+                        ShowProposal.class)
+                .setParameter("email", email)
+                .setParameter("status", ShowStatus.ACCEPTED)
+                .getResultList();
+    }
+
+    @Override
     public Document findDocumentByCode(String code) {
         try {
             ShowProposal proposal = entityManager()

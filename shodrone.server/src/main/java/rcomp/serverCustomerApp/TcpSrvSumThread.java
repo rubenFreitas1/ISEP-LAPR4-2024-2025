@@ -2,6 +2,7 @@ package rcomp.serverCustomerApp;
 
 import com.google.gson.*;
 import eapli.base.showProposalManagement.application.AnalyseProposalController;
+import eapli.base.showProposalManagement.application.GetScheduledShowsController;
 import eapli.base.showProposalManagement.application.GetShowInfoController;
 import eapli.base.showProposalManagement.application.ProposalFeedbackController;
 import eapli.base.showProposalManagement.domain.Document;
@@ -19,6 +20,7 @@ import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,7 @@ class TcpSrvSumThread implements Runnable {
     AnalyseProposalController analyseProposalController = new AnalyseProposalController();
     GetShowInfoController getShowInfoController = new GetShowInfoController();
     ProposalFeedbackController proposalFeedbackController = new ProposalFeedbackController();
+    GetScheduledShowsController getScheduledShowsController = new GetScheduledShowsController();
 
     public TcpSrvSumThread(Socket cli_s) {
         socket = cli_s;
@@ -178,6 +181,26 @@ class TcpSrvSumThread implements Runnable {
                             .create();
                     response.setResponseStatus("200 OK");
                     response.setContent(gson1.toJson(dto), "application/json");
+                    break;
+                case "/scheduledShows":
+                    String customerEmailScheduled = request.getContentAsString().split("=")[1];
+                    Iterable<ShowProposalDTO> scheduledShows = getScheduledShowsController.findScheduledShows(customerEmailScheduled);
+                    Gson gsonScheduled = new GsonBuilder()
+                            .registerTypeAdapter(LocalTime.class, new JsonDeserializer<LocalTime>() {
+                                @Override
+                                public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                                    return LocalTime.parse(json.getAsString());
+                                }
+                            })
+                            .registerTypeAdapter(LocalTime.class, new JsonSerializer<LocalTime>() {
+                                @Override
+                                public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                                    return new JsonPrimitive(src.toString());
+                                }
+                            })
+                            .create();
+                    response.setResponseStatus("200 OK");
+                    response.setContent(gsonScheduled.toJson(scheduledShows), "application/json");
                     break;
                 default:
                     response.setResponseStatus("404 Not Found");

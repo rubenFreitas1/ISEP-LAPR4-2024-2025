@@ -18,6 +18,8 @@ public class Plugin implements AggregateRoot<PluginName> {
     @Enumerated(EnumType.STRING)
     private PluginType pluginType;
 
+    private String pluginClassName;
+
     public Plugin() {
 
     }
@@ -41,4 +43,6 @@ public class Plugin implements AggregateRoot<PluginName> {
     public PluginName identity() {
         return pluginName;
     }
+
+
 }

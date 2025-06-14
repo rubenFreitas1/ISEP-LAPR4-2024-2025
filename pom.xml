@@ -21,6 +21,7 @@
 		<module>shodrone.LPROG</module>
         <module>shodrone.SCOMP</module>
         <module>shodrone.server</module>
+		<module>shodrone.DPL.Plugin</module>
     </modules>
 	<version>0.1.0</version>
 
