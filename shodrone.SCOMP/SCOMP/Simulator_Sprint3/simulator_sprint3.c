@@ -291,6 +291,12 @@ void* colision_detection_thread(void* arg){
 					
 					collisions++;
 					
+					DroneData newPos = findFreeAdjacentPosition(matrix, position);
+					updateMatrix(matrix,newPos);
+					shared_info_struct->hitDroneID = collisionIndicator;
+					shared_info_struct->collisionDrone = position;
+					shared_info_struct->realocatedDrone = newPos;
+					
 					if(collisions>=maxCollisions){
 						simulationStatus = 0;
 						shared_struct->timestamp = -999;
@@ -302,11 +308,7 @@ void* colision_detection_thread(void* arg){
 						
 					}
 					
-					DroneData newPos = findFreeAdjacentPosition(matrix, position);
-					
-					shared_info_struct->hitDroneID = collisionIndicator;
-					shared_info_struct->collisionDrone = position;
-					shared_info_struct->realocatedDrone = newPos;
+				
 					
 					should_log = 1;
 					pthread_cond_signal(&cond);
@@ -558,7 +560,9 @@ void simulator_run(const char* fileName, int maxCollisions) {
 		snprintf(str, STR_SIZE, "A ENTRAR NO COLLISIONS\n");
 		write(STDOUT_FILENO, str, strlen(str));	
 		sem_post(sem_colisions_read);
-		
+		if (i == timestampCount - 1) { 
+			sem_wait(sem_colisions_write);
+		}
 	}
 	
 	shared_struct->timestamp = -999;
