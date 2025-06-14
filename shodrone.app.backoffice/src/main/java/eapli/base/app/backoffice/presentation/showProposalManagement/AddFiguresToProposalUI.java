@@ -54,7 +54,14 @@ public class AddFiguresToProposalUI extends AbstractUI {
         }
 
         List<Figure> sequence = new ArrayList<>();
-        String response = Console.readLine("Do you wish to create a new sequence? (y/n): ");
+        String response;
+        do {
+            response = Console.readLine("Do you wish to create a new sequence? (y/n): ").trim().toLowerCase();
+            if (!response.equals("y") && !response.equals("n")) {
+                System.out.println("Invalid answer! choose between y (yes) or n (no).");
+            }
+        } while (!response.equals("y") && !response.equals("n"));
+
         if ("y".equalsIgnoreCase(response)) {
             sequence = createNewSequence(figureList);
         } else {
@@ -96,7 +103,14 @@ public class AddFiguresToProposalUI extends AbstractUI {
             }
             System.out.println();
 
-            String addMore = Console.readLine("Do you wish to add more Figures? (y/n): ");
+            String addMore;
+            do {
+                addMore = Console.readLine("Do you wish to add more Figures? (y/n): ").trim().toLowerCase();
+                if (!addMore.equals("y") && !addMore.equals("n")) {
+                    System.out.println("Invalid answer! choose between y (yes) or n (no).");
+                }
+            } while (!addMore.equals("y") && !addMore.equals("n"));
+
             if (!"y".equalsIgnoreCase(addMore)) {
                 break;
             }
@@ -104,7 +118,6 @@ public class AddFiguresToProposalUI extends AbstractUI {
 
         return sequence;
     }
-
 
     private void associateFiguresToDroneModels(ShowProposalDTO showProposal, List<Figure> figures) {
         List<DroneModelDTO> listDroneModels = new ArrayList<>();
@@ -140,12 +153,18 @@ public class AddFiguresToProposalUI extends AbstractUI {
                     results.add("Error: Failed to associate Figure '" + figure.description() + "' with Drone Model '" + selectedDrone.getModelName() + "'.");
                 }
 
-                String response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ");
+                String response;
+                do {
+                    response = Console.readLine("Do you wish to add more Drones Models to this Figure? (y/n): ").trim().toLowerCase();
+                    if (!response.equals("y") && !response.equals("n")) {
+                        System.out.println("Invalid answer! choose between y (yes) or n (no).");
+                    }
+                } while (!response.equals("y") && !response.equals("n"));
+
                 addMoreDrones = "y".equalsIgnoreCase(response);
             }
             sequenceNumber++;
         }
-
 
         System.out.println("\nResults of Figure-Drone Model Associations:");
         results.forEach(System.out::println);
