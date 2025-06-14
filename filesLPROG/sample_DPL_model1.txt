@@ -12,7 +12,7 @@ Time - 30
 Variables
 
 Position aPosition = (0, 1, 1.5);
-Vector aDirection = (0,0,1)-(0,1,0);
+Vector aDirection = (0, 0, 1)-(0, 1, 0);
 
 LinearVelocity = 6.2;
 AngularVelocity = PI/10;
@@ -25,7 +25,7 @@ takeOff(10, 3.5);
 land(0.5);
 move(3, 1.5);
 move((3.2, 2, 1.5), 1.5, 12);
-movePath(((0,0,0), (0,0,20), (0, 20, 20), (0, 30, 20), (-10, 50, 25) ), 1.5);
+movePath(((0, 0, 0), (0, 0, 20), (0, 20, 20), (0, 30, 20), (-10, 50, 25) ), 1.5);
 hoover(60);
 
 lightsOn();

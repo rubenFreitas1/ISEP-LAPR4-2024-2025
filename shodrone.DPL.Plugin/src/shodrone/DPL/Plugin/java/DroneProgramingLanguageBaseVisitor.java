@@ -1,7 +1,6 @@
-// Generated from C:/Users/Sousa/IdeaProjects/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.LPROG/src/main/java/antlr/DroneProgramingLanguage.g4 by ANTLR 4.13.2
-package genDPL;
+// Generated from C:/Users/joaop/Desktop/sem4pi-2024-2025-sem4pi_2024_2025_g33/shodrone.DPL.Plugin/antlrDPL/DroneProgramingLanguage.g4 by ANTLR 4.13.2
+package shodrone.DPL.Plugin.java;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
-
 /**
  * This class provides an empty implementation of {@link DroneProgramingLanguageVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
