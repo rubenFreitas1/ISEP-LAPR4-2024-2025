@@ -24,6 +24,7 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.pluginManagementService.repository.PluginRepository;
@@ -115,6 +116,17 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 
 	@Override
 	public ShowProposalRepository showProposals() { return showProposals(null); }
+
+	@Override
+	public DSLRepository dsls(TransactionalContext autoTx) {
+		return new InMemoryDSLRepository();
+	}
+
+	@Override
+	public DSLRepository dsls() {
+		return dsls(null);
+	}
+
 
 	@Override
 	public TemplateRepository templates(TransactionalContext autoTx) {

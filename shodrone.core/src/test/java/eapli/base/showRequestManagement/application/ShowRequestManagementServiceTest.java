@@ -2,7 +2,11 @@ package eapli.base.showRequestManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.showRequestManagement.repositories.ShowRequestRepository;
@@ -59,7 +63,10 @@ class ShowRequestManagementServiceTest {
         EmailAddress email = EmailAddress.valueOf("pedrao.email@gmail.com");
         Optional<Password> password = Password.encodedAndValid("123456", policy, encoder);
         customer = new Customer(name, "rua do pedrao", email, password, "123456789", "123456789", systemUser, Customer.CustomerStatus.CREATED, Calendar.getInstance());
-        Figure figure = new Figure("Star", keywords, category, false, null, systemUser);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Star", keywords, category, false, null, systemUser, dsl, dslBody);
         figures = List.of(figure);
         geoLocation = new GeoLocation(41.1579, -8.6291, 100);
         description = "Light drone show at the city park";
@@ -163,7 +170,10 @@ class ShowRequestManagementServiceTest {
     @Test
     void editShowRequestSequenceOfFigures_success() {
         Set<String> keywords = new HashSet<>(Set.of("circle", "round"));
-        Figure newFigure = new Figure("Circle", keywords, category, true, null, systemUser);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure newFigure = new Figure("Circle", keywords, category, true, null, systemUser, dsl, dslBody);
         List<Figure> newFigures = List.of(newFigure);
 
         showRequest.changeRequestedFigures(newFigures);

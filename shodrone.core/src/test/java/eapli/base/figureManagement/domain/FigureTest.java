@@ -2,6 +2,9 @@ package eapli.base.figureManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
@@ -53,7 +56,10 @@ class FigureTest {
 
     @Test
     void constructor_createsActiveFigure() {
-        Figure figure = new Figure("A dragon figure", keywords, category, true, customer, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("A dragon figure", keywords, category, true, customer, user, dsl, dslBody);
         assertEquals("A dragon figure", figure.description());
         assertEquals(category, figure.figureCategory());
         assertEquals(customer, figure.customer());
@@ -63,34 +69,49 @@ class FigureTest {
 
     @Test
     void constructor_allowsNullCustomer() {
-        Figure figure = new Figure("Figure without customer", keywords, category, false, null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Figure without customer", keywords, category, false, null, user, dsl, dslBody);
         assertNull(figure.customer());
     }
 
     @Test
     void constructor_nullKeywords_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Figure("Invalid figure", null, category, false, null, user);
+            Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+            DSL dsl = new DSL("DSL body content", plugin, "1.2");
+            String dslBody = "DSL body content";
+            new Figure("Invalid figure", null, category, false, null, user, dsl, dslBody);
         });
     }
 
     @Test
     void constructor_nullCreatedBy_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Figure("Invalid figure", keywords, category, false, null, null);
+            Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+            DSL dsl = new DSL("DSL body content", plugin, "1.2");
+            String dslBody = "DSL body content";
+            new Figure("Invalid figure", keywords, category, false, null, null, dsl, dslBody);
         });
     }
 
     @Test
     void constructor_nullCategory_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Figure("Invalid figure", keywords, null, false, null, user);
+            Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+            DSL dsl = new DSL("DSL body content", plugin, "1.2");
+            String dslBody = "DSL body content";
+            new Figure("Invalid figure", keywords, null, false, null, user, dsl, dslBody);
         });
     }
 
     @Test
     void deactivate_setsInactiveAndStoresDate() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false, null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien sculpture", keywords, category, false, null, user, dsl, dslBody);
         Calendar today = Calendar.getInstance();
 
         figure.deactivate(today);
@@ -101,7 +122,10 @@ class FigureTest {
 
     @Test
     void deactivate_alreadyInactive_throwsException() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user, dsl, dslBody);
         Calendar today = Calendar.getInstance();
         figure.deactivate(today);
 
@@ -113,14 +137,20 @@ class FigureTest {
 
     @Test
     void deactivate_nullDate_throwsException() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user, dsl, dslBody);
 
         assertThrows(IllegalArgumentException.class, () -> figure.deactivate(null));
     }
 
     @Test
     void activate_reactivatesFigureAndClearsDeactivationDate() {
-        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien sculpture", keywords, category, false,null, user, dsl, dslBody);
         Calendar today = Calendar.getInstance();
         figure.deactivate(today);
 

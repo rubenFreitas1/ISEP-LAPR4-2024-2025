@@ -1,6 +1,7 @@
 package eapli.base.figureManagement.application;
 
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.Roles;
@@ -15,7 +16,9 @@ public class DecommissionFigureController {
 
     private final FigureRepository repo = PersistenceContext.repositories().figures();
 
-    private final FigureManagementService figureManagementService = new FigureManagementService(repo);
+    private final DSLRepository dslRepository = PersistenceContext.repositories().dsls();
+
+    private final FigureManagementService figureManagementService = new FigureManagementService(repo, dslRepository);
 
     public Iterable<Figure> activeFigures() {
         return this.figureManagementService.activeFigures();

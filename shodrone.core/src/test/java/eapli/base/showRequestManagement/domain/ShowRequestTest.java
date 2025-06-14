@@ -2,7 +2,11 @@ package eapli.base.showRequestManagement.domain;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
@@ -40,7 +44,10 @@ public class ShowRequestTest {
         category = new FigureCategory("Sci-fi", "Sci-fi figures", now);
 
         Set<String> keywords = new HashSet<>(Set.of("alien", "space"));
-        Figure figure = new Figure("Alien figure", keywords, category, false, null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien figure", keywords, category, false, null, user, dsl, dslBody);
         figures = new ArrayList<>(List.of(figure));
 
         Name name = Name.valueOf("Alice", "Smith");
@@ -131,7 +138,10 @@ public class ShowRequestTest {
     void changeRequestedFigures_valid_updatesFigures() {
         ShowRequest request = new ShowRequest(geoLocation, now, 2, 20, figures, customer, "Initial", user);
         Set<String> newKeywords = new HashSet<>(Set.of("robot", "AI"));
-        Figure newFigure = new Figure("Robot figure", newKeywords, category, true, customer, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure newFigure = new Figure("Robot figure", newKeywords, category, true, customer, user, dsl, dslBody);
         List<Figure> newFigures = List.of(newFigure);
 
         request.changeRequestedFigures(newFigures);

@@ -270,12 +270,13 @@ public class EditShowRequestUI extends AbstractUI {
                     FigureCategory figureCategory = requestCategory();
                     String description = requestFigureDescription();
                     Set<String> keywords = requestListKeywords();
+                    String dslPath = requestDslPath();
                     if(excluviseMenu()){
                         boolean exclusive = true;
-                        controller.addFigure(description, keywords, figureCategory, exclusive, customer);
+                        controller.addFigure(description, keywords, figureCategory, exclusive, customer, dslPath);
                     } else {
                         boolean exclusive = false;
-                        controller.addFigure(description, keywords, figureCategory, exclusive, null);
+                        controller.addFigure(description, keywords, figureCategory, exclusive, null, dslPath);
                     }
                     figures = this.controller.figures(customer);
 
@@ -325,6 +326,20 @@ public class EditShowRequestUI extends AbstractUI {
         }
         return figureSequence;
     }
+
+    private String requestDslPath() {
+        String dslPath;
+        do {
+            dslPath = Console.readLine("Enter the path to the DSL file:");
+            if (dslPath.trim().isEmpty()) {
+                System.out.println("DSL path cannot be empty. Please enter a valid path.");
+            }
+        } while (dslPath.trim().isEmpty());
+
+        return dslPath;
+    }
+
+
     private boolean verifyAddFigure(boolean start) {
         String newFigureInput;
         boolean inputAnswer;

@@ -1,6 +1,7 @@
 package eapli.base.figureManagement.application;
 
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.Roles;
@@ -12,7 +13,8 @@ public class ListFigureController {
     private final TransactionalContext autoTx = PersistenceContext.repositories().newTransactionalContext();
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
     private final FigureRepository repo = PersistenceContext.repositories().figures(autoTx);
-    private final FigureManagementService figureManagementService = new FigureManagementService(repo);
+    private final DSLRepository dslRepository = PersistenceContext.repositories().dsls();
+    private final FigureManagementService figureManagementService = new FigureManagementService(repo, dslRepository);
 
     public Iterable<Figure> listPublicFigures() {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);

@@ -8,6 +8,7 @@ import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.figureManagement.application.FigureManagementService;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.showRequestManagement.domain.GeoLocation;
@@ -36,7 +37,8 @@ public class EditShowRequestController {
     private final ShowRequestRepository showRequestRepository = PersistenceContext.repositories().showRequests();
     private final ShowRequestManagementService showRequestManagementService = new ShowRequestManagementService(showRequestRepository);
     private final FigureRepository figureRepository = PersistenceContext.repositories().figures();
-    private final FigureManagementService figureManagementService = new FigureManagementService(figureRepository);
+    private final DSLRepository dslRepository = PersistenceContext.repositories().dsls();
+    private final FigureManagementService figureManagementService = new FigureManagementService(figureRepository, dslRepository);
     private final FigureCategoryRepository figureCategoryRepository = PersistenceContext.repositories().figureCategories();
     private final FigureCategoryManagementService figureCategoryManagementService = new FigureCategoryManagementService(figureCategoryRepository);
 
@@ -53,8 +55,8 @@ public class EditShowRequestController {
         return figureManagementService.findByExclusivityAndCustomer(false, customer);
     }
 
-    public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer) {
-        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser());
+    public Figure addFigure(String figureDescription, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer ,String dslPath) {
+        return figureManagementService.registerNewFigure(figureDescription, keywords, figureCategory, exclusive, customer, authz.session().get().authenticatedUser(), dslPath);
     }
 
     public Iterable<FigureCategory> listFigureCategories() {

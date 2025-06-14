@@ -34,19 +34,20 @@ public class FigureBootstrapper implements Action {
         FigureCategory figureCategory2 = fc2.orElseThrow(() -> new IllegalArgumentException("FigureCategory with ID 2 not found"));
         Optional<Customer> c1 = customerRepository.findById(1L);
         Customer customer = c1.orElseThrow(() -> new IllegalArgumentException("Customer with ID 1 not found"));
-        addFigure("Apple Logo", Set.of("apple", "appleLogo"), figureCategory, true, customer);
-        addFigure("Star", Set.of("star", "estrela"), figureCategory2, false, null);
-        addFigure("Heart", Set.of("heart", "coração"), figureCategory2, false, null);
+        addFigure("Apple Logo", Set.of("apple", "appleLogo"), figureCategory, true, customer, "filesLPROG/sample_DSL_figure_1.txt");
+        addFigure("Star", Set.of("star", "estrela"), figureCategory2, false, null, "filesLPROG/sample_DSL_figure_2.txt");
+        addFigure("Heart", Set.of("heart", "coração"), figureCategory2, false, null, "filesLPROG/sample_DSL_figure_3.txt");
         return true;
     }
 
-    private Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory category, boolean exclusive, Customer customer) {
+    private Figure addFigure(final String figureDescription, final Set<String> keywords, final FigureCategory category, boolean exclusive, Customer customer, String dslPath) {
         Figure figure = null;
         try {
-            figure = addFigureController.addFigure(figureDescription, keywords, category, exclusive, customer);
+            figure = addFigureController.addFigure(figureDescription, keywords, category, exclusive, customer, dslPath);
         } catch (final Exception e) {
-            LOGGER.warn("Assuming {} already exists (activate trace log for details)", figureDescription);
-            LOGGER.trace("Assuming existing record", e);
+            LOGGER.warn("Assuming '{}' already exists (activate trace log for details)", figureDescription);
+            System.out.println(e.getMessage());
+            LOGGER.trace("Exception while adding figure '{}'", figureDescription, e);
         }
         return figure;
     }

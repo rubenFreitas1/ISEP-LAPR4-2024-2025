@@ -25,6 +25,7 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
 import eapli.base.pluginManagementService.repository.PluginRepository;
@@ -72,6 +73,16 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 
     @Override
     public CustomerRepository customers(TransactionalContext autoTx) {return new JpaCustomerRepository(autoTx);}
+
+    @Override
+    public DSLRepository dsls() {
+        return new JpaDSLRepository(Application.settings().getPersistenceUnitName());
+    }
+
+    @Override
+    public DSLRepository dsls(TransactionalContext autoTx) {
+        return new JpaDSLRepository(autoTx);
+    }
 
     @Override
     public PluginRepository plugins() {

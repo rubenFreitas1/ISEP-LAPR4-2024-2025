@@ -37,11 +37,10 @@ public class Figure implements AggregateRoot<Long> {
 
     private boolean active;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private DSL dsl;
 
-    @Version
-    private Long version;
-
+    @Column(length = 100000)
     private String dslBody;
 
     @ManyToOne
@@ -53,7 +52,7 @@ public class Figure implements AggregateRoot<Long> {
     protected Figure(){
     }
 
-    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy/*, String dslbody */) {
+    public Figure(final String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy, DSL dsl, String dslBody) {
         Preconditions.noneNull(new Object[] {keywords, figureCategory, createdBy});
         this.keywords = new HashSet<>(keywords);
         this.description = description;
@@ -66,7 +65,8 @@ public class Figure implements AggregateRoot<Long> {
         for (String keyword : keywords) {
             this.normalizedKeywords.add(normalize(keyword));
         }
-       // this.dslBody = dslbody;
+        this.dsl = dsl;
+        this.dslBody = dslBody;
     }
 
     public Long figureId() { return figureId; }
@@ -102,7 +102,7 @@ public class Figure implements AggregateRoot<Long> {
     public void deactivate(final Calendar deactivatedOn) {
         if (deactivatedOn != null) {
             if (!this.active) {
-                throw new IllegalStateException("Cannot deactivate an inactive Drone!");
+                throw new IllegalStateException("Cannot deactivate an inactive Figure!");
             } else {
                 this.active = false;
                 this.deactivatedOn = deactivatedOn;

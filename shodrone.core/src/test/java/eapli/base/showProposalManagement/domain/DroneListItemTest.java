@@ -5,7 +5,11 @@ import eapli.base.droneModelManagement.domain.Axis;
 import eapli.base.droneModelManagement.domain.DroneModel;
 import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.base.showRequestManagement.domain.GeoLocation;
 import eapli.base.showRequestManagement.domain.ShowRequest;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
@@ -73,7 +77,10 @@ class DroneListItemTest {
         droneModel2 = new DroneModel("Vitality", "Apple", now, user, behavior);
         category = new FigureCategory("Sci-fi", "Sci-fi figures", now);
         Set<String> keywords = new HashSet<>(Set.of("alien", "space"));
-        Figure figure = new Figure("Alien figure", keywords, category, false, null, user);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        Figure figure = new Figure("Alien figure", keywords, category, false, null, user, dsl, dslBody);
         figures = new ArrayList<>(List.of(figure));
 
         Name name = Name.valueOf("Alice", "Smith");

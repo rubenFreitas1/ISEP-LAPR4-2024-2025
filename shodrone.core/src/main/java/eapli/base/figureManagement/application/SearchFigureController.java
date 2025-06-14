@@ -4,6 +4,7 @@ import eapli.base.figureCategoryManagement.application.FigureCategoryManagementS
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.Roles;
@@ -15,7 +16,8 @@ public class SearchFigureController {
     private final TransactionalContext autoTx = PersistenceContext.repositories().newTransactionalContext();
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
     private final FigureRepository figureRepository = PersistenceContext.repositories().figures(autoTx);
-    private final FigureManagementService figureManagementService = new FigureManagementService(figureRepository);
+    private final DSLRepository dslRepository = PersistenceContext.repositories().dsls();
+    private final FigureManagementService figureManagementService = new FigureManagementService(figureRepository, dslRepository);
     private final FigureCategoryRepository figureCategoryRepository = PersistenceContext.repositories().figureCategories(autoTx);
     private final FigureCategoryManagementService figureCategoryManagementService = new FigureCategoryManagementService(figureCategoryRepository);
 

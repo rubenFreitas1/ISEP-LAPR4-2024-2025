@@ -1,25 +1,40 @@
 package eapli.base.figureManagement.domain;
 
 import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.domain.model.DomainEntity;
-import jakarta.persistence.Column;
+import eapli.framework.domain.model.ValueObject;
+import jakarta.persistence.*;
 
-public class DSL implements DomainEntity<Long> {
+@Entity
+public class DSL implements AggregateRoot<Long> {
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long dslId;
+
+    @Column(nullable = false, unique = true)
     private String filePath;
 
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Plugin plugin;
 
-    public DSL(String filePath, Plugin plugin) {
+    private String version;
+
+    public DSL(String filePath, Plugin plugin, String version) {
         this.filePath = filePath;
         this.plugin = plugin;
+        this.version = version;
+    }
+
+    public DSL() {
     }
 
     public String filePath() { return filePath; }
 
     public Plugin plugin() { return plugin; }
+
+    public String version() { return version; }
 
     @Override
     public boolean sameAs(Object other) {
@@ -28,6 +43,6 @@ public class DSL implements DomainEntity<Long> {
 
     @Override
     public Long identity() {
-        return 0L;
+        return dslId;
     }
 }

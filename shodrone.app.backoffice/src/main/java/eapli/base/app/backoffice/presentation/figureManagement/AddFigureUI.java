@@ -52,6 +52,12 @@ public class AddFigureUI extends AbstractUI {
             addMore = response.equals("yes");
         }
 
+        final String dslPath = Console.readLine("Enter the path to the DSL file:").trim();
+        if (dslPath.isEmpty()) {
+            System.out.println("DSL path cannot be empty. Please enter a valid path.");
+            return false;
+        }
+
         if (keywords.isEmpty()) {
             System.out.println("No keywords added. Figure will not be added.");
             return false;
@@ -68,10 +74,10 @@ public class AddFigureUI extends AbstractUI {
                     System.out.println("No Customer Selected!\n");
                     return false;
                 }
-                controller.addFigure(description, keywords, figureCategory, exclusive, customer);
+                controller.addFigure(description, keywords, figureCategory, exclusive, customer, dslPath);
             }else{
                 boolean exclusive = false;
-                controller.addFigure(description, keywords, figureCategory, exclusive, null);
+                controller.addFigure(description, keywords, figureCategory, exclusive, null, dslPath);
             }
             System.out.println("Figure added successfully!");
         } catch (IllegalArgumentException e) {

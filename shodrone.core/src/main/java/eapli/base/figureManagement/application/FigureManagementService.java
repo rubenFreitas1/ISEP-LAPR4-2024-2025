@@ -2,13 +2,22 @@ package eapli.base.figureManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.stereotype.Component;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -16,13 +25,49 @@ public class FigureManagementService {
 
     private final FigureRepository figureRepository;
 
-    public FigureManagementService(final FigureRepository figureRepository){
+    private final DSLRepository dslRepository;
+
+    public FigureManagementService(final FigureRepository figureRepository, final DSLRepository dslRepository) {
         this.figureRepository = figureRepository;
+        this.dslRepository = dslRepository;
     }
 
-    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory, boolean exclusive, Customer customer, SystemUser createdBy) {
-        Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer, createdBy);
-        return (Figure) this.figureRepository.save(newFigure);
+    public Figure registerNewFigure(String description, Set<String> keywords, FigureCategory figureCategory,
+                                    boolean exclusive, Customer customer, SystemUser createdBy, String dslPath) {
+        try {
+            String dslContent = Files.readString(Paths.get(dslPath));
+            String[] lines = dslContent.split("\n");
+            String versionLine = lines[0];
+
+            DSL dsl = registerNewDSL(dslPath, versionLine);
+
+            Figure newFigure = new Figure(description, keywords, figureCategory, exclusive, customer, createdBy, dsl, dslContent);
+            return this.figureRepository.save(newFigure);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler o ficheiro DSL: " + dslPath, e);
+        }
+    }
+
+
+    private DSL registerNewDSL(String dslPath, String version) {
+        Optional<DSL> existingDSL = this.dslRepository.findByFilePath(dslPath);
+        if (existingDSL.isPresent()) {
+            return existingDSL.get();
+        }
+
+        Plugin plugin = new Plugin(new PluginName("dslPlugin"), "Plugin for dsls", PluginType.DSL);
+        DSL newDSL = new DSL(dslPath, plugin, version);
+
+        return this.dslRepository.save(newDSL);
+    }
+
+    private String extractVersionFromFirstLine(String versionLine) {
+        String versionStr = versionLine.replace("DSL version ", "").replace(";", "").trim();
+        if (versionStr.isEmpty()) {
+            throw new IllegalArgumentException("A primeira linha do ficheiro DSL deve conter a versão no formato 'DSL version X.X;'");
+        }
+        return versionStr;
     }
 
     public Figure decommissionFigure(Figure figure){

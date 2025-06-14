@@ -24,6 +24,7 @@ import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.droneManagement.repositories.DroneRepository;
 import eapli.base.droneModelManagement.repositories.DroneModelRepository;
 import eapli.base.figureCategoryManagement.repositories.FigureCategoryRepository;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.pluginManagementService.repository.PluginRepository;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
@@ -105,6 +106,10 @@ public interface RepositoryFactory {
     FigureRepository figures(TransactionalContext autoTx);
 
     FigureRepository figures();
+
+    DSLRepository dsls(TransactionalContext autoTx);
+
+    DSLRepository dsls();
 
     /**
      * repository will be created in auto transaction mode

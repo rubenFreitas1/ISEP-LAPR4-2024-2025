@@ -45,12 +45,13 @@ public class RegisterShowRequestUI extends AbstractUI {
                     FigureCategory figureCategory = requestCategory();
                     String figureDescription = requestFigureDescription();
                     Set<String> keywords = requestListKeywords();
+                    String dslPath = requestDslPath();
                     if(excluviseMenu()){
                         boolean exclusive = true;
-                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, customer);
+                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, customer, dslPath);
                     } else {
                         boolean exclusive = false;
-                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, null);
+                        controller.addFigure(figureDescription, keywords, figureCategory, exclusive, null, dslPath);
                     }
                     figures = this.controller.figures(customer);
 
@@ -111,6 +112,18 @@ public class RegisterShowRequestUI extends AbstractUI {
     @Override
     public String headline() {
         return "";
+    }
+
+    private String requestDslPath() {
+        String dslPath;
+        do {
+            dslPath = Console.readLine("Enter the path to the DSL file:");
+            if (dslPath.trim().isEmpty()) {
+                System.out.println("DSL path cannot be empty. Please enter a valid path.");
+            }
+        } while (dslPath.trim().isEmpty());
+
+        return dslPath;
     }
 
     private String requestDescription() {

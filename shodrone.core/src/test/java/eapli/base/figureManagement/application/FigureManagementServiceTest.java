@@ -2,8 +2,12 @@ package eapli.base.figureManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.FigureRepository;
+import eapli.base.pluginManagementService.domain.Plugin;
+import eapli.base.pluginManagementService.domain.PluginName;
+import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.base.usermanagement.domain.Roles;
 import eapli.framework.general.domain.model.EmailAddress;
@@ -47,7 +51,10 @@ class FigureManagementServiceTest {
 
         category = new FigureCategory("Geometria", "Estudo de figuras geométricas", now);
         Set<String> keywords = new HashSet<>(Set.of("triângulo", "ângulo", "figura"));
-        figure = new Figure("Triângulo equilátero", keywords, category, false, null, systemUser);
+        Plugin plugin = new Plugin(new PluginName("dsl plugin"), "Plugin for dsls", PluginType.DSL);
+        DSL dsl = new DSL("DSL body content", plugin, "1.2");
+        String dslBody = "DSL body content";
+        figure = new Figure("Triângulo equilátero", keywords, category, false, null, systemUser, dsl, dslBody);
 
         Name name = Name.valueOf("Client", "Name");
         EmailAddress email = EmailAddress.valueOf("client@email.com");
@@ -69,13 +76,15 @@ class FigureManagementServiceTest {
     public void registerNewFigure_success() {
         when(repo.save(any(Figure.class))).thenAnswer(i -> i.getArguments()[0]);
 
+        String dslPath = "DSL body content";
         Figure result = service.registerNewFigure(
                 "Triângulo equilátero",
                 Set.of("triângulo", "ângulo", "figura"),
                 category,
                 false,
                 null,
-                systemUser
+                systemUser,
+                dslPath
         );
 
         assertEquals("Triângulo equilátero", result.description());
