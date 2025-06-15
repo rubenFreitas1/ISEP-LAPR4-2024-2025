@@ -10,8 +10,8 @@ public class AddFigureCategoryUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        final String categoryName = Console.readLine("Category Name: ");
-        final String categoryDescription = Console.readLine("Description: ");
+        final String categoryName = requestCategoryName();
+        final String categoryDescription = requestDescription();
 
         try {
             this.controller.addFigureCategory(categoryName, categoryDescription);
@@ -26,4 +26,28 @@ public class AddFigureCategoryUI extends AbstractUI {
     public String headline() {
         return "Add Figure Category";
     }
+
+    private String requestCategoryName() {
+        String categoryName;
+        do {
+            categoryName = Console.readLine("Enter the Category Name:");
+            if (categoryName.trim().isEmpty()) {
+                System.out.println("Category Name cannot be empty. Please enter a valid name.");
+            }
+        } while (categoryName.trim().isEmpty());
+        return categoryName;
+    }
+
+    private String requestDescription() {
+        String description;
+        do {
+            description = Console.readLine("Enter the description:");
+            if (description.trim().isEmpty()) {
+                System.out.println("Description cannot be empty. Please enter a valid description.");
+            }
+        } while (description.trim().isEmpty());
+        return description;
+    }
+
+
 }

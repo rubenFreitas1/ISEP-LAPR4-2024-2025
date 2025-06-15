@@ -12,7 +12,7 @@ public class AddDroneUI extends AbstractUI {
     private final AddDroneController controller = new AddDroneController();
     @Override
     protected boolean doShow() {
-        final String serialNumber = Console.readLine("Serial Number");
+        final String serialNumber = requestSerialNumber();
         final Iterable<DroneModel> iterable = controller.listDroneModels();
         if (!iterable.iterator().hasNext()) {
             System.out.println("There is no registered Drone Models!");
@@ -33,6 +33,17 @@ public class AddDroneUI extends AbstractUI {
 
         }
         return true;
+    }
+
+    private String requestSerialNumber() {
+        String serialNumber;
+        do {
+            serialNumber = Console.readLine("Enter the Serial Number:");
+            if (serialNumber.trim().isEmpty()) {
+                System.out.println("Serial Number cannot be empty. Please enter a serial number.");
+            }
+        } while (serialNumber.trim().isEmpty());
+        return serialNumber;
     }
 
     @Override

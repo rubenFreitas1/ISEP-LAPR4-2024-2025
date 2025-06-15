@@ -15,8 +15,8 @@ public class AddDroneModelUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        final String modelName = Console.readLine("Model Name");
-        final String manufacturer = Console.readLine("Manufacturer");
+        final String modelName = requestModelName();
+        final String manufacturer = requestManufacturer();
         final DroneWindBehavior windBehavior = new DroneWindBehavior();
         for (Axis axis : Axis.values()) {
             requestWindBehavior(windBehavior, axis);
@@ -63,7 +63,6 @@ public class AddDroneModelUI extends AbstractUI {
             }
 
             if (option == 2 && addedAtLeastOne) {
-                //windBehavior.addTolerance(axis,min, Double.MAX_VALUE,);
                 break;
             }
 
@@ -79,6 +78,10 @@ public class AddDroneModelUI extends AbstractUI {
             }
 
             double tolerance = Console.readDouble("Tolerance (meters): ");
+            if (tolerance <= 0){
+                System.out.println("Tolerance cannot be negative!");
+                continue;
+            }
             boolean success = windBehavior.addTolerance(axis, min, max, tolerance);
             if (success) {
                 System.out.println("Tolerance added successfully!");
@@ -89,6 +92,30 @@ public class AddDroneModelUI extends AbstractUI {
             }
         }
         System.out.println("Finished adding tolerances for axis " + axis + ".");
+    }
+
+
+
+    private String requestModelName() {
+        String modelName;
+        do {
+            modelName = Console.readLine("Enter the Model Name:");
+            if (modelName.trim().isEmpty()) {
+                System.out.println("Model Name cannot be empty. Please enter a valid name.");
+            }
+        } while (modelName.trim().isEmpty());
+        return modelName;
+    }
+
+    private String requestManufacturer() {
+        String manufacturer;
+        do {
+            manufacturer = Console.readLine("Enter the Manufacturer:");
+            if (manufacturer.trim().isEmpty()) {
+                System.out.println("Manufacturer cannot be empty. Please enter a valid manufacturer.");
+            }
+        } while (manufacturer.trim().isEmpty());
+        return manufacturer;
     }
 
 }

@@ -34,7 +34,7 @@ public class AddFigureUI extends AbstractUI {
             return false;
         }
 
-        final String description = Console.readLine("Enter figure description:").trim();
+        final String description = requestFigureDescription();
 
         System.out.println("\nInsert keywords:");
         final Set<String> keywords = new HashSet<>();
@@ -108,5 +108,18 @@ public class AddFigureUI extends AbstractUI {
                 excluviseMenu();
         }
         return false;
+    }
+
+
+
+    private String requestFigureDescription() {
+        String figureDescription;
+        do {
+            figureDescription = Console.readLine("Enter the Figure description:");
+            if (figureDescription.trim().isEmpty()) {
+                System.out.println("Figure Description cannot be empty. Please enter a valid description.");
+            }
+        } while (figureDescription.trim().isEmpty());
+        return figureDescription;
     }
 }
