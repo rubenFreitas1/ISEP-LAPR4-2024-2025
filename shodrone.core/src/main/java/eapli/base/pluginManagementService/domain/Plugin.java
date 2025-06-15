@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 @Entity
 public class Plugin implements AggregateRoot<PluginName> {
 
-    @Version
-    private Long version;
 
     @EmbeddedId
     private PluginName pluginName;
