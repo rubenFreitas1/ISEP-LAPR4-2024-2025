@@ -42,4 +42,22 @@ class TemplateTest {
 
         assertFalse(t1.sameAs(t2));
     }
+
+    @Test
+    void ensureTemplateFailsWhenNameIsNull() {
+        String content = "Valid content";
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Template(null, content);
+        });
+    }
+
+    @Test
+    void ensureTemplateFailsWhenContentIsNull() {
+        String name = "Valid name";
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Template(name, null);
+        });
+    }
 }

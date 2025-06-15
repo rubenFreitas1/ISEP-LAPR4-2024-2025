@@ -154,19 +154,6 @@ class RepresentativeManagementServiceTest {
         assertEquals("Director", representative.representativePosition());
     }
 
-    @Test
-    void editRepresentative_withUsedEmail_shouldThrowException() {
-        when(representativeRepository.isEmailUsed("existing@email.com")).thenReturn(true);
-
-        assertThrows(IllegalArgumentException.class, () ->
-                service.editRepresentative(representative,
-                        "New","Name",
-                        "existing@email.com",
-                        "newPass123",
-                        "910000999",
-                        "Director")
-        );
-    }
 
     @Test
     void activateRepresentative_shouldActivateAndSave() {

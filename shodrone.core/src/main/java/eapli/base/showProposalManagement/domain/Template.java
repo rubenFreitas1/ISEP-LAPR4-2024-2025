@@ -1,6 +1,7 @@
 package eapli.base.showProposalManagement.domain;
 
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.validations.Preconditions;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class Template implements AggregateRoot<Long> {
     }
 
     public Template (String name, String content) {
+        Preconditions.noneNull(new Object[] {name, content});
         this.name = name;
         this.content = content;
     }
