@@ -45,4 +45,29 @@ public class RegisterCustomerController {
         userSvc.registerUser(newCustomer.customerEmail(),newCustomer.customerPassword(),newCustomer.customerName(),customerRoleType);
         return newCustomer;
     }
+
+    public boolean isRepresentativeEmailUsed(String email) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repo2.isEmailUsed(email);
+    }
+
+    public boolean isCustomerEmailUsed(String email) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repo.isEmailUsed(email);
+    }
+
+    public boolean isCustomerVatNumberUsed(String vatNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repo.isVatNumberUsed(vatNumber);
+    }
+
+    public boolean isRepresentativePhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repo2.isPhoneNumberUsed(phoneNumber);
+    }
+
+    public boolean isCustomerPhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return repo.isCustomerPhoneNumberUsed(phoneNumber);
+    }
 }

@@ -17,4 +17,6 @@ public interface RepresentativeRepository extends DomainRepository<Long, Represe
     Iterable<Representative> findByAssociatedCustomer(Customer associatedCustomer);
 
     boolean isPhoneNumberUsed(String representativePhoneNumber);
+
+    Iterable<Representative> findByAssociatedCustomerAndActive(Customer associatedCustomer, boolean active);
 }

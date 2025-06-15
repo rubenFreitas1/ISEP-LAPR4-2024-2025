@@ -73,7 +73,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
     @Column(length = 10000)
-    private String showCode;
+    private String showHighLevelDescription;
 
 
     protected ShowProposal() {}
@@ -93,7 +93,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         this.droneModelList = new ArrayList<>();
         this.figureListItems = new ArrayList<>();
         this.document = null;
-        this.showCode = null;
+        this.showHighLevelDescription = null;
         this.proposalAnswerFeedback = null;
         this.insuranceAmount = insuranceAmount;
     }
@@ -193,7 +193,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
     public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
 
-    public String showCode() { return this.showCode; }
+    public String showHighLevelDescription() { return this.showHighLevelDescription; }
 
     public Document document(){return this.document;}
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
@@ -310,7 +310,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
 
     public boolean addShowCode(String code){
         if (code != null && !code.isEmpty()) {
-            this.showCode = code;
+            this.showHighLevelDescription = code;
             return true;
         }
         return false;

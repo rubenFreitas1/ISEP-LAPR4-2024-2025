@@ -15,4 +15,6 @@ public interface CustomerRepository extends DomainRepository<Long, Customer> {
 
     boolean isEmailUsed(String customerEmail);
 
+    boolean isCustomerPhoneNumberUsed(String customerPhoneNumber);
+
 }

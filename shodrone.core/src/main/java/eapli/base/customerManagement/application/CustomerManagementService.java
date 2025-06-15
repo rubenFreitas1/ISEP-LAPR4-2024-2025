@@ -72,11 +72,6 @@ public class CustomerManagementService {
         return (Customer) this.customerRepository.save(customer);
     }
 
-
-    public boolean isEmailUsed(String customerEmail) {
-        return this.customerRepository.isEmailUsed(customerEmail);
-    }
-
     public boolean isVatNumberUsed(String customerVatNumber) {
         return this.customerRepository.isVatNumberUsed(customerVatNumber);
     }

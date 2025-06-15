@@ -39,7 +39,6 @@ public class RegisterRepresentativeController {
         }
 
         System.out.println("Registering representative for customer: " + associatedCustomer.identity());
-
         representativesvc.registerNewRepresentative(representativeFirstName,representativeLastName, representativeEmail, CurrentTimeCalendars.now(), representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, authz.session().get().authenticatedUser());
     }
 
@@ -48,13 +47,18 @@ public class RegisterRepresentativeController {
         return customersvc.findAllCustomers();
     }
 
-    public boolean isEmailUsed(String email) {
-        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
-        return repreRepo.isEmailUsed(email);
-    }
-
     public boolean isPhoneNumberUsed(String phoneNumber) {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
         return repreRepo.isPhoneNumberUsed(phoneNumber);
+    }
+
+    public boolean isCustomerEmailUsed(String email) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customerRepo.isEmailUsed(email);
+    }
+
+    public boolean isCustomerPhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customerRepo.isCustomerPhoneNumberUsed(phoneNumber);
     }
 }

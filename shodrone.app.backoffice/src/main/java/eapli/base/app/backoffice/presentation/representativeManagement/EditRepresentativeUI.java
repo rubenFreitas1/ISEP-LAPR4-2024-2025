@@ -23,7 +23,7 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
         if (selectedCustomer == null) {
             selectCustomer();
         }
-        return theController.allRepresentatives(selectedCustomer);
+        return theController.findByAssociatedCustomerAndActive(selectedCustomer, true);
     }
 
     @Override
@@ -53,6 +53,7 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
         for (Customer customer : customers) {
             System.out.printf("%d - %s%n", index++, customer.customerName());
         }
+        System.out.println("\nSelect an option:");
 
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
@@ -88,8 +89,11 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         firstName = Console.readLine("First Name |(If you do not desire to change type N)| : ");
-                        if (!firstName.equalsIgnoreCase("N") && firstName.trim().isEmpty()) {
+                        if (!firstName.equalsIgnoreCase("n") && firstName.trim().isEmpty()) {
                             throw new IllegalArgumentException("Name cannot be empty.");
+                        }
+                        if (!firstName.equalsIgnoreCase("n") && !firstName.matches("^[a-zA-Z]+$")) {
+                            throw new IllegalArgumentException("First Name must contain only letters.");
                         }
                         break;
                     } catch (IllegalArgumentException e) {
@@ -100,8 +104,11 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         lastName = Console.readLine("Last Name |(If you do not desire to change type N)| : ");
-                        if (!lastName.equalsIgnoreCase("N") && lastName.trim().isEmpty()) {
+                        if (!lastName.equalsIgnoreCase("n") && lastName.trim().isEmpty()) {
                             throw new IllegalArgumentException("Name cannot be empty.");
+                        }
+                        if (!lastName.equalsIgnoreCase("n") && !lastName.matches("^[a-zA-Z]+$")) {
+                            throw new IllegalArgumentException("Last Name must contain only letters.");
                         }
                         break;
                     } catch (IllegalArgumentException e) {
@@ -112,10 +119,15 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         email = Console.readLine("Email |(If you do not desire to change type N)| : ");
-                        if (!email.equalsIgnoreCase("N")) {
-                            if (theController.isEmailUsed(email)) {
-                                throw new IllegalArgumentException("Email is already used by another representative.");
-                            }
+                        if (email.equalsIgnoreCase("n")) {
+                            break;
+                        }
+                        if (!email.equalsIgnoreCase("n") && email.trim().isEmpty()) {
+                            throw new IllegalArgumentException("Email cannot be empty.");
+
+                        }
+                        if (!email.equalsIgnoreCase("n") && !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                            throw new IllegalArgumentException("Invalid email format.");
                         }
                         break;
                     } catch (IllegalArgumentException e) {
@@ -126,8 +138,11 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         password = Console.readLine("Password |(If you do not desire to change type N)| : ");
-                        if (!password.equals("N") && password.length() < 6) {
+                        if (!password.equalsIgnoreCase("n") && password.length() < 6) {
                             throw new IllegalArgumentException("Password must be at least 6 characters long.");
+                        }
+                        if (!password.equalsIgnoreCase("n") && !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")) {
+                            throw new IllegalArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
                         }
                         break;
                     } catch (IllegalArgumentException e) {
@@ -138,11 +153,22 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         phoneNumber = Console.readLine("Phone Number |(If you do not desire to change type N)| : ");
-                        if (!phoneNumber.equals("N") || !phoneNumber.trim().isEmpty() ) {
-                            if (theController.isPhoneNumberUsed(phoneNumber)) {
-                                throw new IllegalArgumentException("Phone number is already used by another representative.");
-                            }
+                        if (!phoneNumber.equalsIgnoreCase("n") && !phoneNumber.trim().isEmpty() ) {
+                            throw new IllegalArgumentException("Phone number cannot be empty.");
                         }
+                        if (!phoneNumber.equalsIgnoreCase("n") && phoneNumber.length() != 9) {
+                            throw new IllegalArgumentException("Phone number must be 9 digits long.");
+                        }
+                        if (!phoneNumber.equalsIgnoreCase("n") && !phoneNumber.matches("\\d+")) {
+                            throw new IllegalArgumentException("Phone number must contain only digits.");
+                        }
+                        if (!phoneNumber.equalsIgnoreCase("n") && theController.isPhoneNumberUsed(phoneNumber)) {
+                            throw new IllegalArgumentException("Phone number is already in use.");
+                        }
+                        if (!phoneNumber.equalsIgnoreCase("n") && theController.isCustomerPhoneNumberUsed(phoneNumber)) {
+                            throw new IllegalArgumentException("Phone number is already in use.");
+                        }
+
                         break;
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -152,7 +178,7 @@ public class EditRepresentativeUI extends AbstractListUI<Representative> {
                 while (true) {
                     try {
                         position = Console.readLine("Position |(If you do not desire to change type N)| : ");
-                        if (!position.equalsIgnoreCase("N") && position.trim().isEmpty()) {
+                        if (!position.equalsIgnoreCase("n") && position.trim().isEmpty()) {
                             throw new IllegalArgumentException("Position cannot be empty.");
                         }
                         break;

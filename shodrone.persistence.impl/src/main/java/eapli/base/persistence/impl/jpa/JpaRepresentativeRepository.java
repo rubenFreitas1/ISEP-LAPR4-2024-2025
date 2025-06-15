@@ -21,6 +21,14 @@ public class JpaRepresentativeRepository extends JpaAutoTxRepository<Representat
     }
 
     @Override
+    public Iterable<Representative> findByAssociatedCustomerAndActive(Customer associatedCustomer, boolean active) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("customer", associatedCustomer);
+        params.put("active", active);
+        return match("e.associatedCustomer = :customer and e.active = :active", params);
+    }
+
+    @Override
     public Iterable<Representative> findByActive(boolean active) {
         return this.match("e.active=:active", new Object[]{"active", active});
     }

@@ -20,6 +20,11 @@ public class InMemoryCustomerRepository extends InMemoryDomainRepository<Custome
         return this.match(e -> e.status() != Customer.CustomerStatus.DELETED);
     }
 
+    @Override
+    public boolean isCustomerPhoneNumberUsed(String customerPhoneNumber) {
+        return matchOne(e -> e.customerPhoneNumber().equals(customerPhoneNumber)).isPresent();
+    }
+
 
     @Override
     public boolean isVatNumberUsed(String vatNumber) {

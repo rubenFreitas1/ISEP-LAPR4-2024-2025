@@ -4,11 +4,9 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.representativeManagement.domain.Representative;
 import eapli.base.representativeManagement.repositories.RepresentativeRepository;
+import eapli.base.usermanagement.domain.ExemploPasswordPolicy;
 import eapli.framework.general.domain.model.EmailAddress;
-import eapli.framework.infrastructure.authz.domain.model.Name;
-import eapli.framework.infrastructure.authz.domain.model.Password;
-import eapli.framework.infrastructure.authz.domain.model.PasswordPolicy;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.infrastructure.authz.domain.model.*;
 import eapli.framework.time.util.CurrentTimeCalendars;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -27,14 +25,13 @@ public class RepresentativeManagementService {
     public RepresentativeManagementService(final RepresentativeRepository representativeRepository, final CustomerRepository customerRepository, final PasswordEncoder passwordEncoder, final PasswordPolicy passwordPolicy) {
         this.representativeRepository = representativeRepository;
         this.customerRepository = customerRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.passwordPolicy = passwordPolicy;
+        this.passwordEncoder  = new PlainTextEncoder();
+        this.passwordPolicy = new ExemploPasswordPolicy();
     }
 
     public void registerNewRepresentative(final String representativeFirstName, final String representativeLastName, final String representativeEmail, final Calendar createdOn, final String password, final String representativePhoneNumber, final Customer associatedCustomer, final String representativePosition, final SystemUser createdBy){
 
         Name representativeName = Name.valueOf(representativeFirstName, representativeLastName);
-
         EmailAddress representativeEmailAddress = EmailAddress.valueOf(representativeEmail);
         Optional<Password> representativePassword = Password.encodedAndValid(password, passwordPolicy, passwordEncoder);
 
@@ -53,7 +50,6 @@ public class RepresentativeManagementService {
         if(createdBy == null){
             throw new IllegalArgumentException("Created By cannot be null!");
         }
-
         Representative newRepresentative = new Representative(representativeName, representativeEmailAddress, createdOn, representativePassword, representativePhoneNumber, associatedCustomer, representativePosition, createdBy);
         associatedCustomer.addRepresentative(newRepresentative);
         this.customerRepository.save(associatedCustomer);
@@ -67,7 +63,7 @@ public class RepresentativeManagementService {
         boolean edited = false;
         if(newFirstName == null || newFirstName.isEmpty()){
             throw new IllegalArgumentException("Representative Name cannot be null or empty!");
-        }else if(!newFirstName.equals("N")){
+        }else if(!newFirstName.equalsIgnoreCase("N")){
             edited = true;
             String previousLastName = representative.representativeName().lastName();
             Name newRepresentativeName = Name.valueOf(newFirstName, previousLastName);
@@ -75,7 +71,7 @@ public class RepresentativeManagementService {
         }
         if(newLastName == null || newLastName.isEmpty()){
             throw new IllegalArgumentException("Representative Name cannot be null or empty!");
-        }else if(!newLastName.equals("N")){
+        }else if(!newLastName.equalsIgnoreCase("N")){
             edited = true;
             String previousFirstName = representative.representativeName().firstName();
             Name newRepresentativeName = Name.valueOf(previousFirstName, newLastName);
@@ -83,29 +79,29 @@ public class RepresentativeManagementService {
         }
         if(newEmail == null || newEmail.isEmpty()){
             throw new IllegalArgumentException("Representative Email cannot be null or empty!");
-        } else if(!newEmail.equals("N") && !newEmail.equals(representative.representativeEmail().toString()) && isEmailUsed(newEmail)){
+        } else if(!newEmail.equalsIgnoreCase("N") && newEmail.equals(representative.representativeEmail().toString())){
             throw new IllegalArgumentException("Representative Email is already in use!");
-        } else if(!newEmail.equals("N")){
+        } else if(!newEmail.equalsIgnoreCase("N")){
             edited = true;
             EmailAddress representativeEmailAddress = EmailAddress.valueOf(newEmail);
             representative.changeEmail(representativeEmailAddress);
         }
         if(newPassword == null || newPassword.isEmpty()){
             throw new IllegalArgumentException("Representative Password cannot be null or empty!");
-        }else if(!newPassword.equals("N")){
+        }else if(!newPassword.equalsIgnoreCase("N")){
             edited = true;
             Optional<Password> representativePassword = Password.encodedAndValid(newPassword, passwordPolicy, passwordEncoder);
             representative.changePassword(representativePassword);
         }
         if(newPhoneNumber == null || newPhoneNumber.isEmpty()){
             throw new IllegalArgumentException("Representative Phone Number cannot be null or empty!");
-        }else if(!newPhoneNumber.equals("N")){
+        }else if(!newPhoneNumber.equalsIgnoreCase("N")){
             edited = true;
             representative.changePhoneNumber(newPhoneNumber);
         }
         if(newPosition == null || newPosition.isEmpty()){
             throw new IllegalArgumentException("Representative Position cannot be null or empty!");
-        }else if(!newPosition.equals("N")){
+        }else if(!newPosition.equalsIgnoreCase("N")){
             edited = true;
             representative.changePosition(newPosition);
         }
@@ -144,5 +140,9 @@ public class RepresentativeManagementService {
     public Representative activateRepresentative(final Representative representative) {
         representative.activate();
         return (Representative) this.representativeRepository.save(representative);
+    }
+
+    public Iterable<Representative> findByAssociatedCustomerAndActive(final Customer associatedCustomer, final boolean active) {
+        return this.representativeRepository.findByAssociatedCustomerAndActive(associatedCustomer, active);
     }
 }

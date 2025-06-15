@@ -25,6 +25,8 @@ public class RegisterRepresentativeUI extends AbstractUI {
                 if (firstName.trim().isEmpty()) {
                     throw new IllegalArgumentException("First Name cannot be empty.");
                 }
+                if (!firstName.matches("^[a-zA-Z]+$")) throw new IllegalArgumentException("Representative First Name must contain only letters.");
+
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -37,6 +39,7 @@ public class RegisterRepresentativeUI extends AbstractUI {
                 if (lastName.trim().isEmpty()) {
                     throw new IllegalArgumentException("Last Name cannot be empty.");
                 }
+                if (!lastName.matches("^[a-zA-Z]+$")) throw new IllegalArgumentException("Representative Last Name must contain only letters.");
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -46,9 +49,13 @@ public class RegisterRepresentativeUI extends AbstractUI {
         while (true) {
             try {
                 email = Console.readLine("Representative Email: ");
-                if (theController.isEmailUsed(email)) {
-                    throw new IllegalArgumentException("Email is already used by another representative.");
+
+                if (email.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Email cannot be empty.");
                 }
+                if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) throw new IllegalArgumentException("Invalid email format.");
+
+
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -61,6 +68,7 @@ public class RegisterRepresentativeUI extends AbstractUI {
                 if (password.length() < 6) {
                     throw new IllegalArgumentException("Password must be at least 6 characters long.");
                 }
+                if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")) throw new IllegalArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one digit.");
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -70,9 +78,17 @@ public class RegisterRepresentativeUI extends AbstractUI {
         while (true) {
             try {
                 phone = Console.readLine("Representative Phone Number: ");
+                if (phone.isEmpty() || phone == null) throw new IllegalArgumentException("Phone number cannot be empty.");
+                if (phone.length() !=9) throw new IllegalArgumentException("Phone number must be 9 digits long.");
                 if (theController.isPhoneNumberUsed(phone)) {
-                    throw new IllegalArgumentException("Phone number is already used by another representative.");
+                    throw new IllegalArgumentException("Phone number is being already used.");
                 }
+                if (theController.isCustomerPhoneNumberUsed(phone)) {
+                    throw new IllegalArgumentException("Phone number is being already used.");
+                }
+                if (!phone.matches("\\d+")) throw new IllegalArgumentException("Phone Number must be numeric.");
+
+
                 break;
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());

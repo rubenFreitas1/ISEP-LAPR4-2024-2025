@@ -132,15 +132,6 @@ class CustomerManagementServiceTest {
         verify(customerRepository).findAll();
     }
 
-    @Test
-    void isEmailUsed_shouldDelegateToRepository() {
-        when(customerRepository.isEmailUsed("client@email.com")).thenReturn(true);
-
-        boolean result = service.isEmailUsed("client@email.com");
-
-        assertTrue(result);
-        verify(customerRepository).isEmailUsed("client@email.com");
-    }
 
     @Test
     void isVatNumberUsed_shouldDelegateToRepository() {

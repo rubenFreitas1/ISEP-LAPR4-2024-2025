@@ -53,4 +53,14 @@ public class EditRepresentativeController {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
         return representativeRepo.isPhoneNumberUsed(phoneNumber);
     }
+
+    public boolean isCustomerPhoneNumberUsed(String phoneNumber) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return customerRepo.isCustomerPhoneNumberUsed(phoneNumber);
+    }
+
+    public Iterable<Representative> findByAssociatedCustomerAndActive(Customer associatedCustomer, boolean active) {
+        authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);
+        return representativeRepo.findByAssociatedCustomerAndActive(associatedCustomer, active);
+    }
 }

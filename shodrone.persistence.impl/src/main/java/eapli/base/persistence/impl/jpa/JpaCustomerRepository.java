@@ -25,6 +25,13 @@ public class JpaCustomerRepository extends JpaAutoTxRepository<Customer, Long, L
         return match("e.status != :deleted", "deleted", Customer.CustomerStatus.DELETED);
     }
 
+    @Override
+    public boolean isCustomerPhoneNumberUsed(String customerPhoneNumber) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("phoneNumber", customerPhoneNumber);
+        return matchOne("e.customerPhoneNumber = :phoneNumber", params).isPresent();
+    }
+
 
     @Override
     public boolean isVatNumberUsed(String vatNumber) {
