@@ -72,6 +72,9 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     @Embedded
     private ProposalAnswerFeedback proposalAnswerFeedback;
 
+    @Column(length = 10000)
+    private String showCode;
+
 
     protected ShowProposal() {}
 
@@ -90,6 +93,7 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         this.droneModelList = new ArrayList<>();
         this.figureListItems = new ArrayList<>();
         this.document = null;
+        this.showCode = null;
         this.proposalAnswerFeedback = null;
         this.insuranceAmount = insuranceAmount;
     }
@@ -185,6 +189,8 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     public  Long showProposalId() { return this.showProposalId; }
 
     public ProposalAnswerFeedback proposalAnswerFeedback(){ return this.proposalAnswerFeedback; }
+
+    public String showCode() { return this.showCode; }
 
     public Document document(){return this.document;}
     public ShowRequest validateShowRequest(ShowRequest showRequest) {
@@ -294,6 +300,14 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
     public boolean addDocument(Document document){
         if(document != null){
             this.document = document;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addShowCode(String code){
+        if (code != null && !code.isEmpty()) {
+            this.showCode = code;
             return true;
         }
         return false;

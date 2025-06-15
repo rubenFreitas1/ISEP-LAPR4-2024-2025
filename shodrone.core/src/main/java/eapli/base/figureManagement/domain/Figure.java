@@ -40,7 +40,7 @@ public class Figure implements AggregateRoot<Long> {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private DSL dsl;
 
-    @Column(length = 100000)
+    @Column(length = 10000)
     private String dslBody;
 
     @ManyToOne
@@ -70,6 +70,8 @@ public class Figure implements AggregateRoot<Long> {
     }
 
     public Long figureId() { return figureId; }
+
+    public String dslBody() {return this.dslBody;}
 
     public Set<String> keywords(){
         return this.keywords;

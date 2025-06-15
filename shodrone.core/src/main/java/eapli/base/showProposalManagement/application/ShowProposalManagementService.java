@@ -14,6 +14,7 @@ import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Random;
 
 public class ShowProposalManagementService {
@@ -102,4 +103,47 @@ public class ShowProposalManagementService {
         }
         return true;
     }
+
+    public boolean generateShow(ShowProposal showProposal) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SHOW PROPOSAL SUMMARY\n");
+        sb.append("---------------------\n");
+
+        GeoLocation location = showProposal.location();
+        sb.append(String.format("Location: Latitude %.6f, Longitude %.6f, Altitude %d m\n",
+                location.latitude(), location.longitude(), location.altitude()));
+
+        Calendar date = showProposal.date();
+        LocalTime time = showProposal.time();
+        sb.append(String.format("Date: %1$td/%1$tm/%1$tY at %2$tH:%2$tM\n", date, time));
+
+        sb.append("Duration: ").append(showProposal.duration()).append(" minutes\n");
+        sb.append("Total Drones: ").append(showProposal.totalDroneNumber()).append("\n");
+        sb.append("\n");
+
+        sb.append("---------------------\n");
+        sb.append("SHOW SEQUENCE\n");
+
+        showProposal.figureListItems().stream()
+                .sorted(Comparator.comparingInt(f -> f.figureListItemID().sequenceNumber()))
+                .forEach(item -> {
+                    sb.append("-------------\n");
+                    sb.append("Figure ").append(item.figureListItemID().sequenceNumber()).append(":\n");
+                    sb.append("- Figure: ").append(item.figure().description()).append("\n");
+                    sb.append("- Drone Model: ").append(item.droneModel().modelName()).append("\n");
+                    sb.append("- DSL:\n").append(item.figure().dslBody()).append("\n\n");
+                });
+
+        String finalCode = sb.toString();
+
+        System.out.println("\n");
+        System.out.println(finalCode);
+        System.out.println("\n");
+
+        showProposal.addShowCode(finalCode);
+        this.showProposalRepository.save(showProposal);
+        return true;
+    }
+
 }
