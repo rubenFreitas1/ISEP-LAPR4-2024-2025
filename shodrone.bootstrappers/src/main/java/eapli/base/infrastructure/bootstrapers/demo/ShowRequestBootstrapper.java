@@ -31,7 +31,10 @@ public class ShowRequestBootstrapper implements Action {
     public boolean execute() {
         final GeoLocation location1 = new GeoLocation(40.7128, -74.0060, 100);
         final GeoLocation location2 = new GeoLocation(34.0522, -118.2437, 55);
+        final GeoLocation location3 = new GeoLocation(51.5074, -0.1278, 75);
         Calendar now = Calendar.getInstance();
+        Calendar beforedate = Calendar.getInstance();
+        beforedate.set(Calendar.DAY_OF_MONTH, -1);
         Optional<Customer> c1 = customerRepository.findById(1L);
         Optional<Customer> c2 = customerRepository.findById(2L);
         Customer customer1 = c1.orElseThrow(() -> new IllegalArgumentException("Customer with ID 1 not found"));
@@ -44,6 +47,7 @@ public class ShowRequestBootstrapper implements Action {
         Figure figure3 = f3.orElseThrow(() -> new IllegalArgumentException("Figure with ID 3 not found"));
         addShowRequest(customer1, location1, now, 30, 10, List.of(figure1, figure2), "Business Celebration", 100);
         addShowRequest(customer2, location2, now, 45, 5, List.of(figure3), "Wedding", 150);
+        addShowRequest(customer1, location3, beforedate, 60, 8, List.of(figure1, figure2, figure3), "Birthday Party", 200);
         return true;
     }
 
