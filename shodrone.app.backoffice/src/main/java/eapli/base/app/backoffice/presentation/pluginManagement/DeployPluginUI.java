@@ -1,6 +1,7 @@
 package eapli.base.app.backoffice.presentation.pluginManagement;
 
 import eapli.base.pluginManagementService.application.DeployPluginController;
+import eapli.base.pluginManagementService.domain.Plugin;
 import eapli.base.pluginManagementService.domain.PluginType;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
@@ -10,7 +11,8 @@ public class DeployPluginUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        String name = requestPluginName();
+        Iterable<Plugin> plugins = controller.listPlugins();
+        String name = requestPluginName(plugins);
         String description = requestPluginDescription();
         PluginType pluginType = requestPluginType();
 
@@ -18,16 +20,23 @@ public class DeployPluginUI extends AbstractUI {
         return true;
     }
 
-    private String requestPluginName() {
-        String description;
+    private String requestPluginName(Iterable<Plugin> plugins) {
+        String name;
+        boolean exists;
         do {
-            description = Console.readLine("Enter a name for the plugin:");
-            if (description.trim().isEmpty()) {
+            name = Console.readLine("Enter a name for the plugin:");
+            if (name.trim().isEmpty()) {
                 System.out.println("Name cannot be empty. Please enter a valid name.");
+                exists = true;
+            } else if (controller.pluginNameExists(name.trim())) {
+                System.out.println("A plugin with this name already exists. Please choose another name.");
+                exists = true;
+            } else {
+                exists = false;
             }
-        } while (description.trim().isEmpty());
+        } while (exists);
 
-        return description;
+        return name;
     }
 
     private String requestPluginDescription() {
