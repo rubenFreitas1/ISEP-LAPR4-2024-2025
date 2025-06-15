@@ -4,6 +4,7 @@ import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.figureManagement.repository.FigureRepository;
 import eapli.base.pluginManagementService.domain.Plugin;
 import eapli.base.pluginManagementService.domain.PluginName;
@@ -20,6 +21,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +34,9 @@ import static org.mockito.Mockito.when;
 class FigureManagementServiceTest {
     @Mock
     private FigureRepository repo;
+
+    @Mock
+    private DSLRepository dslRepository;
 
     @InjectMocks
     private FigureManagementService service;
@@ -76,7 +82,8 @@ class FigureManagementServiceTest {
     public void registerNewFigure_success() {
         when(repo.save(any(Figure.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        String dslPath = "DSL body content";
+        String dslPath = "src/test/java/eapli/base/figureManagement/application/dslTest.txt";
+
         Figure result = service.registerNewFigure(
                 "Triângulo equilátero",
                 Set.of("triângulo", "ângulo", "figura"),

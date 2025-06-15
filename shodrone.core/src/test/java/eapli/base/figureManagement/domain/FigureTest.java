@@ -132,7 +132,7 @@ class FigureTest {
         IllegalStateException exception = assertThrows(IllegalStateException.class,
                 () -> figure.deactivate(today));
 
-        assertEquals("Cannot deactivate an inactive Drone!", exception.getMessage());
+        assertEquals("Cannot deactivate an inactive Figure!", exception.getMessage());
     }
 
     @Test

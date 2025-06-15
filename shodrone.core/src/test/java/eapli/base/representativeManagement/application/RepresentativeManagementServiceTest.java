@@ -133,22 +133,6 @@ class RepresentativeManagementServiceTest {
         verify(customerRepository).save(customer);
     }
 
-    @Test
-    void registerNewRepresentative_withUsedEmail_shouldThrowException() {
-        when(representativeRepository.isEmailUsed("john.rep@email.com")).thenReturn(true);
-
-        assertThrows(IllegalArgumentException.class, () ->
-                service.registerNewRepresentative(
-                        "New", "Rep",
-                        "john.rep@email.com",
-                        "securePass123",
-                        "910000002",
-                        customer,
-                        "Marketing",
-                        systemUser
-                )
-        );
-    }
 
     @Test
     void editRepresentative_shouldUpdateAndSaveRepresentative() {

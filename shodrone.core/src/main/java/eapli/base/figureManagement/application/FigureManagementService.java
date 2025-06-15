@@ -2,6 +2,7 @@ package eapli.base.figureManagement.application;
 
 import eapli.base.customerManagement.domain.Customer;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
+import eapli.base.figureManagement.LPOGConnection.plugins.FigureValidator;
 import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
 import eapli.base.figureManagement.repository.DSLRepository;
@@ -37,6 +38,10 @@ public class FigureManagementService {
         try {
             String dslContent = Files.readString(Paths.get(dslPath));
             String[] lines = dslContent.split("\n");
+            if(!FigureValidator.validateFigureRealData(dslContent)){
+                System.out.println("ERROR: Document Content invalid!");
+                throw new IllegalArgumentException("Invalid DSL content in file: " + dslPath);
+            }
             String versionLine = lines[0];
 
             DSL dsl = registerNewDSL(dslPath, versionLine);
@@ -45,7 +50,10 @@ public class FigureManagementService {
             return this.figureRepository.save(newFigure);
 
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Erro ao ler o ficheiro DSL: " + dslPath, e);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -60,14 +68,6 @@ public class FigureManagementService {
         DSL newDSL = new DSL(dslPath, plugin, version);
 
         return this.dslRepository.save(newDSL);
-    }
-
-    private String extractVersionFromFirstLine(String versionLine) {
-        String versionStr = versionLine.replace("DSL version ", "").replace(";", "").trim();
-        if (versionStr.isEmpty()) {
-            throw new IllegalArgumentException("A primeira linha do ficheiro DSL deve conter a versão no formato 'DSL version X.X;'");
-        }
-        return versionStr;
     }
 
     public Figure decommissionFigure(Figure figure){

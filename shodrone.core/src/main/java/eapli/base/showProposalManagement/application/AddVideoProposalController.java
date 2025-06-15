@@ -6,6 +6,7 @@ import eapli.base.customerManagement.dto.CustomerDTO;
 import eapli.base.customerManagement.dto.CustomerDTOParser;
 import eapli.base.customerManagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showProposalManagement.LPROGConnection.ProposalWriter;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.dto.ShowProposalDTO;
 import eapli.base.showProposalManagement.dto.ShowProposalDTOParser;
@@ -26,10 +27,11 @@ public class AddVideoProposalController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
     private final PasswordEncoder passwordEncoder = new PlainTextEncoder();
     private final PasswordPolicy passwordPolicy = new ExemploPasswordPolicy();
+    private final ProposalWriter proposalWriter = new ProposalWriter();
     private final CustomerRepository customerRepository = PersistenceContext.repositories().customers();
     private final CustomerManagementService customerManagementService = new CustomerManagementService(customerRepository, passwordEncoder, passwordPolicy);
     private final ShowProposalRepository showProposalRepository = PersistenceContext.repositories().showProposals();
-    private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository);
+    private final ShowProposalManagementService showProposalManagementService = new ShowProposalManagementService(showProposalRepository, proposalWriter);
 
     private final CustomerDTOParser customerDTOParser = new CustomerDTOParser();
     private final ShowProposalDTOParser showProposalDTOParser = new ShowProposalDTOParser();
