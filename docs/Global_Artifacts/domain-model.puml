@@ -2,6 +2,33 @@
 
 @startuml
 
+package "**«Aggregate» Representative**" #DDDDDD {
+        entity "Representative" as entity_representative {
+        }
+        class "Position" as vObject_position <<(V, #7E84F7)>> {
+        }
+        class "RepresentativeName" as vObject_representativeName <<(V, #7E84F7)>> {
+        }
+        class "RepresentativeEmail" as vObject_representativeEmail <<(V, #7E84F7)>> {
+        }
+        class "RepresentativePassword" as vObject_representativePassword <<(V, #7E84F7)>> {
+        }
+        class "RepresentativePhoneNumber" as vObject_representativePhoneNumber <<(V, #7E84F7)>> {
+        }
+        class "RepresentativeStatus" as vObject_representativeStatus <<(V, #7E84F7)>> {
+        Active
+        Inactive
+        }
+
+        entity_representative *-- vObject_position
+        entity_representative *-- vObject_representativeName
+        entity_representative *-- vObject_representativeEmail
+        entity_representative *-- vObject_representativePassword
+        entity_representative *-- vObject_representativePhoneNumber
+        entity_representative *-- vObject_representativeStatus
+}
+
+
 package "**«Aggregate» Customer**" #DDDDDD {
 
         entity "Customer" as entity_customer <<entity root>> {
@@ -32,35 +59,6 @@ package "**«Aggregate» Customer**" #DDDDDD {
                     VIP
         }
 
-        entity "Representative" as entity_representative {
-            }
-
-        class "Position" as vObject_position <<(V, #7E84F7)>> {
-            }
-
-        class "RepresentativeName" as vObject_representativeName <<(V, #7E84F7)>> {
-        }
-        class "RepresentativeEmail" as vObject_representativeEmail <<(V, #7E84F7)>> {
-        }
-        class "RepresentativePassword" as vObject_representativePassword <<(V, #7E84F7)>> {
-                }
-        class "RepresentativePhoneNumber" as vObject_representativePhoneNumber <<(V, #7E84F7)>> {
-        }
-        class "RepresentativeStatus" as vObject_representativeStatus <<(V, #7E84F7)>> {
-            Active
-            Inactive
-        }
-
-
-
-        entity_representative *-- vObject_position
-        entity_representative *-- vObject_representativeName
-        entity_representative *-- vObject_representativeEmail
-        entity_representative *-- vObject_representativePassword
-        entity_representative *-- vObject_representativePhoneNumber
-        entity_representative *-- vObject_representativeStatus
-
-        entity_customer "1"--"1..*"  entity_representative: "is associated with"
         entity_customer *--down vObject_customerStatus
         entity_customer *--down vObject_customerAddress
         entity_customer *--down vObject_vatNumber
@@ -89,6 +87,19 @@ package "**«Aggregate» Drone**" #DDDDDD {
         entity_drone *--down vObject_droneStatus
         entity_drone *--down vObject_serialNumber
 }
+
+package "**«Aggregate» DSL**" #DDDDDD {
+        entity "DSL" as entity_DSL {
+        }
+        class "FilePath" as vObject_filePath <<(V, #7E84F7)>> {
+        }
+        class "Version" as vObject_version <<(V, #7E84F7)>> {
+        }
+        entity_DSL *--down vObject_filePath
+        entity_DSL *--down vObject_version
+
+}
+
 
 package "**«Aggregate» Plugin**" #DDDDDD {
     entity "Plugin" as entity_Plugin <<entity root>> {
@@ -257,8 +268,7 @@ package "**«Aggregate» Figure**" #DDDDDD {
 
         entity "Figure" as entity_figure <<entity root>> {
         }
-        entity "DSL" as entity_DSL {
-        }
+
         class "Description" as vObject_description <<(V, #7E84F7)>> {
         }
         class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
@@ -275,19 +285,13 @@ package "**«Aggregate» Figure**" #DDDDDD {
                     True
                     False
         }
-        class "FilePath" as vObject_filePath <<(V, #7E84F7)>> {
-        }
-        class "Version" as vObject_version <<(V, #7E84F7)>> {
-        }
-        entity_DSL *--down vObject_filePath
-        entity_DSL *--down vObject_version
 
         entity_figure *--down vObject_isActive
         entity_figure *--down vObject_exclusive
         entity_figure *--down vObject_createdBy
         entity_figure *--down vObject_description
         entity_figure *--down vObject_figureVersion
-        entity_figure *--down entity_DSL
+
         entity_figure *--down vObject_keywords
 
 }
@@ -316,11 +320,11 @@ entity_customer "1"-down>"1..*" entity_showRequest: "requests"
 entity_figure "*"-->"1" entity_customer: "created by"
 entity_figureListItem "*" --down> "1..*" entity_figure:"contains"
 entity_requestedFigures "*" -->"1..*" entity_figure:"contains"
-entity_figureCategory "1"<--down- "*" entity_figure: "can be"
+entity_figureCategory "1"<--up- "*" entity_figure: "can be"
 entity_droneListItem "*" --up-> "1..*" entity_droneModel: "contains"
-entity_drone "1..*"-->"*" entity_figure: "used in"
 entity_droneModel "1"<--up "*" entity_drone: "contains"
-entity_template "1" <-up--- "*" entity_showProposal: "contains"
-entity_Plugin "1" <-up--- "*" entity_DSL: "contains"
-
+entity_template "1" <-down--- "*" entity_showProposal: "contains"
+entity_Plugin "1" <-up-- "1..*" entity_DSL: "contains"
+entity_customer "1"---"1..*"  entity_representative: "is associated with"
+entity_figure "*" --> "1" entity_DSL: "contains"
 @enduml

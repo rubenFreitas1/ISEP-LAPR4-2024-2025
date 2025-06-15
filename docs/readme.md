@@ -103,5 +103,6 @@ The members of the group:
 - As a team with only 4 members, we have decided to focus on the user stories requested for the 4 and only when these are finished, if
 time is not a problem, we would start doing the user stories meant for other 2 members (US321 to US328).
 - As a team we decided to use DTOs to structure and simplify data exchange between layers of our application.
-
+- As a team we decided that a DSL can be associated to multiple figures.
+- The members Rafael and Rúben assumed that the US316 (Send Show Proposal) and US347 (Proposal Generation) implementation would be combined.
 
