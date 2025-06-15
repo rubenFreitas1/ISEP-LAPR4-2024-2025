@@ -74,15 +74,45 @@ ram
     }
 ````
 
-**Test 3:** *Verifies that the same Figure cannot be added twice with the same DroneModel*
+**Test 3:** *Assures that the same Figure cannot be added twice with the same sequence number* 
+
+```
+@Test
+    void addFigureWithDroneModel_Fail_DuplicateSequenceNumber() {
+        Figure figure = figures.get(0);
+        assertTrue(proposal.addFigureWithDroneModel(figure, modelA, 1));
+        assertFalse(proposal.addFigureWithDroneModel(figure, modelA, 1));
+    }
+```
+
+**Test 4:** *Assures that the sequence number is positive*
 
 ```
  @Test
-    void addFigureWithDroneModel_Fail_AlreadyAssociated() {
+    void addFigureWithDroneModel_Fail_InvalidSequenceNumber() {
         Figure figure = figures.get(0);
-        proposal.addFigureWithDroneModel(figure, modelA, 1);
-        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 2);
-        assertFalse(result);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            proposal.addFigureWithDroneModel(figure, modelA, -1);
+        });
+        assertEquals("Sequence number must be positive!", ex.getMessage());
+    }
+```
+
+**Test 5:** *Verifies that the list contains the added figures* 
+
+```
+@Test
+    void addFigureWithDroneModel_ListContainsAddedFigures() {
+        Figure figure1 = figures.get(0);
+        Figure figure2 = new Figure("New Figure", Set.of("test"), category, false, null, user, null, "DSL content");
+
+        assertTrue(proposal.addFigureWithDroneModel(figure1, modelA, 1));
+        assertTrue(proposal.addFigureWithDroneModel(figure2, modelB, 2));
+
+        List<FigureListItem> items = proposal.figureListItems();
+        assertEquals(2, items.size());
+        assertEquals(figure1, items.get(0).figure());
+        assertEquals(figure2, items.get(1).figure());
     }
 ```
 ## 5. Implementation

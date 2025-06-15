@@ -133,8 +133,11 @@ public class ShowProposal implements AggregateRoot<Long>, DTOable<ShowProposalDT
         if (figure == null || droneModel == null) {
             throw new IllegalArgumentException("Figure or DroneModel cannot be null!");
         }
+        if (sequenceNumber <= 0) {
+            throw new IllegalArgumentException("Sequence number must be positive!");
+        }
         for (FigureListItem item : figureListItems) {
-            if (item.figure().equals(figure) && item.droneModel().equals(droneModel) &&  item.figureListItemID().sequenceNumber() == sequenceNumber) {
+            if (item.figure().equals(figure) && item.droneModel().equals(droneModel) && item.figureListItemID().sequenceNumber() == sequenceNumber) {
                 System.out.println("This Figure is already associated with the selected DroneModel!");
                 return false;
             }
