@@ -76,18 +76,35 @@ package "**«Aggregate» Drone**" #DDDDDD {
 
         entity "Drone" as entity_drone <<entity root>> {
         }
+
         class "SerialNumber" as vObject_serialNumber <<id>> <<(V, #7E84F7)>> {
         }
-        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
-        }
+
         class "DroneStatus" as vObject_droneStatus <<(V, #7E84F7)>> {
             Active
             Inactive
         }
 
+
         entity_drone *--down vObject_droneStatus
-        entity_drone *--down vObject_dslCode
         entity_drone *--down vObject_serialNumber
+}
+
+package "**«Aggregate» Plugin**" #DDDDDD {
+    entity "Plugin" as entity_Plugin <<entity root>> {
+    }
+    class "PluginName" as vObject_pluginName <<(V, #7E84F7)>> {
+    }
+    class "PluginDescription" as vObject_pluginDescription <<(V, #7E84F7)>> {
+    }
+    class "PluginType" as vObject_pluginType <<(V, #7E84F7)>> {
+        Template
+        DSL
+        Drone_Language
+    }
+   entity_Plugin *-- vObject_pluginName
+   entity_Plugin *-- vObject_pluginDescription
+   entity_Plugin *-- vObject_pluginType
 }
 
 package "**«Aggregate» DroneModel**" #DDDDDD {
@@ -240,13 +257,13 @@ package "**«Aggregate» Figure**" #DDDDDD {
 
         entity "Figure" as entity_figure <<entity root>> {
         }
+        entity "DSL" as entity_DSL {
+        }
         class "Description" as vObject_description <<(V, #7E84F7)>> {
         }
         class "Version" as vObject_figureVersion <<(V, #7E84F7)>> {
         }
         class "CreatedBy" as vObject_createdBy <<(V, #7E84F7)>> {
-        }
-        class "DslCode" as vObject_dslCode <<(V, #7E84F7)>> {
         }
         class "Keywords" as vObject_keywords <<(V, #7E84F7)>> {
         }
@@ -258,13 +275,19 @@ package "**«Aggregate» Figure**" #DDDDDD {
                     True
                     False
         }
+        class "FilePath" as vObject_filePath <<(V, #7E84F7)>> {
+        }
+        class "Version" as vObject_version <<(V, #7E84F7)>> {
+        }
+        entity_DSL *--down vObject_filePath
+        entity_DSL *--down vObject_version
 
         entity_figure *--down vObject_isActive
         entity_figure *--down vObject_exclusive
         entity_figure *--down vObject_createdBy
         entity_figure *--down vObject_description
         entity_figure *--down vObject_figureVersion
-        entity_figure *--down vObject_dslCode
+        entity_figure *--down entity_DSL
         entity_figure *--down vObject_keywords
 
 }
@@ -298,5 +321,6 @@ entity_droneListItem "*" --up-> "1..*" entity_droneModel: "contains"
 entity_drone "1..*"-->"*" entity_figure: "used in"
 entity_droneModel "1"<--up "*" entity_drone: "contains"
 entity_template "1" <-up--- "*" entity_showProposal: "contains"
+entity_Plugin "1" <-up--- "*" entity_DSL: "contains"
 
 @enduml
