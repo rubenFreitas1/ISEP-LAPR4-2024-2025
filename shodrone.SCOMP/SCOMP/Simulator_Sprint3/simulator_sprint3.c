@@ -126,11 +126,6 @@ void signal_handler(int sig, siginfo_t *si, void *context) {
 }
 
 
-//void* report_generation_thread(){
-//	
-//}
-
-
 
 //MÉTODO PARA EXTRAIR TODOS OS TIMESTAMPS UNICOS
 int* getAllTimestamps(DroneData* data, int totalPositions, int* count){
