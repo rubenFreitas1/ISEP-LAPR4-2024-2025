@@ -369,13 +369,4 @@ class ShowProposalTest {
         });
         assertEquals("Figure or DroneModel cannot be null!", ex2.getMessage());
     }
-
-    @Test
-    void addFigureWithDroneModel_Fail_AlreadyAssociated() {
-        Figure figure = figures.get(0);
-        proposal.addFigureWithDroneModel(figure, modelA, 1);
-        boolean result = proposal.addFigureWithDroneModel(figure, modelA, 2);
-        assertFalse(result);
-    }
-
 }

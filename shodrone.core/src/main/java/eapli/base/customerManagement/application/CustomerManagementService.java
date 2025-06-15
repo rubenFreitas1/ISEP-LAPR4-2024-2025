@@ -32,9 +32,7 @@ public class CustomerManagementService {
             throw new IllegalArgumentException("Customer address cannot be null or empty");
         }
         EmailAddress customerEmailAddress = EmailAddress.valueOf(customerEmail);
-        //if (isEmailUsed(customerEmailAddress.toString())) {
-          //  throw new IllegalArgumentException("Email already in use");
-        //}
+
         Optional<Password> customerPassword = Password.encodedAndValid(password, passwordPolicy, passwordEncoder);
 
         if (customerPassword.isEmpty()) {

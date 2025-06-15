@@ -1,6 +1,7 @@
 package eapli.base.showProposalManagement.application;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.showProposalManagement.LPROGConnection.ProposalWriter;
 import eapli.base.showProposalManagement.domain.ShowProposal;
 import eapli.base.showProposalManagement.repositories.ShowProposalRepository;
 import eapli.base.usermanagement.domain.Roles;
@@ -15,7 +16,9 @@ public class SendShowProposalController {
 
     private final ShowProposalRepository repo = PersistenceContext.repositories().showProposals();
 
-    ShowProposalManagementService showProposalManagementSvc= new ShowProposalManagementService(repo);
+    private final ProposalWriter proposalWriter = new ProposalWriter();
+
+    ShowProposalManagementService showProposalManagementSvc= new ShowProposalManagementService(repo, proposalWriter);
 
     public Iterable<ShowProposal> allCompletedShowProposals() {
         authz.ensureAuthenticatedUserHasAnyOf(Roles.CRM_COLLABORATOR);

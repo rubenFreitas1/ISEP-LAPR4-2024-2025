@@ -7,6 +7,7 @@ import eapli.base.droneModelManagement.domain.DroneWindBehavior;
 import eapli.base.figureCategoryManagement.domain.FigureCategory;
 import eapli.base.figureManagement.domain.DSL;
 import eapli.base.figureManagement.domain.Figure;
+import eapli.base.figureManagement.repository.DSLRepository;
 import eapli.base.pluginManagementService.domain.Plugin;
 import eapli.base.pluginManagementService.domain.PluginName;
 import eapli.base.pluginManagementService.domain.PluginType;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -49,7 +51,8 @@ class ShowProposalManagementServiceTest {
     @InjectMocks
     private ShowProposalManagementService service;
 
-    private TemplateManagementService templateService;
+    @Mock
+    ProposalWriter writer;
 
     private ShowProposal proposal;
     private DroneModel modelA;
@@ -167,6 +170,26 @@ class ShowProposalManagementServiceTest {
         assertNotNull(result);
         assertEquals(expected, result);
         verify(repo).findByCompletedProposal();
+    }
+
+    @Test
+    void sendShowProposal_success() {
+        String fakeContent = "VALID CONTENT";
+
+        ShowProposalManagementService realService = new ShowProposalManagementService(repo, writer);
+        ShowProposalManagementService serviceSpy = Mockito.spy(realService);
+
+        doReturn(true).when(serviceSpy).isValidProposalContent(anyString());
+
+        when(writer.proposalWriter(any(), any())).thenReturn(fakeContent);
+
+        when(repo.save(any(ShowProposal.class))).thenAnswer(i -> i.getArgument(0));
+
+        boolean result = serviceSpy.sendShowProposal(proposal);
+
+        assertTrue(result);
+        verify(repo).save(any());
+        verify(writer).proposalWriter(any(), any());
     }
 
 

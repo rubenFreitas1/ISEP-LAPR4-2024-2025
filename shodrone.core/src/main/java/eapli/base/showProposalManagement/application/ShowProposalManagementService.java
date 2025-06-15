@@ -18,9 +18,12 @@ import java.util.Random;
 
 public class ShowProposalManagementService {
     private final ShowProposalRepository showProposalRepository;
+    private final ProposalWriter proposalWriter;
 
-    public ShowProposalManagementService(final ShowProposalRepository showProposalRepository){
+    public ShowProposalManagementService(final ShowProposalRepository showProposalRepository,
+                                         final ProposalWriter proposalWriter) {
         this.showProposalRepository = showProposalRepository;
+        this.proposalWriter = proposalWriter;
     }
 
     public ShowProposal registerShowProposal(ShowRequest showRequest, GeoLocation location, Calendar date, LocalTime time, int duration, int totalDroneNumber, SystemUser user, Template template, double insurance) {
@@ -45,17 +48,17 @@ public class ShowProposalManagementService {
 
     public boolean sendShowProposal (ShowProposal showProposal) {
         try {
-            ProposalWriter proposalWriter = new ProposalWriter();
             String content = proposalWriter.proposalWriter(showProposal, showProposal.template());
             if (content == null) {
                 System.err.println("ERROR: proposalWriter returned null content");
                 return false;
             }
             String code = generateUniqueCode();
-            if (!ShowProposalValidator.validateShowProposalRealData(content)) {
+            if (!isValidProposalContent(content)) {
                 System.out.println("ERROR: Document Content invalid!");
                 return false;
             }
+
             Document document = new Document(content, code);
             System.out.println("\n");
             System.out.println(document.finalContent());
@@ -74,6 +77,11 @@ public class ShowProposalManagementService {
             return false;
         }
     }
+
+    public boolean isValidProposalContent(String content) {
+        return ShowProposalValidator.validateShowProposalRealData(content);
+    }
+
 
     public String generateUniqueCode() {
         Random random = new Random();

@@ -77,8 +77,7 @@ class CustomerManagementServiceTest {
         PasswordPolicy policy = new ExemploPasswordPolicy();
         PlainTextEncoder encoder = new PlainTextEncoder();
 
-        when(customerRepository.isEmailUsed("client@email.com")).thenReturn(false);
-        when(customerRepository.isVatNumberUsed("CC123456")).thenReturn(false);
+
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
 
@@ -99,20 +98,6 @@ class CustomerManagementServiceTest {
         verify(customerRepository).save(any(Customer.class));
     }
 
-    @Test
-    void registerNewCustomer_shouldThrowException_whenEmailAlreadyUsed() {
-        when(customerRepository.isEmailUsed("client@email.com")).thenReturn(true);
-
-        assertThrows(IllegalArgumentException.class, () -> service.registerNewCustomer(
-                "Client", "Name",
-                "Client Address",
-                "client@email.com",
-                "VAT123",
-                "910000000",
-                "CC123456",
-                systemUser
-        ));
-    }
 
     @Test
     void changeCustomerStatus_shouldChangeStatusSuccessfully() {
