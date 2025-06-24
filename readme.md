@@ -3,6 +3,31 @@
 ## 1. Description of the Project
 
 Project Shodrone is an autonomous drone control and operation system designed for various applications, including security, industrial inspection, and environmental monitoring. The project aims to develop a reliable and efficient platform for managing multiple drones simultaneously with minimal human intervention.
+This project was developed in a SCRUM-based agile process over 3 sprints.
+
+## 🛠️ Technologies Used
+
+- Java - Main application, servers
+
+- C - Drone Simulator  (process/thread management)
+
+- ANTLR4 - Grammar definition and parsing for templates
+
+- TCP Sockets - Inter-server and client-server communication
+
+- H2 Database - In-memory storage with JPA
+
+- JPA - ORM + repository layer for data persistence
+
+
+## 📌 Best Practices and Design Highlights
+
+- The project followed an iterative and incremental development model (SCRUM-based), with 3 sprints.
+- Domain Modeling
+- Applied *Object-Oriented Programming (OOP)* principles and layered design
+- Concurrency in C: Advanced synchronization mechanisms implemented (semaphores, mutexes, condition variables).
+- Encapsulation: Use of DTOs to isolate internal domain logic.
+- ANTLR & Visitor pattern: Clean parsing and templating logic.
 
 ## 2. Planning and Technical Documentation
 
@@ -47,35 +72,4 @@ To run all the tests execute the script (only for linux/unix/macos):
     ./run-tests.sh
 
 
-## 6. How to Run
 
-To run all drones execute the script (only for windows):
-
-    ./run-all-shodrone.bat
-
-
-To run all drones execute the script (only for linux/unix/macos):
-
-    ./run-all-shodrone.sh
-
-
-To run one drones execute the script (only for windows and N bein the drone number):
-
-    ./shodrone-appN.bat
-
-To run one drones execute the script (only for linux/unix/macos and N bein the drone number):
-
-    ./shodrone-appN.sh
-
-## 7. How to Install/Deploy into Another Machine (or Virtual Machine)
-
-*To Do*
-
-## 8. How to Generate PlantUML Diagrams
-
-To generate plantuml diagrams for documentation execute the script (only for linux/unix/macos):
-
-    ./generate-plantuml-diagrams.sh
-To generate plantuml diagrams for documentation execute the script (only for windows):
-
-    ./generate-plantuml-diagrams.bat
